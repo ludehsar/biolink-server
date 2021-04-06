@@ -1,0 +1,75 @@
+{
+  "name": "biolink-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "npx rimraf build/",
+    "build": "tsc",
+    "watch": "yarn build -w",
+    "start": "node --require dotenv/config build/index.js",
+    "dev": "nodemon --exec yarn start",
+    "create:migration": "mikro-orm migration:create",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ludehsar/biolink-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ludehsar/biolink-server/issues"
+  },
+  "homepage": "https://github.com/ludehsar/biolink-server#readme",
+  "devDependencies": {
+    "@types/connect-redis": "^0.0.16",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/express-session": "^1.17.3",
+    "@types/node": "^14.14.31",
+    "@types/redis": "^2.8.28",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "husky": "^5.1.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {
+    "@mikro-orm/cli": "^4.4.4",
+    "@mikro-orm/core": "^4.4.4",
+    "@mikro-orm/postgresql": "^4.4.4",
+    "apollo-server-express": "^2.21.0",
+    "argon2": "^0.27.1",
+    "connect-redis": "^5.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "graphql": "^15.5.0",
+    "pg": "^8.5.1",
+    "redis": "^3.0.2",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/config/mikro-orm.config.ts",
+      "./build/config/mikro-orm.config.js"
+    ]
+  }
+}
