@@ -1,4 +1,4 @@
-# myreddit-server
+# biolink-server
 
 ## Requirements
 
