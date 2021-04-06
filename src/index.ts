@@ -6,6 +6,7 @@ import { buildSchema } from 'type-graphql'
 import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
+import cors from 'cors'
 
 import mikroConfig from './config/mikro-orm.config'
 import { __prod__, port, appKey } from './config/app.config'
@@ -22,6 +23,11 @@ const main = async () => {
 
   const RedisStore = connectRedis(session)
   const redisClient = redis.createClient()
+
+  app.use(cors({
+    origin: process.env.FRONTEND_APP_URL,
+    credentials: true
+  }))
 
   app.use(
     session({
@@ -50,7 +56,10 @@ const main = async () => {
     context: ({ req, res }): MyContext => ({ em: orm.em, req, res })
   })
 
-  apolloServer.applyMiddleware({ app })
+  apolloServer.applyMiddleware({
+    app,
+    cors: false
+  })
 
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}.`)
