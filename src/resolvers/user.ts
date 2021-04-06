@@ -3,6 +3,7 @@ import { MyContext } from 'types'
 import * as argon2 from 'argon2'
 
 import { User } from '../entities/User'
+import { COOKIE_NAME } from '../config/app.config'
 
 @InputType()
 class LoginInput {
@@ -127,5 +128,20 @@ export class UserResolver {
     req.session.userId = user.id
 
     return { user }
+  }
+
+  @Mutation(() => Boolean)
+  async logout (@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) =>
+      req.session.destroy(err => {
+        if (err) {
+          resolve(false)
+          return
+        }
+
+        res.clearCookie(COOKIE_NAME)
+        resolve(true)
+      })
+    )
   }
 }
