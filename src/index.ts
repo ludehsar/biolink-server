@@ -68,7 +68,8 @@ const main = async () => {
       },
       saveUninitialized: false,
       secret: appKey,
-      resave: false
+      resave: false,
+      proxy: true
     })
   )
 
