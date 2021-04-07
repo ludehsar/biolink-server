@@ -31,7 +31,13 @@ const main = async () => {
     password: dbPassword,
     logging: !__prod__,
     synchronize: true,
-    entities: [User]
+    entities: [User],
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false
+      }
+    }
   })
 
   const app = express()
