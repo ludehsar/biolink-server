@@ -13,7 +13,7 @@ import { createConnection } from 'typeorm'
 import { Database, Resource } from '@admin-bro/typeorm'
 
 import options from './adminbro/admin.options'
-import { __prod__, port, appKey, COOKIE_NAME } from './config/app.config'
+import { __prod__, port, appKey, COOKIE_NAME, COOKIE_SAMESITE } from './config/app.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user'
 import { MyContext } from './types'
@@ -63,7 +63,7 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true, // prevent xss attack
-        sameSite: 'lax', // csrf
+        sameSite: COOKIE_SAMESITE, // csrf
         secure: __prod__ // only works in https
       },
       saveUninitialized: false,
