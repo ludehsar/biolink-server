@@ -95,7 +95,7 @@ export class UserResolver {
       const user = await User.create({
         email: options.email,
         username: options.username,
-        password: hashedPassword
+        encryptedPassword: hashedPassword
       }).save()
 
       req.session.userId = user.id
@@ -146,7 +146,7 @@ export class UserResolver {
         }]
       }
     }
-    const valid = await argon2.verify(user.password, options.password)
+    const valid = await argon2.verify(user.encryptedPassword, options.password)
 
     if (!valid) {
       return {

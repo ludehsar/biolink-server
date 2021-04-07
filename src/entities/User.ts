@@ -1,6 +1,11 @@
 import { Field, ObjectType } from 'type-graphql'
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
+enum Role {
+  "Admin",
+  "User"
+}
+
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -24,10 +29,16 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email!: string;
 
+  @Field()
+  @Column()
+  role: Role = Role.User
+
   @Field(() => String)
   @Column({ type: 'date', nullable: true })
   emailVerifiedAt!: Date;
 
+
+
   @Column()
-  password!: string;
+  encryptedPassword!: string;
 }

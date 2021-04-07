@@ -7,6 +7,10 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
 import { createConnection } from 'typeorm'
+import AdminBro from 'admin-bro'
+import AdminBroExpress from '@admin-bro/express'
+import { Database, Resource } from '@admin-bro/typeorm'
+import * as argon2 from 'argon2'
 
 import { __prod__, port, appKey, COOKIE_NAME } from './config/app.config'
 import { HelloResolver } from './resolvers/hello'
@@ -14,6 +18,7 @@ import { UserResolver } from './resolvers/user'
 import { MyContext } from './types'
 import { dbName, dbPassword, dbUser } from './config/database.config'
 import { User } from './entities/User'
+import options from './adminbro/admin.options'
 
 const main = async () => {
   await createConnection({
@@ -67,6 +72,25 @@ const main = async () => {
     app,
     cors: false
   })
+
+  AdminBro.registerAdapter({ Database, Resource })
+
+  const adminBro = new AdminBro(options)
+
+  const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+    authenticate: async (email, password) => {
+      const user = await User.findOne({ email })
+      if (user) {
+        const matched = await argon2.verify(user.encryptedPassword, password)
+        if (matched) {
+          return user
+        }
+      }
+      return false
+    },
+    cookiePassword: appKey
+  })
+  app.use(adminBro.options.rootPath, router)
 
   app.listen(port, () => {
     console.log(`Server is listening on port ${port}.`)
