@@ -31,6 +31,7 @@ const main = async () => {
     password: dbPassword,
     logging: !__prod__,
     synchronize: true,
+    ssl: true,
     entities: [User]
   })
 
