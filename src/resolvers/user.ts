@@ -6,9 +6,21 @@ import { User } from '../entities/User'
 import { COOKIE_NAME } from '../config/app.config'
 
 @InputType()
-class LoginInput {
+class RegisterInput {
+  @Field()
+  email: string = ''
+
   @Field()
   username: string = ''
+
+  @Field()
+  password: string = ''
+}
+
+@InputType()
+class LoginInput {
+  @Field()
+  email: string = ''
 
   @Field()
   password: string = ''
@@ -35,19 +47,30 @@ class UserResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  async me (@Ctx() { em, req }: MyContext) {
+  async me (@Ctx() { req }: MyContext) {
     if (!req.session.userId) {
       return null
     }
 
-    const user = await em.findOne(User, { id: req.session.userId })
+    const user = await User.findOne(req.session.userId)
     return user
   }
 
   @Mutation(() => UserResponse)
   async register (
-    @Arg('options') options: LoginInput, @Ctx() { em, req }: MyContext
+    @Arg('options') options: RegisterInput, @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
+    const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+
+    if (!emailRegexExp.test(options.email)) {
+      return {
+        errors: [{
+          field: 'email',
+          message: 'Email is not valid'
+        }]
+      }
+    }
+
     if (options.username.length <= 2) {
       return {
         errors: [{
@@ -67,20 +90,33 @@ export class UserResolver {
     }
 
     const hashedPassword = await argon2.hash(options.password)
-    const user = em.create(User, {
-      username: options.username,
-      password: hashedPassword
-    })
 
     try {
-      await em.persistAndFlush(user)
+      const user = await User.create({
+        email: options.email,
+        username: options.username,
+        password: hashedPassword
+      }).save()
+
+      req.session.userId = user.id
+
+      return { user }
     } catch (err) {
-      switch (err.code) {
-        case '23505': {
+      console.log(err)
+      switch (err.constraint) {
+        case 'UQ_78a916df40e02a9deb1c4b75edb': {
           return {
             errors: [{
               field: 'username',
               message: 'User with this username already exists'
+            }]
+          }
+        }
+        case 'UQ_e12875dfb3b1d92d7d7c5377e22': {
+          return {
+            errors: [{
+              field: 'email',
+              message: 'User with this email already exists'
             }]
           }
         }
@@ -94,23 +130,19 @@ export class UserResolver {
         }
       }
     }
-
-    req.session.userId = user.id
-
-    return { user }
   }
 
   @Mutation(() => UserResponse)
   async login (
-    @Arg('options') options: LoginInput, @Ctx() { em, req }: MyContext
+    @Arg('options') options: LoginInput, @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await em.findOne(User, { username: options.username })
+    const user = await User.findOne({ where: { email: options.email } })
 
     if (!user) {
       return {
         errors: [{
-          field: 'username',
-          message: 'Username not found'
+          field: 'email',
+          message: 'Email not found'
         }]
       }
     }
@@ -131,7 +163,25 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async logout (@Ctx() { req, res }: MyContext) {
+  async verifyEmail (): Promise<Boolean> {
+    // TODO: implement email verification
+    return true
+  }
+
+  @Mutation(() => Boolean)
+  async forgotPassword (): Promise<Boolean> {
+    // TODO: implement forgot password
+    return true
+  }
+
+  @Mutation(() => Boolean)
+  async changePassword (): Promise<Boolean> {
+    // TODO: implement change password
+    return true
+  }
+
+  @Mutation(() => Boolean)
+  logout (@Ctx() { req, res }: MyContext): Promise<Boolean> {
     return new Promise((resolve) =>
       req.session.destroy(err => {
         if (err) {

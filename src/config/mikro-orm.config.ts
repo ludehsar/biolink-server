@@ -3,7 +3,6 @@ import { MikroORM } from '@mikro-orm/core'
 import path from 'path'
 
 import { dbType, dbName, dbUser, dbPassword } from './database.config'
-import { Post } from '../entities/Post'
 import { User } from '../entities/User'
 
 export default {
@@ -12,7 +11,7 @@ export default {
     pattern: /^[\w-]+\d+\.[tj]s$/,
     disableForeignKeys: false
   },
-  entities: [Post, User],
+  entities: [User],
   debug: appDebug,
   type: dbType,
   dbName: dbName,

@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-import { MikroORM } from '@mikro-orm/core'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
@@ -7,17 +6,25 @@ import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
+import { createConnection } from 'typeorm'
 
-import mikroConfig from './config/mikro-orm.config'
 import { __prod__, port, appKey, COOKIE_NAME } from './config/app.config'
 import { HelloResolver } from './resolvers/hello'
-import { PostResolver } from './resolvers/post'
 import { UserResolver } from './resolvers/user'
 import { MyContext } from './types'
+import { dbName, dbPassword, dbUser } from './config/database.config'
+import { User } from './entities/User'
 
 const main = async () => {
-  const orm = await MikroORM.init(mikroConfig)
-  await orm.getMigrator().up()
+  await createConnection({
+    type: 'postgres',
+    database: dbName,
+    username: dbUser,
+    password: dbPassword,
+    logging: !__prod__,
+    synchronize: true,
+    entities: [User]
+  })
 
   const app = express()
 
@@ -37,7 +44,7 @@ const main = async () => {
         disableTouch: true
       }),
       cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        maxAge: 1000 * 60 * 60 * 24, // 1 day
         httpOnly: true, // prevent xss attack
         sameSite: 'lax', // csrf
         secure: __prod__ // only works in https
@@ -50,10 +57,10 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver],
       validate: false
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res })
+    context: ({ req, res }): MyContext => ({ req, res })
   })
 
   apolloServer.applyMiddleware({
