@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc",
     "prebuild": "npx rimraf build/",
+    "postinstall": "npm run tsc",
     "build": "tsc",
     "watch": "yarn build -w",
     "start": "node --require dotenv/config build/index.js",
