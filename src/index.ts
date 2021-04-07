@@ -1,24 +1,25 @@
 import 'reflect-metadata'
 import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
-import { buildSchema } from 'type-graphql'
+import * as argon2 from 'argon2'
 import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
-import { createConnection } from 'typeorm'
 import AdminBro from 'admin-bro'
 import AdminBroExpress from '@admin-bro/express'
+import { ApolloServer } from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
+import { createConnection } from 'typeorm'
 import { Database, Resource } from '@admin-bro/typeorm'
-import * as argon2 from 'argon2'
 
+import options from './adminbro/admin.options'
 import { __prod__, port, appKey, COOKIE_NAME } from './config/app.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user'
 import { MyContext } from './types'
 import { dbHost, dbPort, dbName, dbPassword, dbUser } from './config/database.config'
+import { redisEndpoint, redisPassword } from './config/redis.config'
 import { User } from './entities/User'
-import options from './adminbro/admin.options'
 
 const main = async () => {
   await createConnection({
@@ -36,7 +37,10 @@ const main = async () => {
   const app = express()
 
   const RedisStore = connectRedis(session)
-  const redisClient = redis.createClient()
+  const redisClient = redis.createClient({
+    url: redisEndpoint,
+    password: redisPassword
+  })
 
   app.use(cors({
     origin: process.env.FRONTEND_APP_URL,
