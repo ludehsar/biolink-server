@@ -16,13 +16,15 @@ import { __prod__, port, appKey, COOKIE_NAME } from './config/app.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user'
 import { MyContext } from './types'
-import { dbName, dbPassword, dbUser } from './config/database.config'
+import { dbHost, dbPort, dbName, dbPassword, dbUser } from './config/database.config'
 import { User } from './entities/User'
 import options from './adminbro/admin.options'
 
 const main = async () => {
   await createConnection({
     type: 'postgres',
+    host: dbHost,
+    port: dbPort,
     database: dbName,
     username: dbUser,
     password: dbPassword,
