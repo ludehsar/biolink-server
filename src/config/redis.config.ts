@@ -1,2 +1,8 @@
-export const redisEndpoint = process.env.REDIS_ENDPOINT
-export const redisPassword = process.env.REDIS_PASSWORD
+import { ClientOpts } from 'redis'
+
+const options: ClientOpts = {
+  url: process.env.REDIS_ENDPOINT,
+  password: process.env.REDIS_PASSWORD
+}
+
+export default options
