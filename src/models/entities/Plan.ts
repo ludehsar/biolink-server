@@ -1,5 +1,5 @@
 import { Field, Float, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 import { EnabledStatus } from '../enums/EnabledStatus'
 import { PlanSettings } from '../jsonTypes/PlanSettings'
@@ -65,7 +65,6 @@ export class Plan extends BaseEntity {
 
   @Field(() => Tax, { nullable: true })
   @ManyToMany(() => Tax, tax => tax.plans)
-  @JoinTable()
   taxes!: Tax[];
 
   @Field(() => Code, { nullable: true })
