@@ -21,7 +21,7 @@ export class Domain extends BaseEntity {
   host!: string;
 
   @Field(() => String, { nullable: true })
-  @Column()
+  @Column({ nullable: true })
   customIndexUrl!: string;
 
   @Field(() => String, { nullable: true })
