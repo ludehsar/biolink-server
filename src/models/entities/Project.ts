@@ -1,6 +1,7 @@
 import { Field, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
+import { Link } from './Link'
 import { User } from './User'
 
 @ObjectType()
@@ -27,4 +28,8 @@ export class Project extends BaseEntity {
   @ManyToOne(() => User, user => user.projects)
   @JoinColumn()
   user!: User;
+
+  @Field(() => Link, { nullable: true })
+  @OneToMany(() => Link, link => link.project)
+  links!: Link[];
 }

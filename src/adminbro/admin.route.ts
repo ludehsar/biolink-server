@@ -5,6 +5,7 @@ import { SessionOptions } from 'express-session'
 
 import { appKey } from '../config/app.config'
 import { User } from '../models/entities/User'
+import { UserRole } from '../models/enums/UserRole'
 
 const buildAdminRouter = (admin: AdminBro) => {
   const router = AdminBroExpress.buildAuthenticatedRouter(
@@ -14,7 +15,7 @@ const buildAdminRouter = (admin: AdminBro) => {
         const user = await User.findOne({ email })
         if (user) {
           const matched = await argon2.verify(user.encryptedPassword, password)
-          if (matched) {
+          if (matched && user.userRole === UserRole.Admin) {
             return user
           }
         }

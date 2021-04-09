@@ -7,6 +7,10 @@ import { dbHost, dbPort, dbName, dbUser, dbPassword } from './database.config'
 import { Domain } from '../models/entities/Domain'
 import { Settings } from '../models/entities/Settings'
 import { Plan } from '../models/entities/Plan'
+import { Link } from '../models/entities/Link'
+import { Tax } from '../models/entities/Tax'
+import { Page } from '../models/entities/Page'
+import { Code } from '../models/entities/Code'
 
 const options: ConnectionOptions = {
   type: 'postgres',
@@ -17,7 +21,7 @@ const options: ConnectionOptions = {
   password: dbPassword,
   logging: !__prod__,
   synchronize: true,
-  entities: [Domain, Plan, Project, Settings, User],
+  entities: [Code, Domain, Link, Page, Plan, Project, Settings, Tax, User],
   ssl: true,
   extra: {
     ssl: {

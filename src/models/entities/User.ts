@@ -6,6 +6,8 @@ import { Domain } from './Domain'
 import { UserRole } from '../enums/UserRole'
 import { Plan } from './Plan'
 import { Project } from './Project'
+import { Link } from './Link'
+import { PlanSettings } from '../jsonTypes/PlanSettings'
 
 @ObjectType()
 @Entity()
@@ -48,6 +50,10 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   facebookId!: string;
 
+  @Field(() => PlanSettings, { nullable: true })
+  @Column({ type: 'json', nullable: true })
+  planSettings!: PlanSettings;
+
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
   planExpirationDate!: Date;
@@ -80,6 +86,10 @@ export class User extends BaseEntity {
   @Field(() => Domain, { nullable: true })
   @OneToMany(() => Domain, domain => domain.user)
   domains!: Domain[];
+
+  @Field(() => Link, { nullable: true })
+  @OneToMany(() => Link, link => link.user)
+  links!: Link[];
 
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, plan => plan.users)
