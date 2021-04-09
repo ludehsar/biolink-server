@@ -1,7 +1,12 @@
 import { ConnectionOptions } from 'typeorm'
-import { User } from '../entities/User'
+
+import { User } from '../models/entities/User'
+import { Project } from '../models/entities/Project'
 import { __prod__ } from './app.config'
 import { dbHost, dbPort, dbName, dbUser, dbPassword } from './database.config'
+import { Domain } from '../models/entities/Domain'
+import { Settings } from '../models/entities/Settings'
+import { Plan } from '../models/entities/Plan'
 
 const options: ConnectionOptions = {
   type: 'postgres',
@@ -12,7 +17,7 @@ const options: ConnectionOptions = {
   password: dbPassword,
   logging: !__prod__,
   synchronize: true,
-  entities: [User],
+  entities: [Domain, Plan, Project, Settings, User],
   ssl: true,
   extra: {
     ssl: {

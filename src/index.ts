@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import path from 'path'
 import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
@@ -8,14 +9,14 @@ import { createConnection } from 'typeorm'
 import { Database, Resource } from '@admin-bro/typeorm'
 import { buildSchema } from 'type-graphql'
 
-import adminbroOptions from './adminbro/admin.options'
-import buildAdminRouter from './adminbro/admin.route'
+import sessionOptions from './config/session.config'
 import { port } from './config/app.config'
 import typeormOptions from './config/typeorm.config'
-import sessionOptions from './config/session.config'
 import corsOptions from './config/cors.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user'
+import adminbroOptions from './adminbro/admin.options'
+import buildAdminRouter from './adminbro/admin.route'
 
 const main = async () => {
   await createConnection(typeormOptions)
@@ -25,6 +26,8 @@ const main = async () => {
   app.use(cors(corsOptions))
 
   app.use(session(sessionOptions))
+
+  app.use('/static', express.static(path.join(__dirname, '../assets')))
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({

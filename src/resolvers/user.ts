@@ -2,7 +2,7 @@ import { Mutation, InputType, Resolver, Field, Arg, Ctx, ObjectType, Query } fro
 import { MyContext } from 'types'
 import * as argon2 from 'argon2'
 
-import { User } from '../entities/User'
+import { User } from '../models/entities/User'
 import { COOKIE_NAME } from '../config/app.config'
 
 @InputType()
@@ -58,7 +58,7 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async register (
-    @Arg('options') options: RegisterInput, @Ctx() { req }: MyContext
+    @Arg('options') options: RegisterInput // @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
@@ -94,11 +94,10 @@ export class UserResolver {
     try {
       const user = await User.create({
         email: options.email,
-        username: options.username,
         encryptedPassword: hashedPassword
       }).save()
 
-      req.session.userId = user.id
+      // req.session.userId = user.id
 
       return { user }
     } catch (err) {
@@ -134,7 +133,7 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login (
-    @Arg('options') options: LoginInput, @Ctx() { req }: MyContext
+    @Arg('options') options: LoginInput // @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const user = await User.findOne({ where: { email: options.email } })
 
@@ -157,7 +156,7 @@ export class UserResolver {
       }
     }
 
-    req.session.userId = user.id
+    // req.session.userId = user.id
 
     return { user }
   }
