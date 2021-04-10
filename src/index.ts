@@ -11,7 +11,6 @@ import { buildSchema } from 'type-graphql'
 
 import sessionOptions from './config/session.config'
 import { port } from './config/app.config'
-import typeormOptions from './config/typeorm.config'
 import corsOptions from './config/cors.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user'
@@ -19,7 +18,8 @@ import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 
 const main = async () => {
-  await createConnection(typeormOptions)
+  const connection = await createConnection()
+  connection.runMigrations()
 
   const app = express()
 
