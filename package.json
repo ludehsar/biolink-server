@@ -14,7 +14,7 @@
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typeorm": "ts-node ./node_modules/.bin/typeorm "
+    "typeorm": "./node_modules/.bin/typeorm "
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/ludehsar/biolink-server#readme",
   "devDependencies": {
     "@types/connect-redis": "^0.0.16",
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
@@ -59,6 +60,7 @@
     "apollo-server-express": "^2.21.0",
     "argon2": "^0.27.1",
     "connect-redis": "^5.1.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

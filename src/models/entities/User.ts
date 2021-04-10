@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 import { Billing } from '../jsonTypes/Billing'
@@ -7,7 +7,6 @@ import { UserRole } from '../enums/UserRole'
 import { Plan } from './Plan'
 import { Project } from './Project'
 import { Link } from './Link'
-import { PlanSettings } from '../jsonTypes/PlanSettings'
 
 @ObjectType()
 @Entity()
@@ -50,10 +49,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   facebookId!: string;
 
-  @Field(() => PlanSettings, { nullable: true })
-  @Column({ type: 'json', nullable: true })
-  planSettings!: PlanSettings;
-
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
   planExpirationDate!: Date;
@@ -70,6 +65,10 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   country!: String;
 
+  @Field(() => Int, { nullable: true })
+  @Column({ default: 0 })
+  totalLogin!: number;
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date;
@@ -77,6 +76,10 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'date', nullable: true })
+  deletedAt!: Date;
 
   // Relationships
   @Field(() => Project, { nullable: true })

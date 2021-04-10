@@ -4,8 +4,8 @@ import * as argon2 from 'argon2'
 import { SessionOptions } from 'express-session'
 
 import { appKey } from '../config/app.config'
-import { User } from '../models/entities/User'
 import { UserRole } from '../models/enums/UserRole'
+import { User } from '../models/entities/User'
 
 const buildAdminRouter = (admin: AdminBro) => {
   const router = AdminBroExpress.buildAuthenticatedRouter(
@@ -25,8 +25,8 @@ const buildAdminRouter = (admin: AdminBro) => {
     },
     null,
     {
-      resave: false,
-      saveUninitialized: false
+      resave: true,
+      saveUninitialized: true
     } as SessionOptions
   )
 

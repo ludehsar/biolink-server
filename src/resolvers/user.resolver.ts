@@ -1,64 +1,26 @@
-import { Mutation, InputType, Resolver, Field, Arg, Ctx, ObjectType, Query } from 'type-graphql'
-import { MyContext } from 'types'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import * as argon2 from 'argon2'
 
 import { User } from '../models/entities/User'
-import { COOKIE_NAME } from '../config/app.config'
-
-@InputType()
-class RegisterInput {
-  @Field()
-  email: string = ''
-
-  @Field()
-  username: string = ''
-
-  @Field()
-  password: string = ''
-}
-
-@InputType()
-class LoginInput {
-  @Field()
-  email: string = ''
-
-  @Field()
-  password: string = ''
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string = ''
-
-  @Field()
-  message: string = ''
-}
-
-@ObjectType()
-class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
-
-  @Field(() => User, { nullable: true })
-  user?: User
-}
+import { UserResponse, LoginInput } from './types/user'
+import { MyContext } from '../MyContext'
+import cookieOptions from '../config/cookie.config'
+import { createAuthTokens } from '../utils/createAuthTokens'
 
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
   async me (@Ctx() { req }: MyContext) {
-    if (!req.session.userId) {
+    if (!(req as any).userId) {
       return null
     }
 
-    const user = await User.findOne(req.session.userId)
-    return user
+    return await User.findOne((req as any).userId)
   }
 
   @Mutation(() => UserResponse)
   async register (
-    @Arg('options') options: RegisterInput // @Ctx() { req }: MyContext
+      @Arg('options') options: LoginInput, @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
@@ -67,15 +29,6 @@ export class UserResolver {
         errors: [{
           field: 'email',
           message: 'Email is not valid'
-        }]
-      }
-    }
-
-    if (options.username.length <= 2) {
-      return {
-        errors: [{
-          field: 'username',
-          message: 'Username must be greater than 2 characters'
         }]
       }
     }
@@ -97,20 +50,16 @@ export class UserResolver {
         encryptedPassword: hashedPassword
       }).save()
 
-      // req.session.userId = user.id
+      // Implement jwt
+      const { refreshToken, accessToken } = createAuthTokens(user)
+
+      res.cookie('refresh_token', refreshToken, cookieOptions)
+      res.cookie('access_token', accessToken, cookieOptions)
 
       return { user }
     } catch (err) {
       console.log(err)
       switch (err.constraint) {
-        case 'UQ_78a916df40e02a9deb1c4b75edb': {
-          return {
-            errors: [{
-              field: 'username',
-              message: 'User with this username already exists'
-            }]
-          }
-        }
         case 'UQ_e12875dfb3b1d92d7d7c5377e22': {
           return {
             errors: [{
@@ -122,7 +71,7 @@ export class UserResolver {
         default: {
           return {
             errors: [{
-              field: 'username',
+              field: 'email',
               message: 'Something went wrong'
             }]
           }
@@ -133,7 +82,7 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async login (
-    @Arg('options') options: LoginInput // @Ctx() { req }: MyContext
+      @Arg('options') options: LoginInput, @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     const user = await User.findOne({ where: { email: options.email } })
 
@@ -141,22 +90,27 @@ export class UserResolver {
       return {
         errors: [{
           field: 'email',
-          message: 'Email not found'
+          message: 'User with this email did not found'
         }]
       }
     }
-    const valid = await argon2.verify(user.encryptedPassword, options.password)
 
-    if (!valid) {
+    const passwordVerified = argon2.verify(user.encryptedPassword, options.password)
+
+    if (!passwordVerified) {
       return {
         errors: [{
           field: 'password',
-          message: 'Incorrect password'
+          message: 'Password did not match'
         }]
       }
     }
 
-    // req.session.userId = user.id
+    // Implement jwt
+    const { refreshToken, accessToken } = createAuthTokens(user)
+
+    res.cookie('refresh_token', refreshToken, cookieOptions)
+    res.cookie('access_token', accessToken, cookieOptions)
 
     return { user }
   }
@@ -180,17 +134,11 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  logout (@Ctx() { req, res }: MyContext): Promise<Boolean> {
-    return new Promise((resolve) =>
-      req.session.destroy(err => {
-        if (err) {
-          resolve(false)
-          return
-        }
-
-        res.clearCookie(COOKIE_NAME)
-        resolve(true)
-      })
-    )
+  logout (@Ctx() { res }: MyContext): Promise<Boolean> {
+    return new Promise((resolve) => {
+      res.cookie('refresh_token', '', cookieOptions)
+      res.cookie('access_token', '', cookieOptions)
+      resolve(true)
+    })
   }
 }
