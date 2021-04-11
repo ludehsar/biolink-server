@@ -14,7 +14,8 @@
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typeorm": "./node_modules/.bin/typeorm "
+    "typeorm": "./node_modules/.bin/typeorm ",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,8 @@
   },
   "homepage": "https://github.com/ludehsar/biolink-server#readme",
   "devDependencies": {
+    "@graphql-codegen/typescript": "1.21.1",
+    "@graphql-codegen/typescript-resolvers": "1.19.0",
     "@types/connect-redis": "^0.0.16",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
@@ -67,7 +70,6 @@
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.1",
     "graphql": "^15.5.0",
-    "graphql-add-middleware": "^0.3.7",
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.5.0",
     "pg": "^8.5.1",

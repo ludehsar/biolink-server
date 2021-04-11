@@ -16,7 +16,6 @@ import { UserResolver } from './resolvers/user.resolver'
 import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
-import checkAuth from './middlewares/checkAuth'
 
 const main = async () => {
   // Configuring typeorm
@@ -31,9 +30,6 @@ const main = async () => {
 
   // Cookie parser
   app.use(cookieParser())
-
-  // Cookie middleware
-  app.use(checkAuth)
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))

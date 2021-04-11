@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import * as argon2 from 'argon2'
 
 import { User } from '../models/entities/User'
@@ -6,10 +6,12 @@ import { UserResponse, LoginInput } from './types/user'
 import { MyContext } from '../MyContext'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { createAuthTokens } from '../utils/createAuthTokens'
+import checkAuth from '../middlewares/checkAuth'
 
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
+  @UseMiddleware(checkAuth)
   async me (@Ctx() { req }: MyContext) {
     if (!(req as any).userId) {
       return null
@@ -115,25 +117,26 @@ export class UserResolver {
     return { user }
   }
 
-  @Mutation(() => Boolean)
-  async verifyEmail (): Promise<Boolean> {
-    // TODO: implement email verification
-    return true
-  }
+  // @Mutation(() => Boolean)
+  // async verifyEmail (): Promise<Boolean> {
+  //   // TODO: implement email verification
+  //   return true
+  // }
+
+  // @Mutation(() => Boolean)
+  // async forgotPassword (): Promise<Boolean> {
+  //   // TODO: implement forgot password
+  //   return true
+  // }
+
+  // @Mutation(() => Boolean)
+  // async changePassword (): Promise<Boolean> {
+  //   // TODO: implement change password
+  //   return true
+  // }
 
   @Mutation(() => Boolean)
-  async forgotPassword (): Promise<Boolean> {
-    // TODO: implement forgot password
-    return true
-  }
-
-  @Mutation(() => Boolean)
-  async changePassword (): Promise<Boolean> {
-    // TODO: implement change password
-    return true
-  }
-
-  @Mutation(() => Boolean)
+  @UseMiddleware(checkAuth)
   logout (@Ctx() { res }: MyContext): Promise<Boolean> {
     return new Promise((resolve) => {
       res.cookie('refresh_token', '', refreshTokenCookieOptions)

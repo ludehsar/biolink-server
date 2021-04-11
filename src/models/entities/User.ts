@@ -7,6 +7,7 @@ import { UserRole } from '../enums/UserRole'
 import { Plan } from './Plan'
 import { Project } from './Project'
 import { Link } from './Link'
+import { Category } from './Category'
 
 @ObjectType()
 @Entity()
@@ -94,4 +95,9 @@ export class User extends BaseEntity {
   @ManyToOne(() => Plan, plan => plan.users)
   @JoinColumn()
   plan!: Plan;
+
+  @Field(() => Category, { nullable: true })
+  @ManyToOne(() => Category, category => category.users)
+  @JoinColumn()
+  category!: Category;
 }
