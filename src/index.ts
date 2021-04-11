@@ -18,6 +18,8 @@ import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
 import { User } from './models/entities/User'
+import cookieOptions from './config/cookie.config'
+import { createAuthTokens } from './utils/createAuthTokens'
 
 const main = async () => {
   // Configuring typeorm
@@ -37,7 +39,7 @@ const main = async () => {
   app.use(cookieParser())
 
   // Cookie middleware
-  app.use(async (req: any, _, next) => {
+  app.use(async (req: any, res, next) => {
     const refreshToken = req.cookies.refresh_token
     const accessToken = req.cookies.access_token
     if (!refreshToken && !accessToken) {
@@ -70,6 +72,11 @@ const main = async () => {
 
       await User.save(user)
       req.userId = data.userId
+
+      const { refreshToken: newRefreshToken, accessToken: newAccessToken } = createAuthTokens(user)
+
+      res.cookie('refresh_token', newRefreshToken, cookieOptions)
+      res.cookie('access_token', newAccessToken, cookieOptions)
     } catch {}
 
     next()

@@ -14,8 +14,8 @@ module.exports = {
   subscribers: ['build/subscribers/**/*.js'],
   cli: {
     entitiesDir: 'build/models/entities',
-    migrationsDir: 'build/migrations',
-    subscribersDir: 'build/subscribers'
+    migrationsDir: 'src/migrations',
+    subscribersDir: 'src/subscribers'
   },
   ssl: true,
   extra: {

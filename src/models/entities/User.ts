@@ -77,10 +77,6 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Field(() => String, { nullable: true })
-  @Column({ type: 'date', nullable: true })
-  deletedAt!: Date;
-
   // Relationships
   @Field(() => Project, { nullable: true })
   @OneToMany(() => Project, project => project.user)
