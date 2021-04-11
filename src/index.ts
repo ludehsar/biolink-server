@@ -8,18 +8,15 @@ import { createConnection } from 'typeorm'
 import { Database, Resource } from '@admin-bro/typeorm'
 import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
-import { verify } from 'jsonwebtoken'
 
-import { accessTokenSecret, port, refreshTokenSecret } from './config/app.config'
+import { port } from './config/app.config'
 import corsOptions from './config/cors.config'
 import { HelloResolver } from './resolvers/hello'
 import { UserResolver } from './resolvers/user.resolver'
 import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
-import { User } from './models/entities/User'
-import cookieOptions from './config/cookie.config'
-import { createAuthTokens } from './utils/createAuthTokens'
+import checkAuth from './middlewares/checkAuth'
 
 const main = async () => {
   // Configuring typeorm
@@ -32,55 +29,11 @@ const main = async () => {
   // cors
   app.use(cors(corsOptions))
 
-  // session
-  // app.use(session(sessionOptions))
-
   // Cookie parser
   app.use(cookieParser())
 
   // Cookie middleware
-  app.use(async (req: any, res, next) => {
-    const refreshToken = req.cookies.refresh_token
-    const accessToken = req.cookies.access_token
-    if (!refreshToken && !accessToken) {
-      return next()
-    }
-
-    try {
-      const data = verify(accessToken, accessTokenSecret) as any
-
-      // For token validation
-      const user = await User.findOne(data.userId)
-
-      if (user) req.userId = user.id
-      return next()
-    } catch {}
-
-    if (!refreshToken) {
-      return next()
-    }
-
-    try {
-      const data = verify(refreshToken, refreshTokenSecret) as any
-      const user = await User.findOne(data.userId)
-
-      if (!user || user.totalLogin !== data.count) {
-        return next()
-      }
-
-      user.totalLogin++
-
-      await User.save(user)
-      req.userId = data.userId
-
-      const { refreshToken: newRefreshToken, accessToken: newAccessToken } = createAuthTokens(user)
-
-      res.cookie('refresh_token', newRefreshToken, cookieOptions)
-      res.cookie('access_token', newAccessToken, cookieOptions)
-    } catch {}
-
-    next()
-  })
+  app.use(checkAuth)
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))

@@ -4,7 +4,7 @@ import * as argon2 from 'argon2'
 import { User } from '../models/entities/User'
 import { UserResponse, LoginInput } from './types/user'
 import { MyContext } from '../MyContext'
-import cookieOptions from '../config/cookie.config'
+import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { createAuthTokens } from '../utils/createAuthTokens'
 
 @Resolver()
@@ -53,8 +53,8 @@ export class UserResolver {
       // Implement jwt
       const { refreshToken, accessToken } = createAuthTokens(user)
 
-      res.cookie('refresh_token', refreshToken, cookieOptions)
-      res.cookie('access_token', accessToken, cookieOptions)
+      res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+      res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
       return { user }
     } catch (err) {
@@ -109,8 +109,8 @@ export class UserResolver {
     // Implement jwt
     const { refreshToken, accessToken } = createAuthTokens(user)
 
-    res.cookie('refresh_token', refreshToken, cookieOptions)
-    res.cookie('access_token', accessToken, cookieOptions)
+    res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+    res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
     return { user }
   }
@@ -136,8 +136,8 @@ export class UserResolver {
   @Mutation(() => Boolean)
   logout (@Ctx() { res }: MyContext): Promise<Boolean> {
     return new Promise((resolve) => {
-      res.cookie('refresh_token', '', cookieOptions)
-      res.cookie('access_token', '', cookieOptions)
+      res.cookie('refresh_token', '', refreshTokenCookieOptions)
+      res.cookie('access_token', '', accessTokenCookieOptions)
       resolve(true)
     })
   }
