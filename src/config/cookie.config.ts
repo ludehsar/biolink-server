@@ -6,7 +6,7 @@ export const accessTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + 1000 * 60 * 4),
   httpOnly: true,
   sameSite: COOKIE_SAMESITE,
-  secure: COOKIE_SECURE
+  secure: COOKIE_SECURE,
 }
 
 export const refreshTokenCookieOptions: CookieOptions = {
@@ -14,5 +14,5 @@ export const refreshTokenCookieOptions: CookieOptions = {
   expires: new Date(Date.now() + 1000 * 60 * 4),
   httpOnly: true,
   sameSite: COOKIE_SAMESITE,
-  secure: COOKIE_SECURE
+  secure: COOKIE_SECURE,
 }

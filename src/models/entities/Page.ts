@@ -1,5 +1,12 @@
 import { Field, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { PageType } from '../enums/PageType'
 
@@ -8,37 +15,37 @@ import { PageType } from '../enums/PageType'
 export class Page extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: PageType, default: PageType.Internal })
-  type!: PageType;
+  type!: PageType
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  externalUrl!: String;
+  externalUrl!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  title!: String;
+  title!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true, nullable: true })
-  slug!: String;
+  slug!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  content!: String;
+  content!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  shortDescription!: String;
+  shortDescription!: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 }

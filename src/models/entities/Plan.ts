@@ -1,5 +1,14 @@
 import { Field, Float, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { EnabledStatus } from '../enums/EnabledStatus'
 import { PlanSettings } from '../jsonTypes/PlanSettings'
@@ -12,66 +21,66 @@ import { User } from './User'
 export class Plan extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  name!: string;
+  name!: string
 
   @Field(() => Boolean, { nullable: true })
   @Column({ default: false })
-  monthlyPriceEnabled!: boolean;
+  monthlyPriceEnabled!: boolean
 
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
-  monthlyPrice!: number;
+  monthlyPrice!: number
 
   @Field(() => Boolean, { nullable: true })
   @Column({ default: false })
-  annualPriceEnabled!: boolean;
+  annualPriceEnabled!: boolean
 
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
-  annualPrice!: number;
+  annualPrice!: number
 
   @Field(() => Boolean, { nullable: true })
   @Column({ default: false })
-  lifetimePriceEnabled!: boolean;
+  lifetimePriceEnabled!: boolean
 
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
-  lifetimePrice!: number;
+  lifetimePrice!: number
 
   @Field(() => PlanSettings, { nullable: true })
   @Column({ type: 'json', nullable: true })
-  settings!: PlanSettings;
+  settings!: PlanSettings
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: EnabledStatus, default: EnabledStatus.Disabled })
-  enabledStatus!: EnabledStatus;
+  enabledStatus!: EnabledStatus
 
   @Field(() => Boolean, { nullable: true })
   @Column({ default: 0.0 })
-  visibilityStatus!: boolean;
+  visibilityStatus!: boolean
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @OneToMany(() => User, user => user.plan)
-  users!: User[];
+  @OneToMany(() => User, (user) => user.plan)
+  users!: User[]
 
   @Field(() => Tax, { nullable: true })
-  @ManyToMany(() => Tax, tax => tax.plans)
-  taxes!: Tax[];
+  @ManyToMany(() => Tax, (tax) => tax.plans)
+  taxes!: Tax[]
 
   @Field(() => Code, { nullable: true })
-  @OneToMany(() => Code, code => code.plan)
-  codes!: Code[];
+  @OneToMany(() => Code, (code) => code.plan)
+  codes!: Code[]
 }

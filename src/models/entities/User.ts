@@ -1,5 +1,15 @@
 import { Field, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Billing } from '../jsonTypes/Billing'
 import { Domain } from './Domain'
@@ -17,130 +27,130 @@ import { UserLogs } from './UserLogs'
 export class User extends BaseEntity {
   @Field(() => String)
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  email!: string;
+  email!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  username!: string;
+  username!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  emailVerifiedAt!: Date;
+  emailVerifiedAt!: Date
 
   @Column({ nullable: true, unique: true })
-  emailActivationCode!: string;
+  emailActivationCode!: string
 
   @Field(() => String, { nullable: true })
   @Column()
-  encryptedPassword!: string;
+  encryptedPassword!: string
 
   @Column({ nullable: true, unique: true })
-  forgotPasswordCode!: string;
+  forgotPasswordCode!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  name!: string;
+  name!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: UserRole, default: UserRole.User })
-  userRole!: UserRole;
+  userRole!: UserRole
 
   @Field(() => Billing, { nullable: true })
   @Column({ type: 'json', nullable: true })
-  billing!: Billing;
+  billing!: Billing
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  tokenCode!: string;
+  tokenCode!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  authenticatorSecret!: string;
+  authenticatorSecret!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  facebookId!: string;
+  facebookId!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Inactive })
-  activeStatus!: UserRole;
+  activeStatus!: UserRole
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  planExpirationDate!: Date;
+  planExpirationDate!: Date
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })
-  planTrialDone!: boolean;
+  planTrialDone!: boolean
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  paymentSubscriptionId!: string;
+  paymentSubscriptionId!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  language!: string;
+  language!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  timezone!: string;
+  timezone!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  lastIPAddress!: string;
+  lastIPAddress!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  lastUserAgent!: string;
+  lastUserAgent!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  country!: string;
+  country!: string
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })
-  totalLogin!: number;
+  totalLogin!: number
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   // Relationships
   @Field(() => Project, { nullable: true })
-  @OneToMany(() => Project, project => project.user)
-  projects!: Project[];
+  @OneToMany(() => Project, (project) => project.user)
+  projects!: Project[]
 
   @Field(() => Domain, { nullable: true })
-  @OneToMany(() => Domain, domain => domain.user)
-  domains!: Domain[];
+  @OneToMany(() => Domain, (domain) => domain.user)
+  domains!: Domain[]
 
   @Field(() => UserLogs, { nullable: true })
-  @OneToMany(() => UserLogs, log => log.user)
-  logs!: UserLogs[];
+  @OneToMany(() => UserLogs, (log) => log.user)
+  logs!: UserLogs[]
 
   @Field(() => Link, { nullable: true })
-  @OneToMany(() => Link, link => link.user)
-  links!: Link[];
+  @OneToMany(() => Link, (link) => link.user)
+  links!: Link[]
 
   @Field(() => TrackLink, { nullable: true })
-  @OneToMany(() => TrackLink, trackLink => trackLink.user)
-  trackLinks!: TrackLink[];
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.user)
+  trackLinks!: TrackLink[]
 
   @Field(() => Plan, { nullable: true })
-  @ManyToOne(() => Plan, plan => plan.users)
+  @ManyToOne(() => Plan, (plan) => plan.users)
   @JoinColumn()
-  plan!: Plan;
+  plan!: Plan
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, category => category.users)
+  @ManyToOne(() => Category, (category) => category.users)
   @JoinColumn()
-  category!: Category;
+  category!: Category
 }

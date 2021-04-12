@@ -6,33 +6,42 @@ import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { LoginInput, RegisterInput, UserResponse } from '../resolvers/types/user'
 
-export const registerUser = async (options: RegisterInput, res: Response): Promise<UserResponse> => {
+export const registerUser = async (
+  options: RegisterInput,
+  res: Response
+): Promise<UserResponse> => {
   const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
   if (!emailRegexExp.test(options.email)) {
     return {
-      errors: [{
-        field: 'email',
-        message: 'Email is not valid'
-      }]
+      errors: [
+        {
+          field: 'email',
+          message: 'Email is not valid',
+        },
+      ],
     }
   }
 
   if (options.username.length < 3) {
     return {
-      errors: [{
-        field: 'username',
-        message: 'Username must be at least 3 characters'
-      }]
+      errors: [
+        {
+          field: 'username',
+          message: 'Username must be at least 3 characters',
+        },
+      ],
     }
   }
 
   if (options.password.length < 8) {
     return {
-      errors: [{
-        field: 'password',
-        message: 'Password must be at least 8 characters'
-      }]
+      errors: [
+        {
+          field: 'password',
+          message: 'Password must be at least 8 characters',
+        },
+      ],
     }
   }
 
@@ -42,7 +51,7 @@ export const registerUser = async (options: RegisterInput, res: Response): Promi
     const user = await User.create({
       email: options.email,
       username: options.username,
-      encryptedPassword: hashedPassword
+      encryptedPassword: hashedPassword,
     }).save()
 
     // Implement jwt
@@ -57,18 +66,22 @@ export const registerUser = async (options: RegisterInput, res: Response): Promi
     switch (err.constraint) {
       case 'UQ_e12875dfb3b1d92d7d7c5377e22': {
         return {
-          errors: [{
-            field: 'email',
-            message: 'User with this email already exists'
-          }]
+          errors: [
+            {
+              field: 'email',
+              message: 'User with this email already exists',
+            },
+          ],
         }
       }
       default: {
         return {
-          errors: [{
-            field: 'username',
-            message: 'Something went wrong'
-          }]
+          errors: [
+            {
+              field: 'username',
+              message: 'Something went wrong',
+            },
+          ],
         }
       }
     }
@@ -87,10 +100,12 @@ export const loginUser = async (options: LoginInput, res: Response): Promise<Use
 
   if (!user) {
     return {
-      errors: [{
-        field: 'emailOrUsername',
-        message: 'User with this email or username does not exist'
-      }]
+      errors: [
+        {
+          field: 'emailOrUsername',
+          message: 'User with this email or username does not exist',
+        },
+      ],
     }
   }
 
@@ -98,10 +113,12 @@ export const loginUser = async (options: LoginInput, res: Response): Promise<Use
 
   if (!passwordVerified) {
     return {
-      errors: [{
-        field: 'password',
-        message: 'Password did not match'
-      }]
+      errors: [
+        {
+          field: 'password',
+          message: 'Password did not match',
+        },
+      ],
     }
   }
 
@@ -114,7 +131,7 @@ export const loginUser = async (options: LoginInput, res: Response): Promise<Use
   return { user }
 }
 
-export const logoutUser = async (res: Response): Promise<Boolean> => {
+export const logoutUser = async (res: Response): Promise<boolean> => {
   return new Promise((resolve) => {
     res.cookie('refresh_token', '', refreshTokenCookieOptions)
     res.cookie('access_token', '', accessTokenCookieOptions)

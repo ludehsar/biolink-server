@@ -5,31 +5,31 @@ import { User } from '../../models/entities/User'
 @InputType()
 export class LoginInput {
   @Field()
-  emailOrUsername: string = ''
+  emailOrUsername!: string
 
   @Field()
-  password: string = ''
+  password!: string
 }
 
 @InputType()
 export class RegisterInput {
   @Field()
-  email: string = ''
+  email!: string
 
   @Field()
-  username: string = ''
+  username!: string
 
   @Field()
-  password: string = ''
+  password!: string
 }
 
 @ObjectType()
 export class FieldError {
   @Field()
-  field: string = ''
+  field!: string
 
   @Field()
-  message: string = ''
+  message!: string
 }
 
 @ObjectType()

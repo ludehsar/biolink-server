@@ -1,5 +1,12 @@
 import { Field, Float, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { PremiumUsernameType } from '../enums/PremiumUsernameType'
 
@@ -8,29 +15,29 @@ import { PremiumUsernameType } from '../enums/PremiumUsernameType'
 export class PremiumUsername extends BaseEntity {
   @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  username!: string;
+  username!: string
 
   @Field(() => Float, { nullable: true })
   @Column()
-  price!: number;
+  price!: number
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: PremiumUsernameType, default: PremiumUsernameType.Premium })
-  usernameType!: PremiumUsernameType;
+  usernameType!: PremiumUsernameType
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  deletedAt!: Date;
+  deletedAt!: Date
 }

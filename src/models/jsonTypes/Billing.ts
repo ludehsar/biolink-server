@@ -5,23 +5,23 @@ import { BillingType } from '../enums/BillingType'
 @ObjectType()
 export class Billing {
   @Field(() => String, { nullable: true })
-  type!: BillingType;
+  type!: BillingType
 
   @Field(() => String, { nullable: true })
-  name!: string;
+  name!: string
 
   @Field(() => String, { nullable: true })
-  address!: string;
+  address!: string
 
   @Field(() => String, { nullable: true })
-  city!: string;
+  city!: string
 
   @Field(() => String, { nullable: true })
-  country!: string;
+  country!: string
 
   @Field(() => String, { nullable: true })
-  zip!: string;
+  zip!: string
 
   @Field(() => String, { nullable: true })
-  phone!: string;
+  phone!: string
 }

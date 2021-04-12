@@ -1,5 +1,15 @@
 import { Field, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Link } from './Link'
 import { TrackLink } from './TrackLink'
@@ -10,31 +20,31 @@ import { User } from './User'
 export class Project extends BaseEntity {
   @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column()
-  projectName!: String;
+  projectName!: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, user => user.projects)
+  @ManyToOne(() => User, (user) => user.projects)
   @JoinColumn()
-  user!: User;
+  user!: User
 
   @Field(() => Link, { nullable: true })
-  @OneToMany(() => Link, link => link.project)
-  links!: Link[];
+  @OneToMany(() => Link, (link) => link.project)
+  links!: Link[]
 
   @Field(() => TrackLink, { nullable: true })
-  @OneToMany(() => TrackLink, trackLink => trackLink.user)
-  trackLinks!: TrackLink[];
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.user)
+  trackLinks!: TrackLink[]
 }

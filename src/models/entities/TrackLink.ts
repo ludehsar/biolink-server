@@ -1,5 +1,13 @@
 import { Field, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 import { User } from './User'
 import { Link } from './Link'
@@ -10,73 +18,73 @@ import { Project } from './Project'
 export class TrackLink extends BaseEntity {
   @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  countryCode!: String;
+  countryCode!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  cityName!: String;
+  cityName!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  osName!: String;
+  osName!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  browserName!: String;
+  browserName!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  referrerHost!: String;
+  referrerHost!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  referrerPath!: String;
+  referrerPath!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  deviceType!: String;
+  deviceType!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  browserLanguage!: String;
+  browserLanguage!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  utmSource!: String;
+  utmSource!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  utmMedium!: String;
+  utmMedium!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  utmCampaign!: String;
+  utmCampaign!: string
 
   @Field(() => Boolean, { nullable: true })
   @Column({ nullable: true })
-  isUnique!: boolean;
+  isUnique!: boolean
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, user => user.trackLinks)
+  @ManyToOne(() => User, (user) => user.trackLinks)
   @JoinColumn()
-  user!: User;
+  user!: User
 
   @Field(() => Link, { nullable: true })
-  @ManyToOne(() => Link, link => link.trackLinks)
+  @ManyToOne(() => Link, (link) => link.trackLinks)
   @JoinColumn()
-  link!: Link;
+  link!: Link
 
   @Field(() => Project, { nullable: true })
-  @ManyToOne(() => Project, project => project.trackLinks)
+  @ManyToOne(() => Project, (project) => project.trackLinks)
   @JoinColumn()
-  project!: Project;
+  project!: Project
 }

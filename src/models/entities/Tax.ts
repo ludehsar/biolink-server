@@ -1,5 +1,14 @@
 import { Field, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { TaxValueType } from '../enums/TaxValueType'
 import { Plan } from './Plan'
@@ -11,51 +20,51 @@ import { TaxType } from '../enums/TaxType'
 export class Tax extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number
 
   @Field(() => String, { nullable: true })
   @Column()
-  internalName!: string;
+  internalName!: string
 
   @Field(() => String, { nullable: true })
   @Column()
-  name!: string;
+  name!: string
 
   @Field(() => String, { nullable: true })
   @Column()
-  description!: string;
+  description!: string
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 20 })
-  value!: number;
+  value!: number
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: TaxValueType, default: TaxValueType.Discount })
-  valueType!: TaxValueType;
+  valueType!: TaxValueType
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: TaxType, default: TaxType.Inclusive })
-  type!: TaxType;
+  type!: TaxType
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: TaxBillingForType, default: TaxBillingForType.Both })
-  billingFor!: TaxBillingForType;
+  billingFor!: TaxBillingForType
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  countries!: string;
+  countries!: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   // Relationships
   @Field(() => Plan, { nullable: true })
-  @ManyToMany(() => Plan, plan => plan.taxes)
+  @ManyToMany(() => Plan, (plan) => plan.taxes)
   @JoinTable()
-  plans!: Plan[];
+  plans!: Plan[]
 }

@@ -9,13 +9,15 @@ import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { MyContext } from '../MyContext'
 
-const invalidateToken = (res: Response) => {
+const invalidateToken = (res: Response): void => {
   res.cookie('refresh_token', '', refreshTokenCookieOptions)
   res.cookie('access_token', '', accessTokenCookieOptions)
 }
 
-const generateNewToken = async (user: User, res: Response) => {
-  const { refreshToken: newRefreshToken, accessToken: newAccessToken } = await createAuthTokens(user)
+const generateNewToken = async (user: User, res: Response): Promise<void> => {
+  const { refreshToken: newRefreshToken, accessToken: newAccessToken } = await createAuthTokens(
+    user
+  )
 
   res.cookie('refresh_token', newRefreshToken, refreshTokenCookieOptions)
   res.cookie('access_token', newAccessToken, accessTokenCookieOptions)
@@ -45,7 +47,9 @@ const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => 
     } else {
       return next()
     }
-  } catch {}
+  } catch {
+    console.log('Rejected by access token')
+  }
 
   if (!refreshToken) {
     invalidateToken(context.res)
@@ -70,7 +74,9 @@ const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => 
     }
 
     generateNewToken(user, context.res)
-  } catch {}
+  } catch {
+    throw new Error('User not authenticated')
+  }
 
   next()
 }

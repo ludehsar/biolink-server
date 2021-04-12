@@ -17,7 +17,7 @@ import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
 
-const main = async () => {
+const main = async (): Promise<void> => {
   // Configuring typeorm
   const connection = await createConnection()
   await connection.runMigrations()
@@ -38,14 +38,14 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HelloResolver, UserResolver],
-      validate: false
+      validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ req, res })
+    context: ({ req, res }): MyContext => ({ req, res }),
   })
 
   apolloServer.applyMiddleware({
     app,
-    cors: false
+    cors: false,
   })
 
   // Adminbro

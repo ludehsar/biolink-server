@@ -12,18 +12,18 @@ const options: SessionOptions = {
   name: COOKIE_NAME,
   store: new RedisStore({
     client: redisClient,
-    disableTouch: true
+    disableTouch: true,
   }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
     httpOnly: true, // prevent xss attack
-    sameSite: COOKIE_SAMESITE, // csrf
-    secure: COOKIE_SECURE // only works in https
+    sameSite: COOKIE_SAMESITE, // lax: to prevent csrf
+    secure: COOKIE_SECURE, // true: only works in https
   },
   saveUninitialized: false,
   secret: appKey,
   resave: false,
-  proxy: true
+  proxy: true,
 }
 
 export default options

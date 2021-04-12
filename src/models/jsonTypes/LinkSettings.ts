@@ -3,59 +3,59 @@ import { ObjectType, Field, Int } from 'type-graphql'
 @ObjectType()
 export class LinkSettings {
   @Field(() => Int, { nullable: true })
-  totalProjectsLimit!: number;
+  totalProjectsLimit!: number
 
   @Field(() => Int, { nullable: true })
-  totalBiolinksLimit!: number;
+  totalBiolinksLimit!: number
 
   @Field(() => Int, { nullable: true })
-  totalLinksLimit!: number;
+  totalLinksLimit!: number
 
   @Field(() => Int, { nullable: true })
-  totalCustomDomainLimit!: number;
+  totalCustomDomainLimit!: number
 
   @Field(() => Boolean, { nullable: true })
-  customBackHalfEnabled!: boolean;
+  customBackHalfEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  noAdsEnabled!: boolean;
+  noAdsEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  removableBrandingEnabled!: boolean;
+  removableBrandingEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  customFooterBrandingEnabled!: boolean;
+  customFooterBrandingEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  coloredLinksEnabled!: boolean;
+  coloredLinksEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  googleAnalyticsEnabled!: boolean;
+  googleAnalyticsEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  facebookPixelEnabled!: boolean;
+  facebookPixelEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  customBackgroundEnabled!: boolean;
+  customBackgroundEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  linksSchedulingEnabled!: boolean;
+  linksSchedulingEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  seoEnabled!: boolean;
+  seoEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  socialEnabled!: boolean;
+  socialEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  utmParametersEnabled!: boolean;
+  utmParametersEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  passwordProtectionEnabled!: boolean;
+  passwordProtectionEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  sensitiveContentWarningEnabled!: boolean;
+  sensitiveContentWarningEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  leapLinkEnabled!: boolean;
+  leapLinkEnabled!: boolean
 }

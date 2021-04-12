@@ -10,7 +10,7 @@ import { loginUser, logoutUser, registerUser } from '../services/user.service'
 export class UserResolver {
   @Query(() => User, { nullable: true })
   @UseMiddleware(checkAuth)
-  async me (@Ctx() { req }: MyContext) {
+  async me(@Ctx() { req }: MyContext): Promise<User | undefined | null> {
     if (!(req as any).userId) {
       return null
     }
@@ -19,15 +19,17 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async register (
-      @Arg('options') options: RegisterInput, @Ctx() { res }: MyContext
+  async register(
+    @Arg('options') options: RegisterInput,
+    @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     return await registerUser(options, res)
   }
 
   @Mutation(() => UserResponse)
-  async login (
-      @Arg('options') options: LoginInput, @Ctx() { res }: MyContext
+  async login(
+    @Arg('options') options: LoginInput,
+    @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     return await loginUser(options, res)
   }
@@ -52,7 +54,7 @@ export class UserResolver {
 
   @Mutation(() => Boolean)
   @UseMiddleware(checkAuth)
-  async logout (@Ctx() { res }: MyContext): Promise<Boolean> {
+  async logout(@Ctx() { res }: MyContext): Promise<boolean> {
     return await logoutUser(res)
   }
 }

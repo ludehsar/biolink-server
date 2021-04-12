@@ -2,12 +2,13 @@ import AdminBroExpress from '@admin-bro/express'
 import AdminBro from 'admin-bro'
 import * as argon2 from 'argon2'
 import { SessionOptions } from 'express-session'
+import { Router } from 'express'
 
 import { appKey } from '../config/app.config'
 import { UserRole } from '../models/enums/UserRole'
 import { User } from '../models/entities/User'
 
-const buildAdminRouter = (admin: AdminBro) => {
+const buildAdminRouter = (admin: AdminBro): Router => {
   const router = AdminBroExpress.buildAuthenticatedRouter(
     admin,
     {

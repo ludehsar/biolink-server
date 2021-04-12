@@ -1,5 +1,13 @@
 import { Field, Int, ObjectType } from 'type-graphql'
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { User } from './User'
 
@@ -8,22 +16,22 @@ import { User } from './User'
 export class Category extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
-  categoryName!: string;
+  categoryName!: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt!: Date
 
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt!: Date
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @OneToMany(() => User, user => user.category)
-  users!: User[];
+  @OneToMany(() => User, (user) => user.category)
+  users!: User[]
 }
