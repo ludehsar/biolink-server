@@ -4,7 +4,7 @@ import { User } from '../models/entities/User'
 import { UserResponse, LoginInput, RegisterInput } from './types/user'
 import { MyContext } from '../MyContext'
 import checkAuth from '../middlewares/checkAuth'
-import { loginUser, logoutUser, registerUser } from 'services/user.service'
+import { loginUser, logoutUser, registerUser } from '../services/user.service'
 
 @Resolver()
 export class UserResolver {
