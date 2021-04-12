@@ -1,6 +1,7 @@
 import { Response } from 'express'
 import { MiddlewareFn, NextFn } from 'type-graphql'
 import { verify } from 'jsonwebtoken'
+import * as argon2 from 'argon2'
 
 import { accessTokenSecret, refreshTokenSecret } from '../config/app.config'
 import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../config/cookie.config'
@@ -13,8 +14,8 @@ const invalidateToken = (res: Response) => {
   res.cookie('access_token', '', accessTokenCookieOptions)
 }
 
-const generateNewToken = (user: User, res: Response) => {
-  const { refreshToken: newRefreshToken, accessToken: newAccessToken } = createAuthTokens(user)
+const generateNewToken = async (user: User, res: Response) => {
+  const { refreshToken: newRefreshToken, accessToken: newAccessToken } = await createAuthTokens(user)
 
   res.cookie('refresh_token', newRefreshToken, refreshTokenCookieOptions)
   res.cookie('access_token', newAccessToken, accessTokenCookieOptions)
@@ -61,7 +62,12 @@ const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => 
       throw new Error('User not authenticated.')
     }
 
-    await User.save(user)
+    const tokenVerified = await argon2.verify(user.tokenCode, data.token)
+
+    if (!tokenVerified) {
+      invalidateToken(context.res)
+      throw new Error('User not authenticated.')
+    }
 
     generateNewToken(user, context.res)
   } catch {}

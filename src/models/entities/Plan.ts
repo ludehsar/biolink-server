@@ -50,6 +50,10 @@ export class Plan extends BaseEntity {
   @Column({ type: 'enum', enum: EnabledStatus, default: EnabledStatus.Disabled })
   enabledStatus!: EnabledStatus;
 
+  @Field(() => Boolean, { nullable: true })
+  @Column({ default: 0.0 })
+  visibilityStatus!: boolean;
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date;

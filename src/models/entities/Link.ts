@@ -6,6 +6,7 @@ import { EnabledStatus } from '../enums/EnabledStatus'
 import { Project } from './Project'
 import { User } from './User'
 import { LinkType } from '../enums/LinkType'
+import { TrackLink } from './TrackLink'
 
 @ObjectType()
 @Entity()
@@ -73,4 +74,8 @@ export class Link extends BaseEntity {
   @ManyToOne(() => Link, biolink => biolink.links)
   @JoinColumn()
   biolink!: Link;
+
+  @Field(() => TrackLink, { nullable: true })
+  @OneToMany(() => TrackLink, trackLink => trackLink.user)
+  trackLinks!: TrackLink[];
 }

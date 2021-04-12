@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql
 import * as argon2 from 'argon2'
 
 import { User } from '../models/entities/User'
-import { UserResponse, LoginInput } from './types/user'
+import { UserResponse, LoginInput, RegisterInput } from './types/user'
 import { MyContext } from '../MyContext'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { createAuthTokens } from '../utils/createAuthTokens'
@@ -22,7 +22,7 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async register (
-      @Arg('options') options: LoginInput, @Ctx() { res }: MyContext
+      @Arg('options') options: RegisterInput, @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
@@ -31,6 +31,15 @@ export class UserResolver {
         errors: [{
           field: 'email',
           message: 'Email is not valid'
+        }]
+      }
+    }
+
+    if (options.username.length < 3) {
+      return {
+        errors: [{
+          field: 'username',
+          message: 'Username must be at least 3 characters'
         }]
       }
     }
@@ -49,11 +58,12 @@ export class UserResolver {
     try {
       const user = await User.create({
         email: options.email,
+        username: options.username,
         encryptedPassword: hashedPassword
       }).save()
 
       // Implement jwt
-      const { refreshToken, accessToken } = createAuthTokens(user)
+      const { refreshToken, accessToken } = await createAuthTokens(user)
 
       res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
       res.cookie('access_token', accessToken, accessTokenCookieOptions)
@@ -73,7 +83,7 @@ export class UserResolver {
         default: {
           return {
             errors: [{
-              field: 'email',
+              field: 'username',
               message: 'Something went wrong'
             }]
           }
@@ -86,18 +96,25 @@ export class UserResolver {
   async login (
       @Arg('options') options: LoginInput, @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne({ where: { email: options.email } })
+    const emailRegexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+
+    let user = null
+    if (emailRegexExp.test(options.emailOrUsername)) {
+      user = await User.findOne({ where: { email: options.emailOrUsername } })
+    } else {
+      user = await User.findOne({ where: { username: options.emailOrUsername } })
+    }
 
     if (!user) {
       return {
         errors: [{
-          field: 'email',
-          message: 'User with this email did not found'
+          field: 'emailOrUsername',
+          message: 'User with this email or username does not exist'
         }]
       }
     }
 
-    const passwordVerified = argon2.verify(user.encryptedPassword, options.password)
+    const passwordVerified = await argon2.verify(user.encryptedPassword, options.password)
 
     if (!passwordVerified) {
       return {
@@ -109,7 +126,7 @@ export class UserResolver {
     }
 
     // Implement jwt
-    const { refreshToken, accessToken } = createAuthTokens(user)
+    const { refreshToken, accessToken } = await createAuthTokens(user)
 
     res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
     res.cookie('access_token', accessToken, accessTokenCookieOptions)

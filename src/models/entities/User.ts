@@ -8,6 +8,9 @@ import { Plan } from './Plan'
 import { Project } from './Project'
 import { Link } from './Link'
 import { Category } from './Category'
+import { ActiveStatus } from '../enums/ActiveStatus'
+import { TrackLink } from './TrackLink'
+import { UserLogs } from './UserLogs'
 
 @ObjectType()
 @Entity()
@@ -19,6 +22,10 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @Column({ unique: true })
   email!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ unique: true })
+  username!: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
@@ -48,7 +55,19 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  tokenCode!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  authenticatorSecret!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   facebookId!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Inactive })
+  activeStatus!: UserRole;
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
@@ -60,11 +79,27 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  paymentSubscriptionId!: String;
+  paymentSubscriptionId!: string;
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  country!: String;
+  language!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  timezone!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  lastIPAddress!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  lastUserAgent!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  country!: string;
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })
@@ -87,9 +122,17 @@ export class User extends BaseEntity {
   @OneToMany(() => Domain, domain => domain.user)
   domains!: Domain[];
 
+  @Field(() => UserLogs, { nullable: true })
+  @OneToMany(() => UserLogs, log => log.user)
+  logs!: UserLogs[];
+
   @Field(() => Link, { nullable: true })
   @OneToMany(() => Link, link => link.user)
   links!: Link[];
+
+  @Field(() => TrackLink, { nullable: true })
+  @OneToMany(() => TrackLink, trackLink => trackLink.user)
+  trackLinks!: TrackLink[];
 
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, plan => plan.users)

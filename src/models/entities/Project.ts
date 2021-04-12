@@ -2,6 +2,7 @@ import { Field, ObjectType } from 'type-graphql'
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 import { Link } from './Link'
+import { TrackLink } from './TrackLink'
 import { User } from './User'
 
 @ObjectType()
@@ -13,7 +14,7 @@ export class Project extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column()
-  name!: String;
+  projectName!: String;
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
@@ -32,4 +33,8 @@ export class Project extends BaseEntity {
   @Field(() => Link, { nullable: true })
   @OneToMany(() => Link, link => link.project)
   links!: Link[];
+
+  @Field(() => TrackLink, { nullable: true })
+  @OneToMany(() => TrackLink, trackLink => trackLink.user)
+  trackLinks!: TrackLink[];
 }
