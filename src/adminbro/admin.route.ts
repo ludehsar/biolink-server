@@ -21,12 +21,12 @@ const buildAdminRouter = (admin: AdminBro) => {
         }
         return false
       },
-      cookiePassword: appKey
+      cookiePassword: appKey,
     },
     null,
     {
-      resave: true,
-      saveUninitialized: true
+      resave: false,
+      saveUninitialized: true,
     } as SessionOptions
   )
 

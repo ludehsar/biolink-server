@@ -1,6 +1,6 @@
-import { AdminBroOptions } from 'admin-bro'
+import AdminBro, { AdminBroOptions } from 'admin-bro'
 
-import { userOptions, userResource } from './user.resource'
+import { userOptions, userResource } from './users/user.resource'
 import { Domain } from '../models/entities/Domain'
 import { Plan } from '../models/entities/Plan'
 import { Project } from '../models/entities/Project'
@@ -19,54 +19,57 @@ const options: AdminBroOptions = {
   resources: [
     {
       resource: userResource,
-      options: userOptions
+      options: userOptions,
     },
     {
-      resource: BlackList
+      resource: BlackList,
     },
     {
-      resource: Category
+      resource: Category,
     },
     {
-      resource: Code
+      resource: Code,
     },
     {
-      resource: Domain
+      resource: Domain,
     },
     {
-      resource: Link
+      resource: Link,
     },
     {
-      resource: Page
+      resource: Page,
     },
     {
-      resource: Plan
+      resource: Plan,
     },
     {
-      resource: PremiumUsername
+      resource: PremiumUsername,
     },
     {
-      resource: Project
+      resource: Project,
     },
     {
-      resource: Settings
+      resource: Settings,
     },
     {
-      resource: Tax
+      resource: Tax,
     },
     {
-      resource: TrackLink
+      resource: TrackLink,
     },
     {
-      resource: UserLogs
-    }
+      resource: UserLogs,
+    },
   ],
   rootPath: '/admin',
   branding: {
     companyName: 'Linkby',
     logo: '../../static/logo.png',
-    softwareBrothers: false
-  }
+    softwareBrothers: false,
+  },
+  dashboard: {
+    component: AdminBro.bundle('./dashboard/components/dashboard.tsx'),
+  },
 }
 
 export default options
