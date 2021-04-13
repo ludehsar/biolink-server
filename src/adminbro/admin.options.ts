@@ -10,9 +10,9 @@ import { Page } from '../models/entities/Page'
 import { Code } from '../models/entities/Code'
 import { Tax } from '../models/entities/Tax'
 import { BlackList } from '../models/entities/BlackList'
-import { Category } from '../models/entities/Category'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { TrackLink } from '../models/entities/TrackLink'
+import { categoryOptions, categoryResource } from './category.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -21,10 +21,11 @@ const options: AdminBroOptions = {
       options: userOptions,
     },
     {
-      resource: BlackList,
+      resource: categoryResource,
+      options: categoryOptions,
     },
     {
-      resource: Category,
+      resource: BlackList,
     },
     {
       resource: Code,
