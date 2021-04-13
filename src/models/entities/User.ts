@@ -76,8 +76,8 @@ export class User extends BaseEntity {
   facebookId!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Inactive })
-  activeStatus!: UserRole
+  @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Active })
+  activeStatus!: ActiveStatus
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })

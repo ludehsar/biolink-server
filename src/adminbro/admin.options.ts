@@ -13,7 +13,6 @@ import { BlackList } from '../models/entities/BlackList'
 import { Category } from '../models/entities/Category'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { TrackLink } from '../models/entities/TrackLink'
-import { UserLogs } from '../models/entities/UserLogs'
 
 const options: AdminBroOptions = {
   resources: [
@@ -57,14 +56,11 @@ const options: AdminBroOptions = {
     {
       resource: TrackLink,
     },
-    {
-      resource: UserLogs,
-    },
   ],
   rootPath: '/admin',
   branding: {
     companyName: 'Linkby',
-    logo: '../../static/logo.png',
+    logo: '/static/logo.png',
     softwareBrothers: false,
   },
   dashboard: {

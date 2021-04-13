@@ -60,7 +60,7 @@ export class Plan extends BaseEntity {
   enabledStatus!: EnabledStatus
 
   @Field(() => Boolean, { nullable: true })
-  @Column({ default: 0.0 })
+  @Column({ default: false })
   visibilityStatus!: boolean
 
   @Field(() => String, { nullable: true })

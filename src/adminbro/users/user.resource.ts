@@ -1,41 +1,66 @@
-import { ResourceOptions } from 'admin-bro'
+import AdminBro, { ResourceOptions } from 'admin-bro'
 
 import { User } from '../../models/entities/User'
+import { after, before } from './actions/password.hook'
 
 export const userOptions: ResourceOptions = {
+  listProperties: [
+    'name',
+    'email',
+    'username',
+    'userRole',
+    'activeStatus',
+    'country',
+    'createdAt',
+    'updatedAt',
+  ],
+  editProperties: ['name', 'email', 'username', 'userRole', 'password'],
+  showProperties: [
+    'userRole',
+    'email',
+    'name',
+    'activeStatus',
+    'lastIPAddress',
+    'country',
+    'lastUserAgent',
+    'planExpirationDate',
+    'planTrialDone',
+    'totalLogin',
+  ],
+  filterProperties: [
+    'username',
+    'name',
+    'email',
+    'emailVerifiedAt',
+    'userRole',
+    'activeStatus',
+    'language',
+    'timezone',
+    'country',
+    'planExpirationDate',
+    'planTrialDone',
+    'createdAt',
+    'updatedAt',
+  ],
   properties: {
-    id: {
+    password: {
+      type: 'password',
       isVisible: {
-        edit: false,
-        filter: false,
         list: false,
-        show: true,
+        edit: true,
+        filter: false,
+        show: false,
       },
-    },
-    billing: {
-      isVisible: false,
-    },
-    encryptedPassword: {
-      isVisible: false,
-    },
-    emailActivationCode: {
-      isVisible: false,
-    },
-    forgotPasswordCode: {
-      isVisible: false,
-    },
-    tokenCode: {
-      isVisible: false,
-    },
-    authenticatorSecret: {
-      isVisible: false,
-    },
-    facebookId: {
-      isVisible: false,
     },
   },
   navigation: {
-    icon: 'User',
+    icon: 'UserMultiple',
+  },
+  actions: {
+    show: {
+      component: AdminBro.bundle('./components/user.show.tsx'),
+    },
+    new: { before, after },
   },
 }
 
