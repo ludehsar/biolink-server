@@ -77,7 +77,7 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Active })
-  activeStatus!: ActiveStatus
+  accountStatus!: ActiveStatus
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
@@ -133,8 +133,8 @@ export class User extends BaseEntity {
   domains!: Domain[]
 
   @Field(() => UserLogs, { nullable: true })
-  @OneToMany(() => UserLogs, (log) => log.user)
-  logs!: UserLogs[]
+  @OneToMany(() => UserLogs, (activity) => activity.user)
+  activities!: UserLogs[]
 
   @Field(() => Link, { nullable: true })
   @OneToMany(() => Link, (link) => link.user)

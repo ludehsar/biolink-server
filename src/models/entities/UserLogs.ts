@@ -24,7 +24,7 @@ export class UserLogs extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  type!: string
+  description!: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
@@ -32,7 +32,7 @@ export class UserLogs extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.logs)
+  @ManyToOne(() => User, (user) => user.activities)
   @JoinColumn()
   user!: User
 }

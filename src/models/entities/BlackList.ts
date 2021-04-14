@@ -5,27 +5,27 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm'
 
+import { BlacklistType } from '../enums/BlacklistType'
+
 @ObjectType()
 @Entity()
+@Unique(['blacklistType', 'keyword'])
 export class BlackList extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @PrimaryGeneratedColumn()
   id!: number
 
   @Field(() => String, { nullable: true })
-  @Column({ nullable: true, unique: true })
-  email!: string
+  @Column({ type: 'enum', enum: BlacklistType, default: BlacklistType.BadWord })
+  blacklistType!: BlacklistType
 
   @Field(() => String, { nullable: true })
-  @Column({ nullable: true, unique: true })
-  username!: string
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true, unique: true })
-  badWords!: string
+  @Column()
+  keyword!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })

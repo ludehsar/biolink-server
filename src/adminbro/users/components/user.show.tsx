@@ -18,7 +18,7 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
         </FlexContainer>
 
         <FlexContainer>
-          <UserDetails id="status" label="Account Status" value={record?.params.activeStatus} />
+          <UserDetails id="status" label="Account Status" value={record?.params.accountStatus} />
           <UserDetails id="ip" label="IP" value={record?.params.lastIPAddress} />
           <UserDetails id="country" label="Country" value={record?.params.country} />
         </FlexContainer>

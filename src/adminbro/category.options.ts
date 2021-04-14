@@ -6,7 +6,7 @@ export const categoryOptions: ResourceOptions = {
   listProperties: ['id', 'categoryName', 'createdAt', 'updatedAt'],
   editProperties: ['categoryName'],
   showProperties: ['id', 'categoryName', 'createdAt', 'updatedAt'],
-  filterProperties: ['id', 'categoryName', 'createdAt', 'updatedAt'],
+  filterProperties: ['categoryName', 'createdAt', 'updatedAt'],
   actions: {
     new: {
       showInDrawer: true,

@@ -19,8 +19,7 @@ import { MyContext } from './MyContext'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
-  const connection = await createConnection()
-  await connection.runMigrations()
+  await createConnection()
 
   // Configure app
   const app = express()
