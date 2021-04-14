@@ -36,8 +36,4 @@ export class PremiumUsername extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
-
-  @Field(() => String, { nullable: true })
-  @Column({ type: 'date', nullable: true })
-  deletedAt!: Date
 }
