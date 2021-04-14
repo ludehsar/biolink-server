@@ -19,7 +19,7 @@ export const blacklistOptions: ResourceOptions = {
     },
   },
   navigation: {
-    icon: 'CheckmarkFilledError',
+    icon: 'CheckmarkOutlineError',
   },
 }
 

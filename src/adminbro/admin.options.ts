@@ -6,7 +6,6 @@ import { Plan } from '../models/entities/Plan'
 import { Project } from '../models/entities/Project'
 import { Settings } from '../models/entities/Settings'
 import { Link } from '../models/entities/Link'
-import { Page } from '../models/entities/Page'
 import { Code } from '../models/entities/Code'
 import { Tax } from '../models/entities/Tax'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
@@ -36,9 +35,6 @@ const options: AdminBroOptions = {
     },
     {
       resource: Link,
-    },
-    {
-      resource: Page,
     },
     {
       resource: Plan,
