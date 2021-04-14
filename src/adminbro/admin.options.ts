@@ -2,7 +2,6 @@ import AdminBro, { AdminBroOptions } from 'admin-bro'
 
 import { userOptions, userResource } from './users/user.resource'
 import { Plan } from '../models/entities/Plan'
-import { Project } from '../models/entities/Project'
 import { Settings } from '../models/entities/Settings'
 import { Code } from '../models/entities/Code'
 import { Tax } from '../models/entities/Tax'
@@ -10,8 +9,9 @@ import { TrackLink } from '../models/entities/TrackLink'
 import { categoryOptions, categoryResource } from './category.options'
 import { blacklistOptions, blacklistResource } from './blacklist.options'
 import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
-import { linkOptions, linkResource } from './links/link.options'
+import { linkOptions, linkResource } from './link.options'
 import { domainOptions, domainResource } from './domain.options'
+import { projectOptions, projectResource } from './project.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -40,13 +40,14 @@ const options: AdminBroOptions = {
       options: domainOptions,
     },
     {
+      resource: projectResource,
+      options: projectOptions,
+    },
+    {
       resource: Code,
     },
     {
       resource: Plan,
-    },
-    {
-      resource: Project,
     },
     {
       resource: Settings,

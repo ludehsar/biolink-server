@@ -37,8 +37,11 @@ export class Project extends BaseEntity {
   // Relationships
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.projects)
-  @JoinColumn()
+  @JoinColumn({ name: 'user_id' })
   user!: User
+
+  @Column({ name: 'user_id' })
+  userId!: string
 
   @Field(() => Link, { nullable: true })
   @OneToMany(() => Link, (link) => link.project)
