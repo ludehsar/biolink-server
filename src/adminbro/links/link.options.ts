@@ -1,9 +1,19 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Link } from '../models/entities/Link'
+import { Link } from '../../models/entities/Link'
 
 export const linkOptions: ResourceOptions = {
-  listProperties: ['userId', 'projectId', 'biolinkId', 'linkType', 'url', 'clicks', 'status'],
+  listProperties: [
+    'userId',
+    'projectId',
+    'biolinkId',
+    'linkType',
+    'url',
+    'clicks',
+    'status',
+    'createdAt',
+    'updatedAt',
+  ],
   filterProperties: [
     'userId',
     'projectId',
@@ -14,6 +24,11 @@ export const linkOptions: ResourceOptions = {
     'createdAt',
     'updatedAt',
   ],
+  properties: {
+    userId: {
+      reference: 'User',
+    },
+  },
   actions: {
     new: {
       isVisible: false,

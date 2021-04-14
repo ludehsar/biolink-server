@@ -11,7 +11,7 @@ import { TrackLink } from '../models/entities/TrackLink'
 import { categoryOptions, categoryResource } from './category.options'
 import { blacklistOptions, blacklistResource } from './blacklist.options'
 import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
-import { linkOptions, linkResource } from './link.options'
+import { linkOptions, linkResource } from './links/link.options'
 
 const options: AdminBroOptions = {
   resources: [
