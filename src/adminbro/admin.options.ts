@@ -8,10 +8,10 @@ import { Settings } from '../models/entities/Settings'
 import { Link } from '../models/entities/Link'
 import { Code } from '../models/entities/Code'
 import { Tax } from '../models/entities/Tax'
-import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { TrackLink } from '../models/entities/TrackLink'
 import { categoryOptions, categoryResource } from './category.options'
 import { blacklistOptions, blacklistResource } from './blacklist.options'
+import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -28,6 +28,10 @@ const options: AdminBroOptions = {
       options: blacklistOptions,
     },
     {
+      resource: premiumUsernameResource,
+      options: premiumUsernameOptions,
+    },
+    {
       resource: Code,
     },
     {
@@ -38,9 +42,6 @@ const options: AdminBroOptions = {
     },
     {
       resource: Plan,
-    },
-    {
-      resource: PremiumUsername,
     },
     {
       resource: Project,
