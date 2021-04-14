@@ -1,7 +1,6 @@
 import AdminBro, { AdminBroOptions } from 'admin-bro'
 
 import { userOptions, userResource } from './users/user.resource'
-import { Domain } from '../models/entities/Domain'
 import { Plan } from '../models/entities/Plan'
 import { Project } from '../models/entities/Project'
 import { Settings } from '../models/entities/Settings'
@@ -12,6 +11,7 @@ import { categoryOptions, categoryResource } from './category.options'
 import { blacklistOptions, blacklistResource } from './blacklist.options'
 import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
 import { linkOptions, linkResource } from './links/link.options'
+import { domainOptions, domainResource } from './domain.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -36,10 +36,11 @@ const options: AdminBroOptions = {
       options: linkOptions,
     },
     {
-      resource: Code,
+      resource: domainResource,
+      options: domainOptions,
     },
     {
-      resource: Domain,
+      resource: Code,
     },
     {
       resource: Plan,
