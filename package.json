@@ -58,6 +58,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
+    "minimist": "^1.2.5",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
@@ -90,5 +91,8 @@
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.32",
     "typeorm-cli": "^1.0.7"
+  },
+  "resolutions": {
+    "minimist": "^1.2.5"
   }
 }
