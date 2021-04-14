@@ -27,7 +27,7 @@ export class Link extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: LinkType, default: LinkType.Link })
-  scheme!: LinkType
+  linkType!: LinkType
 
   @Field(() => String, { nullable: true })
   @Column()

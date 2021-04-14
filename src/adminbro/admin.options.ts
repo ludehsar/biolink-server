@@ -5,13 +5,13 @@ import { Domain } from '../models/entities/Domain'
 import { Plan } from '../models/entities/Plan'
 import { Project } from '../models/entities/Project'
 import { Settings } from '../models/entities/Settings'
-import { Link } from '../models/entities/Link'
 import { Code } from '../models/entities/Code'
 import { Tax } from '../models/entities/Tax'
 import { TrackLink } from '../models/entities/TrackLink'
 import { categoryOptions, categoryResource } from './category.options'
 import { blacklistOptions, blacklistResource } from './blacklist.options'
 import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
+import { linkOptions, linkResource } from './link.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -32,13 +32,14 @@ const options: AdminBroOptions = {
       options: premiumUsernameOptions,
     },
     {
+      resource: linkResource,
+      options: linkOptions,
+    },
+    {
       resource: Code,
     },
     {
       resource: Domain,
-    },
-    {
-      resource: Link,
     },
     {
       resource: Plan,
