@@ -1,3 +1,4 @@
 export enum TaxValueType {
-  Discount = 'Discount',
+  Percentage = 'Percentage',
+  Fixed = 'Fixed',
 }

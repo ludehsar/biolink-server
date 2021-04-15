@@ -36,7 +36,7 @@ export class Tax extends BaseEntity {
   value!: number
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'enum', enum: TaxValueType, default: TaxValueType.Discount })
+  @Column({ type: 'enum', enum: TaxValueType, default: TaxValueType.Fixed })
   valueType!: TaxValueType
 
   @Field(() => String, { nullable: true })
