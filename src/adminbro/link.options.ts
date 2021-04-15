@@ -24,11 +24,6 @@ export const linkOptions: ResourceOptions = {
     'createdAt',
     'updatedAt',
   ],
-  properties: {
-    userId: {
-      reference: 'User',
-    },
-  },
   actions: {
     new: {
       isVisible: false,

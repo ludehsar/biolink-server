@@ -24,8 +24,8 @@ const options: AdminBroOptions = {
       options: categoryOptions,
     },
     {
-      resource: blacklistResource,
-      options: blacklistOptions,
+      resource: projectResource,
+      options: projectOptions,
     },
     {
       resource: premiumUsernameResource,
@@ -40,8 +40,8 @@ const options: AdminBroOptions = {
       options: domainOptions,
     },
     {
-      resource: projectResource,
-      options: projectOptions,
+      resource: blacklistResource,
+      options: blacklistOptions,
     },
     {
       resource: Code,

@@ -7,12 +7,17 @@ export const blacklistOptions: ResourceOptions = {
   editProperties: ['blacklistType', 'keyword', 'reason'],
   showProperties: ['id', 'blacklistType', 'keyword', 'reason', 'createdAt', 'updatedAt'],
   filterProperties: ['blacklistType', 'keyword', 'reason', 'createdAt', 'updatedAt'],
+  properties: {
+    reason: {
+      type: 'textarea',
+    },
+  },
   actions: {
     new: {
       showInDrawer: true,
     },
     show: {
-      showInDrawer: true,
+      isVisible: false,
     },
     edit: {
       showInDrawer: true,

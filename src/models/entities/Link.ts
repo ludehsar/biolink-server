@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -68,10 +69,10 @@ export class Link extends BaseEntity {
   // Relationships
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.links)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: User
 
-  @Column({ name: 'user_id' })
+  @RelationId((link: Link) => link.user)
   userId!: string
 
   @Field(() => Project, { nullable: true })

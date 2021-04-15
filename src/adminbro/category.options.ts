@@ -12,7 +12,7 @@ export const categoryOptions: ResourceOptions = {
       showInDrawer: true,
     },
     show: {
-      showInDrawer: true,
+      isVisible: false,
     },
     edit: {
       showInDrawer: true,
