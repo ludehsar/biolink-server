@@ -13,7 +13,7 @@ export const domainOptions: ResourceOptions = {
     'updatedAt',
   ],
   filterProperties: [
-    'user_id',
+    'userId',
     'scheme',
     'host',
     'customIndexUrl',
@@ -21,11 +21,6 @@ export const domainOptions: ResourceOptions = {
     'createdAt',
     'updatedAt',
   ],
-  properties: {
-    userId: {
-      reference: 'User',
-    },
-  },
   actions: {
     new: {
       isVisible: false,

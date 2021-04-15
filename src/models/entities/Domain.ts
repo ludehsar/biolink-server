@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -48,9 +49,9 @@ export class Domain extends BaseEntity {
   // Relationships
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.domains)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user!: User
 
-  @Column({ name: 'user_id' })
+  @RelationId((domain: Domain) => domain.user)
   userId!: string
 }
