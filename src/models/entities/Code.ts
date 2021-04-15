@@ -1,4 +1,4 @@
-import { Field, Float, Int, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -32,10 +32,6 @@ export class Code extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @Column({ nullable: true, default: 0 })
   discount!: number
-
-  @Field(() => Float, { nullable: true })
-  @Column({ nullable: true, default: 0.0 })
-  redeemablePrice!: number
 
   @Field(() => Int, { nullable: true })
   @Column({ nullable: true, default: 0 })
