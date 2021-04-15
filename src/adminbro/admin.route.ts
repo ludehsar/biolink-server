@@ -21,7 +21,7 @@ const buildAdminRouter = (admin: AdminBro): Router => {
   //   null,
   //   {
   //     resave: false,
-  //     saveUninitialized: true,
+  //     saveUninitialized: false,
   //   } as SessionOptions
   // )
   const router = AdminBroExpress.buildRouter(admin)

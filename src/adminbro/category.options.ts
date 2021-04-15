@@ -18,6 +18,11 @@ export const categoryOptions: ResourceOptions = {
       showInDrawer: true,
     },
   },
+  properties: {
+    categoryName: {
+      isTitle: true,
+    },
+  },
   navigation: {
     icon: 'Category',
   },

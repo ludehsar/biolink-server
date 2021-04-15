@@ -77,8 +77,11 @@ export class Link extends BaseEntity {
 
   @Field(() => Project, { nullable: true })
   @ManyToOne(() => Project, (project) => project.links)
-  @JoinColumn()
+  @JoinColumn({ name: 'projectId' })
   project!: Project
+
+  @RelationId((link: Link) => link.project)
+  projectId!: string
 
   @Field(() => Link, { nullable: true })
   @OneToMany(() => Link, (link) => link.biolink)
@@ -86,8 +89,11 @@ export class Link extends BaseEntity {
 
   @Field(() => Link, { nullable: true })
   @ManyToOne(() => Link, (biolink) => biolink.links)
-  @JoinColumn()
+  @JoinColumn({ name: 'biolinkId' })
   biolink!: Link
+
+  @RelationId((link: Link) => link.biolink)
+  biolinkId!: string
 
   @Field(() => TrackLink, { nullable: true })
   @OneToMany(() => TrackLink, (trackLink) => trackLink.user)

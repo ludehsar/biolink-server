@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm'
 
 import { User } from './User'
@@ -75,16 +76,25 @@ export class TrackLink extends BaseEntity {
   // Relationships
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.trackLinks)
-  @JoinColumn()
+  @JoinColumn({ name: 'userId' })
   user!: User
+
+  @RelationId((trackLink: TrackLink) => trackLink.user)
+  userId!: string
 
   @Field(() => Link, { nullable: true })
   @ManyToOne(() => Link, (link) => link.trackLinks)
-  @JoinColumn()
+  @JoinColumn({ name: 'linkId' })
   link!: Link
+
+  @RelationId((trackLink: TrackLink) => trackLink.link)
+  linkId!: string
 
   @Field(() => Project, { nullable: true })
   @ManyToOne(() => Project, (project) => project.trackLinks)
-  @JoinColumn()
+  @JoinColumn({ name: 'projectId' })
   project!: Project
+
+  @RelationId((trackLink: TrackLink) => trackLink.project)
+  projectId!: string
 }

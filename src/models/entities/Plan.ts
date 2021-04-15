@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -13,7 +12,6 @@ import {
 import { EnabledStatus } from '../enums/EnabledStatus'
 import { PlanSettings } from '../jsonTypes/PlanSettings'
 import { Code } from './Code'
-import { Tax } from './Tax'
 import { User } from './User'
 
 @ObjectType()
@@ -75,10 +73,6 @@ export class Plan extends BaseEntity {
   @Field(() => User, { nullable: true })
   @OneToMany(() => User, (user) => user.plan)
   users!: User[]
-
-  @Field(() => Tax, { nullable: true })
-  @ManyToMany(() => Tax, (tax) => tax.plans)
-  taxes!: Tax[]
 
   @Field(() => Code, { nullable: true })
   @OneToMany(() => Code, (code) => code.plan)

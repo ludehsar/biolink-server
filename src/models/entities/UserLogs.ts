@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm'
 
 import { User } from './User'
@@ -33,6 +34,9 @@ export class UserLogs extends BaseEntity {
   // Relationships
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.activities)
-  @JoinColumn()
+  @JoinColumn({ name: 'userId' })
   user!: User
+
+  @RelationId((userLogs: UserLogs) => userLogs.user)
+  userId!: string
 }

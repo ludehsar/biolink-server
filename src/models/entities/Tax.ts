@@ -4,14 +4,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
 
 import { TaxValueType } from '../enums/TaxValueType'
-import { Plan } from './Plan'
 import { TaxBillingForType } from '../enums/TaxBillingForType'
 import { TaxType } from '../enums/TaxType'
 
@@ -61,10 +58,4 @@ export class Tax extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
-
-  // Relationships
-  @Field(() => Plan, { nullable: true })
-  @ManyToMany(() => Plan, (plan) => plan.taxes)
-  @JoinTable()
-  plans!: Plan[]
 }

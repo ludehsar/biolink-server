@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -55,6 +56,9 @@ export class Code extends BaseEntity {
   // Relationships
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.codes)
-  @JoinColumn()
+  @JoinColumn({ name: 'planId' })
   plan!: Plan
+
+  @RelationId((code: Code) => code.plan)
+  planId!: number
 }

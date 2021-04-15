@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -146,11 +147,17 @@ export class User extends BaseEntity {
 
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.users)
-  @JoinColumn()
+  @JoinColumn({ name: 'planId' })
   plan!: Plan
+
+  @RelationId((user: User) => user.plan)
+  planId!: number
 
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.users)
-  @JoinColumn()
+  @JoinColumn({ name: 'categoryId' })
   category!: Category
+
+  @RelationId((user: User) => user.category)
+  categoryId!: number
 }
