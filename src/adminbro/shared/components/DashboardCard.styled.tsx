@@ -1,26 +1,6 @@
 import styled from 'styled-components'
 import { Box, Icon, Text, H4 } from '@admin-bro/design-system'
 
-export const CardBox = styled(Box)`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  min-width: 0;
-  word-wrap: break-word;
-  height: 100% !important;
-  overflow: hidden;
-  background-color: ${({ theme }) => theme.colors.white};
-  background-clip: border-box;
-  border: 1px solid ${({ theme }) => theme.colors.grey20};
-  border-radius: 0.25em;
-`
-
-export const CardBody = styled(Box)`
-  flex: 1 1 auto;
-  min-height: 1px;
-  padding: 1.25em;
-`
-
 export const CardTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.grey80};
 `

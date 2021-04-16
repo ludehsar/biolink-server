@@ -1,14 +1,7 @@
 import React from 'react'
 
-import {
-  CardBody,
-  CardBox,
-  CardIcon,
-  CardTitle,
-  CardDetails,
-  CardValue,
-  CardSeeMore,
-} from './DashboardCard.styled'
+import { CardBox, CardBody } from './Common.styled'
+import { CardIcon, CardTitle, CardDetails, CardValue, CardSeeMore } from './DashboardCard.styled'
 
 export interface CardProps {
   title: string
