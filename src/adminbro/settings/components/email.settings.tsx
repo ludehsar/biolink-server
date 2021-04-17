@@ -3,6 +3,7 @@ import React from 'react'
 
 import {
   FormCTAGroup,
+  FormHelper,
   FormInput,
   FormLabel,
   FormSubmitButton,
@@ -17,6 +18,7 @@ const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
       <FormGroup>
         <FormLabel>From Name</FormLabel>
         <FormInput />
+        <FormHelper>This name will be used while sending mail to the users.</FormHelper>
       </FormGroup>
 
       <FormCTAGroup>

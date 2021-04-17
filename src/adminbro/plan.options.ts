@@ -10,7 +10,6 @@ export const planOptions: ResourceOptions = {
     'lifetimePrice',
     'enabledStatus',
     'visibilityStatus',
-    'users',
   ],
   filterProperties: [
     'name',
@@ -19,7 +18,6 @@ export const planOptions: ResourceOptions = {
     'lifetimePrice',
     'enabledStatus',
     'visibilityStatus',
-    'users',
   ],
   navigation: {
     icon: 'Event',

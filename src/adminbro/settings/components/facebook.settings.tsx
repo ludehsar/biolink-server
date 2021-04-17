@@ -16,7 +16,14 @@ const FacebookSettings: React.FC<CommonSettingsProps> = (props) => {
     <SettingsTabContainer {...{ className, id }}>
       <FormGroup>
         <FormLabel>Enable Facebook Login</FormLabel>
-        <FormInput />
+        <FormInput as="select">
+          <FormInput as="option" value={1}>
+            Yes
+          </FormInput>
+          <FormInput as="option" value={0}>
+            No
+          </FormInput>
+        </FormInput>
       </FormGroup>
 
       <FormCTAGroup>

@@ -2,7 +2,9 @@ import { FormGroup } from '@admin-bro/design-system'
 import React from 'react'
 
 import {
+  FileUploader,
   FormCTAGroup,
+  FormHelper,
   FormInput,
   FormLabel,
   FormSubmitButton,
@@ -21,32 +23,57 @@ const MainSettings: React.FC<CommonSettingsProps> = (props) => {
 
       <FormGroup>
         <FormLabel>Default Language</FormLabel>
-        <FormInput />
+        <FormInput as="select">
+          <FormInput as="option" value="english">
+            English
+          </FormInput>
+        </FormInput>
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Website Logo</FormLabel>
-        <FormInput />
+        <FileUploader />
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Favicon</FormLabel>
-        <FormInput />
+        <FileUploader />
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Default Timezone</FormLabel>
-        <FormInput />
+        <FormInput as="select">
+          <FormInput as="option" value="utc">
+            UTC
+          </FormInput>
+        </FormInput>
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Email Confirmation</FormLabel>
-        <FormInput />
+        <FormInput as="select">
+          <FormInput as="option" value={1}>
+            Yes
+          </FormInput>
+          <FormInput as="option" value={0}>
+            No
+          </FormInput>
+        </FormInput>
+        <FormHelper>
+          Send out email confirmation when a user registers or changes his email address.
+        </FormHelper>
       </FormGroup>
 
       <FormGroup>
         <FormLabel>Enable New User Registration</FormLabel>
-        <FormInput />
+        <FormInput as="select">
+          <FormInput as="option" value={1}>
+            Yes
+          </FormInput>
+          <FormInput as="option" value={0}>
+            No
+          </FormInput>
+        </FormInput>
       </FormGroup>
 
       <FormGroup>

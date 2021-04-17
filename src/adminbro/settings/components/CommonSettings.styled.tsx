@@ -1,5 +1,16 @@
-import { Box, Label, Input, Button } from '@admin-bro/design-system'
+import {
+  Box,
+  H3,
+  Label,
+  Input,
+  Button,
+  FormMessage,
+  DropZone,
+  TextArea,
+} from '@admin-bro/design-system'
 import styled from 'styled-components'
+
+export const Title = styled(H3)``
 
 export const SettingsTabContainer = styled(Box)`
   display: none;
@@ -10,9 +21,15 @@ export const SettingsTabContainer = styled(Box)`
   }
 `
 
-export const FormGroup = styled(Box)`
-  margin-bottom: 1rem;
+export const FormHelper = styled(FormMessage)`
+  color: ${({ theme }) => theme.colors.grey60};
 `
+
+export const FormTextArea = styled(TextArea)`
+  width: 100%;
+`
+
+export const FileUploader = styled(DropZone)``
 
 export const FormCTAGroup = styled(Box)`
   margin-top: 1rem;

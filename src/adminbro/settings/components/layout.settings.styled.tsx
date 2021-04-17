@@ -8,7 +8,6 @@ export const Header = styled(H1)``
 export const SettingsContainer = styled(Box)`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
   margin-right: -15px;
   margin-left: -15px;
   margin-bottom: 20px;
@@ -18,6 +17,8 @@ export const SettingsNavContainer = styled(Box)`
   margin-bottom: 3rem !important;
   flex: 0 0 100%;
   max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
 
   @media (min-width: 1200px) {
     margin-bottom: 0 !important;
@@ -30,6 +31,8 @@ export const SettingsDetailsContainer = styled(Box)`
   flex-basis: 0;
   flex-grow: 1;
   max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
 `
 
 export const SettingsNav = styled(Box)`

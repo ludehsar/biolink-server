@@ -2,7 +2,9 @@ import { FormGroup } from '@admin-bro/design-system'
 import React from 'react'
 
 import {
+  Title,
   FormCTAGroup,
+  FormHelper,
   FormInput,
   FormLabel,
   FormSubmitButton,
@@ -14,6 +16,9 @@ const SocialSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id } = props
   return (
     <SettingsTabContainer {...{ className, id }}>
+      <Title>
+        <FormHelper>Social links to be displayed in the footer of the website.</FormHelper>
+      </Title>
       <FormGroup>
         <FormLabel>Youtube</FormLabel>
         <FormInput />
