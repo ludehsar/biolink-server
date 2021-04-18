@@ -11,6 +11,15 @@ import { NotificationSystemSettings } from '../../../models/jsonTypes/Notificati
 import { PaymentSystemSettings } from '../../../models/jsonTypes/PaymentSystemSettings'
 import { SocialSystemSettings } from '../../../models/jsonTypes/SocialSystemSettings'
 import { fetchMainSettings } from './mainSettingsAction'
+import { fetchLinkSettings } from './linkSettingsAction'
+import { fetchPaymentSettings } from './paymentSettingsAction'
+import { fetchBusinessSettings } from './businessSettingsAction'
+import { fetchCaptchaSettings } from './captchaSettingsAction'
+import { fetchFacebookLoginSettings } from './facebookSettingsAction'
+import { fetchAdsSettings } from './adsSettingsAction'
+import { fetchSocialSettings } from './socialSettingsAction'
+import { fetchEmailSettings } from './emailSettingsAction'
+import { fetchEmailNotificationSettings } from './notificationSettingsAction'
 
 const api = new ApiClient()
 
@@ -45,39 +54,39 @@ export const getAllSettingsData = async (): Promise<SettingsProps> => {
         break
 
       case 'links':
-        settingsOptions.links = option.params.value
+        settingsOptions.links = fetchLinkSettings(option)
         break
 
       case 'payments':
-        settingsOptions.payments = option.params.value
+        settingsOptions.payments = fetchPaymentSettings(option)
         break
 
       case 'business':
-        settingsOptions.business = option.params.value
+        settingsOptions.business = fetchBusinessSettings(option)
         break
 
       case 'captcha':
-        settingsOptions.captcha = option.params.value
+        settingsOptions.captcha = fetchCaptchaSettings(option)
         break
 
       case 'facebook_login':
-        settingsOptions.facebook_login = option.params.value
+        settingsOptions.facebook_login = fetchFacebookLoginSettings(option)
         break
 
       case 'ads':
-        settingsOptions.ads = option.params.value
+        settingsOptions.ads = fetchAdsSettings(option)
         break
 
       case 'socials':
-        settingsOptions.socials = option.params.value
+        settingsOptions.socials = fetchSocialSettings(option)
         break
 
       case 'email':
-        settingsOptions.email = option.params.value
+        settingsOptions.email = fetchEmailSettings(option)
         break
 
       case 'email_notification':
-        settingsOptions.email_notification = option.params.value
+        settingsOptions.email_notification = fetchEmailNotificationSettings(option)
         break
     }
   })
