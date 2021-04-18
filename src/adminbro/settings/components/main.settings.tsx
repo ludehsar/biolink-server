@@ -28,7 +28,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
       return
     })
     addNotice({
-      message: 'Successfully updated main settings',
+      message: 'Successfully updated settings',
       type: 'success',
     })
   }
@@ -41,9 +41,9 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
           title: (value as MainSystemSettings)?.title || '',
           defaultLanguage: (value as MainSystemSettings)?.defaultLanguage || 'english',
           defaultTimezone: (value as MainSystemSettings)?.defaultTimezone || 'utc',
-          enableEmailConfirmation: (value as MainSystemSettings)?.enableEmailConfirmation || false,
+          enableEmailConfirmation: (value as MainSystemSettings)?.enableEmailConfirmation || 'no',
           enableNewUserRegistration:
-            (value as MainSystemSettings)?.enableNewUserRegistration || false,
+            (value as MainSystemSettings)?.enableNewUserRegistration || 'no',
           termsAndConditionsUrl: (value as MainSystemSettings)?.termsAndConditionsUrl || '',
           privacyPolicyUrl: (value as MainSystemSettings)?.privacyPolicyUrl || '',
         }}
@@ -113,7 +113,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableEmailConfirmation"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableEmailConfirmation as string}
+                value={values.enableEmailConfirmation}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -134,7 +134,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableNewUserRegistration"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableNewUserRegistration as string}
+                value={values.enableNewUserRegistration}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes

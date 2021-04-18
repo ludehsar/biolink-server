@@ -28,7 +28,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
       return
     })
     addNotice({
-      message: 'Successfully updated link settings',
+      message: 'Successfully updated settings',
       type: 'success',
     })
   }
@@ -40,19 +40,17 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
         initialValues={{
           branding: (value as LinkSystemSettings)?.branding || '',
           enableLinkShortenerSystem:
-            (value as LinkSystemSettings)?.enableLinkShortenerSystem || false,
-          enableCustomDomainSystem:
-            (value as LinkSystemSettings)?.enableCustomDomainSystem || false,
-          enableMainDomainUsage: (value as LinkSystemSettings)?.enableMainDomainUsage || false,
+            (value as LinkSystemSettings)?.enableLinkShortenerSystem || 'no',
+          enableCustomDomainSystem: (value as LinkSystemSettings)?.enableCustomDomainSystem || 'no',
+          enableMainDomainUsage: (value as LinkSystemSettings)?.enableMainDomainUsage || 'no',
           blacklistedDomains: (((value as LinkSystemSettings)?.blacklistedDomains as []) || [])
             .join('\n')
             .toString(),
           blacklistedKeywords: ((value as LinkSystemSettings)?.blacklistedKeywords || [])
             .join('\n')
             .toString(),
-          enablePhishtank: (value as LinkSystemSettings)?.enablePhishtank || false,
-          enableGoogleSafeBrowsing:
-            (value as LinkSystemSettings)?.enableGoogleSafeBrowsing || false,
+          enablePhishtank: (value as LinkSystemSettings)?.enablePhishtank || 'no',
+          enableGoogleSafeBrowsing: (value as LinkSystemSettings)?.enableGoogleSafeBrowsing || 'no',
         }}
         onSubmit={(values, { setSubmitting }) => {
           const blacklistedDomains = values.blacklistedDomains.split('\n')
@@ -90,7 +88,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableLinkShortenerSystem"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableLinkShortenerSystem as string}
+                value={values.enableLinkShortenerSystem}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -108,7 +106,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableCustomDomainSystem"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableCustomDomainSystem as string}
+                value={values.enableCustomDomainSystem}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -126,7 +124,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableMainDomainUsage"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableMainDomainUsage as string}
+                value={values.enableMainDomainUsage}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -166,7 +164,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enablePhishtank"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enablePhishtank as string}
+                value={values.enablePhishtank}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -185,7 +183,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableGoogleSafeBrowsing"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableGoogleSafeBrowsing as string}
+                value={values.enableGoogleSafeBrowsing}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes

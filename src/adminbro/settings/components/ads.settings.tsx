@@ -28,7 +28,7 @@ const AdsSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => 
       return
     })
     addNotice({
-      message: 'Successfully updated main settings',
+      message: 'Successfully updated settings',
       type: 'success',
     })
   }
