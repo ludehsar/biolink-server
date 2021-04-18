@@ -9,7 +9,7 @@ export const fetchPaymentSettings = (option: BaseRecord): PaymentSystemSettings 
     enablePaymentSystem: option.params['value.enablePaymentSystem'],
     enabledPaymentType: option.params['value.enabledPaymentType'],
     brandName: option.params['value.brandName'],
-    currency: option.params['values.currency'],
+    currency: option.params['value.currency'],
     enableDiscountOrRedeemableCode: option.params['value.enableDiscountOrRedeemableCode'],
     enableTaxesAndBilling: option.params['value.enableTaxesAndBilling'],
     enablePaypal: option.params['value.enablePaypal'],

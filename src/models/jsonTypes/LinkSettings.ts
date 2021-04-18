@@ -14,48 +14,48 @@ export class LinkSettings {
   @Field(() => Int, { nullable: true })
   totalCustomDomainLimit!: number
 
-  @Field(() => Boolean, { nullable: true })
-  customBackHalfEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  customBackHalfEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  noAdsEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  noAdsEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  removableBrandingEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  removableBrandingEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  customFooterBrandingEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  customFooterBrandingEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  coloredLinksEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  coloredLinksEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  googleAnalyticsEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  googleAnalyticsEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  facebookPixelEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  facebookPixelEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  customBackgroundEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  customBackgroundEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  linksSchedulingEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  linksSchedulingEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  seoEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  seoEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  socialEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  socialEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  utmParametersEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  utmParametersEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  passwordProtectionEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  passwordProtectionEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  sensitiveContentWarningEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  sensitiveContentWarningEnabled!: number
 
-  @Field(() => Boolean, { nullable: true })
-  leapLinkEnabled!: boolean
+  @Field(() => Int, { nullable: true })
+  leapLinkEnabled!: number
 }

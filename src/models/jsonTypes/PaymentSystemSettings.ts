@@ -2,8 +2,8 @@ import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class PaymentSystemSettings {
-  @Field(() => Boolean, { nullable: true })
-  enablePaymentSystem!: boolean
+  @Field(() => String, { nullable: true })
+  enablePaymentSystem!: string
 
   @Field(() => String, { nullable: true })
   enabledPaymentType!: string
@@ -14,15 +14,15 @@ export class PaymentSystemSettings {
   @Field(() => String, { nullable: true })
   currency!: string
 
-  @Field(() => Boolean, { nullable: true })
-  enableDiscountOrRedeemableCode!: boolean
+  @Field(() => String, { nullable: true })
+  enableDiscountOrRedeemableCode!: string
 
-  @Field(() => Boolean, { nullable: true })
-  enableTaxesAndBilling!: boolean
+  @Field(() => String, { nullable: true })
+  enableTaxesAndBilling!: string
 
-  @Field(() => Boolean, { nullable: true })
-  enablePaypal!: boolean
+  @Field(() => String, { nullable: true })
+  enablePaypal!: string
 
-  @Field(() => Boolean, { nullable: true })
-  enableStripe!: boolean
+  @Field(() => String, { nullable: true })
+  enableStripe!: string
 }

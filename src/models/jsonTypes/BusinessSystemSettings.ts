@@ -2,8 +2,8 @@ import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class BusinessSystemSettings {
-  @Field(() => Boolean, { nullable: true })
-  enableInvoice!: boolean
+  @Field(() => String, { nullable: true })
+  enableInvoice!: string
 
   @Field(() => String, { nullable: true })
   invoiceNrPrefix!: string

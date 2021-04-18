@@ -9,7 +9,7 @@ export const fetchBusinessSettings = (option: BaseRecord): BusinessSystemSetting
     enableInvoice: option.params['value.enableInvoice'],
     invoiceNrPrefix: option.params['value.invoiceNrPrefix'],
     name: option.params['value.name'],
-    address: option.params['values.address'],
+    address: option.params['value.address'],
     city: option.params['value.city'],
     country: option.params['value.country'],
     zipCode: option.params['value.zipCode'],

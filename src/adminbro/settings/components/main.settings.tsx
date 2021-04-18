@@ -20,9 +20,9 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
   const { className, id, value } = props
 
   const handleSubmit = async (values: MainSystemSettings): Promise<void> => {
-    await saveMainSettings(values).catch((err) => {
+    await saveMainSettings(values).catch(() => {
       addNotice({
-        message: err.message,
+        message: 'Unable to save data to the database.',
         type: 'error',
       })
       return
@@ -38,13 +38,14 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
       <Formik
         enableReinitialize={true}
         initialValues={{
-          title: value?.title || '',
-          defaultLanguage: value?.defaultLanguage || 'english',
-          defaultTimezone: value?.defaultTimezone || 'utc',
-          enableEmailConfirmation: value?.enableEmailConfirmation || '',
-          enableNewUserRegistration: value?.enableNewUserRegistration || '',
-          termsAndConditionsUrl: value?.termsAndConditionsUrl || '',
-          privacyPolicyUrl: value?.privacyPolicyUrl || '',
+          title: (value as MainSystemSettings)?.title || '',
+          defaultLanguage: (value as MainSystemSettings)?.defaultLanguage || 'english',
+          defaultTimezone: (value as MainSystemSettings)?.defaultTimezone || 'utc',
+          enableEmailConfirmation: (value as MainSystemSettings)?.enableEmailConfirmation || false,
+          enableNewUserRegistration:
+            (value as MainSystemSettings)?.enableNewUserRegistration || false,
+          termsAndConditionsUrl: (value as MainSystemSettings)?.termsAndConditionsUrl || '',
+          privacyPolicyUrl: (value as MainSystemSettings)?.privacyPolicyUrl || '',
         }}
         onSubmit={(values, { setSubmitting }) => {
           handleSubmit(values as MainSystemSettings)
@@ -52,14 +53,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
           return
         }}
       >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
+        {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit} method="post">
             <FormGroup>
               <FormLabel>Website Title</FormLabel>
@@ -119,7 +113,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableEmailConfirmation"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableEmailConfirmation ? 'yes' : 'no'}
+                value={values.enableEmailConfirmation as string}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes
@@ -140,7 +134,7 @@ const MainSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
                 name="enableNewUserRegistration"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.enableNewUserRegistration ? 'yes' : 'no'}
+                value={values.enableNewUserRegistration as string}
               >
                 <FormInput as="option" value={'yes'}>
                   Yes

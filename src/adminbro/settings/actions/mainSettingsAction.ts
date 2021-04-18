@@ -9,7 +9,7 @@ export const fetchMainSettings = (option: BaseRecord): MainSystemSettings => {
     title: option.params['value.title'],
     defaultLanguage: option.params['value.defaultLanguage'],
     websiteLogoUrl: option.params['value.websiteLogoUrl'],
-    faviconLogoUrl: option.params['values.faviconLogoUrl'],
+    faviconLogoUrl: option.params['value.faviconLogoUrl'],
     defaultTimezone: option.params['value.defaultTimezone'],
     enableEmailConfirmation: option.params['value.enableEmailConfirmation'],
     enableNewUserRegistration: option.params['value.enableNewUserRegistration'],
