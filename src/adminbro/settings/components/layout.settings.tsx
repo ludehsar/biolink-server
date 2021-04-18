@@ -1,5 +1,4 @@
-import { BasePropertyComponentProps } from 'admin-bro'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 
 import {
   Container,
@@ -22,9 +21,16 @@ import AdsSettings from './ads.settings'
 import SocialSettings from './socials.settings'
 import EmailSettings from './email.settings'
 import NotificationSettings from './notification.settings'
+import { getAllSettingsData, SettingsProps } from '../actions/globalSettingsAction'
 
-const SettingsLayout: React.FC<BasePropertyComponentProps> = () => {
+const SettingsLayout: React.FC = () => {
   const [activeMenus, setActiveMenus] = useState('main')
+  const [settingsData, setSettingsData] = useState<SettingsProps>({})
+
+  const getSettingsData = useCallback(async () => {
+    const fetchedSettingsData = await getAllSettingsData()
+    setSettingsData(fetchedSettingsData)
+  }, [])
 
   useEffect(() => {
     const urlHash = window.location.hash.substr(1)
@@ -32,7 +38,9 @@ const SettingsLayout: React.FC<BasePropertyComponentProps> = () => {
     if (urlHash) {
       setActiveMenus(urlHash)
     }
-  }, [])
+
+    getSettingsData()
+  }, [getSettingsData])
 
   return (
     <Container>
@@ -125,16 +133,46 @@ const SettingsLayout: React.FC<BasePropertyComponentProps> = () => {
         <SettingsDetailsContainer>
           <CardBox>
             <CardBody>
-              <MainSettings className={activeMenus === 'main' ? 'active' : ''} />
-              <LinkSettings className={activeMenus === 'links' ? 'active' : ''} />
-              <PaymentSettings className={activeMenus === 'payments' ? 'active' : ''} />
-              <BusinessSettings className={activeMenus === 'business' ? 'active' : ''} />
-              <CaptchaSettings className={activeMenus === 'captcha' ? 'active' : ''} />
-              <FacebookSettings className={activeMenus === 'facebook-login' ? 'active' : ''} />
-              <AdsSettings className={activeMenus === 'ads' ? 'active' : ''} />
-              <SocialSettings className={activeMenus === 'socials' ? 'active' : ''} />
-              <EmailSettings className={activeMenus === 'email' ? 'active' : ''} />
-              <NotificationSettings className={activeMenus === 'notifications' ? 'active' : ''} />
+              <MainSettings
+                value={settingsData.main}
+                className={activeMenus === 'main' ? 'active' : ''}
+              />
+              <LinkSettings
+                value={settingsData.links}
+                className={activeMenus === 'links' ? 'active' : ''}
+              />
+              <PaymentSettings
+                value={settingsData.payments}
+                className={activeMenus === 'payments' ? 'active' : ''}
+              />
+              <BusinessSettings
+                value={settingsData.business}
+                className={activeMenus === 'business' ? 'active' : ''}
+              />
+              <CaptchaSettings
+                value={settingsData.captcha}
+                className={activeMenus === 'captcha' ? 'active' : ''}
+              />
+              <FacebookSettings
+                value={settingsData.facebook_login}
+                className={activeMenus === 'facebook-login' ? 'active' : ''}
+              />
+              <AdsSettings
+                value={settingsData.ads}
+                className={activeMenus === 'ads' ? 'active' : ''}
+              />
+              <SocialSettings
+                value={settingsData.socials}
+                className={activeMenus === 'socials' ? 'active' : ''}
+              />
+              <EmailSettings
+                value={settingsData.email}
+                className={activeMenus === 'email' ? 'active' : ''}
+              />
+              <NotificationSettings
+                value={settingsData.email_notification}
+                className={activeMenus === 'notifications' ? 'active' : ''}
+              />
             </CardBody>
           </CardBox>
         </SettingsDetailsContainer>

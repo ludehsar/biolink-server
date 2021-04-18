@@ -10,6 +10,7 @@ import { projectOptions, projectResource } from './project.options'
 import { codeOptions, codeResource } from './code.options'
 import { taxOptions, taxResource } from './tax.options'
 import { planOptions, planResource } from './plan.options'
+import { settingsOptions, settingsResource } from './settings/settings.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -53,6 +54,10 @@ const options: AdminBroOptions = {
       resource: taxResource,
       options: taxOptions,
     },
+    {
+      resource: settingsResource,
+      options: settingsOptions,
+    },
   ],
   rootPath: '/admin',
   branding: {
@@ -62,12 +67,6 @@ const options: AdminBroOptions = {
   },
   dashboard: {
     component: AdminBro.bundle('./dashboard/components/dashboard.tsx'),
-  },
-  pages: {
-    Settings: {
-      component: AdminBro.bundle('./settings/components/layout.settings.tsx'),
-      icon: 'Settings',
-    },
   },
 }
 

@@ -1,4 +1,5 @@
 import { FormGroup } from '@admin-bro/design-system'
+import { withNotice } from 'admin-bro'
 import React from 'react'
 
 import {
@@ -81,4 +82,4 @@ const CaptchaSettings: React.FC<CommonSettingsProps> = (props) => {
   )
 }
 
-export default CaptchaSettings
+export default withNotice(CaptchaSettings)

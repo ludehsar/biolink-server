@@ -1,4 +1,5 @@
 import { FormGroup } from '@admin-bro/design-system'
+import { withNotice } from 'admin-bro'
 import React from 'react'
 
 import {
@@ -118,4 +119,4 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
   )
 }
 
-export default BusinessSettings
+export default withNotice(BusinessSettings)

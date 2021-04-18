@@ -1,4 +1,5 @@
 import { FormGroup } from '@admin-bro/design-system'
+import { withNotice } from 'admin-bro'
 import React from 'react'
 
 import {
@@ -68,4 +69,4 @@ const NotificationSettings: React.FC<CommonSettingsProps> = (props) => {
   )
 }
 
-export default NotificationSettings
+export default withNotice(NotificationSettings)

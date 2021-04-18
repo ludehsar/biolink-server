@@ -1,4 +1,5 @@
 import { FormGroup } from '@admin-bro/design-system'
+import { withNotice } from 'admin-bro'
 import React from 'react'
 
 import {
@@ -24,11 +25,11 @@ const PaymentSettings: React.FC<CommonSettingsProps> = (props) => {
           <FormInput as="option" value={0}>
             No
           </FormInput>
-          <FormHelper>
-            Disabling the payment system will remove all the options for the users to upgrade their
-            accounts or see any payment related information.
-          </FormHelper>
         </FormInput>
+        <FormHelper>
+          Disabling the payment system will remove all the options for the users to upgrade their
+          accounts or see any payment related information.
+        </FormHelper>
       </FormGroup>
 
       <FormGroup>
@@ -128,4 +129,4 @@ const PaymentSettings: React.FC<CommonSettingsProps> = (props) => {
   )
 }
 
-export default PaymentSettings
+export default withNotice(PaymentSettings)
