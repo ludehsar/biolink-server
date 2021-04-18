@@ -9,6 +9,9 @@ export class CaptchaSystemSettings {
   enableCaptchaOnLoginPage!: string
 
   @Field(() => String, { nullable: true })
+  enableCaptchaOnRegisterPage!: string
+
+  @Field(() => String, { nullable: true })
   enableCaptchaOnLostPasswordPage!: string
 
   @Field(() => String, { nullable: true })

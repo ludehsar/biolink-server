@@ -8,6 +8,7 @@ export const fetchCaptchaSettings = (option: BaseRecord): CaptchaSystemSettings 
   const captchaSystemSettings: CaptchaSystemSettings = {
     captchaType: option.params['value.captchaType'],
     enableCaptchaOnLoginPage: option.params['value.enableCaptchaOnLoginPage'],
+    enableCaptchaOnRegisterPage: option.params['value.enableCaptchaOnRegisterPage'],
     enableCaptchaOnLostPasswordPage: option.params['value.enableCaptchaOnLostPasswordPage'],
     enableCaptchaOnResendActivationPage: option.params['value.enableCaptchaOnResendActivationPage'],
   }
