@@ -40,6 +40,8 @@ const MainSettings: React.FC<CommonSettingsProps> = (props) => {
         initialValues={{
           title: (value as MainSystemSettings)?.title || '',
           defaultLanguage: (value as MainSystemSettings)?.defaultLanguage || 'english',
+          websiteLogoUrl: (value as MainSystemSettings)?.websiteLogoUrl || '',
+          faviconLogoUrl: (value as MainSystemSettings)?.faviconLogoUrl || '',
           defaultTimezone: (value as MainSystemSettings)?.defaultTimezone || 'utc',
           enableEmailConfirmation: (value as MainSystemSettings)?.enableEmailConfirmation || 'no',
           enableNewUserRegistration:
