@@ -14,48 +14,51 @@ export class PlanSettings {
   @Field(() => Int, { nullable: true })
   totalCustomDomainLimit!: number
 
-  @Field(() => Int, { nullable: true })
-  customBackHalfEnabled!: number
+  @Field(() => String, { nullable: true })
+  customBackHalfEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  noAdsEnabled!: number
+  @Field(() => String, { nullable: true })
+  noAdsEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  removableBrandingEnabled!: number
+  @Field(() => String, { nullable: true })
+  removableBrandingEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  customFooterBrandingEnabled!: number
+  @Field(() => String, { nullable: true })
+  customFooterBrandingEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  coloredLinksEnabled!: number
+  @Field(() => String, { nullable: true })
+  coloredLinksEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  googleAnalyticsEnabled!: number
+  @Field(() => String, { nullable: true })
+  googleAnalyticsEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  facebookPixelEnabled!: number
+  @Field(() => String, { nullable: true })
+  facebookPixelEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  customBackgroundEnabled!: number
+  @Field(() => String, { nullable: true })
+  customBackgroundEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  linksSchedulingEnabled!: number
+  @Field(() => String, { nullable: true })
+  verifiedCheckmarkEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  seoEnabled!: number
+  @Field(() => String, { nullable: true })
+  linksSchedulingEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  socialEnabled!: number
+  @Field(() => String, { nullable: true })
+  seoEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  utmParametersEnabled!: number
+  @Field(() => String, { nullable: true })
+  socialEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  passwordProtectionEnabled!: number
+  @Field(() => String, { nullable: true })
+  utmParametersEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  sensitiveContentWarningEnabled!: number
+  @Field(() => String, { nullable: true })
+  passwordProtectionEnabled!: string
 
-  @Field(() => Int, { nullable: true })
-  leapLinkEnabled!: number
+  @Field(() => String, { nullable: true })
+  sensitiveContentWarningEnabled!: string
+
+  @Field(() => String, { nullable: true })
+  leapLinkEnabled!: string
 }
