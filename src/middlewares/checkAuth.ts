@@ -24,6 +24,9 @@ const generateNewToken = async (user: User, res: Response): Promise<void> => {
 }
 
 const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => {
+  // Removing userId from request
+  ;(context.req as any).userId = null
+
   const refreshToken = context.req.cookies.refresh_token
   const accessToken = context.req.cookies.access_token
 
@@ -45,10 +48,11 @@ const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => 
       invalidateToken(context.res)
       throw new Error('User not authenticated.')
     } else {
+      ;(context.req as any).userId = user.id
       return next()
     }
-  } catch {
-    console.log('Rejected by access token')
+  } catch (err) {
+    // Pass for checking if refresh token is available
   }
 
   if (!refreshToken) {
@@ -74,6 +78,7 @@ const checkAuth: MiddlewareFn<MyContext> = async ({ context }, next: NextFn) => 
     }
 
     generateNewToken(user, context.res)
+    ;(context.req as any).userId = user.id
   } catch {
     throw new Error('User not authenticated')
   }

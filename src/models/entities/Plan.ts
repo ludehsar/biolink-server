@@ -25,25 +25,13 @@ export class Plan extends BaseEntity {
   @Column({ unique: true })
   name!: string
 
-  @Field(() => Boolean, { nullable: true })
-  @Column({ default: false })
-  monthlyPriceEnabled!: boolean
-
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
   monthlyPrice!: number
 
-  @Field(() => Boolean, { nullable: true })
-  @Column({ default: false })
-  annualPriceEnabled!: boolean
-
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
   annualPrice!: number
-
-  @Field(() => Boolean, { nullable: true })
-  @Column({ default: false })
-  lifetimePriceEnabled!: boolean
 
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })

@@ -19,6 +19,20 @@ export const planOptions: ResourceOptions = {
     'enabledStatus',
     'visibilityStatus',
   ],
+  editProperties: [
+    'name',
+    'monthlyPrice',
+    'annualPrice',
+    'lifetimePrice',
+    'enabledStatus',
+    'visibilityStatus',
+    'settings',
+  ],
+  actions: {
+    show: {
+      isVisible: false,
+    },
+  },
   navigation: {
     icon: 'Event',
   },
