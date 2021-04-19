@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormSubmitButton,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { savePaymentSettings } from '../actions/paymentSettingsAction'
 import { PaymentSystemSettings } from '../../../models/jsonTypes/PaymentSystemSettings'

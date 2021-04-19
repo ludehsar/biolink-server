@@ -9,7 +9,7 @@ import { domainOptions, domainResource } from './domain.options'
 import { projectOptions, projectResource } from './project.options'
 import { codeOptions, codeResource } from './code.options'
 import { taxOptions, taxResource } from './tax.options'
-import { planOptions, planResource } from './plan.options'
+import { planOptions, planResource } from './plan/plan.options'
 import { settingsOptions, settingsResource } from './settings/settings.options'
 
 const options: AdminBroOptions = {

@@ -11,7 +11,7 @@ import {
   FormSubmitButton,
   FormTextArea,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveEmailNotificationSettings } from '../actions/notificationSettingsAction'
 import { NotificationSystemSettings } from '../../../models/jsonTypes/NotificationSystemSettings'

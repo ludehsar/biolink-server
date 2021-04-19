@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormSubmitButton,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { saveEmailSettings } from '../actions/emailSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'

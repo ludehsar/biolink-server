@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormSubmitButton,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { FacebookSystemSettings } from '../../../models/jsonTypes/FacebookSystemSettings'
 import { saveFacebookLoginSettings } from '../actions/facebookSettingsAction'

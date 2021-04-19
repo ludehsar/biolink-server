@@ -11,7 +11,7 @@ import {
   FormSubmitButton,
   FormTextArea,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveAdsSettings } from '../actions/adsSettingsAction'
 import { AdsSystemSettings } from '../../../models/jsonTypes/AdsSystemSettings'

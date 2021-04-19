@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormSubmitButton,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { saveCaptchaSettings } from '../actions/captchaSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { CaptchaSystemSettings } from '../../../models/jsonTypes/CaptchaSystemSettings'

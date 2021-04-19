@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormSubmitButton,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveSocialSettings } from '../actions/socialSettingsAction'
 import { SocialSystemSettings } from '../../../models/jsonTypes/SocialSystemSettings'

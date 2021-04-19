@@ -13,7 +13,7 @@ import {
   FormSubmitButton,
   FormTextArea,
   SettingsTabContainer,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 
 const LinkSettings: React.FC<CommonSettingsProps> = (props) => {

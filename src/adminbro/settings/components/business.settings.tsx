@@ -11,7 +11,7 @@ import {
   FormSubmitButton,
   SettingsTabContainer,
   Title,
-} from './CommonSettings.styled'
+} from '../../shared/components/Common.styled'
 import { FormCol2, FormCol4, FormCol6, FormRow } from './business.settings.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveBusinessSettings } from '../actions/businessSettingsAction'
