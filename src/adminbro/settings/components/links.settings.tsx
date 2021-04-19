@@ -43,7 +43,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) =>
             (value as LinkSystemSettings)?.enableLinkShortenerSystem || 'no',
           enableCustomDomainSystem: (value as LinkSystemSettings)?.enableCustomDomainSystem || 'no',
           enableMainDomainUsage: (value as LinkSystemSettings)?.enableMainDomainUsage || 'no',
-          blacklistedDomains: (((value as LinkSystemSettings)?.blacklistedDomains as []) || [])
+          blacklistedDomains: ((value as LinkSystemSettings)?.blacklistedDomains || [])
             .join('\n')
             .toString(),
           blacklistedKeywords: ((value as LinkSystemSettings)?.blacklistedKeywords || [])

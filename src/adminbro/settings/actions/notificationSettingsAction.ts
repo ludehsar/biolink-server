@@ -5,8 +5,16 @@ import { NotificationSystemSettings } from '../../../models/jsonTypes/Notificati
 const api = new ApiClient()
 
 export const fetchEmailNotificationSettings = (option: BaseRecord): NotificationSystemSettings => {
+  let id = 0
+  const emailsToBeNotified = []
+
+  while (option.params[`value.emailsToBeNotified.${id}`] !== undefined) {
+    emailsToBeNotified.push(option.params[`value.emailsToBeNotified.${id}`])
+    id++
+  }
+
   const notificationSystemSettings: NotificationSystemSettings = {
-    emailsToBeNotified: option.params['value.emailsToBeNotified'],
+    emailsToBeNotified,
     emailOnNewUser: option.params['value.emailOnNewUser'],
     emailOnNewPayment: option.params['value.emailOnNewPayment'],
     emailOnNewCustomDomain: option.params['value.emailOnNewCustomDomain'],
