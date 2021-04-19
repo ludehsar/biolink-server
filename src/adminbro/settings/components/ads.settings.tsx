@@ -16,8 +16,8 @@ import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveAdsSettings } from '../actions/adsSettingsAction'
 import { AdsSystemSettings } from '../../../models/jsonTypes/AdsSystemSettings'
 
-const AdsSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
-  const { className, id, value } = props
+const AdsSettings: React.FC<CommonSettingsProps> = (props) => {
+  const { className, id, value, addNotice } = props
 
   const handleSubmit = async (values: AdsSystemSettings): Promise<void> => {
     await saveAdsSettings(values).catch(() => {

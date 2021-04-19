@@ -14,8 +14,8 @@ import { saveCaptchaSettings } from '../actions/captchaSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { CaptchaSystemSettings } from '../../../models/jsonTypes/CaptchaSystemSettings'
 
-const CaptchaSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
-  const { className, id, value } = props
+const CaptchaSettings: React.FC<CommonSettingsProps> = (props) => {
+  const { className, id, value, addNotice } = props
 
   const handleSubmit = async (values: CaptchaSystemSettings): Promise<void> => {
     await saveCaptchaSettings(values).catch(() => {

@@ -17,8 +17,8 @@ import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveBusinessSettings } from '../actions/businessSettingsAction'
 import { BusinessSystemSettings } from '../../../models/jsonTypes/BusinessSystemSettings'
 
-const BusinessSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
-  const { className, id, value } = props
+const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
+  const { className, id, value, addNotice } = props
 
   const handleSubmit = async (values: BusinessSystemSettings): Promise<void> => {
     await saveBusinessSettings(values).catch(() => {

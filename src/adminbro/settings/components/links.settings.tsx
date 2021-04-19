@@ -16,8 +16,8 @@ import {
 } from './CommonSettings.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 
-const LinkSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
-  const { className, id, value } = props
+const LinkSettings: React.FC<CommonSettingsProps> = (props) => {
+  const { className, id, value, addNotice } = props
 
   const handleSubmit = async (values: LinkSystemSettings): Promise<void> => {
     await saveLinkSettings(values).catch(() => {

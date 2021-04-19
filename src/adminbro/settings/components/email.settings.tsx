@@ -15,8 +15,8 @@ import { saveEmailSettings } from '../actions/emailSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'
 
-const EmailSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
-  const { className, id, value } = props
+const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
+  const { className, id, value, addNotice } = props
 
   const handleSubmit = async (values: EmailSystemSettings): Promise<void> => {
     await saveEmailSettings(values).catch(() => {
