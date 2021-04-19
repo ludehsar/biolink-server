@@ -1,5 +1,6 @@
 import { FormGroup } from '@admin-bro/design-system'
 import { withNotice } from 'admin-bro'
+import { Formik, Form } from 'formik'
 import React from 'react'
 
 import {
@@ -10,21 +11,62 @@ import {
   FormSubmitButton,
   SettingsTabContainer,
 } from './CommonSettings.styled'
+import { saveEmailSettings } from '../actions/emailSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
+import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'
 
-const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
-  const { className, id } = props
+const EmailSettings: React.FC<CommonSettingsProps> = ({ addNotice, ...props }) => {
+  const { className, id, value } = props
+
+  const handleSubmit = async (values: EmailSystemSettings): Promise<void> => {
+    await saveEmailSettings(values).catch(() => {
+      addNotice({
+        message: 'Unable to save data to the database.',
+        type: 'error',
+      })
+      return
+    })
+    addNotice({
+      message: 'Successfully updated settings',
+      type: 'success',
+    })
+  }
+
   return (
     <SettingsTabContainer {...{ className, id }}>
-      <FormGroup>
-        <FormLabel>From Name</FormLabel>
-        <FormInput />
-        <FormHelper>This name will be used while sending mail to the users.</FormHelper>
-      </FormGroup>
+      <Formik
+        enableReinitialize={true}
+        initialValues={{
+          fromName: (value as EmailSystemSettings)?.fromName || '',
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          handleSubmit(values as EmailSystemSettings)
+          setSubmitting(false)
+          return
+        }}
+      >
+        {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+          <Form onSubmit={handleSubmit} method="post">
+            <FormGroup>
+              <FormLabel>From Name</FormLabel>
+              <FormInput
+                type="text"
+                name="fromName"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fromName}
+              />
+              <FormHelper>This name will be used while sending mail to the users.</FormHelper>
+            </FormGroup>
 
-      <FormCTAGroup>
-        <FormSubmitButton>Update</FormSubmitButton>
-      </FormCTAGroup>
+            <FormCTAGroup>
+              <FormSubmitButton type="submit" disabled={isSubmitting}>
+                Update
+              </FormSubmitButton>
+            </FormCTAGroup>
+          </Form>
+        )}
+      </Formik>
     </SettingsTabContainer>
   )
 }
