@@ -15,9 +15,10 @@ export class CategoryResolver {
   async fetchAllCategories(@Arg('options') options: CategoryInput): Promise<Category[]> {
     const categories = await getRepository(Category)
       .createQueryBuilder('category')
-      .where('category.categoryName like :categoryName', {
-        categoryName: `%${options.categoryName}%`,
+      .where('LOWER(category.categoryName) like :categoryName', {
+        categoryName: `%${options.categoryName.toLowerCase()}%`,
       })
+      .leftJoinAndSelect('category.biolinks', 'biolink')
       .limit(5)
       .getMany()
 

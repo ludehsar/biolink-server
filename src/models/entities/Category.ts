@@ -22,11 +22,9 @@ export class Category extends BaseEntity {
   @Column({ unique: true })
   categoryName!: string
 
-  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
-  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
 
