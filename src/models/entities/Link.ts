@@ -14,10 +14,9 @@ import {
 
 import { LinkSettings } from '../jsonTypes/LinkSettings'
 import { EnabledStatus } from '../enums/EnabledStatus'
-import { Project } from './Project'
 import { User } from './User'
-import { LinkType } from '../enums/LinkType'
 import { TrackLink } from './TrackLink'
+import { Biolink } from './Biolink'
 
 @ObjectType()
 @Entity()
@@ -25,10 +24,6 @@ export class Link extends BaseEntity {
   @Field(() => String)
   @PrimaryGeneratedColumn('uuid')
   id!: string
-
-  @Field(() => String, { nullable: true })
-  @Column({ type: 'enum', enum: LinkType, default: LinkType.Link })
-  linkType!: LinkType
 
   @Field(() => String, { nullable: true })
   @Column()
@@ -75,22 +70,10 @@ export class Link extends BaseEntity {
   @RelationId((link: Link) => link.user)
   userId!: string
 
-  @Field(() => Project, { nullable: true })
-  @ManyToOne(() => Project, (project) => project.links)
-  @JoinColumn({ name: 'projectId' })
-  project!: Project
-
-  @RelationId((link: Link) => link.project)
-  projectId!: string
-
-  @Field(() => Link, { nullable: true })
-  @OneToMany(() => Link, (link) => link.biolink)
-  links!: Link[]
-
-  @Field(() => Link, { nullable: true })
-  @ManyToOne(() => Link, (biolink) => biolink.links)
+  @Field(() => Biolink, { nullable: true })
+  @ManyToOne(() => Biolink, (biolink) => biolink.links)
   @JoinColumn({ name: 'biolinkId' })
-  biolink!: Link
+  biolink!: Biolink
 
   @RelationId((link: Link) => link.biolink)
   biolinkId!: string

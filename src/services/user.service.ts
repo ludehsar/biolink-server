@@ -1,10 +1,10 @@
-import { Response } from 'express'
 import * as argon2 from 'argon2'
+import { Response } from 'express'
 
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../config/cookie.config'
+import { LoginInput, RegisterInput, UserResponse } from '../resolvers/user'
+import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
-import { LoginInput, RegisterInput, UserResponse } from '../resolvers/types/user'
 
 export const registerUser = async (
   options: RegisterInput,
@@ -50,7 +50,6 @@ export const registerUser = async (
   try {
     const user = await User.create({
       email: options.email,
-      username: options.username,
       encryptedPassword: hashedPassword,
     }).save()
 

@@ -12,10 +12,11 @@ import cookieParser from 'cookie-parser'
 import { port } from './config/app.config'
 import corsOptions from './config/cors.config'
 import { HelloResolver } from './resolvers/hello'
-import { UserResolver } from './resolvers/user.resolver'
+import { UserResolver } from './resolvers/user'
 import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
+import { CategoryResolver } from './resolvers/category'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -36,7 +37,7 @@ const main = async (): Promise<void> => {
   // Configuring apollo server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, CategoryResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res }),

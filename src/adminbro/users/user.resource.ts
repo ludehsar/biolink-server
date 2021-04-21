@@ -7,15 +7,13 @@ export const userOptions: ResourceOptions = {
   listProperties: [
     'name',
     'email',
-    'username',
-    'categoryId',
     'userRole',
     'accountStatus',
     'country',
     'createdAt',
     'updatedAt',
   ],
-  editProperties: ['name', 'email', 'username', 'categoryId', 'userRole', 'password'],
+  editProperties: ['name', 'email', 'userRole', 'password'],
   showProperties: [
     'userRole',
     'email',
@@ -29,10 +27,8 @@ export const userOptions: ResourceOptions = {
     'totalLogin',
   ],
   filterProperties: [
-    'username',
     'name',
     'email',
-    'categoryId',
     'emailVerifiedAt',
     'userRole',
     'accountStatus',

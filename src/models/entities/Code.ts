@@ -4,14 +4,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
-import { Plan } from './Plan'
 import { CodeType } from '../enums/CodeType'
 
 @ObjectType()
@@ -48,13 +44,4 @@ export class Code extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
-
-  // Relationships
-  @Field(() => Plan, { nullable: true })
-  @ManyToOne(() => Plan, (plan) => plan.codes)
-  @JoinColumn({ name: 'planId' })
-  plan!: Plan
-
-  @RelationId((code: Code) => code.plan)
-  planId!: number
 }

@@ -6,7 +6,7 @@ import { blacklistOptions, blacklistResource } from './blacklist.options'
 import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
 import { linkOptions, linkResource } from './link.options'
 import { domainOptions, domainResource } from './domain.options'
-import { projectOptions, projectResource } from './project.options'
+import { biolinkOptions, biolinkResource } from './biolink.options'
 import { codeOptions, codeResource } from './code.options'
 import { taxOptions, taxResource } from './tax.options'
 import { planOptions, planResource } from './plan/plan.options'
@@ -23,8 +23,8 @@ const options: AdminBroOptions = {
       options: categoryOptions,
     },
     {
-      resource: projectResource,
-      options: projectOptions,
+      resource: biolinkResource,
+      options: biolinkOptions,
     },
     {
       resource: premiumUsernameResource,

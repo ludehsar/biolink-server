@@ -16,9 +16,8 @@ import { Billing } from '../jsonTypes/Billing'
 import { Domain } from './Domain'
 import { UserRole } from '../enums/UserRole'
 import { Plan } from './Plan'
-import { Project } from './Project'
+import { Biolink } from './Biolink'
 import { Link } from './Link'
-import { Category } from './Category'
 import { ActiveStatus } from '../enums/ActiveStatus'
 import { TrackLink } from './TrackLink'
 import { UserLogs } from './UserLogs'
@@ -35,17 +34,12 @@ export class User extends BaseEntity {
   email!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
-  username!: string
-
-  @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
   emailVerifiedAt!: Date
 
   @Column({ nullable: true, unique: true })
   emailActivationCode!: string
 
-  @Field(() => String, { nullable: true })
   @Column()
   encryptedPassword!: string
 
@@ -56,7 +50,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   name!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: UserRole, default: UserRole.User })
   userRole!: UserRole
 
@@ -64,15 +57,12 @@ export class User extends BaseEntity {
   @Column({ type: 'json', nullable: true })
   billing!: Billing
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   tokenCode!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   authenticatorSecret!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   facebookId!: string
 
@@ -88,7 +78,6 @@ export class User extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   planTrialDone!: boolean
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   paymentSubscriptionId!: string
 
@@ -125,23 +114,23 @@ export class User extends BaseEntity {
   updatedAt!: Date
 
   // Relationships
-  @Field(() => Project, { nullable: true })
-  @OneToMany(() => Project, (project) => project.user)
-  projects!: Project[]
+  @Field(() => [Biolink], { nullable: true })
+  @OneToMany(() => Biolink, (biolink) => biolink.user)
+  biolinks!: Biolink[]
 
-  @Field(() => Domain, { nullable: true })
+  @Field(() => [Domain], { nullable: true })
   @OneToMany(() => Domain, (domain) => domain.user)
   domains!: Domain[]
 
-  @Field(() => UserLogs, { nullable: true })
+  @Field(() => [UserLogs], { nullable: true })
   @OneToMany(() => UserLogs, (activity) => activity.user)
   activities!: UserLogs[]
 
-  @Field(() => Link, { nullable: true })
+  @Field(() => [Link], { nullable: true })
   @OneToMany(() => Link, (link) => link.user)
   links!: Link[]
 
-  @Field(() => TrackLink, { nullable: true })
+  @Field(() => [TrackLink], { nullable: true })
   @OneToMany(() => TrackLink, (trackLink) => trackLink.user)
   trackLinks!: TrackLink[]
 
@@ -152,12 +141,4 @@ export class User extends BaseEntity {
 
   @RelationId((user: User) => user.plan)
   planId!: number
-
-  @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.users)
-  @JoinColumn({ name: 'categoryId' })
-  category!: Category
-
-  @RelationId((user: User) => user.category)
-  categoryId!: number
 }

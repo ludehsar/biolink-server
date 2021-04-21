@@ -12,7 +12,7 @@ import {
 
 import { User } from './User'
 import { Link } from './Link'
-import { Project } from './Project'
+import { Biolink } from './Biolink'
 
 @ObjectType()
 @Entity()
@@ -90,11 +90,11 @@ export class TrackLink extends BaseEntity {
   @RelationId((trackLink: TrackLink) => trackLink.link)
   linkId!: string
 
-  @Field(() => Project, { nullable: true })
-  @ManyToOne(() => Project, (project) => project.trackLinks)
-  @JoinColumn({ name: 'projectId' })
-  project!: Project
+  @Field(() => Biolink, { nullable: true })
+  @ManyToOne(() => Biolink, (project) => project.trackLinks)
+  @JoinColumn({ name: 'biolinkId' })
+  biolink!: Biolink
 
-  @RelationId((trackLink: TrackLink) => trackLink.project)
-  projectId!: string
+  @RelationId((trackLink: TrackLink) => trackLink.biolink)
+  biolinkId!: string
 }

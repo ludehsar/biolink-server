@@ -1,10 +1,64 @@
-import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import {
+  Arg,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from 'type-graphql'
 
 import { User } from '../models/entities/User'
-import { UserResponse, LoginInput, RegisterInput } from './types/user'
 import { MyContext } from '../MyContext'
 import checkAuth from '../middlewares/checkAuth'
 import { loginUser, logoutUser, registerUser } from '../services/user.service'
+
+@InputType()
+export class LoginInput {
+  @Field()
+  emailOrUsername!: string
+
+  @Field()
+  password!: string
+}
+
+@InputType()
+export class RegisterInput {
+  @Field()
+  name!: string
+
+  @Field()
+  email!: string
+
+  @Field()
+  categoryid!: string
+
+  @Field()
+  username!: string
+
+  @Field()
+  password!: string
+}
+
+@ObjectType()
+export class FieldError {
+  @Field()
+  field!: string
+
+  @Field()
+  message!: string
+}
+
+@ObjectType()
+export class UserResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[]
+
+  @Field(() => User, { nullable: true })
+  user?: User
+}
 
 @Resolver()
 export class UserResolver {
