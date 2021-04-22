@@ -1,3 +1,4 @@
+import { validate } from 'class-validator'
 import * as argon2 from 'argon2'
 
 import { LoginInput, RegisterInput, UserResponse } from '../resolvers/user.resolver'
@@ -5,11 +6,55 @@ import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/c
 import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { MyContext } from '../MyContext'
+import { Category } from '../models/entities/Category'
+import { Biolink } from '../models/entities/Biolink'
+import { createNewBiolink } from './biolink.service'
+import { BiolinkInput } from '../resolvers/biolink.resolver'
 
 export const registerUser = async (
   options: RegisterInput,
   context: MyContext
 ): Promise<UserResponse> => {
+  // Predefined validation errors
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  // Category not found
+  const category = await Category.findOne({ where: { id: options.categoryId } })
+
+  if (!category) {
+    return {
+      errors: [
+        {
+          field: 'categoryId',
+          message: 'Category not found',
+        },
+      ],
+    }
+  }
+
+  // Username already in use
+  const biolink = await Biolink.findOne({ where: { username: options.username } })
+
+  if (biolink) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Username already in use',
+        },
+      ],
+    }
+  }
+
   const hashedPassword = await argon2.hash(options.password)
 
   try {
@@ -17,6 +62,16 @@ export const registerUser = async (
       email: options.email,
       encryptedPassword: hashedPassword,
     }).save()
+
+    const biolinkRes = await createNewBiolink(
+      { categoryId: options.categoryId, username: options.username } as BiolinkInput,
+      user
+    )
+
+    if (biolinkRes.errors) {
+      await user.remove()
+      return { errors: biolinkRes.errors }
+    }
 
     // Implement jwt
     const { refreshToken, accessToken } = await createAuthTokens(user)
@@ -26,7 +81,6 @@ export const registerUser = async (
 
     return { user }
   } catch (err) {
-    console.log(err)
     switch (err.constraint) {
       case 'UQ_e12875dfb3b1d92d7d7c5377e22': {
         return {
@@ -42,7 +96,7 @@ export const registerUser = async (
         return {
           errors: [
             {
-              field: 'username',
+              field: 'email',
               message: 'Something went wrong',
             },
           ],

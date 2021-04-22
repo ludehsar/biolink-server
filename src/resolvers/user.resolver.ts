@@ -1,10 +1,9 @@
-import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator'
+import { IsEmail, IsInt, IsNotEmpty, Matches, MinLength } from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
 import { loginUser, logoutUser, registerUser } from '../services/user.service'
-import { BiolinkInput } from './biolink.resolver'
 import { FieldError } from './commonTypes'
 import CurrentUser from '../decorators/currentUser'
 
@@ -21,7 +20,6 @@ export class LoginInput {
 export class RegisterInput {
   @Field()
   @IsNotEmpty()
-  @IsAlpha()
   name!: string
 
   @Field()
@@ -35,7 +33,14 @@ export class RegisterInput {
   password!: string
 
   @Field()
-  biolinkInput!: BiolinkInput
+  @IsNotEmpty()
+  @Matches('^[a-zA-Z0-9_.]{4,20}$')
+  username!: string
+
+  @Field()
+  @IsNotEmpty()
+  @IsInt()
+  categoryId!: number
 }
 
 @ObjectType()

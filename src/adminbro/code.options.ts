@@ -3,34 +3,15 @@ import { ResourceOptions } from 'admin-bro'
 import { Code } from '../models/entities/Code'
 
 export const codeOptions: ResourceOptions = {
-  listProperties: [
-    'type',
-    'code',
-    'discount',
-    'quantity',
-    'expireDate',
-    'planId',
-    'createdAt',
-    'updatedAt',
-  ],
-  editProperties: ['type', 'code', 'discount', 'quantity', 'expireDate', 'planId'],
-  showProperties: [
-    'type',
-    'code',
-    'discount',
-    'quantity',
-    'expireDate',
-    'planId',
-    'createdAt',
-    'updatedAt',
-  ],
+  listProperties: ['type', 'code', 'discount', 'quantity', 'expireDate', 'createdAt', 'updatedAt'],
+  editProperties: ['type', 'code', 'discount', 'quantity', 'expireDate'],
+  showProperties: ['type', 'code', 'discount', 'quantity', 'expireDate', 'createdAt', 'updatedAt'],
   filterProperties: [
     'type',
     'code',
     'discount',
     'quantity',
     'expireDate',
-    'planId',
     'createdAt',
     'updatedAt',
   ],

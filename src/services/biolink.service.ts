@@ -1,8 +1,9 @@
+import { validate } from 'class-validator'
+
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Category } from '../models/entities/Category'
 import { BiolinkInput, BiolinkResponse } from '../resolvers/biolink.resolver'
-import { validate } from 'class-validator'
 
 export const createNewBiolink = async (
   options: BiolinkInput,
@@ -15,7 +16,7 @@ export const createNewBiolink = async (
       return {
         errors: validationErrors.map((err) => ({
           field: err.property,
-          message: err.constraints?.matches || 'Not correctly formatted',
+          message: 'Not correctly formatted',
         })),
       }
     }

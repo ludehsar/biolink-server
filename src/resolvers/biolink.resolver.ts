@@ -10,15 +10,13 @@ import { createNewBiolink } from '../services/biolink.service'
 @InputType()
 export class BiolinkInput {
   @Field()
-  @IsNotEmpty({ message: 'Username cannot be empty' })
-  @Matches('^[a-zA-Z0-9_.]{4,20}$', undefined, {
-    message: 'Username is not valid',
-  })
+  @IsNotEmpty()
+  @Matches('^[a-zA-Z0-9_.]{4,20}$')
   username!: string
 
   @Field()
-  @IsNotEmpty({ message: 'Must include a category' })
-  @IsInt({ message: 'Inappropriate category' })
+  @IsNotEmpty()
+  @IsInt()
   categoryId!: number
 }
 

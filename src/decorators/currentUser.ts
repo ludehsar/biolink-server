@@ -33,7 +33,7 @@ export default function CurrentUser(): ParameterDecorator {
       const refreshToken = context.req.cookies.refresh_token
       const accessToken = context.req.cookies.access_token
 
-      if (accessToken && refreshToken) {
+      if (accessToken) {
         try {
           const data = verify(accessToken, accessTokenSecret) as DataProps
 
