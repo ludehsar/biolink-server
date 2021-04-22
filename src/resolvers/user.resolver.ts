@@ -1,24 +1,17 @@
-import {
-  Arg,
-  Ctx,
-  Field,
-  InputType,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-  UseMiddleware,
-} from 'type-graphql'
+import { IsAlpha, IsEmail, IsNotEmpty, MinLength } from 'class-validator'
+import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
-import checkAuth from '../middlewares/checkAuth'
 import { loginUser, logoutUser, registerUser } from '../services/user.service'
+import { BiolinkInput } from './biolink.resolver'
+import { FieldError } from './commonTypes'
+import CurrentUser from '../decorators/currentUser'
 
 @InputType()
 export class LoginInput {
   @Field()
-  emailOrUsername!: string
+  email!: string
 
   @Field()
   password!: string
@@ -27,28 +20,22 @@ export class LoginInput {
 @InputType()
 export class RegisterInput {
   @Field()
+  @IsNotEmpty()
+  @IsAlpha()
   name!: string
 
   @Field()
+  @IsNotEmpty()
+  @IsEmail()
   email!: string
 
   @Field()
-  categoryid!: string
-
-  @Field()
-  username!: string
-
-  @Field()
+  @IsNotEmpty()
+  @MinLength(8)
   password!: string
-}
-
-@ObjectType()
-export class FieldError {
-  @Field()
-  field!: string
 
   @Field()
-  message!: string
+  biolinkInput!: BiolinkInput
 }
 
 @ObjectType()
@@ -63,29 +50,24 @@ export class UserResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  @UseMiddleware(checkAuth)
-  async me(@Ctx() { req }: MyContext): Promise<User | undefined | null> {
-    if (!(req as any).userId) {
-      return null
-    }
-
-    return await User.findOne((req as any).userId)
+  me(@CurrentUser() user: User): User | null {
+    return user
   }
 
   @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: RegisterInput,
-    @Ctx() { res }: MyContext
+    @Ctx() context: MyContext
   ): Promise<UserResponse> {
-    return await registerUser(options, res)
+    return await registerUser(options, context)
   }
 
   @Mutation(() => UserResponse)
   async login(
     @Arg('options') options: LoginInput,
-    @Ctx() { res }: MyContext
+    @Ctx() context: MyContext
   ): Promise<UserResponse> {
-    return await loginUser(options, res)
+    return await loginUser(options, context)
   }
 
   // @Mutation(() => Boolean)
@@ -107,8 +89,7 @@ export class UserResolver {
   // }
 
   @Mutation(() => Boolean)
-  @UseMiddleware(checkAuth)
-  async logout(@Ctx() { res }: MyContext): Promise<boolean> {
-    return await logoutUser(res)
+  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<boolean> {
+    return await logoutUser(context, user)
   }
 }
