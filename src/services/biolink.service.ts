@@ -3,10 +3,10 @@ import { validate } from 'class-validator'
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Category } from '../models/entities/Category'
-import { BiolinkInput, BiolinkResponse } from '../resolvers/biolink.resolver'
+import { NewBiolinkInput, BiolinkResponse } from '../resolvers/biolink.resolver'
 
 export const createNewBiolink = async (
-  options: BiolinkInput,
+  options: NewBiolinkInput,
   user: User
 ): Promise<BiolinkResponse> => {
   try {
@@ -77,4 +77,37 @@ export const createNewBiolink = async (
       }
     }
   }
+}
+
+export const getBiolinkFromUsername = async (username: string): Promise<BiolinkResponse> => {
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  return { biolink }
+}
+
+export const removeBiolink = async (id: string, user: User): Promise<boolean> => {
+  const biolink = await Biolink.findOne(id)
+
+  if (!biolink) {
+    return Promise.resolve(false)
+  }
+
+  if (biolink.userId !== user.id) {
+    return Promise.resolve(false)
+  }
+
+  await biolink.softRemove()
+
+  return Promise.resolve(true)
 }

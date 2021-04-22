@@ -9,7 +9,7 @@ import { MyContext } from '../MyContext'
 import { Category } from '../models/entities/Category'
 import { Biolink } from '../models/entities/Biolink'
 import { createNewBiolink } from './biolink.service'
-import { BiolinkInput } from '../resolvers/biolink.resolver'
+import { NewBiolinkInput } from '../resolvers/biolink.resolver'
 
 export const registerUser = async (
   options: RegisterInput,
@@ -55,7 +55,7 @@ export const registerUser = async (
     }
   }
 
-  const hashedPassword = await argon2.hash(options.password)
+  const hashedPassword = await argon2.hash(options.password as string)
 
   try {
     const user = await User.create({
@@ -64,7 +64,7 @@ export const registerUser = async (
     }).save()
 
     const biolinkRes = await createNewBiolink(
-      { categoryId: options.categoryId, username: options.username } as BiolinkInput,
+      { categoryId: options.categoryId, username: options.username } as NewBiolinkInput,
       user
     )
 
@@ -107,6 +107,18 @@ export const registerUser = async (
 }
 
 export const loginUser = async (options: LoginInput, context: MyContext): Promise<UserResponse> => {
+  // Predefined validation errors
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   const user = await User.findOne({ where: { email: options.email } })
 
   if (!user) {
@@ -114,13 +126,13 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
       errors: [
         {
           field: 'email',
-          message: 'User with this email or username does not exist',
+          message: 'User with this email does not exist',
         },
       ],
     }
   }
 
-  const passwordVerified = await argon2.verify(user.encryptedPassword, options.password)
+  const passwordVerified = await argon2.verify(user.encryptedPassword, options.password as string)
 
   if (!passwordVerified) {
     return {
@@ -144,9 +156,9 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
 
 export const logoutUser = async (context: MyContext, user: User): Promise<boolean> => {
   if (!user) return Promise.resolve(false)
-  return new Promise((resolve) => {
-    context.res.cookie('refresh_token', '', refreshTokenCookieOptions)
-    context.res.cookie('access_token', '', accessTokenCookieOptions)
-    resolve(true)
-  })
+  user.tokenCode = ''
+  await user.save()
+  context.res.cookie('refresh_token', '', refreshTokenCookieOptions)
+  context.res.cookie('access_token', '', accessTokenCookieOptions)
+  return Promise.resolve(true)
 }

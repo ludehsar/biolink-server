@@ -12,7 +12,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-import { LinkSettings } from '../jsonTypes/LinkSettings'
 import { EnabledStatus } from '../enums/EnabledStatus'
 import { User } from './User'
 import { TrackLink } from './TrackLink'
@@ -32,10 +31,6 @@ export class Link extends BaseEntity {
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })
   clicks!: number
-
-  @Field(() => LinkSettings, { nullable: true })
-  @Column({ type: 'json', nullable: true })
-  settings!: LinkSettings
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })

@@ -10,37 +10,40 @@ import CurrentUser from '../decorators/currentUser'
 @InputType()
 export class LoginInput {
   @Field()
-  email!: string
+  @IsNotEmpty()
+  @IsEmail()
+  email?: string
 
   @Field()
-  password!: string
+  @IsNotEmpty()
+  password?: string
 }
 
 @InputType()
 export class RegisterInput {
   @Field()
   @IsNotEmpty()
-  name!: string
+  name?: string
 
   @Field()
   @IsNotEmpty()
   @IsEmail()
-  email!: string
+  email?: string
 
   @Field()
   @IsNotEmpty()
   @MinLength(8)
-  password!: string
+  password?: string
 
   @Field()
   @IsNotEmpty()
   @Matches('^[a-zA-Z0-9_.]{4,20}$')
-  username!: string
+  username?: string
 
   @Field()
   @IsNotEmpty()
   @IsInt()
-  categoryId!: number
+  categoryId?: number
 }
 
 @ObjectType()

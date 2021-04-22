@@ -3,12 +3,14 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -16,17 +18,47 @@ import { Category } from './Category'
 import { Link } from './Link'
 import { TrackLink } from './TrackLink'
 import { User } from './User'
+import { LinkSettings } from '../jsonTypes/LinkSettings'
 
 @ObjectType()
 @Entity()
+@Unique(['username', 'deletedAt'])
 export class Biolink extends BaseEntity {
   @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column()
   username!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  profilePhotoUrl!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  coverPhotoUrl!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  displayName!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  location!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  bio!: string
+
+  @Field(() => LinkSettings, { nullable: true })
+  @Column({ type: 'json', nullable: true })
+  settings!: LinkSettings
+
+  @Field(() => Boolean, { nullable: true })
+  @Column({ default: false })
+  addedToDirectory!: boolean
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
@@ -35,6 +67,9 @@ export class Biolink extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  deletedAt?: Date
 
   // Relationships
   @Field(() => User, { nullable: true })
