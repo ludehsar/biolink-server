@@ -18,6 +18,7 @@ import buildAdminRouter from './adminbro/admin.route'
 import { MyContext } from './MyContext'
 import { CategoryResolver } from './resolvers/category.resolver'
 import { BiolinkResolver } from './resolvers/biolink.resolver'
+import { LinkResolver } from './resolvers/link.resolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -38,7 +39,7 @@ const main = async (): Promise<void> => {
   // Configuring apollo server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, CategoryResolver, BiolinkResolver],
+      resolvers: [HelloResolver, UserResolver, CategoryResolver, BiolinkResolver, LinkResolver],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res }),
