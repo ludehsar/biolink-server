@@ -5,6 +5,11 @@ import { Biolink } from '../models/entities/Biolink'
 export const biolinkOptions: ResourceOptions = {
   listProperties: ['userId', 'username', 'categoryId', 'createdAt', 'updatedAt'],
   filterProperties: ['userId', 'username', 'categoryId', 'createdAt', 'updatedAt'],
+  properties: {
+    username: {
+      isTitle: true,
+    },
+  },
   actions: {
     new: {
       isVisible: false,

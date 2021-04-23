@@ -87,16 +87,74 @@ export const createLink = async (
     }
   }
 
-  const link = await Link.create({
-    linkType: options.linkType as LinkType,
-    url: options.url,
-    shortenedUrl: options.shortenedUrl ? options.shortenedUrl : '',
-    startDate: options.startDate,
-    endDate: options.endDate,
-    status: options.status as EnabledStatus,
-    biolink,
-    user,
-  }).save()
+  try {
+    const link = await Link.create({
+      linkType: options.linkType as LinkType,
+      url: options.url,
+      shortenedUrl: options.shortenedUrl ? options.shortenedUrl : '',
+      startDate: options.startDate,
+      endDate: options.endDate,
+      status: options.status as EnabledStatus,
+      biolink,
+      user,
+    }).save()
+
+    return { links: [link] }
+  } catch (err) {
+    switch (err.constraint) {
+      case 'UQ_d0d8043be438496bc31c73e9ed5': {
+        return {
+          errors: [
+            {
+              field: '',
+              message: 'Shortened URL already taken',
+            },
+          ],
+        }
+      }
+      default: {
+        return {
+          errors: [
+            {
+              field: '',
+              message: 'Something went wrong',
+            },
+          ],
+        }
+      }
+    }
+  }
+}
+
+export const removeLinkByShortenedUrl = async (
+  shortenedUrl: string,
+  user: User
+): Promise<LinkResponse> => {
+  const link = await Link.findOne({ where: { shortenedUrl } })
+
+  if (!link) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'No link found',
+        },
+      ],
+    }
+  }
+
+  if (!user || user.id !== link.userId) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'Not authorized',
+        },
+      ],
+    }
+  }
+
+  await link.softRemove()
 
   return { links: [link] }
 }

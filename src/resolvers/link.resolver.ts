@@ -2,7 +2,11 @@ import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'ty
 
 import { Link } from '../models/entities/Link'
 import { FieldError } from './commonTypes'
-import { createLink, getAllLinksFromBiolinkUsername } from '../services/link.service'
+import {
+  createLink,
+  getAllLinksFromBiolinkUsername,
+  removeLinkByShortenedUrl,
+} from '../services/link.service'
 import CurrentUser from '../decorators/currentUser'
 import { User } from '../models/entities/User'
 
@@ -54,5 +58,13 @@ export class LinkResolver {
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
     return await createLink(username, options, user)
+  }
+
+  @Mutation(() => LinkResponse)
+  async removeLinkByShortenedUrl(
+    @Arg('shortenedUrl') shortenedUrl: string,
+    @CurrentUser() user: User
+  ): Promise<LinkResponse> {
+    return await removeLinkByShortenedUrl(shortenedUrl, user)
   }
 }

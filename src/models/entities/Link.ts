@@ -35,7 +35,7 @@ export class Link extends BaseEntity {
   url!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
+  @Column({ unique: true, nullable: true })
   shortenedUrl!: string
 
   @Field(() => Int, { nullable: true })

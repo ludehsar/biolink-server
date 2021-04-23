@@ -58,7 +58,7 @@ export const createNewBiolink = async (
     return { biolink }
   } catch (err) {
     console.log(err.constraints)
-    switch (err.constraints) {
+    switch (err.constraint) {
       case 'UQ_2c53499f3b4932b85f4cf2e44ff': {
         return {
           errors: [
