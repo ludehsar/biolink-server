@@ -57,7 +57,6 @@ export const createNewBiolink = async (
 
     return { biolink }
   } catch (err) {
-    console.log(err.constraints)
     switch (err.constraint) {
       case 'UQ_2c53499f3b4932b85f4cf2e44ff': {
         return {
@@ -136,8 +135,8 @@ export const updateBiolinkFromUsername = async (
   return { biolink }
 }
 
-export const removeBiolink = async (id: string, user: User): Promise<boolean> => {
-  const biolink = await Biolink.findOne(id)
+export const removeBiolinkByUsername = async (username: string, user: User): Promise<boolean> => {
+  const biolink = await Biolink.findOne({ where: { username } })
 
   if (!biolink) {
     return Promise.resolve(false)

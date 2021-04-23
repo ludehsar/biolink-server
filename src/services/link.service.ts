@@ -15,7 +15,6 @@ export const getAllLinksFromBiolinkUsername = async (
   currentUser: User
 ): Promise<LinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username: username } })
-  console.log(moment().toISOString())
 
   if (!biolink) {
     return {

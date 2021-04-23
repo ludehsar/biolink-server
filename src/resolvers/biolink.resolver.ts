@@ -8,7 +8,7 @@ import { FieldError } from './commonTypes'
 import {
   createNewBiolink,
   getBiolinkFromUsername,
-  removeBiolink,
+  removeBiolinkByUsername,
   updateBiolinkFromUsername,
 } from '../services/biolink.service'
 
@@ -71,7 +71,10 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteBiolink(@Arg('id') id: string, @CurrentUser() user: User): Promise<boolean> {
-    return await removeBiolink(id, user)
+  async deleteBiolink(
+    @Arg('username') username: string,
+    @CurrentUser() user: User
+  ): Promise<boolean> {
+    return await removeBiolinkByUsername(username, user)
   }
 }
