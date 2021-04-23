@@ -5,6 +5,7 @@ import { FieldError } from './commonTypes'
 import {
   createLink,
   getAllLinksFromBiolinkUsername,
+  getLinkByShortenedUrl,
   removeLinkByShortenedUrl,
 } from '../services/link.service'
 import CurrentUser from '../decorators/currentUser'
@@ -58,6 +59,14 @@ export class LinkResolver {
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
     return await createLink(username, options, user)
+  }
+
+  @Query(() => LinkResponse)
+  async getLinkByShortenedUrl(
+    @Arg('shortenedUrl') shortenedUrl: string,
+    @CurrentUser() user: User
+  ): Promise<LinkResponse> {
+    return await getLinkByShortenedUrl(shortenedUrl, user)
   }
 
   @Mutation(() => LinkResponse)

@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm'
 import moment from 'moment'
+import randToken from 'rand-token'
 
 import { Link } from '../models/entities/Link'
 import { Biolink } from '../models/entities/Biolink'
@@ -87,11 +88,32 @@ export const createLink = async (
     }
   }
 
+  let shortenedUrl = options.shortenedUrl ? options.shortenedUrl : randToken.generate(8)
+  if (options.shortenedUrl) {
+    const link = await Link.findOne({ where: { shortenedUrl: options.shortenedUrl } })
+
+    if (link) {
+      return {
+        errors: [
+          {
+            field: '',
+            message: 'Shortened URL already taken',
+          },
+        ],
+      }
+    }
+  } else {
+    const link = await Link.findOne({ where: { shortenedUrl } })
+    while (link) {
+      shortenedUrl = randToken.generate(8)
+    }
+  }
+
   try {
     const link = await Link.create({
       linkType: options.linkType as LinkType,
       url: options.url,
-      shortenedUrl: options.shortenedUrl ? options.shortenedUrl : '',
+      shortenedUrl,
       startDate: options.startDate,
       endDate: options.endDate,
       status: options.status as EnabledStatus,
@@ -124,6 +146,37 @@ export const createLink = async (
       }
     }
   }
+}
+
+export const getLinkByShortenedUrl = async (
+  shortenedUrl: string,
+  user: User
+): Promise<LinkResponse> => {
+  const link = await Link.findOne({ where: { shortenedUrl } })
+
+  if (!link) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'No link found',
+        },
+      ],
+    }
+  }
+
+  if ((!user || user.id !== link.userId) && link.status === ('Disabled' as EnabledStatus)) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'Not authorized',
+        },
+      ],
+    }
+  }
+
+  return { links: [link] }
 }
 
 export const removeLinkByShortenedUrl = async (
