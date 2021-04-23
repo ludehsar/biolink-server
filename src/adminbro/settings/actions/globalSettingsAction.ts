@@ -6,7 +6,7 @@ import { BusinessSystemSettings } from '../../../models/jsonTypes/BusinessSystem
 import { CaptchaSystemSettings } from '../../../models/jsonTypes/CaptchaSystemSettings'
 import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'
 import { FacebookSystemSettings } from '../../../models/jsonTypes/FacebookSystemSettings'
-import { LinkSystemSettings } from '../../../models/jsonTypes/LinkSystemSettings'
+import { BiolinkSystemSettings } from '../../../models/jsonTypes/BiolinkSystemSettings'
 import { NotificationSystemSettings } from '../../../models/jsonTypes/NotificationSystemSettings'
 import { PaymentSystemSettings } from '../../../models/jsonTypes/PaymentSystemSettings'
 import { SocialSystemSettings } from '../../../models/jsonTypes/SocialSystemSettings'
@@ -25,7 +25,7 @@ const api = new ApiClient()
 
 export interface SettingsProps {
   main?: MainSystemSettings | null
-  links?: LinkSystemSettings | null
+  links?: BiolinkSystemSettings | null
   payments?: PaymentSystemSettings | null
   business?: BusinessSystemSettings | null
   captcha?: CaptchaSystemSettings | null

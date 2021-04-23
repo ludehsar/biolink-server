@@ -1,10 +1,10 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { LinkSystemSettings } from '../../../models/jsonTypes/LinkSystemSettings'
+import { BiolinkSystemSettings } from '../../../models/jsonTypes/BiolinkSystemSettings'
 
 const api = new ApiClient()
 
-export const fetchLinkSettings = (option: BaseRecord): LinkSystemSettings => {
+export const fetchLinkSettings = (option: BaseRecord): BiolinkSystemSettings => {
   let id = 0
   const blacklistedDomains = []
 
@@ -21,7 +21,7 @@ export const fetchLinkSettings = (option: BaseRecord): LinkSystemSettings => {
     id++
   }
 
-  const linkSystemSettings: LinkSystemSettings = {
+  const linkSystemSettings: BiolinkSystemSettings = {
     branding: option.params['value.branding'],
     enableLinkShortenerSystem: option.params['value.enableLinkShortenerSystem'],
     enableCustomDomainSystem: option.params['value.enableCustomDomainSystem'],
@@ -35,7 +35,7 @@ export const fetchLinkSettings = (option: BaseRecord): LinkSystemSettings => {
   return linkSystemSettings
 }
 
-export const saveLinkSettings = async (options: LinkSystemSettings): Promise<void> => {
+export const saveLinkSettings = async (options: BiolinkSystemSettings): Promise<void> => {
   await api
     .recordAction({
       resourceId: 'Settings',

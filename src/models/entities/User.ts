@@ -3,12 +3,14 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm'
 
@@ -24,26 +26,27 @@ import { UserLogs } from './UserLogs'
 
 @ObjectType()
 @Entity()
+@Unique(['email', 'deletedAt'])
 export class User extends BaseEntity {
   @Field(() => String)
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column()
   email!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
   emailVerifiedAt!: Date
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   emailActivationCode!: string
 
   @Column()
   encryptedPassword!: string
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: true })
   forgotPasswordCode!: string
 
   @Field(() => String, { nullable: true })
@@ -112,6 +115,9 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  deletedAt?: Date
 
   // Relationships
   @Field(() => [Biolink], { nullable: true })

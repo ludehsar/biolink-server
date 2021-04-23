@@ -14,7 +14,6 @@ import { PlanSettings as Settings } from '../../../models/jsonTypes/PlanSettings
 const PlanSettings: React.FC<BasePropertyProps> = (props) => {
   const { property, record, onChange } = props
   const [settings, setSettings] = useState<Settings>({
-    totalProjectsLimit: record?.params['settings.totalProjectsLimit'] || 0,
     totalBiolinksLimit: record?.params['settings.totalBiolinksLimit'] || 0,
     totalLinksLimit: record?.params['settings.totalLinksLimit'] || 0,
     totalCustomDomainLimit: record?.params['settings.totalCustomDomainLimit'] || 0,
@@ -56,21 +55,6 @@ const PlanSettings: React.FC<BasePropertyProps> = (props) => {
   return (
     <Container>
       <Title>Plan Settings</Title>
-      <FormGroup>
-        <FormLabel>Total Projects Limit</FormLabel>
-        <FormInput
-          type="number"
-          name="totalProjectsLimit"
-          defaultValue={settings.totalProjectsLimit}
-          onChange={(event) => {
-            updateFormValue(event)
-          }}
-        />
-        <FormHelper>
-          The total amount of projects that a user can have. Set -1 for unlimited.
-        </FormHelper>
-      </FormGroup>
-
       <FormGroup>
         <FormLabel>Total Biolinks Limit</FormLabel>
         <FormInput

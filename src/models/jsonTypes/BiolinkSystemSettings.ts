@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
-export class LinkSystemSettings {
+export class BiolinkSystemSettings {
   @Field(() => String, { nullable: true })
   branding!: string
 

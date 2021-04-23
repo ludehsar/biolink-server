@@ -18,7 +18,7 @@ import { Category } from './Category'
 import { Link } from './Link'
 import { TrackLink } from './TrackLink'
 import { User } from './User'
-import { LinkSettings } from '../jsonTypes/LinkSettings'
+import { BiolinkSettings } from '../jsonTypes/BiolinkSettings'
 
 @ObjectType()
 @Entity()
@@ -52,9 +52,9 @@ export class Biolink extends BaseEntity {
   @Column({ nullable: true })
   bio!: string
 
-  @Field(() => LinkSettings, { nullable: true })
+  @Field(() => BiolinkSettings, { nullable: true })
   @Column({ type: 'json', nullable: true })
-  settings!: LinkSettings
+  settings!: BiolinkSettings
 
   @Field(() => Boolean, { nullable: true })
   @Column({ default: false })

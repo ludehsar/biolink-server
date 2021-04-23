@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -16,6 +17,7 @@ import { EnabledStatus } from '../enums/EnabledStatus'
 import { User } from './User'
 import { TrackLink } from './TrackLink'
 import { Biolink } from './Biolink'
+import { LinkType } from '../enums/LinkType'
 
 @ObjectType()
 @Entity()
@@ -25,8 +27,16 @@ export class Link extends BaseEntity {
   id!: string
 
   @Field(() => String, { nullable: true })
+  @Column({ type: 'enum', enum: LinkType, default: LinkType.Link })
+  linkType!: LinkType
+
+  @Field(() => String, { nullable: true })
   @Column()
   url!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  shortenedUrl!: string
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })
@@ -55,6 +65,9 @@ export class Link extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  deletedAt?: Date
 
   // Relationships
   @Field(() => User, { nullable: true })

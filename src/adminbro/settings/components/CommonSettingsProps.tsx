@@ -4,7 +4,7 @@ import { BusinessSystemSettings } from 'models/jsonTypes/BusinessSystemSettings'
 import { CaptchaSystemSettings } from 'models/jsonTypes/CaptchaSystemSettings'
 import { EmailSystemSettings } from 'models/jsonTypes/EmailSystemSettings'
 import { FacebookSystemSettings } from 'models/jsonTypes/FacebookSystemSettings'
-import { LinkSystemSettings } from 'models/jsonTypes/LinkSystemSettings'
+import { BiolinkSystemSettings } from 'models/jsonTypes/BiolinkSystemSettings'
 import { MainSystemSettings } from 'models/jsonTypes/MainSystemSettings'
 import { NotificationSystemSettings } from 'models/jsonTypes/NotificationSystemSettings'
 import { PaymentSystemSettings } from 'models/jsonTypes/PaymentSystemSettings'
@@ -15,7 +15,7 @@ export interface CommonSettingsProps {
   id?: string | undefined
   value?:
     | MainSystemSettings
-    | LinkSystemSettings
+    | BiolinkSystemSettings
     | PaymentSystemSettings
     | BusinessSystemSettings
     | CaptchaSystemSettings

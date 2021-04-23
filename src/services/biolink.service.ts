@@ -3,7 +3,11 @@ import { validate } from 'class-validator'
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Category } from '../models/entities/Category'
-import { NewBiolinkInput, BiolinkResponse } from '../resolvers/biolink.resolver'
+import {
+  NewBiolinkInput,
+  BiolinkResponse,
+  UpdateBiolinkProfileInput,
+} from '../resolvers/biolink.resolver'
 
 export const createNewBiolink = async (
   options: NewBiolinkInput,
@@ -92,6 +96,42 @@ export const getBiolinkFromUsername = async (username: string): Promise<BiolinkR
       ],
     }
   }
+
+  return { biolink }
+}
+
+export const updateBiolinkFromUsername = async (
+  user: User,
+  username: string,
+  options: UpdateBiolinkProfileInput
+): Promise<BiolinkResponse> => {
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'User not authenticated',
+        },
+      ],
+    }
+  }
+
+  await Biolink.update(biolink.id, options)
+
+  await biolink.reload()
 
   return { biolink }
 }

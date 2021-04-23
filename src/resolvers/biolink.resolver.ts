@@ -9,6 +9,7 @@ import {
   createNewBiolink,
   getBiolinkFromUsername,
   removeBiolink,
+  updateBiolinkFromUsername,
 } from '../services/biolink.service'
 
 @InputType()
@@ -22,6 +23,18 @@ export class NewBiolinkInput {
   @IsNotEmpty()
   @IsInt()
   categoryId?: number
+}
+
+@InputType()
+export class UpdateBiolinkProfileInput {
+  @Field({ nullable: true })
+  displayName?: string
+
+  @Field({ nullable: true })
+  location?: string
+
+  @Field({ nullable: true })
+  bio?: string
 }
 
 @ObjectType()
@@ -46,6 +59,15 @@ export class BiolinkResolver {
   @Query(() => BiolinkResponse)
   async getBiolinkFromUsername(@Arg('username') username: string): Promise<BiolinkResponse> {
     return await getBiolinkFromUsername(username)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateBiolinkFromUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: UpdateBiolinkProfileInput,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateBiolinkFromUsername(user, username, options)
   }
 
   @Mutation(() => Boolean)

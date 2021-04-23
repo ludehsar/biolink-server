@@ -1,7 +1,7 @@
 import { FormGroup } from '@admin-bro/design-system'
 import { withNotice } from 'admin-bro'
 import { Formik, Form } from 'formik'
-import { LinkSystemSettings } from 'models/jsonTypes/LinkSystemSettings'
+import { BiolinkSystemSettings } from 'models/jsonTypes/BiolinkSystemSettings'
 import React from 'react'
 import { saveLinkSettings } from '../actions/linkSettingsAction'
 
@@ -19,7 +19,7 @@ import { CommonSettingsProps } from './CommonSettingsProps'
 const LinkSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props
 
-  const handleSubmit = async (values: LinkSystemSettings): Promise<void> => {
+  const handleSubmit = async (values: BiolinkSystemSettings): Promise<void> => {
     await saveLinkSettings(values).catch(() => {
       addNotice({
         message: 'Unable to save data to the database',
@@ -38,19 +38,21 @@ const LinkSettings: React.FC<CommonSettingsProps> = (props) => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          branding: (value as LinkSystemSettings)?.branding || '',
+          branding: (value as BiolinkSystemSettings)?.branding || '',
           enableLinkShortenerSystem:
-            (value as LinkSystemSettings)?.enableLinkShortenerSystem || 'no',
-          enableCustomDomainSystem: (value as LinkSystemSettings)?.enableCustomDomainSystem || 'no',
-          enableMainDomainUsage: (value as LinkSystemSettings)?.enableMainDomainUsage || 'no',
-          blacklistedDomains: ((value as LinkSystemSettings)?.blacklistedDomains || [])
+            (value as BiolinkSystemSettings)?.enableLinkShortenerSystem || 'no',
+          enableCustomDomainSystem:
+            (value as BiolinkSystemSettings)?.enableCustomDomainSystem || 'no',
+          enableMainDomainUsage: (value as BiolinkSystemSettings)?.enableMainDomainUsage || 'no',
+          blacklistedDomains: ((value as BiolinkSystemSettings)?.blacklistedDomains || [])
             .join('\n')
             .toString(),
-          blacklistedKeywords: ((value as LinkSystemSettings)?.blacklistedKeywords || [])
+          blacklistedKeywords: ((value as BiolinkSystemSettings)?.blacklistedKeywords || [])
             .join('\n')
             .toString(),
-          enablePhishtank: (value as LinkSystemSettings)?.enablePhishtank || 'no',
-          enableGoogleSafeBrowsing: (value as LinkSystemSettings)?.enableGoogleSafeBrowsing || 'no',
+          enablePhishtank: (value as BiolinkSystemSettings)?.enablePhishtank || 'no',
+          enableGoogleSafeBrowsing:
+            (value as BiolinkSystemSettings)?.enableGoogleSafeBrowsing || 'no',
         }}
         onSubmit={(values, { setSubmitting }) => {
           const blacklistedDomains = values.blacklistedDomains.split('\n')
@@ -63,7 +65,7 @@ const LinkSettings: React.FC<CommonSettingsProps> = (props) => {
             blacklistedDomains,
             blacklistedKeywords,
           }
-          handleSubmit(newValues as LinkSystemSettings)
+          handleSubmit(newValues as BiolinkSystemSettings)
           setSubmitting(false)
           return
         }}

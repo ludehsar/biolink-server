@@ -3,9 +3,6 @@ import { ObjectType, Field, Int } from 'type-graphql'
 @ObjectType()
 export class PlanSettings {
   @Field(() => Int, { nullable: true })
-  totalProjectsLimit!: number
-
-  @Field(() => Int, { nullable: true })
   totalBiolinksLimit!: number
 
   @Field(() => Int, { nullable: true })
