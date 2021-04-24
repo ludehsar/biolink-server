@@ -1,11 +1,12 @@
-import { IsEmail, IsInt, IsNotEmpty, Matches, MinLength } from 'class-validator'
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
-import { loginUser, logoutUser, registerUser } from '../services/user.service'
+import { loginUser, logoutUser, validateUserRegistration } from '../services/user.service'
 import { FieldError } from './commonTypes'
 import CurrentUser from '../decorators/currentUser'
+import { NewBiolinkInput } from './biolink.resolver'
 
 @InputType()
 export class LoginInput {
@@ -34,16 +35,6 @@ export class RegisterInput {
   @IsNotEmpty()
   @MinLength(8)
   password?: string
-
-  @Field()
-  @IsNotEmpty()
-  @Matches('^[a-zA-Z0-9_.]{4,20}$')
-  username?: string
-
-  @Field()
-  @IsNotEmpty()
-  @IsInt()
-  categoryId?: number
 }
 
 @ObjectType()
@@ -55,6 +46,15 @@ export class UserResponse {
   user?: User
 }
 
+@ObjectType()
+export class ValidationResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[]
+
+  @Field(() => Boolean, { nullable: true })
+  passesValidation!: boolean
+}
+
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
@@ -62,12 +62,12 @@ export class UserResolver {
     return user
   }
 
-  @Mutation(() => UserResponse)
-  async register(
-    @Arg('options') options: RegisterInput,
-    @Ctx() context: MyContext
-  ): Promise<UserResponse> {
-    return await registerUser(options, context)
+  @Query(() => ValidationResponse, { nullable: true })
+  async userRegistrationValidationCheck(
+    @Arg('userOptions') userOptions: RegisterInput,
+    @Arg('biolinkOptions') biolinkOptions: NewBiolinkInput
+  ): Promise<ValidationResponse> {
+    return await validateUserRegistration(userOptions, biolinkOptions)
   }
 
   @Mutation(() => UserResponse)

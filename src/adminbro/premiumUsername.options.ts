@@ -3,10 +3,10 @@ import { ResourceOptions } from 'admin-bro'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 
 export const premiumUsernameOptions: ResourceOptions = {
-  listProperties: ['username', 'price', 'usernameType', 'createdAt', 'updatedAt'],
-  editProperties: ['username', 'price', 'usernameType'],
-  showProperties: ['username', 'price', 'usernameType', 'createdAt', 'updatedAt'],
-  filterProperties: ['username', 'price', 'usernameType', 'createdAt', 'updatedAt'],
+  listProperties: ['username', 'ownerId', 'price', 'usernameType', 'createdAt', 'updatedAt'],
+  editProperties: ['username', 'ownerId', 'price', 'usernameType'],
+  showProperties: ['username', 'ownerId', 'price', 'usernameType', 'createdAt', 'updatedAt'],
+  filterProperties: ['username', 'ownerId', 'price', 'usernameType', 'createdAt', 'updatedAt'],
   actions: {
     new: {
       showInDrawer: true,

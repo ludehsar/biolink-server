@@ -23,6 +23,7 @@ import { Link } from './Link'
 import { ActiveStatus } from '../enums/ActiveStatus'
 import { TrackLink } from './TrackLink'
 import { UserLogs } from './UserLogs'
+import { PremiumUsername } from './PremiumUsername'
 
 @ObjectType()
 @Entity()
@@ -147,4 +148,7 @@ export class User extends BaseEntity {
 
   @RelationId((user: User) => user.plan)
   planId!: number
+
+  @OneToMany(() => PremiumUsername, (premiumUsername) => premiumUsername.owner)
+  premiumUsernames!: PremiumUsername[]
 }

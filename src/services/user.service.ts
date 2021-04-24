@@ -1,22 +1,45 @@
 import { validate } from 'class-validator'
 import * as argon2 from 'argon2'
 
-import { LoginInput, RegisterInput, UserResponse } from '../resolvers/user.resolver'
+import {
+  LoginInput,
+  RegisterInput,
+  UserResponse,
+  ValidationResponse,
+} from '../resolvers/user.resolver'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { MyContext } from '../MyContext'
-import { Category } from '../models/entities/Category'
-import { Biolink } from '../models/entities/Biolink'
-import { createNewBiolink } from './biolink.service'
+import { newBiolinkValidation } from './biolink.service'
 import { NewBiolinkInput } from '../resolvers/biolink.resolver'
+import { BlackList } from '../models/entities/BlackList'
+import { BlacklistType } from '../models/enums/BlacklistType'
 
-export const registerUser = async (
-  options: RegisterInput,
-  context: MyContext
-): Promise<UserResponse> => {
-  // Predefined validation errors
-  const validationErrors = await validate(options)
+export const validateUserRegistration = async (
+  userOptions: RegisterInput,
+  biolinkOptions: NewBiolinkInput
+): Promise<ValidationResponse> => {
+  const userInputValidationReport = await userInputValidation(userOptions)
+  if (!userInputValidationReport.passesValidation) {
+    return userInputValidationReport
+  }
+
+  const biolinkInputValidationReport = await newBiolinkValidation(biolinkOptions)
+  if (!biolinkInputValidationReport.passesValidation) {
+    return biolinkInputValidationReport
+  }
+
+  return { passesValidation: true }
+}
+
+export const userInputValidation = async (
+  userOptions: RegisterInput
+): Promise<ValidationResponse> => {
+  // TODO: If new user registration is not enabled
+
+  // Validate input
+  const validationErrors = await validate(userOptions)
 
   if (validationErrors.length > 0) {
     return {
@@ -24,86 +47,80 @@ export const registerUser = async (
         field: err.property,
         message: 'Not correctly formatted',
       })),
+      passesValidation: false,
     }
   }
 
-  // Category not found
-  const category = await Category.findOne({ where: { id: options.categoryId } })
+  // Blacklist email checks
+  const blacklisted = await BlackList.findOne({
+    where: { blacklistType: BlacklistType.Email, keyword: userOptions.email },
+  })
 
-  if (!category) {
+  if (blacklisted) {
     return {
       errors: [
         {
-          field: 'categoryId',
-          message: 'Category not found',
+          field: 'email',
+          message: 'Cannot create new account.',
         },
       ],
+      passesValidation: false,
     }
   }
 
-  // Username already in use
-  const biolink = await Biolink.findOne({ where: { username: options.username } })
-
-  if (biolink) {
+  // Check existing email
+  const user = await User.findOne({ where: { email: userOptions.email } })
+  if (user) {
     return {
       errors: [
         {
-          field: 'username',
-          message: 'Username already in use',
+          field: 'email',
+          message: 'User with this email address already exists.',
         },
       ],
+      passesValidation: false,
     }
   }
 
-  const hashedPassword = await argon2.hash(options.password as string)
+  return {
+    passesValidation: true,
+  }
+}
 
-  try {
-    const user = await User.create({
-      email: options.email,
-      encryptedPassword: hashedPassword,
-    }).save()
+export const registerUser = async (
+  userOptions: RegisterInput,
+  context: MyContext
+): Promise<UserResponse> => {
+  // Validating user input
+  const userInputValidationReport = await userInputValidation(userOptions)
 
-    const biolinkRes = await createNewBiolink(
-      { categoryId: options.categoryId, username: options.username } as NewBiolinkInput,
-      user
-    )
-
-    if (biolinkRes.errors) {
-      await user.remove()
-      return { errors: biolinkRes.errors }
-    }
-
-    // Implement jwt
-    const { refreshToken, accessToken } = await createAuthTokens(user)
-
-    context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
-    context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
-
-    return { user }
-  } catch (err) {
-    switch (err.constraint) {
-      case 'UQ_e12875dfb3b1d92d7d7c5377e22': {
-        return {
-          errors: [
-            {
-              field: 'email',
-              message: 'User with this email already exists',
-            },
-          ],
-        }
-      }
-      default: {
-        return {
-          errors: [
-            {
-              field: 'email',
-              message: 'Something went wrong',
-            },
-          ],
-        }
-      }
+  if (!userInputValidationReport.passesValidation) {
+    return {
+      errors: userInputValidationReport.errors,
     }
   }
+
+  // Creating user
+  const hashedPassword = await argon2.hash(userOptions.password as string)
+
+  const user = await User.create({
+    email: userOptions.email,
+    encryptedPassword: hashedPassword,
+  }).save()
+
+  // Implement jwt
+  const { refreshToken, accessToken } = await createAuthTokens(user)
+
+  context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+  context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
+
+  // Email verification mail send
+
+  // Send email to admins, if new user email is checked
+
+  // New user activity logs
+
+  return { user }
 }
 
 export const loginUser = async (options: LoginInput, context: MyContext): Promise<UserResponse> => {

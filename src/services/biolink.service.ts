@@ -1,3 +1,4 @@
+import { getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 
 import { User } from '../models/entities/User'
@@ -8,84 +9,166 @@ import {
   BiolinkResponse,
   UpdateBiolinkProfileInput,
 } from '../resolvers/biolink.resolver'
+import { PremiumUsername } from '../models/entities/PremiumUsername'
+import { ValidationResponse } from '../resolvers/user.resolver'
+import { BlackList } from '../models/entities/BlackList'
+import { BlacklistType } from '../models/enums/BlacklistType'
+import { Plan } from '../models/entities/Plan'
+
+export const newBiolinkValidation = async (
+  biolinkOptions: NewBiolinkInput
+): Promise<ValidationResponse> => {
+  // Checks input validatation
+  const validationErrors = await validate(biolinkOptions)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        message: 'Not correctly formatted',
+      })),
+      passesValidation: false,
+    }
+  }
+
+  // Checks blacklisted username
+  const blacklisted = await BlackList.findOne({
+    where: { blacklistType: BlacklistType.Username, keyword: biolinkOptions.username },
+  })
+  if (blacklisted) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Cannot create account with this username.',
+        },
+      ],
+      passesValidation: false,
+    }
+  }
+
+  // Checks category
+  const category = await Category.findOne({ where: { id: biolinkOptions.categoryId } })
+
+  if (!category) {
+    return {
+      errors: [
+        {
+          field: 'categoryId',
+          message: 'Category not found',
+        },
+      ],
+      passesValidation: false,
+    }
+  }
+
+  // Checks if username already exists
+  const biolink = await Biolink.findOne({ where: { username: biolinkOptions.username } })
+  if (biolink) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Username has already been taken.',
+        },
+      ],
+      passesValidation: false,
+    }
+  }
+
+  // Checks premium username which has not yet purchased
+  const premiumUsername = await PremiumUsername.findOne({
+    where: { username: biolinkOptions.username },
+  })
+
+  if (premiumUsername && premiumUsername.ownerId !== null) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Username has already been taken.',
+        },
+      ],
+      passesValidation: false,
+    }
+  }
+
+  return {
+    passesValidation: true,
+  }
+}
 
 export const createNewBiolink = async (
   options: NewBiolinkInput,
   user: User
 ): Promise<BiolinkResponse> => {
-  try {
-    const validationErrors = await validate(options)
+  const biolinkInputValidationReport = await newBiolinkValidation(options)
+  if (!biolinkInputValidationReport.passesValidation) {
+    return { errors: biolinkInputValidationReport.errors }
+  }
 
-    if (validationErrors.length > 0) {
-      return {
-        errors: validationErrors.map((err) => ({
-          field: err.property,
-          message: 'Not correctly formatted',
-        })),
-      }
-    }
-
-    const category = await Category.findOne({ where: { id: options.categoryId } })
-
-    if (!category) {
-      return {
-        errors: [
-          {
-            field: 'categoryId',
-            message: 'Category not found',
-          },
-        ],
-      }
-    }
-
-    if (!user) {
-      return {
-        errors: [
-          {
-            field: 'username',
-            message: 'User not authenticated',
-          },
-        ],
-      }
-    }
-
-    const biolink = await Biolink.create({
-      username: options.username,
-      category: category,
-      user: user,
-    }).save()
-
-    return { biolink }
-  } catch (err) {
-    switch (err.constraint) {
-      case 'UQ_2c53499f3b4932b85f4cf2e44ff': {
-        return {
-          errors: [
-            {
-              field: 'username',
-              message: 'Duplicate value',
-            },
-          ],
-        }
-      }
-      default: {
-        return {
-          errors: [
-            {
-              field: 'username',
-              message: 'Something went wrong',
-            },
-          ],
-        }
-      }
+  // Checks authorization
+  if (!user) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'User not authorized',
+        },
+      ],
     }
   }
+
+  // Checks plan
+  const currentBiolinkCount = await getRepository(User)
+    .createQueryBuilder('user')
+    .where({ id: user.id })
+    .leftJoinAndSelect(Biolink, 'biolink', 'biolink.userId = user.id')
+    .getCount()
+  const plan = await Plan.findOne({ where: { id: user.planId } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  if (
+    plan.settings.totalBiolinksLimit !== -1 &&
+    currentBiolinkCount >= plan.settings.totalBiolinksLimit
+  ) {
+    return {
+      errors: [
+        {
+          field: 'username',
+          message: 'Current plan does not support creating another biolink.',
+        },
+      ],
+    }
+  }
+
+  // Creates biolink
+  const category = await Category.findOne({ where: { id: options.categoryId } })
+
+  const biolink = await Biolink.create({
+    username: options.username,
+    category,
+    user: user,
+  }).save()
+
+  return { biolink }
 }
 
 export const getBiolinkFromUsername = async (username: string): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
+  const premiumUsername = await PremiumUsername.findOne({ where: { username } })
 
-  if (!biolink) {
+  if (!biolink || (premiumUsername && premiumUsername.ownerId !== biolink.userId)) {
     return {
       errors: [
         {
