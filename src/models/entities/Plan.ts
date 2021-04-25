@@ -28,13 +28,17 @@ export class Plan extends BaseEntity {
   @Column({ type: 'float', default: 0.0 })
   monthlyPrice!: number
 
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  monthlyPriceStripeId!: string
+
   @Field(() => Float, { nullable: true })
   @Column({ type: 'float', default: 0.0 })
   annualPrice!: number
 
-  @Field(() => Float, { nullable: true })
-  @Column({ type: 'float', default: 0.0 })
-  lifetimePrice!: number
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  annualPriceStripeId!: string
 
   @Field(() => PlanSettings, { nullable: true })
   @Column({ type: 'json', nullable: true })

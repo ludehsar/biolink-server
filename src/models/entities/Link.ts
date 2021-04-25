@@ -54,7 +54,7 @@ export class Link extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   endDate!: Date
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true, deprecationReason: 'Status currently is disabled' })
   @Column({ type: 'enum', enum: EnabledStatus, default: EnabledStatus.Disabled })
   status!: EnabledStatus
 

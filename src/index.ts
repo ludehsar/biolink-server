@@ -19,6 +19,9 @@ import { MyContext } from './MyContext'
 import { CategoryResolver } from './resolvers/category.resolver'
 import { BiolinkResolver } from './resolvers/biolink.resolver'
 import { LinkResolver } from './resolvers/link.resolver'
+import stripeRoutes from './routers/stripe.route'
+import { SettingsResolver } from './resolvers/settings.resolver'
+import { PlanResolver } from './resolvers/plan.resolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -36,10 +39,21 @@ const main = async (): Promise<void> => {
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
 
+  // Stripe router
+  app.use('/api/stripe', stripeRoutes)
+
   // Configuring apollo server
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, CategoryResolver, BiolinkResolver, LinkResolver],
+      resolvers: [
+        HelloResolver,
+        SettingsResolver,
+        UserResolver,
+        CategoryResolver,
+        BiolinkResolver,
+        LinkResolver,
+        PlanResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res }),
