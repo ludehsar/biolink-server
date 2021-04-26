@@ -59,7 +59,7 @@ export class Payment extends BaseEntity {
   createdAt!: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.activities)
+  @ManyToOne(() => User, (user) => user.payments)
   @JoinColumn({ name: 'userId' })
   user!: User
 

@@ -22,6 +22,7 @@ import { LinkResolver } from './resolvers/link.resolver'
 import stripeRoutes from './routers/stripe.route'
 import { SettingsResolver } from './resolvers/settings.resolver'
 import { PlanResolver } from './resolvers/plan.resolver'
+import { ReferralResolver } from './resolvers/referral.resolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -53,6 +54,7 @@ const main = async (): Promise<void> => {
         BiolinkResolver,
         LinkResolver,
         PlanResolver,
+        ReferralResolver,
       ],
       validate: false,
     }),

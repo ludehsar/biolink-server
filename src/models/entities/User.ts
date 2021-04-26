@@ -24,6 +24,8 @@ import { ActiveStatus } from '../enums/ActiveStatus'
 import { TrackLink } from './TrackLink'
 import { UserLogs } from './UserLogs'
 import { PremiumUsername } from './PremiumUsername'
+import { Payment } from './Payment'
+import { Code } from './Code'
 
 @ObjectType()
 @Entity()
@@ -151,4 +153,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => PremiumUsername, (premiumUsername) => premiumUsername.owner)
   premiumUsernames!: PremiumUsername[]
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments!: Payment[]
+
+  @Field(() => [Code], { nullable: true })
+  @OneToMany(() => Code, (code) => code.referrer)
+  codes!: Code[]
 }
