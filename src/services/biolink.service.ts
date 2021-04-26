@@ -8,6 +8,7 @@ import {
   NewBiolinkInput,
   BiolinkResponse,
   UpdateBiolinkProfileInput,
+  UpdateBiolinkSettingsInput,
 } from '../resolvers/biolink.resolver'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { ValidationResponse } from '../resolvers/user.resolver'
@@ -212,6 +213,45 @@ export const updateBiolinkFromUsername = async (
   }
 
   await Biolink.update(biolink.id, options)
+
+  await biolink.reload()
+
+  return { biolink }
+}
+
+export const updateBiolinkSettingsFromUsername = async (
+  user: User,
+  username: string,
+  options: UpdateBiolinkSettingsInput
+): Promise<BiolinkResponse> => {
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          field: '',
+          message: 'User not authenticated',
+        },
+      ],
+    }
+  }
+
+  // TODO: Configure settings according to user plans
+  await Biolink.update(biolink.id, {
+    settings: options,
+  })
 
   await biolink.reload()
 

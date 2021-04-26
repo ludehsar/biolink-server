@@ -56,10 +56,6 @@ export class Biolink extends BaseEntity {
   @Column({ type: 'json', nullable: true })
   settings!: BiolinkSettings
 
-  @Field(() => Boolean, { nullable: true })
-  @Column({ default: false })
-  addedToDirectory!: boolean
-
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date

@@ -52,16 +52,13 @@ export class Plan extends BaseEntity {
   @Column({ default: false })
   visibilityStatus!: boolean
 
-  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
-  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
 
   // Relationships
-  @Field(() => User, { nullable: true })
   @OneToMany(() => User, (user) => user.plan)
   users!: User[]
 }

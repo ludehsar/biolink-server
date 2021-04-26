@@ -31,6 +31,9 @@ export class BiolinkSettings {
   @Field(() => String, { nullable: true })
   enableColoredContactButtons!: string
 
+  @Field(() => String, { nullable: true })
+  addToDirectory!: string
+
   // ----- Social Media Icons ----- //
   @Field(() => String, { nullable: true })
   enableColoredSocialMediaIcons!: string
@@ -94,7 +97,6 @@ export class BiolinkSettings {
   @Field(() => String, { nullable: true })
   enablePasswordProtection!: string
 
-  @Field(() => String, { nullable: true })
   password!: string
 
   @Field(() => String, { nullable: true })

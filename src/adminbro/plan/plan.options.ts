@@ -3,15 +3,7 @@ import AdminBro, { ResourceOptions } from 'admin-bro'
 import { Plan } from '../../models/entities/Plan'
 
 export const planOptions: ResourceOptions = {
-  listProperties: [
-    'name',
-    'monthlyPrice',
-    'monthlyPriceStripeId',
-    'annualPrice',
-    'annualPriceStripeId',
-    'enabledStatus',
-    'visibilityStatus',
-  ],
+  listProperties: ['name', 'monthlyPrice', 'annualPrice', 'enabledStatus', 'visibilityStatus'],
   filterProperties: [
     'name',
     'monthlyPrice',
