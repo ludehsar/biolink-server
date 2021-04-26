@@ -3,7 +3,14 @@ import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } fro
 
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
-import { loginUser, logoutUser, validateUserRegistration } from '../services/user.service'
+import {
+  loginUser,
+  logoutUser,
+  registerUser,
+  sendEmailForVerification,
+  validateUserRegistration,
+  verifyEmailByActivationCode,
+} from '../services/user.service'
 import { FieldError } from './commonTypes'
 import CurrentUser from '../decorators/currentUser'
 import { NewBiolinkInput } from './biolink.resolver'
@@ -71,18 +78,30 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
+  async registerUser(
+    @Arg('options') options: RegisterInput,
+    @Ctx() context: MyContext
+  ): Promise<UserResponse> {
+    return await registerUser(options, context)
+  }
+
+  @Mutation(() => Boolean)
+  async sendEmailVerification(@CurrentUser() user: User): Promise<boolean> {
+    return await sendEmailForVerification(user)
+  }
+
+  @Mutation(() => Boolean)
+  async verifyUserEmail(@Arg('emailActivationCode') emailActivationCode: string): Promise<boolean> {
+    return await verifyEmailByActivationCode(emailActivationCode)
+  }
+
+  @Mutation(() => UserResponse)
   async login(
     @Arg('options') options: LoginInput,
     @Ctx() context: MyContext
   ): Promise<UserResponse> {
     return await loginUser(options, context)
   }
-
-  // @Mutation(() => Boolean)
-  // async verifyEmail (): Promise<Boolean> {
-  //   // TODO: implement email verification
-  //   return true
-  // }
 
   // @Mutation(() => Boolean)
   // async forgotPassword (): Promise<Boolean> {

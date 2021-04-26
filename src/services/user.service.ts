@@ -1,5 +1,7 @@
 import { validate } from 'class-validator'
 import * as argon2 from 'argon2'
+import randToken from 'rand-token'
+import moment from 'moment'
 
 import {
   LoginInput,
@@ -15,6 +17,8 @@ import { newBiolinkValidation } from './biolink.service'
 import { NewBiolinkInput } from '../resolvers/biolink.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
+import sendMailQueue from '../queues/sendMailQueue'
+import { createReferralCode } from './code.service'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -108,19 +112,63 @@ export const registerUser = async (
     encryptedPassword: hashedPassword,
   }).save()
 
+  await createReferralCode(user)
+
   // Implement jwt
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
   context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
   context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
-  // Email verification mail send
+  // send verification email
+  await sendEmailForVerification(user)
 
   // Send email to admins, if new user email is checked
 
   // New user activity logs
 
   return { user }
+}
+
+export const sendEmailForVerification = async (user: User): Promise<boolean> => {
+  if (!user) {
+    return Promise.reject(new Error('User not authorized'))
+  }
+
+  let emailActivationCode = randToken.generate(132)
+  let userWithSameActivationCode = await User.findOne({ where: { emailActivationCode } })
+
+  while (userWithSameActivationCode) {
+    emailActivationCode = randToken.generate(132)
+    userWithSameActivationCode = await User.findOne({ where: { emailActivationCode } })
+  }
+
+  user.emailActivationCode = emailActivationCode
+  await user.save()
+
+  const emailVerificationData = {
+    to: [user.email],
+    subject: 'Email verification',
+    body: `Your email activation code is ${emailActivationCode}.`,
+  }
+  await sendMailQueue.add(emailVerificationData)
+
+  return Promise.resolve(true)
+}
+
+export const verifyEmailByActivationCode = async (
+  emailActivationCode: string
+): Promise<boolean> => {
+  const user = await User.findOne({ emailActivationCode })
+
+  if (!user) {
+    return Promise.reject(new Error('Could not verify the user.'))
+  }
+
+  user.emailVerifiedAt = moment().toDate()
+  await user.save()
+
+  return Promise.resolve(true)
 }
 
 export const loginUser = async (options: LoginInput, context: MyContext): Promise<UserResponse> => {

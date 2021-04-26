@@ -38,6 +38,7 @@ const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
         enableReinitialize={true}
         initialValues={{
           fromName: (value as EmailSystemSettings)?.fromName || '',
+          fromEmail: (value as EmailSystemSettings)?.fromEmail || '',
         }}
         onSubmit={(values, { setSubmitting }) => {
           handleSubmit(values as EmailSystemSettings)
@@ -57,6 +58,18 @@ const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
                 value={values.fromName}
               />
               <FormHelper>This name will be used while sending mail to the users.</FormHelper>
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>From Email</FormLabel>
+              <FormInput
+                type="text"
+                name="fromEmail"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fromEmail}
+              />
+              <FormHelper>This email will be shown to the users while sending mail.</FormHelper>
             </FormGroup>
 
             <FormCTAGroup>

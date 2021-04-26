@@ -7,6 +7,7 @@ const api = new ApiClient()
 export const fetchEmailSettings = (option: BaseRecord): EmailSystemSettings => {
   const emailSystemSettings: EmailSystemSettings = {
     fromName: option.params['value.fromName'],
+    fromEmail: option.params['value.fromEmail'],
   }
 
   return emailSystemSettings

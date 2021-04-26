@@ -23,6 +23,8 @@ import stripeRoutes from './routers/stripe.route'
 import { SettingsResolver } from './resolvers/settings.resolver'
 import { PlanResolver } from './resolvers/plan.resolver'
 import { ReferralResolver } from './resolvers/referral.resolver'
+import sendMailQueue from './queues/sendMailQueue'
+import { sendEmail } from './utils/sendMail'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -73,6 +75,13 @@ const main = async (): Promise<void> => {
 
   app.use(adminBro.options.rootPath, buildAdminRouter(adminBro))
 
+  // Process queue jobs
+  sendMailQueue.process(async (job) => {
+    const { to, ccName, ccEmail, subject, body } = job.data
+    return await sendEmail(to, subject, body, ccName, ccEmail)
+  })
+
+  // Listen to the port
   app.listen(port, () => {
     console.log(`🚀 Server ready at port ${port}.`)
   })
