@@ -26,6 +26,7 @@ import { UserLogs } from './UserLogs'
 import { PremiumUsername } from './PremiumUsername'
 import { Payment } from './Payment'
 import { Code } from './Code'
+import { Verification } from './Verification'
 
 @ObjectType()
 @Entity()
@@ -160,4 +161,7 @@ export class User extends BaseEntity {
   @Field(() => [Code], { nullable: true })
   @OneToMany(() => Code, (code) => code.referrer)
   codes!: Code[]
+
+  @OneToMany(() => Verification, (verification) => verification.user)
+  verifications!: Verification[]
 }

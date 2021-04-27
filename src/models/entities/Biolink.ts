@@ -8,6 +8,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   Unique,
@@ -19,6 +20,7 @@ import { Link } from './Link'
 import { TrackLink } from './TrackLink'
 import { User } from './User'
 import { BiolinkSettings } from '../jsonTypes/BiolinkSettings'
+import { Verification } from './Verification'
 
 @ObjectType()
 @Entity()
@@ -91,4 +93,12 @@ export class Biolink extends BaseEntity {
 
   @RelationId((biolink: Biolink) => biolink.category)
   categoryId!: number
+
+  @Field(() => Verification, { nullable: true })
+  @OneToOne(() => Verification, (verification) => verification.biolink, { nullable: true })
+  @JoinColumn({ name: 'verificationId' })
+  verification!: Verification
+
+  @RelationId((biolink: Biolink) => biolink.verification)
+  verificationId!: string
 }

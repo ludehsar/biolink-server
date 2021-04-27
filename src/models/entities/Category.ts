@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 
 import { Biolink } from './Biolink'
+import { Verification } from './Verification'
 
 @ObjectType()
 @Entity()
@@ -32,4 +33,7 @@ export class Category extends BaseEntity {
   @Field(() => [Biolink], { nullable: true })
   @OneToMany(() => Biolink, (biolink) => biolink.category)
   biolinks!: Biolink[]
+
+  @OneToMany(() => Verification, (verification) => verification.category)
+  verifications!: Verification[]
 }

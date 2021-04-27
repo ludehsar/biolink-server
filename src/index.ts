@@ -25,6 +25,7 @@ import { PlanResolver } from './resolvers/plan.resolver'
 import { ReferralResolver } from './resolvers/referral.resolver'
 import sendMailQueue from './queues/sendMailQueue'
 import { sendEmail } from './utils/sendMail'
+import { VerificationResolver } from './resolvers/verification.resolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -57,6 +58,7 @@ const main = async (): Promise<void> => {
         LinkResolver,
         PlanResolver,
         ReferralResolver,
+        VerificationResolver,
       ],
       validate: false,
     }),

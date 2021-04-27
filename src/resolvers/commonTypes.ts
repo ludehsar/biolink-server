@@ -1,4 +1,5 @@
-import { ObjectType, Field } from 'type-graphql'
+import { Stream } from 'stream'
+import { ObjectType, Field, InputType } from 'type-graphql'
 
 @ObjectType()
 export class FieldError {
@@ -7,4 +8,28 @@ export class FieldError {
 
   @Field()
   message!: string
+}
+
+@ObjectType()
+export class BooleanResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[]
+
+  @Field(() => Boolean, { nullable: true })
+  passed!: boolean
+}
+
+@InputType()
+export class FileType {
+  @Field()
+  filename!: string
+
+  @Field()
+  mimetype!: string
+
+  @Field()
+  encoding!: string
+
+  @Field(() => Stream)
+  createReadStream!: () => Stream
 }
