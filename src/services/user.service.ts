@@ -171,6 +171,51 @@ export const verifyEmailByActivationCode = async (
   return Promise.resolve(true)
 }
 
+export const sendForgotPasswordVerificationEmail = async (email: string): Promise<boolean> => {
+  const user = await User.findOne({ where: { email } })
+
+  if (!user) {
+    return Promise.reject(new Error('No user found with this email address'))
+  }
+
+  const forgotPasswordCode = randToken.generate(160)
+
+  user.forgotPasswordCode = await argon2.hash(forgotPasswordCode)
+  await user.save()
+
+  const forgotPasswordData = {
+    to: [user.email],
+    subject: 'Email verification',
+    body: `Your forgot password code is ${forgotPasswordCode}.`,
+  }
+  await sendMailQueue.add(forgotPasswordData)
+
+  return Promise.resolve(true)
+}
+
+export const verifyForgotPassword = async (
+  email: string,
+  password: string,
+  forgotPasswordCode: string
+): Promise<boolean> => {
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    return Promise.reject(new Error('No user found.'))
+  }
+
+  const verified = await argon2.verify(user.forgotPasswordCode, forgotPasswordCode)
+
+  if (!verified) {
+    return Promise.reject(new Error('Forgot password code could not be verified.'))
+  }
+
+  user.encryptedPassword = await argon2.hash(password)
+  await user.save()
+
+  return Promise.resolve(true)
+}
+
 export const loginUser = async (options: LoginInput, context: MyContext): Promise<UserResponse> => {
   // Predefined validation errors
   const validationErrors = await validate(options)

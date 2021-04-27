@@ -8,8 +8,10 @@ import {
   logoutUser,
   registerUser,
   sendEmailForVerification,
+  sendForgotPasswordVerificationEmail,
   validateUserRegistration,
   verifyEmailByActivationCode,
+  verifyForgotPassword,
 } from '../services/user.service'
 import { FieldError } from './commonTypes'
 import CurrentUser from '../decorators/currentUser'
@@ -20,11 +22,11 @@ export class LoginInput {
   @Field()
   @IsNotEmpty()
   @IsEmail()
-  email?: string
+  email!: string
 
   @Field()
   @IsNotEmpty()
-  password?: string
+  password!: string
 }
 
 @InputType()
@@ -103,17 +105,18 @@ export class UserResolver {
     return await loginUser(options, context)
   }
 
-  // @Mutation(() => Boolean)
-  // async forgotPassword (): Promise<Boolean> {
-  //   // TODO: implement forgot password
-  //   return true
-  // }
+  @Mutation(() => Boolean)
+  async sendForgotPasswordEmail(@Arg('email') email: string): Promise<boolean> {
+    return await sendForgotPasswordVerificationEmail(email)
+  }
 
-  // @Mutation(() => Boolean)
-  // async changePassword (): Promise<Boolean> {
-  //   // TODO: implement change password
-  //   return true
-  // }
+  @Mutation(() => Boolean)
+  async verifyForgotPassword(
+    @Arg('options') options: LoginInput,
+    @Arg('forgotPasswordCode') forgotPasswordCode: string
+  ): Promise<boolean> {
+    return await verifyForgotPassword(options.email, options.password, forgotPasswordCode)
+  }
 
   @Mutation(() => Boolean)
   async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<boolean> {
