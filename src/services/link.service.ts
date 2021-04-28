@@ -8,6 +8,8 @@ import { LinkResponse, NewLinkInput } from '../resolvers/link.resolver'
 import { User } from '../models/entities/User'
 import { LinkType } from '../models/enums/LinkType'
 import { EnabledStatus } from '../models/enums/EnabledStatus'
+import { MyContext } from '../MyContext'
+import { trackLink } from './analytics.service'
 
 export const getAllLinksFromBiolinkUsername = async (
   username: string,
@@ -109,6 +111,8 @@ export const createLink = async (
     }
   }
 
+  const order = await Link.createQueryBuilder().where({ biolink }).getCount()
+
   try {
     const link = await Link.create({
       linkType: options.linkType as LinkType,
@@ -119,6 +123,7 @@ export const createLink = async (
       status: options.status as EnabledStatus,
       biolink,
       user,
+      order,
     }).save()
 
     return { links: [link] }
@@ -150,6 +155,7 @@ export const createLink = async (
 
 export const getLinkByShortenedUrl = async (
   shortenedUrl: string,
+  context: MyContext,
   user: User
 ): Promise<LinkResponse> => {
   const link = await Link.findOne({ where: { shortenedUrl } })
@@ -165,7 +171,11 @@ export const getLinkByShortenedUrl = async (
     }
   }
 
-  if ((!user || user.id !== link.userId) && link.status === ('Disabled' as EnabledStatus)) {
+  if (
+    (!user || user.id !== link.userId) &&
+    (link.status === ('Disabled' as EnabledStatus) ||
+      (link.startDate <= moment().toDate() && link.endDate >= moment().toDate()))
+  ) {
     return {
       errors: [
         {
@@ -175,6 +185,8 @@ export const getLinkByShortenedUrl = async (
       ],
     }
   }
+
+  await trackLink(link, context)
 
   return { links: [link] }
 }

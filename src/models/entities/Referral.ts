@@ -41,7 +41,7 @@ export class Referral extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.domains)
+  @ManyToOne(() => User, (user) => user.referrals)
   @JoinColumn({ name: 'referredById' })
   referredBy!: User
 

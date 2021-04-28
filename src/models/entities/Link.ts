@@ -87,6 +87,6 @@ export class Link extends BaseEntity {
   biolinkId!: string
 
   @Field(() => TrackLink, { nullable: true })
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.user)
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.link)
   trackLinks!: TrackLink[]
 }

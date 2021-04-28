@@ -21,12 +21,12 @@ import { Plan } from './Plan'
 import { Biolink } from './Biolink'
 import { Link } from './Link'
 import { ActiveStatus } from '../enums/ActiveStatus'
-import { TrackLink } from './TrackLink'
 import { UserLogs } from './UserLogs'
 import { PremiumUsername } from './PremiumUsername'
 import { Payment } from './Payment'
 import { Code } from './Code'
 import { Verification } from './Verification'
+import { Referral } from './Referral'
 
 @ObjectType()
 @Entity()
@@ -140,10 +140,6 @@ export class User extends BaseEntity {
   @OneToMany(() => Link, (link) => link.user)
   links!: Link[]
 
-  @Field(() => [TrackLink], { nullable: true })
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.user)
-  trackLinks!: TrackLink[]
-
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.users)
   @JoinColumn({ name: 'planId' })
@@ -161,6 +157,10 @@ export class User extends BaseEntity {
   @Field(() => [Code], { nullable: true })
   @OneToMany(() => Code, (code) => code.referrer)
   codes!: Code[]
+
+  @Field(() => [Referral], { nullable: true })
+  @OneToMany(() => Referral, (referral) => referral.referredBy)
+  referrals!: Referral[]
 
   @OneToMany(() => Verification, (verification) => verification.user)
   verifications!: Verification[]

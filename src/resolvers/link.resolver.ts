@@ -1,4 +1,4 @@
-import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { Link } from '../models/entities/Link'
 import { FieldError } from './commonTypes'
@@ -10,6 +10,7 @@ import {
 } from '../services/link.service'
 import CurrentUser from '../decorators/currentUser'
 import { User } from '../models/entities/User'
+import { MyContext } from 'MyContext'
 
 @InputType()
 export class NewLinkInput {
@@ -64,9 +65,10 @@ export class LinkResolver {
   @Query(() => LinkResponse)
   async getLinkByShortenedUrl(
     @Arg('shortenedUrl') shortenedUrl: string,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await getLinkByShortenedUrl(shortenedUrl, user)
+    return await getLinkByShortenedUrl(shortenedUrl, context, user)
   }
 
   @Mutation(() => LinkResponse)

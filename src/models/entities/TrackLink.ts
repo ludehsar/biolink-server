@@ -10,7 +10,6 @@ import {
   RelationId,
 } from 'typeorm'
 
-import { User } from './User'
 import { Link } from './Link'
 import { Biolink } from './Biolink'
 
@@ -39,11 +38,7 @@ export class TrackLink extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  referrerHost!: string
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  referrerPath!: string
+  referer!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
@@ -65,23 +60,11 @@ export class TrackLink extends BaseEntity {
   @Column({ nullable: true })
   utmCampaign!: string
 
-  @Field(() => Boolean, { nullable: true })
-  @Column({ nullable: true })
-  isUnique!: boolean
-
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
   // Relationships
-  @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.trackLinks)
-  @JoinColumn({ name: 'userId' })
-  user!: User
-
-  @RelationId((trackLink: TrackLink) => trackLink.user)
-  userId!: string
-
   @Field(() => Link, { nullable: true })
   @ManyToOne(() => Link, (link) => link.trackLinks)
   @JoinColumn({ name: 'linkId' })
