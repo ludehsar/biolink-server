@@ -9,7 +9,7 @@ import {
   FormInput,
   FormLabel,
   FormSubmitButton,
-  SettingsTabContainer,
+  MainTabContainer,
   Title,
 } from '../../shared/components/Common.styled'
 import { FormCol2, FormCol4, FormCol6, FormRow } from './business.settings.styled'
@@ -35,7 +35,7 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Title>
         Business Details
         <FormHelper>These details will be used when generating invoices for the user.</FormHelper>
@@ -222,7 +222,7 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

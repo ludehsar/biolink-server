@@ -10,7 +10,7 @@ import {
   FormInput,
   FormLabel,
   FormSubmitButton,
-  SettingsTabContainer,
+  MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveSocialSettings } from '../actions/socialSettingsAction'
@@ -34,7 +34,7 @@ const SocialSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Title>
         <FormHelper>Social links to be displayed in the footer of the website.</FormHelper>
       </Title>
@@ -106,7 +106,7 @@ const SocialSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

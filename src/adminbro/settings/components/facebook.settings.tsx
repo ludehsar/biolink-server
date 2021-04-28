@@ -8,7 +8,7 @@ import {
   FormInput,
   FormLabel,
   FormSubmitButton,
-  SettingsTabContainer,
+  MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { FacebookSystemSettings } from '../../../models/jsonTypes/FacebookSystemSettings'
@@ -32,7 +32,7 @@ const FacebookSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -72,7 +72,7 @@ const FacebookSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

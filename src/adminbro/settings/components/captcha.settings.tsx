@@ -8,7 +8,7 @@ import {
   FormInput,
   FormLabel,
   FormSubmitButton,
-  SettingsTabContainer,
+  MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { saveCaptchaSettings } from '../actions/captchaSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
@@ -32,7 +32,7 @@ const CaptchaSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -152,7 +152,7 @@ const CaptchaSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

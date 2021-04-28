@@ -3,12 +3,93 @@ import {
   Button,
   DropZone,
   FormMessage,
+  H1,
   H3,
+  Icon,
   Input,
   Label,
+  Link,
   TextArea,
 } from '@admin-bro/design-system'
 import styled from 'styled-components'
+
+export const Container = styled(Box)``
+
+export const Header = styled(H1)``
+
+export const Title = styled(H3)``
+
+export const MainContainer = styled(Box)`
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-bottom: 20px;
+`
+
+export const MainNavContainer = styled(Box)`
+  margin-bottom: 3rem !important;
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  @media (min-width: 1200px) {
+    margin-bottom: 0 !important;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+`
+
+export const MainDetailsContainer = styled(Box)`
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+`
+
+export const MainNav = styled(Box)`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  padding-left: 0;
+  padding-bottom: 0;
+  list-style: none;
+`
+
+export const MainIcon = styled(Icon)`
+  & svg {
+    fill: ${({ theme }) => theme.colors.filterBg};
+  }
+`
+
+export const MainNavItem = styled(Link)`
+  text-decoration: none !important;
+  color: ${({ theme }) => theme.colors.filterBg};
+  border-radius: 0.25rem;
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+
+  &.active {
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.filterBg};
+
+    ${MainIcon} svg {
+      fill: ${({ theme }) => theme.colors.white};
+    }
+  }
+`
+
+export const MainTabContainer = styled(Box)`
+  display: none;
+  transition: opacity 0.15s linear;
+
+  &.active {
+    display: block;
+  }
+`
 
 export const CardBox = styled(Box)`
   position: relative;
@@ -37,19 +118,6 @@ export const CardFooter = styled(Box)`
 
   &:last-child {
     border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
-  }
-`
-
-export const Container = styled(Box)``
-
-export const Title = styled(H3)``
-
-export const SettingsTabContainer = styled(Box)`
-  display: none;
-  transition: opacity 0.15s linear;
-
-  &.active {
-    display: block;
   }
 `
 

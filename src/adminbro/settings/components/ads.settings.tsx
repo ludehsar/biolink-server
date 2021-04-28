@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormSubmitButton,
   FormTextArea,
-  SettingsTabContainer,
+  MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveAdsSettings } from '../actions/adsSettingsAction'
@@ -34,7 +34,7 @@ const AdsSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Title>
         <FormHelper>These fields accept text or html.</FormHelper>
       </Title>
@@ -102,7 +102,7 @@ const AdsSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

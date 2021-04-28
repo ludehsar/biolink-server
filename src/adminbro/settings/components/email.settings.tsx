@@ -9,7 +9,7 @@ import {
   FormInput,
   FormLabel,
   FormSubmitButton,
-  SettingsTabContainer,
+  MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { saveEmailSettings } from '../actions/emailSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
@@ -33,7 +33,7 @@ const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
   }
 
   return (
-    <SettingsTabContainer {...{ className, id }}>
+    <MainTabContainer {...{ className, id }}>
       <Formik
         enableReinitialize={true}
         initialValues={{
@@ -80,7 +80,7 @@ const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
           </Form>
         )}
       </Formik>
-    </SettingsTabContainer>
+    </MainTabContainer>
   )
 }
 

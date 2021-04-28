@@ -1,16 +1,17 @@
 import React, { useEffect, useCallback, useState } from 'react'
 
 import {
+  CardBox,
+  CardBody,
   Container,
   Header,
-  SettingsContainer,
-  SettingsDetailsContainer,
-  SettingsIcon,
-  SettingsNav,
-  SettingsNavContainer,
-  SettingsNavItem,
-} from './layout.settings.styled'
-import { CardBox, CardBody } from '../../shared/components/Common.styled'
+  MainContainer,
+  MainDetailsContainer,
+  MainIcon,
+  MainNav,
+  MainNavContainer,
+  MainNavItem,
+} from '../../shared/components/Common.styled'
 import MainSettings from './main.settings'
 import LinkSettings from './links.settings'
 import PaymentSettings from './payments.settings'
@@ -45,92 +46,92 @@ const SettingsLayout: React.FC = () => {
   return (
     <Container>
       <Header>Settings</Header>
-      <SettingsContainer>
-        <SettingsNavContainer>
-          <SettingsNav>
-            <SettingsNavItem
+      <MainContainer>
+        <MainNavContainer>
+          <MainNav>
+            <MainNavItem
               className={activeMenus === 'main' ? 'active' : ''}
               onClick={() => setActiveMenus('main')}
               href="#main"
             >
-              <SettingsIcon icon="Home" />
+              <MainIcon icon="Home" />
               Main
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'links' ? 'active' : ''}
               onClick={() => setActiveMenus('links')}
               href="#links"
             >
-              <SettingsIcon icon="Link" />
+              <MainIcon icon="Link" />
               Links
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'payments' ? 'active' : ''}
               onClick={() => setActiveMenus('payments')}
               href="#payments"
             >
-              <SettingsIcon icon="Money" />
+              <MainIcon icon="Money" />
               Payments
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'business' ? 'active' : ''}
               onClick={() => setActiveMenus('business')}
               href="#business"
             >
-              <SettingsIcon icon="Finance" />
+              <MainIcon icon="Finance" />
               Business
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'captcha' ? 'active' : ''}
               onClick={() => setActiveMenus('captcha')}
               href="#captcha"
             >
-              <SettingsIcon icon="Bot" />
+              <MainIcon icon="Bot" />
               Captcha
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'facebook-login' ? 'active' : ''}
               onClick={() => setActiveMenus('facebook-login')}
               href="#facebook-login"
             >
-              <SettingsIcon icon="LogoFacebook" />
+              <MainIcon icon="LogoFacebook" />
               Facebook Login
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'ads' ? 'active' : ''}
               onClick={() => setActiveMenus('ads')}
               href="#ads"
             >
-              <SettingsIcon icon="TagGroup" />
+              <MainIcon icon="TagGroup" />
               Ads
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'socials' ? 'active' : ''}
               onClick={() => setActiveMenus('socials')}
               href="#socials"
             >
-              <SettingsIcon icon="LogoInstagram" />
+              <MainIcon icon="LogoInstagram" />
               Socials
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'email' ? 'active' : ''}
               onClick={() => setActiveMenus('email')}
               href="#email"
             >
-              <SettingsIcon icon="SendAlt" />
+              <MainIcon icon="SendAlt" />
               Email
-            </SettingsNavItem>
-            <SettingsNavItem
+            </MainNavItem>
+            <MainNavItem
               className={activeMenus === 'notifications' ? 'active' : ''}
               onClick={() => setActiveMenus('notifications')}
               href="#notifications"
             >
-              <SettingsIcon icon="Notification" />
+              <MainIcon icon="Notification" />
               Email Notification
-            </SettingsNavItem>
-          </SettingsNav>
-        </SettingsNavContainer>
-        <SettingsDetailsContainer>
+            </MainNavItem>
+          </MainNav>
+        </MainNavContainer>
+        <MainDetailsContainer>
           <CardBox>
             <CardBody>
               <MainSettings
@@ -175,8 +176,8 @@ const SettingsLayout: React.FC = () => {
               />
             </CardBody>
           </CardBox>
-        </SettingsDetailsContainer>
-      </SettingsContainer>
+        </MainDetailsContainer>
+      </MainContainer>
     </Container>
   )
 }

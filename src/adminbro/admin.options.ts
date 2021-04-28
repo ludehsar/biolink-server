@@ -68,6 +68,12 @@ const options: AdminBroOptions = {
   dashboard: {
     component: AdminBro.bundle('./dashboard/components/dashboard.tsx'),
   },
+  pages: {
+    Statistics: {
+      component: AdminBro.bundle('./statistics/components/layout.statistics.tsx'),
+      icon: 'Activity',
+    },
+  },
 }
 
 export default options
