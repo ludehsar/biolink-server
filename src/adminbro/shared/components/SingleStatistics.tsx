@@ -78,8 +78,8 @@ const SingleStatistics: React.FC<NewUsersStatisticsProps> = ({
               label,
               data,
               fill: false,
-              backgroundColor: '#77acf1',
-              borderColor: '#3edbf0',
+              backgroundColor: '#04009a',
+              borderColor: '#77acf1',
             },
           ],
         }}
