@@ -45,6 +45,7 @@
     "@types/node": "^14.14.31",
     "@types/nodemailer": "^6.4.1",
     "@types/react": "^17.0.3",
+    "@types/react-datepicker": "^3.1.8",
     "@types/redis": "^2.8.28",
     "@types/stripe": "^8.0.417",
     "@types/styled-components": "^5.1.9",
@@ -79,6 +80,7 @@
     "apollo-server-express": "^2.21.0",
     "argon2": "^0.27.1",
     "bull": "^3.22.3",
+    "chart.js": "2.9.3",
     "class-validator": "^0.13.1",
     "connect-redis": "^5.1.0",
     "cookie-parser": "^1.4.5",
@@ -91,12 +93,14 @@
     "geoip-lite": "^1.4.2",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.1",
+    "moment": "^2.24.0",
     "multer": "^1.4.2",
     "nodemailer": "^6.5.0",
     "pg": "^8.5.1",
     "rand-token": "^1.0.1",
     "react": "^17.0.2",
+    "react-chartjs-2": "2.9.0",
+    "react-datepicker": "^3.8.0",
     "react-dom": "^17.0.2",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
@@ -107,6 +111,7 @@
     "useragent": "^2.3.0"
   },
   "resolutions": {
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "moment": "^2.24.0"
   }
 }

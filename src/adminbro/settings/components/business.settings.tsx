@@ -4,15 +4,18 @@ import { withNotice } from 'admin-bro'
 import React from 'react'
 
 import {
+  Col2,
+  Col4,
+  Col6,
   FormCTAGroup,
   FormHelper,
   FormInput,
   FormLabel,
+  Row,
   FormSubmitButton,
   MainTabContainer,
   Title,
 } from '../../shared/components/Common.styled'
-import { FormCol2, FormCol4, FormCol6, FormRow } from './business.settings.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveBusinessSettings } from '../actions/businessSettingsAction'
 import { BusinessSystemSettings } from '../../../models/jsonTypes/BusinessSystemSettings'
@@ -121,8 +124,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
               />
             </FormGroup>
 
-            <FormRow>
-              <FormCol6>
+            <Row>
+              <Col6>
                 <FormGroup>
                   <FormLabel>City</FormLabel>
                   <FormInput
@@ -133,8 +136,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.city}
                   />
                 </FormGroup>
-              </FormCol6>
-              <FormCol4>
+              </Col6>
+              <Col4>
                 <FormGroup>
                   <FormLabel>Country</FormLabel>
                   <FormInput
@@ -145,8 +148,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.country}
                   />
                 </FormGroup>
-              </FormCol4>
-              <FormCol2>
+              </Col4>
+              <Col2>
                 <FormGroup>
                   <FormLabel>ZIP Code</FormLabel>
                   <FormInput
@@ -157,11 +160,11 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.zipCode}
                   />
                 </FormGroup>
-              </FormCol2>
-            </FormRow>
+              </Col2>
+            </Row>
 
-            <FormRow>
-              <FormCol6>
+            <Row>
+              <Col6>
                 <FormGroup>
                   <FormLabel>Email</FormLabel>
                   <FormInput
@@ -172,8 +175,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.email}
                   />
                 </FormGroup>
-              </FormCol6>
-              <FormCol6>
+              </Col6>
+              <Col6>
                 <FormGroup>
                   <FormLabel>Phone</FormLabel>
                   <FormInput
@@ -184,11 +187,11 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.phone}
                   />
                 </FormGroup>
-              </FormCol6>
-            </FormRow>
+              </Col6>
+            </Row>
 
-            <FormRow>
-              <FormCol6>
+            <Row>
+              <Col6>
                 <FormGroup>
                   <FormLabel>Tax Type</FormLabel>
                   <FormInput
@@ -199,8 +202,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.taxType}
                   />
                 </FormGroup>
-              </FormCol6>
-              <FormCol6>
+              </Col6>
+              <Col6>
                 <FormGroup>
                   <FormLabel>Tax ID</FormLabel>
                   <FormInput
@@ -211,8 +214,8 @@ const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
                     value={values.taxId}
                   />
                 </FormGroup>
-              </FormCol6>
-            </FormRow>
+              </Col6>
+            </Row>
 
             <FormCTAGroup>
               <FormSubmitButton type="submit" disabled={isSubmitting}>

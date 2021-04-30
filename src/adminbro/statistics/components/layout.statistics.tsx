@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import moment from 'moment'
+import React, { useState, useCallback, useEffect } from 'react'
+
+import { StatisticsForAdminsProps } from '../../../services/analytics.service'
 
 import {
   Container,
@@ -12,16 +15,47 @@ import {
   CardBox,
   CardBody,
 } from '../../shared/components/Common.styled'
+import { getStatisticsData } from '../actions/fetchAllData'
 import GrowthStatistics from './growth.statistics'
 
 const StatisticsLayout: React.FC = () => {
   const [activeMenus, setActiveMenus] = useState('growth')
-  // const [settingsData, setSettingsData] = useState<SettingsProps>({})
+  const [data, setData] = useState<StatisticsForAdminsProps>()
 
-  // const getSettingsData = useCallback(async () => {
-  //   const fetchedSettingsData = await getAllSettingsData()
-  //   setSettingsData(fetchedSettingsData)
-  // }, [])
+  const [userRegistrationStartDate, setUserRegistrationStartDate] = useState<Date>(
+    moment().subtract(30, 'd').toDate()
+  )
+  const [userRegistrationEndDate, setUserRegistrationEndDate] = useState<Date>(moment().toDate())
+
+  const [biolinkCreationStartDate, setBiolinkCreationStartDate] = useState<Date>(
+    moment().subtract(30, 'd').toDate()
+  )
+  const [biolinkCreationEndDate, setBiolinkCreationEndDate] = useState<Date>(moment().toDate())
+
+  const [linkCreationStartDate, setLinkCreationStartDate] = useState<Date>(
+    moment().subtract(30, 'd').toDate()
+  )
+  const [linkCreationEndDate, setLinkCreationEndDate] = useState<Date>(moment().toDate())
+
+  const getData = useCallback(async () => {
+    const fetchedData = await getStatisticsData(
+      userRegistrationStartDate,
+      userRegistrationEndDate,
+      biolinkCreationStartDate,
+      biolinkCreationEndDate,
+      linkCreationStartDate,
+      linkCreationEndDate
+    )
+
+    setData(fetchedData.data)
+  }, [
+    userRegistrationStartDate,
+    userRegistrationEndDate,
+    biolinkCreationStartDate,
+    biolinkCreationEndDate,
+    linkCreationStartDate,
+    linkCreationEndDate,
+  ])
 
   useEffect(() => {
     const urlHash = window.location.hash.substr(1)
@@ -30,8 +64,8 @@ const StatisticsLayout: React.FC = () => {
       setActiveMenus(urlHash)
     }
 
-    // getSettingsData()
-  }, [])
+    getData()
+  }, [getData])
 
   return (
     <Container m={24}>
@@ -72,7 +106,24 @@ const StatisticsLayout: React.FC = () => {
         <MainDetailsContainer>
           <CardBox>
             <CardBody>
-              <GrowthStatistics className={activeMenus === 'growth' ? 'active' : ''} />
+              <GrowthStatistics
+                chartData={data}
+                className={activeMenus === 'growth' ? 'active' : ''}
+                {...{
+                  userRegistrationStartDate,
+                  setUserRegistrationStartDate,
+                  userRegistrationEndDate,
+                  setUserRegistrationEndDate,
+                  biolinkCreationStartDate,
+                  setBiolinkCreationStartDate,
+                  biolinkCreationEndDate,
+                  setBiolinkCreationEndDate,
+                  linkCreationStartDate,
+                  setLinkCreationStartDate,
+                  linkCreationEndDate,
+                  setLinkCreationEndDate,
+                }}
+              />
             </CardBody>
           </CardBox>
         </MainDetailsContainer>

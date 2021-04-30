@@ -11,6 +11,8 @@ import { codeOptions, codeResource } from './code.options'
 import { taxOptions, taxResource } from './tax.options'
 import { planOptions, planResource } from './plan/plan.options'
 import { settingsOptions, settingsResource } from './settings/settings.options'
+import { getStatisticsForAdmins } from '../services/analytics.service'
+import { Request } from 'express'
 
 const options: AdminBroOptions = {
   resources: [
@@ -70,6 +72,25 @@ const options: AdminBroOptions = {
   },
   pages: {
     Statistics: {
+      handler: async (req: Request) => {
+        const {
+          userRegistrationStartDate,
+          userRegistrationEndDate,
+          biolinkCreationStartDate,
+          biolinkCreationEndDate,
+          linkCreationStartDate,
+          linkCreationEndDate,
+        } = req.query
+        const data = await getStatisticsForAdmins(
+          (userRegistrationStartDate as unknown) as Date,
+          (userRegistrationEndDate as unknown) as Date,
+          (biolinkCreationStartDate as unknown) as Date,
+          (biolinkCreationEndDate as unknown) as Date,
+          (linkCreationStartDate as unknown) as Date,
+          (linkCreationEndDate as unknown) as Date
+        )
+        return data
+      },
       component: AdminBro.bundle('./statistics/components/layout.statistics.tsx'),
       icon: 'Activity',
     },

@@ -91,6 +91,56 @@ export const MainTabContainer = styled(Box)`
   }
 `
 
+export const Row = styled(Box)`
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+`
+
+export const Col12 = styled(Box)`
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+`
+
+export const Col6 = styled(Box)`
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  @media (min-width: 992px) {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+`
+
+export const Col4 = styled(Box)`
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  @media (min-width: 992px) {
+    flex: 0 0 33.3333333333%;
+    max-width: 33.3333333333%;
+  }
+`
+
+export const Col2 = styled(Box)`
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  @media (min-width: 992px) {
+    flex: 0 0 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+`
+
 export const CardBox = styled(Box)`
   position: relative;
   display: flex;
