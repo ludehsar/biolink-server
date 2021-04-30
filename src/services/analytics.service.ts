@@ -79,9 +79,10 @@ export interface LinkStatisticsForAdminProps {
   }[]
 }
 
-export type StatisticsForAdminsProps = UserStatisticsForAdminProps &
-  BiolinkStatisticsForAdminProps &
-  LinkStatisticsForAdminProps
+export type StatisticsForAdminsProps =
+  | UserStatisticsForAdminProps
+  | BiolinkStatisticsForAdminProps
+  | LinkStatisticsForAdminProps
 
 export const getRegisteredUsersDataForAdmins = async (
   userRegistrationStartDate?: Date,

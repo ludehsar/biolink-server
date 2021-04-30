@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import React, { useState, useCallback, useEffect } from 'react'
 
@@ -19,7 +20,7 @@ import { getStatisticsData } from '../actions/fetchAllData'
 import GrowthStatistics from './growth.statistics'
 
 const StatisticsLayout: React.FC = () => {
-  const [activeMenus, setActiveMenus] = useState('growth')
+  const [activeMenus, setActiveMenus] = useState<string>('growth')
   const [data, setData] = useState<StatisticsForAdminsProps>()
 
   const [userRegistrationStartDate, setUserRegistrationStartDate] = useState<Date>(
@@ -47,7 +48,7 @@ const StatisticsLayout: React.FC = () => {
       linkCreationEndDate
     )
 
-    setData(fetchedData.data)
+    setData((fetchedData as AxiosResponse<StatisticsForAdminsProps>).data)
   }, [
     userRegistrationStartDate,
     userRegistrationEndDate,
@@ -107,9 +108,9 @@ const StatisticsLayout: React.FC = () => {
           <CardBox>
             <CardBody>
               <GrowthStatistics
-                chartData={data}
                 className={activeMenus === 'growth' ? 'active' : ''}
                 {...{
+                  data,
                   userRegistrationStartDate,
                   setUserRegistrationStartDate,
                   userRegistrationEndDate,

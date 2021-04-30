@@ -1,11 +1,16 @@
 import React from 'react'
 
 import { MainTabContainer } from '../../shared/components/Common.styled'
-import { StatisticsForAdminsProps } from '../../../services/analytics.service'
+import {
+  BiolinkStatisticsForAdminProps,
+  LinkStatisticsForAdminProps,
+  StatisticsForAdminsProps,
+  UserStatisticsForAdminProps,
+} from '../../../services/analytics.service'
 import SingleStatistics from '../../shared/components/SingleStatistics'
 
 interface GrowthStatisticsProps {
-  chartData?: StatisticsForAdminsProps
+  data?: StatisticsForAdminsProps
   userRegistrationStartDate: Date
   setUserRegistrationStartDate: React.Dispatch<React.SetStateAction<Date>>
   userRegistrationEndDate: Date
@@ -22,7 +27,7 @@ interface GrowthStatisticsProps {
 }
 
 const GrowthStatistics: React.FC<GrowthStatisticsProps> = ({
-  chartData,
+  data,
   userRegistrationStartDate,
   setUserRegistrationStartDate,
   userRegistrationEndDate,
@@ -37,17 +42,21 @@ const GrowthStatistics: React.FC<GrowthStatisticsProps> = ({
   setLinkCreationEndDate,
   className,
 }) => {
-  const userChartData = chartData?.newRegisteredUsers.map((singleData) => ({
-    x: singleData.user_createdat,
-    y: singleData.user_count,
-  }))
+  const userChartData = (data as UserStatisticsForAdminProps)?.newRegisteredUsers?.map(
+    (singleData) => ({
+      x: singleData.user_createdat,
+      y: singleData.user_count,
+    })
+  )
 
-  const biolinkChartData = chartData?.newBiolinks.map((singleData) => ({
-    x: singleData.biolink_createdat,
-    y: singleData.biolink_count,
-  }))
+  const biolinkChartData = (data as BiolinkStatisticsForAdminProps)?.newBiolinks?.map(
+    (singleData) => ({
+      x: singleData.biolink_createdat,
+      y: singleData.biolink_count,
+    })
+  )
 
-  const linkChartData = chartData?.newLinks.map((singleData) => ({
+  const linkChartData = (data as LinkStatisticsForAdminProps)?.newLinks?.map((singleData) => ({
     x: singleData.link_createdat,
     y: singleData.link_count,
   }))
