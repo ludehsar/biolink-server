@@ -63,6 +63,7 @@ const main = async (): Promise<void> => {
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res }),
+    playground: true, // TODO: disable playground in production
   })
 
   apolloServer.applyMiddleware({
