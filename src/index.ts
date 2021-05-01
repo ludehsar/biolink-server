@@ -64,6 +64,7 @@ const main = async (): Promise<void> => {
     }),
     context: ({ req, res }): MyContext => ({ req, res }),
     playground: true, // TODO: disable playground in production
+    introspection: true, // TODO: disable introspection in production
   })
 
   apolloServer.applyMiddleware({
