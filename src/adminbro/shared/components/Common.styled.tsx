@@ -27,6 +27,13 @@ export const MainContainer = styled(Box)`
   margin-bottom: 20px;
 `
 
+export const CardGridContainer = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-gap: 15px;
+  margin-bottom: 20px;
+`
+
 export const MainNavContainer = styled(Box)`
   margin-bottom: 3rem !important;
   flex: 0 0 100%;

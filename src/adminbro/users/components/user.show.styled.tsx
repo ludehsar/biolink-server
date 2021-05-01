@@ -20,13 +20,6 @@ export const FlexContainer = styled(Box)`
   }
 `
 
-export const GridContainer = styled(Box)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  grid-gap: 15px;
-  margin-bottom: 20px;
-`
-
 export const UserDetailsItem = styled(Box)`
   display: flex;
   flex-grow: 1;

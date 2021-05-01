@@ -1,9 +1,10 @@
 import React from 'react'
 import { BasePropertyComponentProps } from 'admin-bro'
 
-import { FlexContainer, GridContainer, UserDetailsContainer } from './user.show.styled'
+import { FlexContainer, UserDetailsContainer } from './user.show.styled'
 import Card from '../../shared/components/DashboardCard'
 import UserDetails from './UserDetails'
+import { CardGridContainer } from '../../shared/components/Common.styled'
 
 const Show: React.FC<BasePropertyComponentProps> = (props) => {
   const { record } = props
@@ -47,12 +48,12 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
           <UserDetails id="total-logins" label="Total Logins" value={record?.params.totalLogin} />
         </FlexContainer>
       </UserDetailsContainer>
-      <GridContainer>
+      <CardGridContainer>
         <Card title="Projects" icon="Roadmap" value={0} href="Something" />
         <Card title="Links" icon="Link" value={0} href="Something" />
         <Card title="Custom Domains" icon="Wikis" value={0} href="Something" />
         <Card title="Payments" icon="Filter" value={0} href="Something" />
-      </GridContainer>
+      </CardGridContainer>
     </>
   )
 }
