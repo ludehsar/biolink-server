@@ -79,7 +79,7 @@ export class Link extends BaseEntity {
   userId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @ManyToOne(() => Biolink, (biolink) => biolink.links)
+  @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true })
   @JoinColumn({ name: 'biolinkId' })
   biolink!: Biolink
 

@@ -22,7 +22,6 @@ export const getAllLinksFromBiolinkUsername = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Biolink not found',
         },
       ],
@@ -45,7 +44,6 @@ export const getAllLinksFromBiolinkUsername = async (
       return {
         errors: [
           {
-            field: '',
             message: 'User is not authorized',
           },
         ],
@@ -60,7 +58,7 @@ export const getAllLinksFromBiolinkUsername = async (
   return { links }
 }
 
-export const createLink = async (
+export const createLinkFromUsername = async (
   username: string,
   options: NewLinkInput,
   user: User
@@ -71,7 +69,6 @@ export const createLink = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Biolink not found',
         },
       ],
@@ -82,7 +79,6 @@ export const createLink = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Not authorized',
         },
       ],
@@ -97,7 +93,6 @@ export const createLink = async (
       return {
         errors: [
           {
-            field: '',
             message: 'Shortened URL already taken',
           },
         ],
@@ -133,7 +128,6 @@ export const createLink = async (
         return {
           errors: [
             {
-              field: '',
               message: 'Shortened URL already taken',
             },
           ],
@@ -143,7 +137,74 @@ export const createLink = async (
         return {
           errors: [
             {
-              field: '',
+              message: 'Something went wrong',
+            },
+          ],
+        }
+      }
+    }
+  }
+}
+
+export const createNewLink = async (options: NewLinkInput, user: User): Promise<LinkResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'Not authorized',
+        },
+      ],
+    }
+  }
+
+  let shortenedUrl = options.shortenedUrl ? options.shortenedUrl : randToken.generate(8)
+  if (options.shortenedUrl) {
+    const link = await Link.findOne({ where: { shortenedUrl: options.shortenedUrl } })
+
+    if (link) {
+      return {
+        errors: [
+          {
+            message: 'Shortened URL already taken',
+          },
+        ],
+      }
+    }
+  } else {
+    let link = await Link.findOne({ where: { shortenedUrl } })
+    while (link) {
+      shortenedUrl = randToken.generate(8)
+      link = await Link.findOne({ where: { shortenedUrl } })
+    }
+  }
+
+  try {
+    const link = await Link.create({
+      linkType: options.linkType as LinkType,
+      url: options.url,
+      shortenedUrl,
+      startDate: options.startDate,
+      endDate: options.endDate,
+      status: options.status as EnabledStatus,
+      user,
+    }).save()
+
+    return { links: [link] }
+  } catch (err) {
+    switch (err.constraint) {
+      case 'UQ_d0d8043be438496bc31c73e9ed5': {
+        return {
+          errors: [
+            {
+              message: 'Shortened URL already taken',
+            },
+          ],
+        }
+      }
+      default: {
+        return {
+          errors: [
+            {
               message: 'Something went wrong',
             },
           ],
@@ -164,7 +225,6 @@ export const getLinkByShortenedUrl = async (
     return {
       errors: [
         {
-          field: '',
           message: 'No link found',
         },
       ],
@@ -179,7 +239,6 @@ export const getLinkByShortenedUrl = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Not authorized',
         },
       ],
@@ -201,7 +260,6 @@ export const removeLinkByShortenedUrl = async (
     return {
       errors: [
         {
-          field: '',
           message: 'No link found',
         },
       ],
@@ -212,7 +270,6 @@ export const removeLinkByShortenedUrl = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Not authorized',
         },
       ],

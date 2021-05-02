@@ -3,7 +3,8 @@ import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } fro
 import { Link } from '../models/entities/Link'
 import { FieldError } from './commonTypes'
 import {
-  createLink,
+  createLinkFromUsername,
+  createNewLink,
   getAllLinksFromBiolinkUsername,
   getLinkByShortenedUrl,
   removeLinkByShortenedUrl,
@@ -54,12 +55,20 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
-  async createNewLink(
+  async createLinkFromBiolinkUsername(
     @Arg('username') username: string,
     @Arg('options') options: NewLinkInput,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await createLink(username, options, user)
+    return await createLinkFromUsername(username, options, user)
+  }
+
+  @Mutation(() => LinkResponse)
+  async createNewLink(
+    @Arg('options') options: NewLinkInput,
+    @CurrentUser() user: User
+  ): Promise<LinkResponse> {
+    return await createNewLink(options, user)
   }
 
   @Query(() => LinkResponse)
