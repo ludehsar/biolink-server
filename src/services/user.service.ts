@@ -2,6 +2,7 @@ import { validate } from 'class-validator'
 import * as argon2 from 'argon2'
 import randToken from 'rand-token'
 import moment from 'moment'
+import { MailDataRequired } from '@sendgrid/mail'
 
 import {
   LoginInput,
@@ -17,8 +18,9 @@ import { newBiolinkValidation } from './biolink.service'
 import { NewBiolinkInput } from '../resolvers/biolink.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import sendMailQueue from '../queues/sendMailQueue'
 import { createReferralCode } from './code.service'
+import sgMail from '../utils/sendMail'
+import { FRONTEND_APP_URL } from '../config/app.config'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -146,12 +148,28 @@ export const sendEmailForVerification = async (user: User): Promise<boolean> => 
   user.emailActivationCode = emailActivationCode
   await user.save()
 
-  const emailVerificationData = {
-    to: [user.email],
-    subject: 'Email verification',
-    body: `Your email activation code is ${emailActivationCode}.`,
+  const emailActivationMailData: MailDataRequired = {
+    to: {
+      name: user.name,
+      email: user.email,
+    },
+    from: {
+      name: 'Stashee Support',
+      email: 'info@stash.ee',
+    },
+    subject: `Verify Your Email Address`,
+    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${user.emailActivationCode}" target="_blank">here</a> to verify your email address.`,
   }
-  await sendMailQueue.add(emailVerificationData)
+
+  await sgMail.send(emailActivationMailData, false, (err) => {
+    return {
+      errors: [
+        {
+          message: err.message,
+        },
+      ],
+    }
+  })
 
   return Promise.resolve(true)
 }
@@ -183,12 +201,28 @@ export const sendForgotPasswordVerificationEmail = async (email: string): Promis
   user.forgotPasswordCode = await argon2.hash(forgotPasswordCode)
   await user.save()
 
-  const forgotPasswordData = {
-    to: [user.email],
-    subject: 'Email verification',
-    body: `Your forgot password code is ${forgotPasswordCode}.`,
+  const forgetPasswordMailData: MailDataRequired = {
+    to: {
+      name: user.name,
+      email: user.email,
+    },
+    from: {
+      name: 'Stashee Support',
+      email: 'info@stash.ee',
+    },
+    subject: `Reset Your Stashee Password`,
+    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${user.emailActivationCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
-  await sendMailQueue.add(forgotPasswordData)
+
+  await sgMail.send(forgetPasswordMailData, false, (err) => {
+    return {
+      errors: [
+        {
+          message: err.message,
+        },
+      ],
+    }
+  })
 
   return Promise.resolve(true)
 }

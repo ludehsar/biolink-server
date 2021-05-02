@@ -8,3 +8,5 @@ export const COOKIE_SAMESITE =
   <boolean | 'lax' | 'strict' | 'none' | undefined>process.env.APP_COOKIE_SAMESITE || 'lax'
 export const COOKIE_SECURE: boolean = process.env.APP_COOKIE_SECURE === 'true'
 export const COOKIE_NAME = 'qid'
+export const FRONTEND_APP_URL = process.env.FRONTEND_APP_URL || 'http://localhost:3000'
+export const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || ''

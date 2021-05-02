@@ -1,19 +1,20 @@
+import { MailDataRequired } from '@sendgrid/mail'
 import { getRepository } from 'typeorm'
 
+import sgMail from '../utils/sendMail'
 import { Referral } from '../models/entities/Referral'
 import { User } from '../models/entities/User'
 import { ReferralInput, ReferralResponse } from '../resolvers/referral.resolver'
 import { Code } from '../models/entities/Code'
 import { CodeType } from '../models/enums/CodeType'
 import { createReferralCode } from './code.service'
-import sendMailQueue from '../queues/sendMailQueue'
+import { FRONTEND_APP_URL } from '../config/app.config'
 
 export const getReferralsList = async (user: User): Promise<ReferralResponse> => {
   if (!user) {
     return {
       errors: [
         {
-          field: '',
           message: 'User not authenticated',
         },
       ],
@@ -35,7 +36,6 @@ export const createReferrals = async (
     return {
       errors: [
         {
-          field: '',
           message: 'User not authenticated',
         },
       ],
@@ -45,17 +45,33 @@ export const createReferrals = async (
   let referralCode = await Code.findOne({ where: { referrer: user, type: CodeType.Referral } })
 
   if (!referralCode) referralCode = await createReferralCode(user)
-  const emailVerificationData = {
+
+  const sendReferralData: MailDataRequired = {
     to: referralOptions.userInfo.map((referredTo) => ({
-      address: referredTo.referredToEmail,
       name: referredTo.referredToName,
+      email: referredTo.referredToEmail,
     })),
-    subject: `Invitation from ${referralOptions.referredByName} to give you 20% discount on Linkby`,
-    body: `Your invitation code is ${referralCode.code}.`,
-    ccName: referralOptions.referredByName,
-    ccEmail: referralOptions.referredByEmail,
+    from: {
+      name: 'Stashee Support',
+      email: 'info@stash.ee',
+    },
+    subject: `Invitation from ${referralOptions.referredByName} to give you 20% discount on Stashee`,
+    text: `Your invitation code is ${FRONTEND_APP_URL}/register?code=${referralCode.code}.`,
+    cc: {
+      email: referralOptions.referredByEmail,
+      name: referralOptions.referredByName,
+    },
   }
-  await sendMailQueue.add(emailVerificationData)
+
+  await sgMail.sendMultiple(sendReferralData, (err) => {
+    return {
+      errors: [
+        {
+          message: err.message,
+        },
+      ],
+    }
+  })
 
   try {
     await getRepository(Referral)
@@ -75,7 +91,6 @@ export const createReferrals = async (
     return {
       errors: [
         {
-          field: '',
           message: 'Something went wrong',
         },
       ],
