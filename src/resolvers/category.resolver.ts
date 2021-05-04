@@ -1,25 +1,21 @@
-import { Arg, Field, InputType, Query, Resolver } from 'type-graphql'
+import { Arg, Query, Resolver } from 'type-graphql'
 import { getRepository } from 'typeorm'
 
 import { Category } from '../models/entities/Category'
 
-@InputType()
-export class CategoryInput {
-  @Field(() => String)
-  categoryName = ''
-}
-
 @Resolver()
 export class CategoryResolver {
   @Query(() => [Category], { nullable: true })
-  async fetchAllCategories(@Arg('options') options: CategoryInput): Promise<Category[]> {
+  async fetchAllCategories(@Arg('categoryName') categoryName: string): Promise<Category[]> {
     const categories = await getRepository(Category)
       .createQueryBuilder('category')
       .where('LOWER(category.categoryName) like :categoryName', {
-        categoryName: `%${options.categoryName.toLowerCase()}%`,
+        categoryName: `%${categoryName.toLowerCase()}%`,
       })
+      .orderBy('category.categoryName', 'ASC')
       .limit(5)
+      .getMany()
 
-    return categories.getMany()
+    return categories
   }
 }

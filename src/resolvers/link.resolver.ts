@@ -41,6 +41,9 @@ export class LinkResponse {
 
   @Field(() => [Link], { nullable: true })
   links?: Link[]
+
+  @Field(() => Link, { nullable: true })
+  link?: Link
 }
 
 @Resolver()

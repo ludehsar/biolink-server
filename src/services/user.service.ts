@@ -21,6 +21,7 @@ import { BlacklistType } from '../models/enums/BlacklistType'
 import { createReferralCode } from './code.service'
 import sgMail from '../utils/sendMail'
 import { FRONTEND_APP_URL } from '../config/app.config'
+import { BooleanResponse } from '../resolvers/commonTypes'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -132,9 +133,16 @@ export const registerUser = async (
   return { user }
 }
 
-export const sendEmailForVerification = async (user: User): Promise<boolean> => {
+export const sendEmailForVerification = async (user: User): Promise<BooleanResponse> => {
   if (!user) {
-    return Promise.reject(new Error('User not authorized'))
+    return {
+      errors: [
+        {
+          message: 'User not authenticated',
+        },
+      ],
+      executed: false,
+    }
   }
 
   let emailActivationCode = randToken.generate(132)
@@ -171,29 +179,49 @@ export const sendEmailForVerification = async (user: User): Promise<boolean> => 
     }
   })
 
-  return Promise.resolve(true)
+  return {
+    executed: true,
+  }
 }
 
 export const verifyEmailByActivationCode = async (
   emailActivationCode: string
-): Promise<boolean> => {
+): Promise<BooleanResponse> => {
   const user = await User.findOne({ emailActivationCode })
 
   if (!user) {
-    return Promise.reject(new Error('Could not verify the user.'))
+    return {
+      errors: [
+        {
+          message: 'Invalid token',
+        },
+      ],
+      executed: false,
+    }
   }
 
   user.emailVerifiedAt = moment().toDate()
   await user.save()
 
-  return Promise.resolve(true)
+  return {
+    executed: true,
+  }
 }
 
-export const sendForgotPasswordVerificationEmail = async (email: string): Promise<boolean> => {
+export const sendForgotPasswordVerificationEmail = async (
+  email: string
+): Promise<BooleanResponse> => {
   const user = await User.findOne({ where: { email } })
 
   if (!user) {
-    return Promise.reject(new Error('No user found with this email address'))
+    return {
+      errors: [
+        {
+          message: 'No user found with this email address',
+        },
+      ],
+      executed: false,
+    }
   }
 
   const forgotPasswordCode = randToken.generate(160)
@@ -224,30 +252,48 @@ export const sendForgotPasswordVerificationEmail = async (email: string): Promis
     }
   })
 
-  return Promise.resolve(true)
+  return {
+    executed: true,
+  }
 }
 
 export const verifyForgotPassword = async (
   email: string,
   password: string,
   forgotPasswordCode: string
-): Promise<boolean> => {
+): Promise<BooleanResponse> => {
   const user = await User.findOne({ email })
 
   if (!user) {
-    return Promise.reject(new Error('No user found.'))
+    return {
+      errors: [
+        {
+          message: 'Invalid email address',
+        },
+      ],
+      executed: false,
+    }
   }
 
   const verified = await argon2.verify(user.forgotPasswordCode, forgotPasswordCode)
 
   if (!verified) {
-    return Promise.reject(new Error('Forgot password code could not be verified.'))
+    return {
+      errors: [
+        {
+          message: 'Invalid token',
+        },
+      ],
+      executed: false,
+    }
   }
 
   user.encryptedPassword = await argon2.hash(password)
   await user.save()
 
-  return Promise.resolve(true)
+  return {
+    executed: true,
+  }
 }
 
 export const loginUser = async (options: LoginInput, context: MyContext): Promise<UserResponse> => {
@@ -298,11 +344,24 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
   return { user }
 }
 
-export const logoutUser = async (context: MyContext, user: User): Promise<boolean> => {
-  if (!user) return Promise.resolve(false)
+export const logoutUser = async (context: MyContext, user: User): Promise<BooleanResponse> => {
+  if (!user)
+    return {
+      errors: [
+        {
+          message: 'Invalid request',
+        },
+      ],
+      executed: false,
+    }
+
   user.tokenCode = ''
   await user.save()
+
   context.res.cookie('refresh_token', '', refreshTokenCookieOptions)
   context.res.cookie('access_token', '', accessTokenCookieOptions)
-  return Promise.resolve(true)
+
+  return {
+    executed: true,
+  }
 }

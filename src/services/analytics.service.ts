@@ -17,7 +17,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
           message: 'Link could not be found',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -30,7 +30,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
           message: 'Invalid biolink',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -54,7 +54,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
   }).save()
 
   return {
-    passed: true,
+    executed: true,
   }
 }
 

@@ -21,7 +21,7 @@ export const createVerification = async (
           message: 'User not authorized',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -34,7 +34,7 @@ export const createVerification = async (
           message: 'No biolink specified',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -45,7 +45,7 @@ export const createVerification = async (
           message: 'This biolink is already processed for verification',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -58,7 +58,7 @@ export const createVerification = async (
           message: 'Unrecognized plan',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -69,7 +69,7 @@ export const createVerification = async (
           message: 'Current plan does not support for verification. Please upgrade',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -82,7 +82,7 @@ export const createVerification = async (
           message: 'Unrecognized category',
         },
       ],
-      passed: false,
+      executed: false,
     }
   }
 
@@ -145,7 +145,7 @@ export const createVerification = async (
   if (errors.length > 0) {
     return {
       errors,
-      passed: false,
+      executed: false,
     }
   }
 
@@ -168,5 +168,5 @@ export const createVerification = async (
     user,
   }).save()
 
-  return { passed: true }
+  return { executed: true }
 }

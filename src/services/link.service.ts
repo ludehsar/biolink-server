@@ -121,7 +121,7 @@ export const createLinkFromUsername = async (
       order,
     }).save()
 
-    return { links: [link] }
+    return { link }
   } catch (err) {
     switch (err.constraint) {
       case 'UQ_d0d8043be438496bc31c73e9ed5': {
@@ -189,7 +189,7 @@ export const createNewLink = async (options: NewLinkInput, user: User): Promise<
       user,
     }).save()
 
-    return { links: [link] }
+    return { link }
   } catch (err) {
     switch (err.constraint) {
       case 'UQ_d0d8043be438496bc31c73e9ed5': {
@@ -247,7 +247,7 @@ export const getLinkByShortenedUrl = async (
 
   await trackLink(link, context)
 
-  return { links: [link] }
+  return { link }
 }
 
 export const removeLinkByShortenedUrl = async (
@@ -278,5 +278,5 @@ export const removeLinkByShortenedUrl = async (
 
   await link.softRemove()
 
-  return { links: [link] }
+  return { link }
 }

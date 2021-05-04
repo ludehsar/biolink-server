@@ -16,7 +16,7 @@ export class BooleanResponse {
   errors?: FieldError[]
 
   @Field(() => Boolean, { nullable: true })
-  passed!: boolean
+  executed!: boolean
 }
 
 @InputType()

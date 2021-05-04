@@ -13,7 +13,7 @@ import {
   verifyEmailByActivationCode,
   verifyForgotPassword,
 } from '../services/user.service'
-import { FieldError } from './commonTypes'
+import { BooleanResponse, FieldError } from './commonTypes'
 import CurrentUser from '../decorators/currentUser'
 import { NewBiolinkInput } from './biolink.resolver'
 
@@ -88,12 +88,14 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async sendEmailVerification(@CurrentUser() user: User): Promise<boolean> {
+  async sendEmailVerification(@CurrentUser() user: User): Promise<BooleanResponse> {
     return await sendEmailForVerification(user)
   }
 
   @Mutation(() => Boolean)
-  async verifyUserEmail(@Arg('emailActivationCode') emailActivationCode: string): Promise<boolean> {
+  async verifyUserEmail(
+    @Arg('emailActivationCode') emailActivationCode: string
+  ): Promise<BooleanResponse> {
     return await verifyEmailByActivationCode(emailActivationCode)
   }
 
@@ -106,7 +108,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async sendForgotPasswordEmail(@Arg('email') email: string): Promise<boolean> {
+  async sendForgotPasswordEmail(@Arg('email') email: string): Promise<BooleanResponse> {
     return await sendForgotPasswordVerificationEmail(email)
   }
 
@@ -114,12 +116,12 @@ export class UserResolver {
   async verifyForgotPassword(
     @Arg('options') options: LoginInput,
     @Arg('forgotPasswordCode') forgotPasswordCode: string
-  ): Promise<boolean> {
+  ): Promise<BooleanResponse> {
     return await verifyForgotPassword(options.email, options.password, forgotPasswordCode)
   }
 
   @Mutation(() => Boolean)
-  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<boolean> {
+  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<BooleanResponse> {
     return await logoutUser(context, user)
   }
 }

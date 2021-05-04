@@ -6,7 +6,7 @@ import { CodeType } from '../models/enums/CodeType'
 
 export const createReferralCode = async (user: User): Promise<Code> => {
   if (!user) {
-    return Promise.reject('Not authorized')
+    return Promise.reject('User not authenticated')
   }
 
   const code = await Code.create({
