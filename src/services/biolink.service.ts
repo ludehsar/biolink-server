@@ -15,6 +15,7 @@ import { ValidationResponse } from '../resolvers/user.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
 import { Plan } from '../models/entities/Plan'
+import { BooleanResponse } from '../resolvers/commonTypes'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -258,18 +259,48 @@ export const updateBiolinkSettingsFromUsername = async (
   return { biolink }
 }
 
-export const removeBiolinkByUsername = async (username: string, user: User): Promise<boolean> => {
+export const removeBiolinkByUsername = async (
+  username: string,
+  user: User
+): Promise<BooleanResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User not authenticated',
+        },
+      ],
+      executed: false,
+    }
+  }
+
   if (!biolink) {
-    return Promise.resolve(false)
+    return {
+      errors: [
+        {
+          message: 'No biolink found with this username',
+        },
+      ],
+      executed: false,
+    }
   }
 
   if (biolink.userId !== user.id) {
-    return Promise.resolve(false)
+    return {
+      errors: [
+        {
+          message: 'Not authorized',
+        },
+      ],
+      executed: false,
+    }
   }
 
   await biolink.softRemove()
 
-  return Promise.resolve(true)
+  return {
+    executed: true,
+  }
 }

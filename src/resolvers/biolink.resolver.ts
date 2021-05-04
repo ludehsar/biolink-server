@@ -4,7 +4,7 @@ import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'ty
 import { Biolink } from '../models/entities/Biolink'
 import CurrentUser from '../decorators/currentUser'
 import { User } from '../models/entities/User'
-import { FieldError } from './commonTypes'
+import { BooleanResponse, FieldError } from './commonTypes'
 import {
   createNewBiolink,
   getBiolinkFromUsername,
@@ -196,11 +196,11 @@ export class BiolinkResolver {
     return await updateBiolinkSettingsFromUsername(user, username, options)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async deleteBiolink(
     @Arg('username') username: string,
     @CurrentUser() user: User
-  ): Promise<boolean> {
+  ): Promise<BooleanResponse> {
     return await removeBiolinkByUsername(username, user)
   }
 }

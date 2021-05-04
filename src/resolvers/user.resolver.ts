@@ -87,12 +87,12 @@ export class UserResolver {
     return await registerUser(options, context)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async sendEmailVerification(@CurrentUser() user: User): Promise<BooleanResponse> {
     return await sendEmailForVerification(user)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async verifyUserEmail(
     @Arg('emailActivationCode') emailActivationCode: string
   ): Promise<BooleanResponse> {
@@ -107,12 +107,12 @@ export class UserResolver {
     return await loginUser(options, context)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async sendForgotPasswordEmail(@Arg('email') email: string): Promise<BooleanResponse> {
     return await sendForgotPasswordVerificationEmail(email)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async verifyForgotPassword(
     @Arg('options') options: LoginInput,
     @Arg('forgotPasswordCode') forgotPasswordCode: string
@@ -120,7 +120,7 @@ export class UserResolver {
     return await verifyForgotPassword(options.email, options.password, forgotPasswordCode)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BooleanResponse)
   async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<BooleanResponse> {
     return await logoutUser(context, user)
   }

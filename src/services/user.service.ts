@@ -111,6 +111,7 @@ export const registerUser = async (
   const hashedPassword = await argon2.hash(userOptions.password as string)
 
   const user = await User.create({
+    name: userOptions.name,
     email: userOptions.email,
     encryptedPassword: hashedPassword,
   }).save()
