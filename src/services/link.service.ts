@@ -58,6 +58,29 @@ export const getAllLinksFromBiolinkUsername = async (
   return { links }
 }
 
+export const getAllUserLinks = async (user: User): Promise<LinkResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User is not authenticated',
+        },
+      ],
+    }
+  }
+
+  const links = await Link.find({
+    where: {
+      userId: user.id,
+    },
+    order: {
+      createdAt: 'DESC',
+    },
+  })
+
+  return { links }
+}
+
 export const createLinkFromUsername = async (
   username: string,
   options: NewLinkInput,

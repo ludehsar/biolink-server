@@ -1,5 +1,5 @@
 import { IsNotEmpty, Matches, IsInt, IsUrl, IsIn, IsEmail, IsPhoneNumber } from 'class-validator'
-import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { Biolink } from '../models/entities/Biolink'
 import CurrentUser from '../decorators/currentUser'
@@ -12,6 +12,7 @@ import {
   updateBiolinkFromUsername,
   updateBiolinkSettingsFromUsername,
 } from '../services/biolink.service'
+import { MyContext } from 'MyContext'
 
 @InputType()
 export class SingleSocialAccount {
@@ -174,8 +175,12 @@ export class BiolinkResolver {
   }
 
   @Query(() => BiolinkResponse)
-  async getBiolinkFromUsername(@Arg('username') username: string): Promise<BiolinkResponse> {
-    return await getBiolinkFromUsername(username)
+  async getBiolinkFromUsername(
+    @Arg('username') username: string,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await getBiolinkFromUsername(username, context, user)
   }
 
   @Mutation(() => BiolinkResponse)

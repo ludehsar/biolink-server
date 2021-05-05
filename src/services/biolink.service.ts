@@ -16,6 +16,8 @@ import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
 import { Plan } from '../models/entities/Plan'
 import { BooleanResponse } from '../resolvers/commonTypes'
+import { trackBiolink } from './analytics.service'
+import { MyContext } from '../MyContext'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -166,7 +168,11 @@ export const createNewBiolink = async (
   return { biolink }
 }
 
-export const getBiolinkFromUsername = async (username: string): Promise<BiolinkResponse> => {
+export const getBiolinkFromUsername = async (
+  username: string,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
   const premiumUsername = await PremiumUsername.findOne({ where: { username } })
 
@@ -179,6 +185,10 @@ export const getBiolinkFromUsername = async (username: string): Promise<BiolinkR
         },
       ],
     }
+  }
+
+  if (user && user.id !== biolink.userId) {
+    await trackBiolink(biolink, context)
   }
 
   return { biolink }

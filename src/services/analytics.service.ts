@@ -21,13 +21,38 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     }
   }
 
-  const biolink = await Biolink.findOne(link.biolinkId)
+  const geo = geoip.lookup(context.req.ip)
 
+  const agent = useragent.lookup(context.req.headers['user-agent'])
+
+  await TrackLink.create({
+    browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
+    browserName: agent.family || 'Unknown',
+    cityName: geo?.city || 'Unknown',
+    countryCode: geo?.country || 'Unknown',
+    deviceType: agent.device.family || 'Unknown',
+    link,
+    osName: agent.os.family || 'Unknown',
+    referer: context.req.headers.referer || 'Unknown',
+    utmCampaign: context.req.params.utm_campaign || 'Unknown',
+    utmMedium: context.req.params.utm_medium || 'Unknown',
+    utmSource: context.req.params.utm_source || 'Unknown',
+  }).save()
+
+  return {
+    executed: true,
+  }
+}
+
+export const trackBiolink = async (
+  biolink: Biolink,
+  context: MyContext
+): Promise<BooleanResponse> => {
   if (!biolink) {
     return {
       errors: [
         {
-          message: 'Invalid biolink',
+          message: 'Biolink could not be found',
         },
       ],
       executed: false,
@@ -45,7 +70,6 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     cityName: geo?.city || 'Unknown',
     countryCode: geo?.country || 'Unknown',
     deviceType: agent.device.family || 'Unknown',
-    link,
     osName: agent.os.family || 'Unknown',
     referer: context.req.headers.referer || 'Unknown',
     utmCampaign: context.req.params.utm_campaign || 'Unknown',
