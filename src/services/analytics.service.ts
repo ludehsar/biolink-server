@@ -8,6 +8,7 @@ import { TrackLink } from '../models/entities/TrackLink'
 import { MyContext } from '../MyContext'
 import { BooleanResponse } from '../resolvers/commonTypes'
 import { User } from '../models/entities/User'
+import { AnalyticsResponse } from '../resolvers/analytics.resolver'
 
 export const trackLink = async (link: Link, context: MyContext): Promise<BooleanResponse> => {
   if (!link) {
@@ -201,5 +202,53 @@ export const getStatisticsForAdmins = async (
     newRegisteredUsers: user.newRegisteredUsers,
     newBiolinks: biolink.newBiolinks,
     newLinks: link.newLinks,
+  }
+}
+
+export const getBiolinkTrackingsByBiolinkUsername = async (
+  username: string,
+  user: User,
+  startDate?: Date,
+  endDate?: Date
+): Promise<AnalyticsResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User is not authenticated',
+        },
+      ],
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username, userId: user.id } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          message: 'Biolink with this username does not exist or the user is not authorized',
+        },
+      ],
+    }
+  }
+
+  const qb = TrackLink.createQueryBuilder('track').select(
+    `(SELECT COUNT("t2"."id") FROM "track_link" "t2" WHERE "t2"."createdAt" <= "track"."createdAt" AND "t2"."deletedAt" IS NULL) AS click_count,
+      "track"."createdAt" as date`
+  )
+
+  if (startDate && endDate) {
+    qb.where(
+      `track.createdAt BETWEEN '${moment(startDate).toISOString()}' AND '${moment(
+        endDate
+      ).toISOString()}'`
+    )
+  }
+
+  const tracks = await qb.groupBy('track.createdAt').orderBy('date', 'ASC').execute()
+
+  return {
+    result: tracks,
   }
 }

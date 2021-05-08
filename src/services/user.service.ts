@@ -167,7 +167,7 @@ export const sendEmailForVerification = async (user: User): Promise<BooleanRespo
       email: 'info@stash.ee',
     },
     subject: `Verify Your Email Address`,
-    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${user.emailActivationCode}" target="_blank">here</a> to verify your email address.`,
+    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${emailActivationCode}" target="_blank">here</a> to verify your email address.`,
   }
 
   await sgMail.send(emailActivationMailData, false, (err) => {
@@ -188,7 +188,7 @@ export const sendEmailForVerification = async (user: User): Promise<BooleanRespo
 export const verifyEmailByActivationCode = async (
   emailActivationCode: string
 ): Promise<BooleanResponse> => {
-  const user = await User.findOne({ emailActivationCode })
+  const user = await User.findOne({ where: { emailActivationCode } })
 
   if (!user) {
     return {
@@ -202,6 +202,7 @@ export const verifyEmailByActivationCode = async (
   }
 
   user.emailVerifiedAt = moment().toDate()
+  user.emailActivationCode = ''
   await user.save()
 
   return {
@@ -240,7 +241,7 @@ export const sendForgotPasswordVerificationEmail = async (
       email: 'info@stash.ee',
     },
     subject: `Reset Your Stashee Password`,
-    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${user.emailActivationCode}" target="_blank">here</a> to reset your Stashee Password.`,
+    html: `Click <a href="${FRONTEND_APP_URL}/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
 
   await sgMail.send(forgetPasswordMailData, false, (err) => {
@@ -263,7 +264,7 @@ export const verifyForgotPassword = async (
   password: string,
   forgotPasswordCode: string
 ): Promise<BooleanResponse> => {
-  const user = await User.findOne({ email })
+  const user = await User.findOne({ where: { email } })
 
   if (!user) {
     return {
@@ -290,6 +291,7 @@ export const verifyForgotPassword = async (
   }
 
   user.encryptedPassword = await argon2.hash(password)
+  user.forgotPasswordCode = ''
   await user.save()
 
   return {

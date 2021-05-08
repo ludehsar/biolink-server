@@ -24,6 +24,7 @@ import { SettingsResolver } from './resolvers/settings.resolver'
 import { PlanResolver } from './resolvers/plan.resolver'
 import { ReferralResolver } from './resolvers/referral.resolver'
 import { VerificationResolver } from './resolvers/verification.resolver'
+import { AnalyticsResolver } from './resolvers/analytics.resolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -48,6 +49,7 @@ const main = async (): Promise<void> => {
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
+        AnalyticsResolver,
         HelloResolver,
         SettingsResolver,
         UserResolver,
