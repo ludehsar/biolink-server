@@ -61,9 +61,68 @@ export const verificationOptions: ResourceOptions = {
   actions: {
     new: {
       isVisible: false,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canCreate === 'true'
+        )
+      },
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canDelete === 'true'
+        )
+      },
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canDelete === 'true'
+        )
+      },
     },
     edit: {
       showInDrawer: true,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canEdit === 'true'
+        )
+      },
+    },
+    list: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canShowList === 'true'
+        )
+      },
+    },
+    search: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canShowList === 'true'
+        )
+      },
+    },
+    show: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[10].canShow === 'true'
+        )
+      },
     },
   },
   navigation: {

@@ -14,7 +14,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canCreate'] === 'true'
+          currentAdmin.role.roleSettings[2].canCreate === 'true'
         )
       },
     },
@@ -23,7 +23,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canDelete'] === 'true'
+          currentAdmin.role.roleSettings[2].canDelete === 'true'
         )
       },
     },
@@ -32,7 +32,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canDelete'] === 'true'
+          currentAdmin.role.roleSettings[2].canDelete === 'true'
         )
       },
     },
@@ -42,7 +42,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canEdit'] === 'true'
+          currentAdmin.role.roleSettings[2].canEdit === 'true'
         )
       },
     },
@@ -51,7 +51,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canShowList'] === 'true'
+          currentAdmin.role.roleSettings[2].canShowList === 'true'
         )
       },
     },
@@ -60,7 +60,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canShowList'] === 'true'
+          currentAdmin.role.roleSettings[2].canShowList === 'true'
         )
       },
     },
@@ -70,7 +70,7 @@ export const categoryOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role['roleSettings.2.canShow'] === 'true'
+          currentAdmin.role.roleSettings[2].canShow === 'true'
         )
       },
     },

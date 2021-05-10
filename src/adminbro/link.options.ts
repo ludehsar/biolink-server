@@ -8,12 +8,69 @@ export const linkOptions: ResourceOptions = {
   actions: {
     new: {
       isVisible: false,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canCreate === 'true'
+        )
+      },
     },
-    show: {
-      isVisible: false,
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canDelete === 'true'
+        )
+      },
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canDelete === 'true'
+        )
+      },
     },
     edit: {
       isVisible: false,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canEdit === 'true'
+        )
+      },
+    },
+    list: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canShowList === 'true'
+        )
+      },
+    },
+    search: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canShowList === 'true'
+        )
+      },
+    },
+    show: {
+      isVisible: false,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[5].canShow === 'true'
+        )
+      },
     },
   },
   navigation: {

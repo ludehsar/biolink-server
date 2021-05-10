@@ -49,6 +49,71 @@ export const taxOptions: ResourceOptions = {
     'createdAt',
     'updatedAt',
   ],
+  actions: {
+    new: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canCreate === 'true'
+        )
+      },
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canDelete === 'true'
+        )
+      },
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canDelete === 'true'
+        )
+      },
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canEdit === 'true'
+        )
+      },
+    },
+    list: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canShowList === 'true'
+        )
+      },
+    },
+    search: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canShowList === 'true'
+        )
+      },
+    },
+    show: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role.roleSettings[8].canShow === 'true'
+        )
+      },
+    },
+  },
   navigation: {
     icon: 'Document',
   },

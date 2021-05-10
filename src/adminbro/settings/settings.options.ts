@@ -8,6 +8,10 @@ export const settingsOptions: ResourceOptions = {
       component: AdminBro.bundle('./components/layout.settings.tsx'),
       hideActionHeader: true,
       showFilter: false,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return currentAdmin.role.roleName === 'Administrator'
+      },
     },
     new: {
       isVisible: false,
