@@ -55,10 +55,72 @@ export const userOptions: ResourceOptions = {
     icon: 'UserMultiple',
   },
   actions: {
+    new: {
+      before,
+      after,
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canCreate'] === 'true'
+        )
+      },
+    },
+    bulkDelete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canDelete'] === 'true'
+        )
+      },
+    },
+    delete: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canDelete'] === 'true'
+        )
+      },
+    },
+    edit: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canEdit'] === 'true'
+        )
+      },
+    },
+    list: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canShowList'] === 'true'
+        )
+      },
+    },
+    search: {
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canShowList'] === 'true'
+        )
+      },
+    },
     show: {
       component: AdminBro.bundle('./components/user.show.tsx'),
+      isAccessible: ({ currentAdmin }): boolean => {
+        if (!currentAdmin) return false
+        return (
+          currentAdmin.role.roleName === 'Administrator' ||
+          currentAdmin.role['roleSettings.9.canShow'] === 'true'
+        )
+      },
     },
-    new: { before, after },
   },
 }
 
