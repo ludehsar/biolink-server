@@ -27,6 +27,7 @@ import { Payment } from './Payment'
 import { Code } from './Code'
 import { Verification } from './Verification'
 import { Referral } from './Referral'
+import { AdminRole } from './AdminRole'
 
 @ObjectType()
 @Entity()
@@ -164,4 +165,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Verification, (verification) => verification.user)
   verifications!: Verification[]
+
+  @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true })
+  @JoinColumn({ name: 'adminRoleId' })
+  adminRole!: AdminRole
+
+  @RelationId((user: User) => user.adminRole)
+  adminRoleId!: number
 }

@@ -13,12 +13,17 @@ import { planOptions, planResource } from './plan/plan.options'
 import { settingsOptions, settingsResource } from './settings/settings.options'
 import statisticsHandler from './statistics/actions/statisticsHandler'
 import { verificationOptions, verificationResource } from './verification.options'
+import { adminRoleOptions, adminRoleResources } from './adminRoles/adminRoles.options'
 
 const options: AdminBroOptions = {
   resources: [
     {
       resource: userResource,
       options: userOptions,
+    },
+    {
+      resource: adminRoleResources,
+      options: adminRoleOptions,
     },
     {
       resource: categoryResource,
