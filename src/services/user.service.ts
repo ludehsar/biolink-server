@@ -167,7 +167,7 @@ export const sendEmailForVerification = async (user: User): Promise<BooleanRespo
       email: 'info@stash.ee',
     },
     subject: `Verify Your Email Address`,
-    html: `Click <a href="${FRONTEND_APP_URL}/email_activation?token=${emailActivationCode}" target="_blank">here</a> to verify your email address.`,
+    html: `Click <a href="${FRONTEND_APP_URL}/auth/email_verification?token=${emailActivationCode}" target="_blank">here</a> to verify your email address.`,
   }
 
   await sgMail.send(emailActivationMailData, false, (err) => {
@@ -241,7 +241,7 @@ export const sendForgotPasswordVerificationEmail = async (
       email: 'info@stash.ee',
     },
     subject: `Reset Your Stashee Password`,
-    html: `Click <a href="${FRONTEND_APP_URL}/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
+    html: `Click <a href="${FRONTEND_APP_URL}/auth/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
 
   await sgMail.send(forgetPasswordMailData, false, (err) => {

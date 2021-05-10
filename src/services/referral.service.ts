@@ -56,7 +56,7 @@ export const createReferrals = async (
       email: 'info@stash.ee',
     },
     subject: `Invitation from ${referralOptions.referredByName} to give you 20% discount on Stashee`,
-    text: `Your invitation code is ${FRONTEND_APP_URL}/register?code=${referralCode.code}.`,
+    text: `Your invitation code is ${FRONTEND_APP_URL}/auth/register?code=${referralCode.code}.`,
     cc: {
       email: referralOptions.referredByEmail,
       name: referralOptions.referredByName,
