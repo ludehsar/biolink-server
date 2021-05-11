@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 
 import { User } from '../models/entities/User'
@@ -14,7 +13,6 @@ import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { ValidationResponse } from '../resolvers/user.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { Plan } from '../models/entities/Plan'
 import { BooleanResponse } from '../resolvers/commonTypes'
 import { trackBiolink } from './analytics.service'
 import { MyContext } from '../MyContext'
@@ -123,38 +121,39 @@ export const createNewBiolink = async (
     }
   }
 
+  // TODO: Uncomment if plan is defined
   // Checks plan
-  const currentBiolinkCount = await getRepository(User)
-    .createQueryBuilder('user')
-    .where({ id: user.id })
-    .leftJoinAndSelect(Biolink, 'biolink', 'biolink.userId = user.id')
-    .getCount()
-  const plan = await Plan.findOne({ where: { id: user.planId } })
+  // const currentBiolinkCount = await getRepository(User)
+  //   .createQueryBuilder('user')
+  //   .where({ id: user.id })
+  //   .leftJoinAndSelect(Biolink, 'biolink', 'biolink.userId = user.id')
+  //   .getCount()
+  // const plan = await Plan.findOne({ where: { id: user.planId } })
 
-  if (!plan) {
-    return {
-      errors: [
-        {
-          field: 'username',
-          message: 'Plan not defined',
-        },
-      ],
-    }
-  }
+  // if (!plan) {
+  //   return {
+  //     errors: [
+  //       {
+  //         field: 'username',
+  //         message: 'Plan not defined',
+  //       },
+  //     ],
+  //   }
+  // }
 
-  if (
-    plan.settings.totalBiolinksLimit !== -1 &&
-    currentBiolinkCount >= plan.settings.totalBiolinksLimit
-  ) {
-    return {
-      errors: [
-        {
-          field: 'username',
-          message: 'Current plan does not support creating another biolink.',
-        },
-      ],
-    }
-  }
+  // if (
+  //   plan.settings.totalBiolinksLimit !== -1 &&
+  //   currentBiolinkCount >= plan.settings.totalBiolinksLimit
+  // ) {
+  //   return {
+  //     errors: [
+  //       {
+  //         field: 'username',
+  //         message: 'Current plan does not support creating another biolink.',
+  //       },
+  //     ],
+  //   }
+  // }
 
   // Creates biolink
   const category = await Category.findOne({ where: { id: options.categoryId } })
