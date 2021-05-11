@@ -10,6 +10,7 @@ import { LinkType } from '../models/enums/LinkType'
 import { EnabledStatus } from '../models/enums/EnabledStatus'
 import { MyContext } from '../MyContext'
 import { trackLink } from './analytics.service'
+import { captureUserActivity } from './logs.service'
 
 export const getAllLinksFromBiolinkUsername = async (
   username: string,
@@ -84,7 +85,8 @@ export const getAllUserLinks = async (user: User): Promise<LinkResponse> => {
 export const createLinkFromUsername = async (
   username: string,
   options: NewLinkInput,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<LinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
@@ -144,6 +146,9 @@ export const createLinkFromUsername = async (
       order,
     }).save()
 
+    // Capture user log
+    await captureUserActivity(user, context, `Created new link ${link.url}`)
+
     return { link }
   } catch (err) {
     switch (err.constraint) {
@@ -169,7 +174,11 @@ export const createLinkFromUsername = async (
   }
 }
 
-export const createNewLink = async (options: NewLinkInput, user: User): Promise<LinkResponse> => {
+export const createNewLink = async (
+  options: NewLinkInput,
+  user: User,
+  context: MyContext
+): Promise<LinkResponse> => {
   if (!user) {
     return {
       errors: [
@@ -211,6 +220,9 @@ export const createNewLink = async (options: NewLinkInput, user: User): Promise<
       status: options.status as EnabledStatus,
       user,
     }).save()
+
+    // Capture user log
+    await captureUserActivity(user, context, `Created new link ${link.url}`)
 
     return { link }
   } catch (err) {
@@ -275,7 +287,8 @@ export const getLinkByShortenedUrl = async (
 
 export const removeLinkByShortenedUrl = async (
   shortenedUrl: string,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<LinkResponse> => {
   const link = await Link.findOne({ where: { shortenedUrl } })
 
@@ -300,6 +313,9 @@ export const removeLinkByShortenedUrl = async (
   }
 
   await link.softRemove()
+
+  // Capture user log
+  await captureUserActivity(user, context, `Link ${link.url} removed`)
 
   return { link }
 }

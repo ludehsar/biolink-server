@@ -22,6 +22,7 @@ import { createReferralCode } from './code.service'
 import sgMail from '../utils/sendMail'
 import { FRONTEND_APP_URL } from '../config/app.config'
 import { BooleanResponse } from '../resolvers/commonTypes'
+import { captureUserActivity } from './logs.service'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -124,17 +125,21 @@ export const registerUser = async (
   context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
   context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
+  // Capture user log
+  await captureUserActivity(user, context, 'User Registered')
+
   // send verification email
-  await sendEmailForVerification(user)
+  await sendEmailForVerification(user, context)
 
   // Send email to admins, if new user email is checked
-
-  // New user activity logs
 
   return { user }
 }
 
-export const sendEmailForVerification = async (user: User): Promise<BooleanResponse> => {
+export const sendEmailForVerification = async (
+  user: User,
+  context: MyContext
+): Promise<BooleanResponse> => {
   if (!user) {
     return {
       errors: [
@@ -180,13 +185,17 @@ export const sendEmailForVerification = async (user: User): Promise<BooleanRespo
     }
   })
 
+  // Capture user log
+  await captureUserActivity(user, context, 'Requested User Email Verification')
+
   return {
     executed: true,
   }
 }
 
 export const verifyEmailByActivationCode = async (
-  emailActivationCode: string
+  emailActivationCode: string,
+  context: MyContext
 ): Promise<BooleanResponse> => {
   const user = await User.findOne({ where: { emailActivationCode } })
 
@@ -201,9 +210,20 @@ export const verifyEmailByActivationCode = async (
     }
   }
 
+  let newEmailActivationCode = randToken.generate(132)
+  let userWithSameActivationCode = await User.findOne({ where: { newEmailActivationCode } })
+
+  while (userWithSameActivationCode) {
+    newEmailActivationCode = randToken.generate(132)
+    userWithSameActivationCode = await User.findOne({ where: { newEmailActivationCode } })
+  }
+
   user.emailVerifiedAt = moment().toDate()
-  user.emailActivationCode = ''
+  user.emailActivationCode = newEmailActivationCode
   await user.save()
+
+  // Capture user log
+  await captureUserActivity(user, context, 'Email has been verified')
 
   return {
     executed: true,
@@ -211,7 +231,8 @@ export const verifyEmailByActivationCode = async (
 }
 
 export const sendForgotPasswordVerificationEmail = async (
-  email: string
+  email: string,
+  context: MyContext
 ): Promise<BooleanResponse> => {
   const user = await User.findOne({ where: { email } })
 
@@ -254,6 +275,9 @@ export const sendForgotPasswordVerificationEmail = async (
     }
   })
 
+  // Capture user log
+  await captureUserActivity(user, context, 'Requested Forgot Password Verification Email')
+
   return {
     executed: true,
   }
@@ -262,7 +286,8 @@ export const sendForgotPasswordVerificationEmail = async (
 export const verifyForgotPassword = async (
   email: string,
   password: string,
-  forgotPasswordCode: string
+  forgotPasswordCode: string,
+  context: MyContext
 ): Promise<BooleanResponse> => {
   const user = await User.findOne({ where: { email } })
 
@@ -290,9 +315,15 @@ export const verifyForgotPassword = async (
     }
   }
 
+  // Saving user password and resetting forgotPasswordCode
+  const newForgotPasswordCode = randToken.generate(160)
+
   user.encryptedPassword = await argon2.hash(password)
-  user.forgotPasswordCode = ''
+  user.forgotPasswordCode = await argon2.hash(newForgotPasswordCode)
   await user.save()
+
+  // Capture user log
+  await captureUserActivity(user, context, 'Password has been reset successfully')
 
   return {
     executed: true,
@@ -344,6 +375,9 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
   context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
   context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
+  // Capture user log
+  await captureUserActivity(user, context, 'User logs in')
+
   return { user }
 }
 
@@ -363,6 +397,9 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Boolea
 
   context.res.cookie('refresh_token', '', refreshTokenCookieOptions)
   context.res.cookie('access_token', '', accessTokenCookieOptions)
+
+  // Capture user log
+  await captureUserActivity(user, context, 'User logs out')
 
   return {
     executed: true,

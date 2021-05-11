@@ -169,9 +169,10 @@ export class BiolinkResolver {
   @Mutation(() => BiolinkResponse)
   async createNewBiolink(
     @Arg('options') options: NewBiolinkInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await createNewBiolink(options, user)
+    return await createNewBiolink(options, context, user)
   }
 
   @Query(() => BiolinkResponse)
@@ -187,25 +188,28 @@ export class BiolinkResolver {
   async updateBiolinkFromUsername(
     @Arg('username') username: string,
     @Arg('options') options: UpdateBiolinkProfileInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateBiolinkFromUsername(user, username, options)
+    return await updateBiolinkFromUsername(user, username, options, context)
   }
 
   @Mutation(() => BiolinkResponse)
   async updateBiolinkSettingsFromUsername(
     @Arg('username') username: string,
     @Arg('options') options: UpdateBiolinkSettingsInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateBiolinkSettingsFromUsername(user, username, options)
+    return await updateBiolinkSettingsFromUsername(user, username, options, context)
   }
 
   @Mutation(() => BooleanResponse)
   async deleteBiolink(
     @Arg('username') username: string,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
-    return await removeBiolinkByUsername(username, user)
+    return await removeBiolinkByUsername(username, context, user)
   }
 }

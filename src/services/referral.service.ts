@@ -9,6 +9,8 @@ import { Code } from '../models/entities/Code'
 import { CodeType } from '../models/enums/CodeType'
 import { createReferralCode } from './code.service'
 import { FRONTEND_APP_URL } from '../config/app.config'
+import { captureUserActivity } from './logs.service'
+import { MyContext } from '../MyContext'
 
 export const getReferralsList = async (user: User): Promise<ReferralResponse> => {
   if (!user) {
@@ -30,7 +32,8 @@ export const getReferralsList = async (user: User): Promise<ReferralResponse> =>
 
 export const createReferrals = async (
   referralOptions: ReferralInput,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<ReferralResponse> => {
   if (!user) {
     return {
@@ -96,6 +99,9 @@ export const createReferrals = async (
       ],
     }
   }
+
+  // Capture user log
+  await captureUserActivity(user, context, 'Sent referrals to other users')
 
   return await getReferralsList(user)
 }

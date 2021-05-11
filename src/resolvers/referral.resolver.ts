@@ -1,11 +1,12 @@
 import { IsEmail, IsNotEmpty } from 'class-validator'
-import { Arg, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import CurrentUser from '../decorators/currentUser'
 import { Referral } from '../models/entities/Referral'
 import { User } from '../models/entities/User'
 import { FieldError } from './commonTypes'
 import { createReferrals, getReferralsList } from '../services/referral.service'
+import { MyContext } from '../MyContext'
 
 @InputType()
 export class ReferredUserInfo {
@@ -53,8 +54,9 @@ export class ReferralResolver {
   @Mutation(() => ReferralResponse)
   async createReferrals(
     @Arg('referralOptions') referralOptions: ReferralInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<ReferralResponse> {
-    return await createReferrals(referralOptions, user)
+    return await createReferrals(referralOptions, user, context)
   }
 }

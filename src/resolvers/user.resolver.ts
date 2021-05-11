@@ -88,15 +88,19 @@ export class UserResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async sendEmailVerification(@CurrentUser() user: User): Promise<BooleanResponse> {
-    return await sendEmailForVerification(user)
+  async sendEmailVerification(
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BooleanResponse> {
+    return await sendEmailForVerification(user, context)
   }
 
   @Mutation(() => BooleanResponse)
   async verifyUserEmail(
-    @Arg('emailActivationCode') emailActivationCode: string
+    @Arg('emailActivationCode') emailActivationCode: string,
+    @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
-    return await verifyEmailByActivationCode(emailActivationCode)
+    return await verifyEmailByActivationCode(emailActivationCode, context)
   }
 
   @Mutation(() => UserResponse)
@@ -108,16 +112,20 @@ export class UserResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async sendForgotPasswordEmail(@Arg('email') email: string): Promise<BooleanResponse> {
-    return await sendForgotPasswordVerificationEmail(email)
+  async sendForgotPasswordEmail(
+    @Arg('email') email: string,
+    @Ctx() context: MyContext
+  ): Promise<BooleanResponse> {
+    return await sendForgotPasswordVerificationEmail(email, context)
   }
 
   @Mutation(() => BooleanResponse)
   async verifyForgotPassword(
     @Arg('options') options: LoginInput,
-    @Arg('forgotPasswordCode') forgotPasswordCode: string
+    @Arg('forgotPasswordCode') forgotPasswordCode: string,
+    @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
-    return await verifyForgotPassword(options.email, options.password, forgotPasswordCode)
+    return await verifyForgotPassword(options.email, options.password, forgotPasswordCode, context)
   }
 
   @Mutation(() => BooleanResponse)

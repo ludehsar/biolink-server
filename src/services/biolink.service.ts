@@ -16,6 +16,7 @@ import { BlacklistType } from '../models/enums/BlacklistType'
 import { BooleanResponse } from '../resolvers/commonTypes'
 import { trackBiolink } from './analytics.service'
 import { MyContext } from '../MyContext'
+import { captureUserActivity } from './logs.service'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -102,6 +103,7 @@ export const newBiolinkValidation = async (
 
 export const createNewBiolink = async (
   options: NewBiolinkInput,
+  context: MyContext,
   user: User
 ): Promise<BiolinkResponse> => {
   const biolinkInputValidationReport = await newBiolinkValidation(options)
@@ -164,6 +166,9 @@ export const createNewBiolink = async (
     user: user,
   }).save()
 
+  // Capture user log
+  await captureUserActivity(user, context, `Created new biolink ${biolink.username}`)
+
   return { biolink }
 }
 
@@ -196,7 +201,8 @@ export const getBiolinkFromUsername = async (
 export const updateBiolinkFromUsername = async (
   user: User,
   username: string,
-  options: UpdateBiolinkProfileInput
+  options: UpdateBiolinkProfileInput,
+  context: MyContext
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
@@ -226,13 +232,16 @@ export const updateBiolinkFromUsername = async (
 
   await biolink.reload()
 
+  await captureUserActivity(user, context, `Updated ${biolink.username} biolink details`)
+
   return { biolink }
 }
 
 export const updateBiolinkSettingsFromUsername = async (
   user: User,
   username: string,
-  options: UpdateBiolinkSettingsInput
+  options: UpdateBiolinkSettingsInput,
+  context: MyContext
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
@@ -265,11 +274,14 @@ export const updateBiolinkSettingsFromUsername = async (
 
   await biolink.reload()
 
+  await captureUserActivity(user, context, `Updated ${biolink.username} biolink settings`)
+
   return { biolink }
 }
 
 export const removeBiolinkByUsername = async (
   username: string,
+  context: MyContext,
   user: User
 ): Promise<BooleanResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
@@ -308,6 +320,8 @@ export const removeBiolinkByUsername = async (
   }
 
   await biolink.softRemove()
+
+  await captureUserActivity(user, context, `Removed biolink ${biolink.username}`)
 
   return {
     executed: true,

@@ -8,11 +8,14 @@ import { Plan } from '../models/entities/Plan'
 import { Verification } from '../models/entities/Verification'
 import { Category } from '../models/entities/Category'
 import { BooleanResponse, FieldError } from '../resolvers/commonTypes'
+import { MyContext } from '../MyContext'
+import { captureUserActivity } from './logs.service'
 
 export const createVerification = async (
   options: VerificationInput,
   biolinkUsername: string,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<BooleanResponse> => {
   if (!user) {
     return {
@@ -119,7 +122,7 @@ export const createVerification = async (
     .pipe(createWriteStream(__dirname + `../../assets/business-documents/${businessDocumentUrl}`))
     .on('error', () => {
       errors.push({
-        message: 'Unable to upload PhotoId',
+        message: 'Unable to upload business documents',
       })
     })
 
@@ -138,7 +141,7 @@ export const createVerification = async (
     .pipe(createWriteStream(__dirname + `../../assets/business-documents/${otherDocumentsUrl}`))
     .on('error', () => {
       errors.push({
-        message: 'Unable to upload PhotoId',
+        message: 'Unable to upload other documents',
       })
     })
 
@@ -167,6 +170,9 @@ export const createVerification = async (
     linkedinUrl: options.linkedinAccount,
     user,
   }).save()
+
+  // Capture user log
+  await captureUserActivity(user, context, 'Successfully applied for verification')
 
   return { executed: true }
 }

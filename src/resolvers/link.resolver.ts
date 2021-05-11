@@ -11,7 +11,7 @@ import {
 } from '../services/link.service'
 import CurrentUser from '../decorators/currentUser'
 import { User } from '../models/entities/User'
-import { MyContext } from 'MyContext'
+import { MyContext } from '../MyContext'
 
 @InputType()
 export class NewLinkInput {
@@ -61,17 +61,19 @@ export class LinkResolver {
   async createLinkFromBiolinkUsername(
     @Arg('username') username: string,
     @Arg('options') options: NewLinkInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await createLinkFromUsername(username, options, user)
+    return await createLinkFromUsername(username, options, user, context)
   }
 
   @Mutation(() => LinkResponse)
   async createNewLink(
     @Arg('options') options: NewLinkInput,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await createNewLink(options, user)
+    return await createNewLink(options, user, context)
   }
 
   @Query(() => LinkResponse)
@@ -86,8 +88,9 @@ export class LinkResolver {
   @Mutation(() => LinkResponse)
   async removeLinkByShortenedUrl(
     @Arg('shortenedUrl') shortenedUrl: string,
+    @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await removeLinkByShortenedUrl(shortenedUrl, user)
+    return await removeLinkByShortenedUrl(shortenedUrl, user, context)
   }
 }

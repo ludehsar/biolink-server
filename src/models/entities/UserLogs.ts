@@ -25,6 +25,30 @@ export class UserLogs extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  cityName!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  countryCode!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  browserName!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  browserLanguage!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  deviceType!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  osName!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   description!: string
 
   @Field(() => String, { nullable: true })
