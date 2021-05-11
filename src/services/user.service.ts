@@ -111,10 +111,14 @@ export const registerUser = async (
   // Creating user
   const hashedPassword = await argon2.hash(userOptions.password as string)
 
+  // Saving user password and resetting forgotPasswordCode
+  const encryptedForgotPasswordCode = await argon2.hash(randToken.generate(160))
+
   const user = await User.create({
     name: userOptions.name,
     email: userOptions.email,
     encryptedPassword: hashedPassword,
+    forgotPasswordCode: encryptedForgotPasswordCode,
   }).save()
 
   await createReferralCode(user)
@@ -296,6 +300,17 @@ export const verifyForgotPassword = async (
       errors: [
         {
           message: 'Invalid email address',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  if (forgotPasswordCode === null || forgotPasswordCode === '') {
+    return {
+      errors: [
+        {
+          message: 'Invalid forgot password code',
         },
       ],
       executed: false,

@@ -7,6 +7,7 @@ import UserDetails from './UserDetails'
 import { CardGridContainer } from '../../shared/components/Common.styled'
 
 const Show: React.FC<BasePropertyComponentProps> = (props) => {
+  console.log(props)
   const { record } = props
 
   return (
