@@ -22,13 +22,19 @@ export const captureUserActivity = async (
     }
   }
 
-  const geo = geoip.lookup(context.req.ip)
+  let ip = context.req.ip
+
+  if (ip.substr(0, 7) == '::ffff:') {
+    ip = ip.substr(7)
+  }
+
+  const geo = geoip.lookup(ip)
   const agent = useragent.lookup(context.req.headers['user-agent'])
 
   await UserLogs.create({
     user,
     description,
-    ipAddress: context.req.ip,
+    ipAddress: ip,
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
     browserName: agent.family || 'Unknown',
     cityName: geo?.city || 'Unknown',

@@ -22,7 +22,13 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     }
   }
 
-  const geo = geoip.lookup(context.req.ip)
+  let ip = context.req.ip
+
+  if (ip.substr(0, 7) == '::ffff:') {
+    ip = ip.substr(7)
+  }
+
+  const geo = geoip.lookup(ip)
 
   const agent = useragent.lookup(context.req.headers['user-agent'])
 
@@ -60,7 +66,13 @@ export const trackBiolink = async (
     }
   }
 
-  const geo = geoip.lookup(context.req.ip)
+  let ip = context.req.ip
+
+  if (ip.substr(0, 7) == '::ffff:') {
+    ip = ip.substr(7)
+  }
+
+  const geo = geoip.lookup(ip)
 
   const agent = useragent.lookup(context.req.headers['user-agent'])
 
