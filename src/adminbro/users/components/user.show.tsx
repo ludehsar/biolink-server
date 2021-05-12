@@ -1,10 +1,13 @@
 import React from 'react'
 import { BasePropertyComponentProps } from 'admin-bro'
+import { TableHead, TableRow, TableCell, TableBody, Table } from '@admin-bro/design-system'
+import moment from 'moment'
 
 import { FlexContainer, UserDetailsContainer } from './user.show.styled'
 import Card from '../../shared/components/DashboardCard'
 import UserDetails from './UserDetails'
-import { CardGridContainer } from '../../shared/components/Common.styled'
+import { CardGridContainer, Container, Title } from '../../shared/components/Common.styled'
+import { UserLogs } from '../../../models/entities/UserLogs'
 
 const Show: React.FC<BasePropertyComponentProps> = (props) => {
   console.log(props)
@@ -55,6 +58,41 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
         <Card title="Custom Domains" icon="Wikis" value={0} href="Something" />
         <Card title="Payments" icon="Filter" value={0} href="Something" />
       </CardGridContainer>
+      <Container>
+        <Title>User Activities</Title>
+        <UserDetailsContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>IP Address</TableCell>
+                <TableCell>Device Type</TableCell>
+                <TableCell>Operating System</TableCell>
+                <TableCell>Browser Name</TableCell>
+                <TableCell>Browser Language</TableCell>
+                <TableCell>City Name</TableCell>
+                <TableCell>Country Code</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Date</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(record?.params.activities as UserLogs[])?.map((activity, id) => (
+                <TableRow key={id}>
+                  <TableCell>{activity.ipAddress}</TableCell>
+                  <TableCell>{activity.deviceType}</TableCell>
+                  <TableCell>{activity.osName}</TableCell>
+                  <TableCell>{activity.browserName}</TableCell>
+                  <TableCell>{activity.browserLanguage}</TableCell>
+                  <TableCell>{activity.cityName}</TableCell>
+                  <TableCell>{activity.countryCode}</TableCell>
+                  <TableCell>{activity.description}</TableCell>
+                  <TableCell>{moment(activity.createdAt).format('DD-MM-YYYY HH:mm:ss')}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </UserDetailsContainer>
+      </Container>
     </>
   )
 }

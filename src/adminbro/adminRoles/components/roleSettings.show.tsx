@@ -127,7 +127,7 @@ const RoleSettings: React.FC<BasePropertyProps> = (props) => {
                 <FormGroup>
                   <FormInput
                     type="checkbox"
-                    name={'canCreate'}
+                    name="canCreate"
                     checked={singleSettings.canCreate}
                     readOnly
                   />
@@ -135,14 +135,19 @@ const RoleSettings: React.FC<BasePropertyProps> = (props) => {
               </TableCell>
               <TableCell>
                 <FormGroup>
-                  <FormInput type="checkbox" name={'canShow'} checked={singleSettings.canShow} />
+                  <FormInput
+                    type="checkbox"
+                    name="canShow"
+                    checked={singleSettings.canShow}
+                    readOnly
+                  />
                 </FormGroup>
               </TableCell>
               <TableCell>
                 <FormGroup>
                   <FormInput
                     type="checkbox"
-                    name={'canShowList'}
+                    name="canShowList"
                     checked={singleSettings.canShowList}
                     readOnly
                   />
@@ -152,7 +157,7 @@ const RoleSettings: React.FC<BasePropertyProps> = (props) => {
                 <FormGroup>
                   <FormInput
                     type="checkbox"
-                    name={'canEdit'}
+                    name="canEdit"
                     checked={singleSettings.canEdit}
                     readOnly
                   />
@@ -162,7 +167,7 @@ const RoleSettings: React.FC<BasePropertyProps> = (props) => {
                 <FormGroup>
                   <FormInput
                     type="checkbox"
-                    name={'canDelete'}
+                    name="canDelete"
                     checked={singleSettings.canDelete}
                     readOnly
                   />

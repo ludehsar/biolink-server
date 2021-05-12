@@ -1,6 +1,7 @@
-import AdminBro, { ResourceOptions } from 'admin-bro'
+import AdminBro, { ActionResponse, ResourceOptions } from 'admin-bro'
 
 import { User } from '../../models/entities/User'
+import { UserLogs } from '../../models/entities/UserLogs'
 import { after, before } from './actions/password.hook'
 
 export const userOptions: ResourceOptions = {
@@ -16,6 +17,7 @@ export const userOptions: ResourceOptions = {
   editProperties: ['name', 'email', 'adminRoleId', 'password'],
   showProperties: [
     'adminRoleId',
+    'activities',
     'email',
     'name',
     'accountStatus',
@@ -114,6 +116,17 @@ export const userOptions: ResourceOptions = {
     },
     show: {
       component: AdminBro.bundle('./components/user.show.tsx'),
+      after: async (res: ActionResponse): Promise<ActionResponse> => {
+        if (res.record && res.record.params) {
+          const user = res.record.params
+
+          const userLogs = await UserLogs.find({ where: { user } })
+
+          res.record.params.activities = userLogs
+        }
+
+        return res
+      },
       isAccessible: ({ currentAdmin }): boolean => {
         if (!currentAdmin) return false
         return (
