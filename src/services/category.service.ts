@@ -19,9 +19,9 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   // Getting before and after cursors from connection args
   let before = null
-  if (options.before) before = atob(options.before)
+  if (options.before) before = Buffer.from(options.before, 'base64').toString()
   let after = null
-  if (options.after) after = atob(options.after)
+  if (options.after) after = Buffer.from(options.after, 'base64').toString()
 
   // Preparing object
   const connection = new CategoryConnection()
@@ -66,12 +66,18 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   connection.edges = categories.map((category) => ({
     node: category,
-    cursor: btoa(moment(category.createdAt).format('YYYY-MM-DD HH:mm:ss')),
+    cursor: Buffer.from(moment(category.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString(
+      'base64'
+    ),
   }))
 
   connection.pageInfo = {
-    startCursor: btoa(moment(firstCategory?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''),
-    endCursor: btoa(moment(lastCategory?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''),
+    startCursor: Buffer.from(
+      moment(firstCategory?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+    ).toString('base64'),
+    endCursor: Buffer.from(
+      moment(lastCategory?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+    ).toString('base64'),
     hasNextPage: !!nextCategories.length,
     hasPreviousPage: !!previousCategories.length,
   }
