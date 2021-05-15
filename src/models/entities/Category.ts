@@ -30,7 +30,6 @@ export class Category extends BaseEntity {
   updatedAt!: Date
 
   // Relationships
-  @Field(() => [Biolink], { nullable: true })
   @OneToMany(() => Biolink, (biolink) => biolink.category)
   biolinks!: Biolink[]
 
