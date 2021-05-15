@@ -59,8 +59,8 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
         <Card title="Payments" icon="Filter" value={0} href="Something" />
       </CardGridContainer>
       <Container>
-        <Title>User Activities</Title>
         <UserDetailsContainer>
+          <Title>User Activities</Title>
           <Table>
             <TableHead>
               <TableRow>
