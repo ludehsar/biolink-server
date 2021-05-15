@@ -21,7 +21,10 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()
   let after = null
-  if (options.after) after = Buffer.from(options.after, 'base64').toString()
+  if (options.after)
+    after = moment(Buffer.from(options.after, 'base64').toString())
+      .add(1, 'second')
+      .format('YYYY-MM-DD HH:mm:ss')
 
   // Preparing object
   const connection = new CategoryConnection()
@@ -32,11 +35,11 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
     })
 
   if (before) {
-    qb.andWhere('category.createdAt <= :before', { before })
+    qb.andWhere('category.createdAt < :before', { before })
   }
 
   if (after) {
-    qb.andWhere('category.createdAt >= :after', { after })
+    qb.andWhere('category.createdAt > :after', { after })
   }
 
   qb.orderBy('category.categoryName', 'ASC')
@@ -49,7 +52,7 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   // Checking if previous page and next page is present
   const dates = categories.map((c) => moment(c.createdAt))
-  const maxDate = moment.max(dates)
+  const maxDate = moment.max(dates).add(1, 'second')
   const minDate = moment.min(dates)
 
   const previousCategories = await Category.find({
