@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { getRepository, LessThan, MoreThan } from 'typeorm'
+import { getRepository } from 'typeorm'
 
 import { ConnectionArgs } from '../resolvers/relaySpec'
 import { Category } from '../models/entities/Category'
@@ -9,11 +9,17 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
   // Getting pageinfo
   const firstCategory = await getRepository(Category)
     .createQueryBuilder('category')
+    .where(`LOWER(category.categoryName) like :query`, {
+      query: `%${options.query.toLowerCase()}%`,
+    })
     .orderBy('category.createdAt', 'ASC')
     .getOne()
 
   const lastCategory = await getRepository(Category)
     .createQueryBuilder('category')
+    .where(`LOWER(category.categoryName) like :query`, {
+      query: `%${options.query.toLowerCase()}%`,
+    })
     .orderBy('category.createdAt', 'DESC')
     .getOne()
 
@@ -52,20 +58,24 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   // Checking if previous page and next page is present
   const dates = categories.map((c) => moment(c.createdAt))
-  const maxDate = moment.max(dates).add(1, 'second')
-  const minDate = moment.min(dates)
+  const minDate = moment.min(dates).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment.max(dates).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
-  const previousCategories = await Category.find({
-    where: {
-      createdAt: LessThan(minDate.format('YYYY-MM-DD HH:mm:ss')),
-    },
-  })
+  const previousCategories = await getRepository(Category)
+    .createQueryBuilder('category')
+    .where(`LOWER(category.categoryName) like :query`, {
+      query: `%${options.query.toLowerCase()}%`,
+    })
+    .andWhere('category.createdAt < :minDate', { minDate })
+    .getMany()
 
-  const nextCategories = await Category.find({
-    where: {
-      createdAt: MoreThan(maxDate.format('YYYY-MM-DD HH:mm:ss')),
-    },
-  })
+  const nextCategories = await getRepository(Category)
+    .createQueryBuilder('category')
+    .where(`LOWER(category.categoryName) like :query`, {
+      query: `%${options.query.toLowerCase()}%`,
+    })
+    .andWhere('category.createdAt > :maxDate', { maxDate })
+    .getMany()
 
   connection.edges = categories.map((category) => ({
     node: category,

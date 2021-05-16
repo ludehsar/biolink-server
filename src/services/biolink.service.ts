@@ -1,4 +1,6 @@
 import { validate } from 'class-validator'
+import { Brackets, getRepository } from 'typeorm'
+import moment from 'moment'
 
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
@@ -19,8 +21,6 @@ import { trackBiolink } from './analytics.service'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.service'
 import { ConnectionArgs } from '../resolvers/relaySpec'
-import { getRepository, LessThan, MoreThan } from 'typeorm'
-import moment from 'moment'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -290,13 +290,53 @@ export const getAllDirectories = async (
   // Getting pageinfo
   const firstBiolink = await getRepository(Biolink)
     .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.category', 'category')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(biolink.username) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(biolink.displayName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.location) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.bio) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(category.categoryName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
     .orderBy('biolink.createdAt', 'ASC')
     .getOne()
 
   const lastBiolink = await getRepository(Biolink)
     .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.category', 'category')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(biolink.username) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(biolink.displayName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.location) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.bio) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(category.categoryName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
     .orderBy('biolink.createdAt', 'DESC')
     .getOne()
 
@@ -316,7 +356,27 @@ export const getAllDirectories = async (
 
   const qb = getRepository(Biolink)
     .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.category', 'category')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(biolink.username) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(biolink.displayName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.location) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.bio) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(category.categoryName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
 
   if (category) {
     qb.andWhere('biolink.categoryId = :categoryId', { categoryId })
@@ -340,25 +400,65 @@ export const getAllDirectories = async (
 
   // Checking if previous page and next page is present
   const dates = biolinks.map((c) => moment(c.createdAt))
-  const maxDate = moment.max(dates).add(1, 'second')
-  const minDate = moment.min(dates)
-
-  const previousBiolinks = await Biolink.find({
-    where: {
-      createdAt: LessThan(minDate.format('YYYY-MM-DD HH:mm:ss')),
-    },
-  })
-
-  const nextBiolinks = await Biolink.find({
-    where: {
-      createdAt: MoreThan(maxDate.format('YYYY-MM-DD HH:mm:ss')),
-    },
-  })
+  const minDate = moment.min(dates).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment.max(dates).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
   connection.edges = biolinks.map((biolink) => ({
     node: biolink,
     cursor: Buffer.from(moment(biolink.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
   }))
+
+  const previousBiolinks = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.category', 'category')
+    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(biolink.username) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(biolink.displayName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.location) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.bio) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(category.categoryName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
+    .andWhere('biolink.createdAt < :minDate', { minDate })
+    .getMany()
+
+  const nextBiolinks = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.category', 'category')
+    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(biolink.username) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(biolink.displayName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.location) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.bio) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(category.categoryName) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
+    .andWhere('biolink.createdAt > :maxDate', { maxDate })
+    .getMany()
 
   connection.pageInfo = {
     startCursor: Buffer.from(
