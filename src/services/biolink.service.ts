@@ -8,6 +8,7 @@ import {
   BiolinkResponse,
   UpdateBiolinkProfileInput,
   UpdateBiolinkSettingsInput,
+  BiolinkConnection,
 } from '../resolvers/biolink.resolver'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { ValidationResponse } from '../resolvers/user.resolver'
@@ -17,6 +18,9 @@ import { BooleanResponse } from '../resolvers/commonTypes'
 import { trackBiolink } from './analytics.service'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.service'
+import { ConnectionArgs } from '../resolvers/relaySpec'
+import { getRepository, LessThan, MoreThan } from 'typeorm'
+import moment from 'moment'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -277,6 +281,97 @@ export const updateBiolinkSettingsFromUsername = async (
   await captureUserActivity(user, context, `Updated ${biolink.username} biolink settings`)
 
   return { biolink }
+}
+
+export const getAllDirectories = async (
+  categoryId: number,
+  options: ConnectionArgs
+): Promise<BiolinkConnection> => {
+  // Getting pageinfo
+  const firstBiolink = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .orderBy('biolink.createdAt', 'ASC')
+    .getOne()
+
+  const lastBiolink = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+    .orderBy('biolink.createdAt', 'DESC')
+    .getOne()
+
+  // Getting before and after cursors from connection args
+  let before = null
+  if (options.before) before = Buffer.from(options.before, 'base64').toString()
+
+  let after = null
+  if (options.after)
+    after = moment(Buffer.from(options.after, 'base64').toString())
+      .add(1, 'second')
+      .format('YYYY-MM-DD HH:mm:ss')
+
+  // Gettings the directories and preparing objects
+  const connection = new BiolinkConnection()
+  const category = await Category.findOne(categoryId)
+
+  const qb = getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+
+  if (category) {
+    qb.andWhere('biolink.categoryId = :categoryId', { categoryId })
+  }
+
+  if (before) {
+    qb.andWhere('biolink.createdAt < :before', { before })
+  }
+
+  if (after) {
+    qb.andWhere('biolink.createdAt > :after', { after })
+  }
+
+  qb.leftJoinAndSelect('biolink.user', 'user')
+
+  if (options.first) {
+    qb.limit(options.first)
+  }
+
+  const biolinks = await qb.getMany()
+
+  // Checking if previous page and next page is present
+  const dates = biolinks.map((c) => moment(c.createdAt))
+  const maxDate = moment.max(dates).add(1, 'second')
+  const minDate = moment.min(dates)
+
+  const previousBiolinks = await Biolink.find({
+    where: {
+      createdAt: LessThan(minDate.format('YYYY-MM-DD HH:mm:ss')),
+    },
+  })
+
+  const nextBiolinks = await Biolink.find({
+    where: {
+      createdAt: MoreThan(maxDate.format('YYYY-MM-DD HH:mm:ss')),
+    },
+  })
+
+  connection.edges = biolinks.map((biolink) => ({
+    node: biolink,
+    cursor: Buffer.from(moment(biolink.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
+  }))
+
+  connection.pageInfo = {
+    startCursor: Buffer.from(
+      moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+    ).toString('base64'),
+    endCursor: Buffer.from(
+      moment(lastBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+    ).toString('base64'),
+    hasNextPage: !!nextBiolinks.length,
+    hasPreviousPage: !!previousBiolinks.length,
+  }
+
+  return connection
 }
 
 export const removeBiolinkByUsername = async (

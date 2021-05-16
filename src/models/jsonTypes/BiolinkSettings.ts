@@ -12,51 +12,51 @@ class SocialMediaProps {
 @ObjectType()
 export class BiolinkSettings {
   // ----- Dark Mode ----- //
-  @Field(() => String, { nullable: true })
-  enableDarkMode!: string
+  @Field(() => Boolean, { nullable: true })
+  enableDarkMode!: boolean
 
   // ----- Contacts ----- //
-  @Field(() => String, { nullable: true })
-  showEmail!: string
+  @Field(() => Boolean, { nullable: true })
+  showEmail!: boolean
 
   @Field(() => String, { nullable: true })
   email!: string
 
-  @Field(() => String, { nullable: true })
-  showPhone!: string
+  @Field(() => Boolean, { nullable: true })
+  showPhone!: boolean
 
   @Field(() => String, { nullable: true })
   phone!: string
 
-  @Field(() => String, { nullable: true })
-  enableColoredContactButtons!: string
+  @Field(() => Boolean, { nullable: true })
+  enableColoredContactButtons!: boolean
 
-  @Field(() => String, { nullable: true })
-  addToDirectory!: string
+  @Field(() => Boolean, { nullable: true })
+  addedToDirectory!: boolean
 
   // ----- Social Media Icons ----- //
-  @Field(() => String, { nullable: true })
-  enableColoredSocialMediaIcons!: string
+  @Field(() => Boolean, { nullable: true })
+  enableColoredSocialMediaIcons!: boolean
 
   @Field(() => [SocialMediaProps], { nullable: true })
   socialAccounts!: SocialMediaProps[]
 
   // ----- Analytics ----- //
-  @Field(() => String, { nullable: true })
-  enableFacebookPixel!: string
+  @Field(() => Boolean, { nullable: true })
+  enableFacebookPixel!: boolean
 
   @Field(() => String, { nullable: true })
   facebookPixelId!: string
 
-  @Field(() => String, { nullable: true })
-  enableGoogleAnalytics!: string
+  @Field(() => Boolean, { nullable: true })
+  enableGoogleAnalytics!: boolean
 
   @Field(() => String, { nullable: true })
   googleAnalyticsCode!: string
 
   // ----- UTM Parameter ----- //
-  @Field(() => String, { nullable: true })
-  enableUtmParameters!: string
+  @Field(() => Boolean, { nullable: true })
+  enableUtmParameters!: boolean
 
   @Field(() => String, { nullable: true })
   utmSource!: string
@@ -68,8 +68,8 @@ export class BiolinkSettings {
   utmCampaign!: string
 
   // ----- SEO ----- //
-  @Field(() => String, { nullable: true })
-  blockSearchEngineIndexing!: string
+  @Field(() => Boolean, { nullable: true })
+  blockSearchEngineIndexing!: boolean
 
   @Field(() => String, { nullable: true })
   pageTitle!: string
@@ -81,11 +81,11 @@ export class BiolinkSettings {
   opengraphImageUrl!: string
 
   // ----- Custom Branding ----- //
-  @Field(() => String, { nullable: true })
-  removeDefaultBranding!: string
+  @Field(() => Boolean, { nullable: true })
+  removeDefaultBranding!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableCustomBranding!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCustomBranding!: boolean
 
   @Field(() => String, { nullable: true })
   customBrandingName!: string
@@ -94,11 +94,11 @@ export class BiolinkSettings {
   customBrandingUrl!: string
 
   // ----- Protection ------ //
-  @Field(() => String, { nullable: true })
-  enablePasswordProtection!: string
+  @Field(() => Boolean, { nullable: true })
+  enablePasswordProtection!: boolean
 
   password!: string
 
-  @Field(() => String, { nullable: true })
-  enableSensitiveContentWarning!: string
+  @Field(() => Boolean, { nullable: true })
+  enableSensitiveContentWarning!: boolean
 }

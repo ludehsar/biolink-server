@@ -1,4 +1,12 @@
-import { IsNotEmpty, Matches, IsInt, IsUrl, IsIn, IsEmail, IsPhoneNumber } from 'class-validator'
+import {
+  IsNotEmpty,
+  Matches,
+  IsInt,
+  IsUrl,
+  IsEmail,
+  IsPhoneNumber,
+  IsBoolean,
+} from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
 import { Biolink } from '../models/entities/Biolink'
@@ -7,12 +15,14 @@ import { User } from '../models/entities/User'
 import { BooleanResponse, FieldError } from './commonTypes'
 import {
   createNewBiolink,
+  getAllDirectories,
   getBiolinkFromUsername,
   removeBiolinkByUsername,
   updateBiolinkFromUsername,
   updateBiolinkSettingsFromUsername,
 } from '../services/biolink.service'
 import { MyContext } from 'MyContext'
+import { EdgeType, ConnectionType, ConnectionArgs } from './relaySpec'
 
 @InputType()
 export class SingleSocialAccount {
@@ -53,58 +63,58 @@ export class UpdateBiolinkProfileInput {
 
 @InputType()
 export class UpdateBiolinkSettingsInput {
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableDarkMode?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableDarkMode?: boolean
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  showEmail?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  showEmail?: boolean
 
   @Field({ nullable: true })
   @IsEmail()
   email?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  showPhone?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  showPhone?: boolean
 
   @Field({ nullable: true })
   @IsPhoneNumber()
   phone?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableColoredContactButtons?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableColoredContactButtons?: boolean
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  addToDirectory?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  addedToDirectory?: boolean
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableColoredSocialMediaIcons?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableColoredSocialMediaIcons?: boolean
 
   @Field(() => [SingleSocialAccount], { nullable: true, defaultValue: [] })
   socialAccounts?: SingleSocialAccount[]
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableFacebookPixel?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableFacebookPixel?: boolean
 
   @Field({ nullable: true })
   facebookPixelId?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableGoogleAnalytics?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableGoogleAnalytics?: boolean
 
   @Field({ nullable: true })
   googleAnalyticsCode?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableUtmParameters?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableUtmParameters?: boolean
 
   @Field({ nullable: true })
   utmSource?: string
@@ -115,9 +125,9 @@ export class UpdateBiolinkSettingsInput {
   @Field({ nullable: true })
   utmCampaign?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  blockSearchEngineIndexing?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  blockSearchEngineIndexing?: boolean
 
   @Field({ nullable: true })
   pageTitle?: string
@@ -128,13 +138,13 @@ export class UpdateBiolinkSettingsInput {
   @Field({ nullable: true })
   opengraphImageUrl?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  removeDefaultBranding?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  removeDefaultBranding?: boolean
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableCustomBranding?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableCustomBranding?: boolean
 
   @Field({ nullable: true })
   customBrandingName?: string
@@ -143,16 +153,16 @@ export class UpdateBiolinkSettingsInput {
   @IsUrl()
   customBrandingUrl?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enablePasswordProtection?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enablePasswordProtection?: boolean
 
   @Field({ nullable: true })
   password?: string
 
-  @Field({ nullable: true, defaultValue: 'no' })
-  @IsIn(['yes', 'no'])
-  enableSensitiveContentWarning?: string
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  enableSensitiveContentWarning?: boolean
 }
 
 @ObjectType()
@@ -163,6 +173,12 @@ export class BiolinkResponse {
   @Field(() => Biolink, { nullable: true })
   biolink?: Biolink
 }
+
+@ObjectType()
+export class BiolinkEdge extends EdgeType('category', Biolink) {}
+
+@ObjectType()
+export class BiolinkConnection extends ConnectionType<BiolinkEdge>('category', BiolinkEdge) {}
 
 @Resolver()
 export class BiolinkResolver {
@@ -202,6 +218,14 @@ export class BiolinkResolver {
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
     return await updateBiolinkSettingsFromUsername(user, username, options, context)
+  }
+
+  @Query(() => BiolinkConnection, { nullable: true })
+  async getAllDirectories(
+    @Arg('options') options: ConnectionArgs,
+    @Arg('categoryId', { defaultValue: 0 }) categoryId: number
+  ): Promise<BiolinkConnection> {
+    return await getAllDirectories(categoryId, options)
   }
 
   @Mutation(() => BooleanResponse)
