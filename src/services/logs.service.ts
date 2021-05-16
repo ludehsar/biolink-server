@@ -1,5 +1,6 @@
 import useragent from 'useragent'
 import geoip from 'geoip-lite'
+import publicIp from 'public-ip'
 
 import { BooleanResponse } from '../resolvers/commonTypes'
 import { UserLogs } from '../models/entities/UserLogs'
@@ -22,11 +23,7 @@ export const captureUserActivity = async (
     }
   }
 
-  let ip = context.req.ip
-
-  if (ip.substr(0, 7) == '::ffff:') {
-    ip = ip.substr(7)
-  }
+  const ip = await publicIp.v4()
 
   const geo = geoip.lookup(ip)
   const agent = useragent.lookup(context.req.headers['user-agent'])

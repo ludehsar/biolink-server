@@ -1,6 +1,7 @@
 import useragent from 'useragent'
 import geoip from 'geoip-lite'
 import moment from 'moment'
+import publicIp from 'public-ip'
 
 import { Biolink } from '../models/entities/Biolink'
 import { Link } from '../models/entities/Link'
@@ -22,11 +23,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     }
   }
 
-  let ip = context.req.ip
-
-  if (ip.substr(0, 7) == '::ffff:') {
-    ip = ip.substr(7)
-  }
+  const ip = await publicIp.v4()
 
   const geo = geoip.lookup(ip)
 
@@ -66,11 +63,7 @@ export const trackBiolink = async (
     }
   }
 
-  let ip = context.req.ip
-
-  if (ip.substr(0, 7) == '::ffff:') {
-    ip = ip.substr(7)
-  }
+  const ip = await publicIp.v4()
 
   const geo = geoip.lookup(ip)
 

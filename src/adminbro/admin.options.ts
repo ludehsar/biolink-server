@@ -14,6 +14,7 @@ import { settingsOptions, settingsResource } from './settings/settings.options'
 import statisticsHandler from './statistics/actions/statisticsHandler'
 import { verificationOptions, verificationResource } from './verification.options'
 import { adminRoleOptions, adminRoleResources } from './adminRoles/adminRoles.options'
+import { logsOptions, logsResources } from './logs.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -68,6 +69,10 @@ const options: AdminBroOptions = {
     {
       resource: settingsResource,
       options: settingsOptions,
+    },
+    {
+      resource: logsResources,
+      options: logsOptions,
     },
   ],
   locale: {

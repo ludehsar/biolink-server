@@ -1,6 +1,6 @@
 import React from 'react'
 import { BasePropertyComponentProps } from 'admin-bro'
-import { TableHead, TableRow, TableCell, TableBody, Table } from '@admin-bro/design-system'
+import { TableHead, TableRow, TableCell, TableBody, Table, Link } from '@admin-bro/design-system'
 import moment from 'moment'
 
 import { FlexContainer, UserDetailsContainer } from './user.show.styled'
@@ -53,7 +53,7 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
         </FlexContainer>
       </UserDetailsContainer>
       <CardGridContainer>
-        <Card title="Projects" icon="Roadmap" value={0} href="Something" />
+        <Card title="Biolinks" icon="Roadmap" value={0} href="Something" />
         <Card title="Links" icon="Link" value={0} href="Something" />
         <Card title="Custom Domains" icon="Wikis" value={0} href="Something" />
         <Card title="Payments" icon="Filter" value={0} href="Something" />
@@ -84,13 +84,35 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
                   <TableCell>{activity.browserName}</TableCell>
                   <TableCell>{activity.browserLanguage}</TableCell>
                   <TableCell>{activity.cityName}</TableCell>
-                  <TableCell>{activity.countryCode}</TableCell>
+                  <TableCell>
+                    {activity.countryCode !== 'Unknown' ? (
+                      <>
+                        <img
+                          src={
+                            'https://www.countryflags.io/' + activity.countryCode + '/flat/32.png'
+                          }
+                          alt="Country flags"
+                        />
+                      </>
+                    ) : (
+                      activity.countryCode
+                    )}
+                  </TableCell>
                   <TableCell>{activity.description}</TableCell>
                   <TableCell>{moment(activity.createdAt).format('DD-MM-YYYY HH:mm:ss')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+          <Container display="flex" mt={30} flexGrow={1} justifyContent="flex-end">
+            <Link
+              href={
+                'http://localhost:4000/admin/resources/UserLogs?page=1&filters.userId=' + record?.id
+              }
+            >
+              Show More
+            </Link>
+          </Container>
         </UserDetailsContainer>
       </Container>
     </>

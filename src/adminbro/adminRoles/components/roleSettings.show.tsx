@@ -103,6 +103,14 @@ const RoleSettings: React.FC<BasePropertyProps> = (props) => {
       canEdit: record?.params['roleSettings.10.canEdit'] === 'true' || false,
       canDelete: record?.params['roleSettings.10.canDelete'] === 'true' || false,
     },
+    {
+      resource: record?.params['roleSettings.11.resource'] || 'User Logs',
+      canCreate: record?.params['roleSettings.11.canCreate'] === 'true' || false,
+      canShow: record?.params['roleSettings.11.canShow'] === 'true' || false,
+      canShowList: record?.params['roleSettings.11.canShowList'] === 'true' || false,
+      canEdit: record?.params['roleSettings.11.canEdit'] === 'true' || false,
+      canDelete: record?.params['roleSettings.11.canDelete'] === 'true' || false,
+    },
   ])
 
   return (
