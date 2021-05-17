@@ -53,10 +53,31 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
         </FlexContainer>
       </UserDetailsContainer>
       <CardGridContainer>
-        <Card title="Biolinks" icon="Roadmap" value={0} href="Something" />
-        <Card title="Links" icon="Link" value={0} href="Something" />
-        <Card title="Custom Domains" icon="Wikis" value={0} href="Something" />
-        <Card title="Payments" icon="Filter" value={0} href="Something" />
+        <Card
+          title="Biolinks"
+          icon="Roadmap"
+          value={record?.params.biolinkCount}
+          href={
+            'http://localhost:4000/admin/resources/Biolink?filters.userId=' + record?.id + '&page=1'
+          }
+        />
+        <Card
+          title="Links"
+          icon="Link"
+          value={record?.params.linkCount}
+          href={
+            'http://localhost:4000/admin/resources/Link?filters.userId=' + record?.id + '&page=1'
+          }
+        />
+        <Card
+          title="Custom Domains"
+          icon="Wikis"
+          value={record?.params.domainCount}
+          href={
+            'http://localhost:4000/admin/resources/Domain?filters.userId=' + record?.id + '&page=1'
+          }
+        />
+        <Card title="Payments" icon="Filter" value={record?.params.paymentCount} href="#" />
       </CardGridContainer>
       <Container>
         <UserDetailsContainer>
@@ -76,32 +97,36 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(record?.params.activities as UserLogs[])?.map((activity, id) => (
-                <TableRow key={id}>
-                  <TableCell>{activity.ipAddress}</TableCell>
-                  <TableCell>{activity.deviceType}</TableCell>
-                  <TableCell>{activity.osName}</TableCell>
-                  <TableCell>{activity.browserName}</TableCell>
-                  <TableCell>{activity.browserLanguage}</TableCell>
-                  <TableCell>{activity.cityName}</TableCell>
-                  <TableCell>
-                    {activity.countryCode !== 'Unknown' ? (
-                      <>
-                        <img
-                          src={
-                            'https://www.countryflags.io/' + activity.countryCode + '/flat/32.png'
-                          }
-                          alt="Country flags"
-                        />
-                      </>
-                    ) : (
-                      activity.countryCode
-                    )}
-                  </TableCell>
-                  <TableCell>{activity.description}</TableCell>
-                  <TableCell>{moment(activity.createdAt).format('DD-MM-YYYY HH:mm:ss')}</TableCell>
-                </TableRow>
-              ))}
+              {(record?.params.activities as UserLogs[])?.map((activity, id) => {
+                return (
+                  <TableRow key={id}>
+                    <TableCell>{activity.ipAddress}</TableCell>
+                    <TableCell>{activity.deviceType}</TableCell>
+                    <TableCell>{activity.osName}</TableCell>
+                    <TableCell>{activity.browserName}</TableCell>
+                    <TableCell>{activity.browserLanguage}</TableCell>
+                    <TableCell>{activity.cityName}</TableCell>
+                    <TableCell>
+                      {activity.countryCode !== 'Unknown' ? (
+                        <>
+                          <img
+                            src={
+                              'https://www.countryflags.io/' + activity.countryCode + '/flat/32.png'
+                            }
+                            alt="Country flags"
+                          />
+                        </>
+                      ) : (
+                        activity.countryCode
+                      )}
+                    </TableCell>
+                    <TableCell>{activity.description}</TableCell>
+                    <TableCell>
+                      {moment(activity.createdAt).format('DD-MM-YYYY HH:mm:ss')}
+                    </TableCell>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
           <Container display="flex" mt={30} flexGrow={1} justifyContent="flex-end">

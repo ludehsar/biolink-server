@@ -1,11 +1,14 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import publicIp from 'public-ip'
+import axios from 'axios'
 
 import { BooleanResponse } from '../resolvers/commonTypes'
 import { UserLogs } from '../models/entities/UserLogs'
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
+import { ActiveStatus } from '../models/enums/ActiveStatus'
+import { CountryInfo } from '../interfaces/CountryInfo'
 
 export const captureUserActivity = async (
   user: User,
@@ -44,6 +47,20 @@ export const captureUserActivity = async (
       : 'Unknown',
     osName: device.os?.name || 'Unknown',
   }).save()
+
+  user.accountStatus = ActiveStatus.Active
+  user.language = context.req.acceptsLanguages()[0] || 'Unknown'
+  user.lastIPAddress = ip
+  user.lastUserAgent = context.req.headers['user-agent'] || ''
+  user.timezone = new Date().getTimezoneOffset().toString()
+  if (geo) {
+    const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
+
+    user.country = (countryInfo.data as CountryInfo).name
+    console.log(countryInfo)
+  }
+
+  await user.save()
 
   return {
     executed: true,

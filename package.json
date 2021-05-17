@@ -81,6 +81,7 @@
     "admin-bro": "^3.4.0",
     "apollo-server-express": "^2.21.0",
     "argon2": "^0.27.1",
+    "axios": "^0.21.1",
     "bull": "^3.22.3",
     "chart.js": "2.9.4",
     "class-validator": "^0.13.1",

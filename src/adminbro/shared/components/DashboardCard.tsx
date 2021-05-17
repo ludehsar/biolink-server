@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from '@admin-bro/design-system'
 
 import { CardBox, CardBody } from './Common.styled'
 import { CardIcon, CardTitle, CardDetails, CardValue, CardSeeMore } from './DashboardCard.styled'
@@ -24,7 +25,9 @@ const Card: React.FC<CardProps> = (props) => {
       </CardBody>
       {href && (
         <CardSeeMore>
-          <CardIcon size={20} icon="ArrowRight" color="white" />
+          <Link {...{ href }}>
+            <CardIcon size={20} icon="ArrowRight" color="white" />
+          </Link>
         </CardSeeMore>
       )}
     </CardBox>

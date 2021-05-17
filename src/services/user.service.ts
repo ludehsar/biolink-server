@@ -119,6 +119,7 @@ export const registerUser = async (
     email: userOptions.email,
     encryptedPassword: hashedPassword,
     forgotPasswordCode: encryptedForgotPasswordCode,
+    totalLogin: 1,
   }).save()
 
   await createReferralCode(user)
@@ -389,6 +390,10 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
 
   context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
   context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
+
+  user.totalLogin++
+
+  await user.save()
 
   // Capture user log
   await captureUserActivity(user, context, 'User logs in')

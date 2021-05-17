@@ -3,7 +3,8 @@ import { ResourceOptions } from 'admin-bro'
 import { UserLogs } from '../models/entities/UserLogs'
 
 export const logsOptions: ResourceOptions = {
-  listProperties: [
+  listProperties: ['userId', 'ipAddress', 'deviceType', 'countryCode', 'description', 'createdAt'],
+  filterProperties: [
     'userId',
     'ipAddress',
     'deviceType',
@@ -15,7 +16,7 @@ export const logsOptions: ResourceOptions = {
     'description',
     'createdAt',
   ],
-  filterProperties: [
+  showProperties: [
     'userId',
     'ipAddress',
     'deviceType',
@@ -88,7 +89,7 @@ export const logsOptions: ResourceOptions = {
       },
     },
     show: {
-      isVisible: false,
+      showInDrawer: true,
       isAccessible: ({ currentAdmin }): boolean => {
         if (!currentAdmin) return false
         return (
@@ -100,6 +101,10 @@ export const logsOptions: ResourceOptions = {
   },
   navigation: {
     icon: 'Archive',
+  },
+  sort: {
+    sortBy: 'createdAt',
+    direction: 'desc',
   },
 }
 
