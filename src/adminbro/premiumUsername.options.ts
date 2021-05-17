@@ -14,7 +14,8 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canCreate === 'true'
+          (currentAdmin.role.roleSettings[7] &&
+            currentAdmin.role.roleSettings[7].canCreate === true)
         )
       },
     },
@@ -23,7 +24,8 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canDelete === 'true'
+          (currentAdmin.role.roleSettings[7] &&
+            currentAdmin.role.roleSettings[7].canDelete === true)
         )
       },
     },
@@ -32,7 +34,8 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canDelete === 'true'
+          (currentAdmin.role.roleSettings[7] &&
+            currentAdmin.role.roleSettings[7].canDelete === true)
         )
       },
     },
@@ -42,7 +45,7 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canEdit === 'true'
+          (currentAdmin.role.roleSettings[7] && currentAdmin.role.roleSettings[7].canEdit === true)
         )
       },
     },
@@ -51,7 +54,8 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canShowList === 'true'
+          (currentAdmin.role.roleSettings[7] &&
+            currentAdmin.role.roleSettings[7].canShowList === true)
         )
       },
     },
@@ -60,7 +64,8 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canShowList === 'true'
+          (currentAdmin.role.roleSettings[7] &&
+            currentAdmin.role.roleSettings[7].canShowList === true)
         )
       },
     },
@@ -70,7 +75,7 @@ export const premiumUsernameOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[7].canShow === 'true'
+          (currentAdmin.role.roleSettings[7] && currentAdmin.role.roleSettings[7].canShow === true)
         )
       },
     },

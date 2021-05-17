@@ -28,7 +28,8 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canCreate === 'true'
+          (currentAdmin.role.roleSettings[4] &&
+            currentAdmin.role.roleSettings[4].canCreate === true)
         )
       },
     },
@@ -37,7 +38,8 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canDelete === 'true'
+          (currentAdmin.role.roleSettings[4] &&
+            currentAdmin.role.roleSettings[4].canDelete === true)
         )
       },
     },
@@ -46,7 +48,8 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canDelete === 'true'
+          (currentAdmin.role.roleSettings[4] &&
+            currentAdmin.role.roleSettings[4].canDelete === true)
         )
       },
     },
@@ -56,7 +59,7 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canEdit === 'true'
+          (currentAdmin.role.roleSettings[4] && currentAdmin.role.roleSettings[4].canEdit === true)
         )
       },
     },
@@ -65,7 +68,8 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canShowList === 'true'
+          (currentAdmin.role.roleSettings[4] &&
+            currentAdmin.role.roleSettings[4].canShowList === true)
         )
       },
     },
@@ -74,7 +78,8 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canShowList === 'true'
+          (currentAdmin.role.roleSettings[4] &&
+            currentAdmin.role.roleSettings[4].canShowList === true)
         )
       },
     },
@@ -84,7 +89,7 @@ export const domainOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[4].canShow === 'true'
+          (currentAdmin.role.roleSettings[4] && currentAdmin.role.roleSettings[4].canShow === true)
         )
       },
     },

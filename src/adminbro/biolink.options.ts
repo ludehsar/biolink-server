@@ -17,7 +17,8 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canCreate === 'true'
+          (currentAdmin.role.roleSettings[0] &&
+            currentAdmin.role.roleSettings[0].canCreate === true)
         )
       },
     },
@@ -26,7 +27,8 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canDelete === 'true'
+          (currentAdmin.role.roleSettings[0] &&
+            currentAdmin.role.roleSettings[0].canDelete === true)
         )
       },
     },
@@ -35,7 +37,8 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canDelete === 'true'
+          (currentAdmin.role.roleSettings[0] &&
+            currentAdmin.role.roleSettings[0].canDelete === true)
         )
       },
     },
@@ -45,7 +48,7 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canEdit === 'true'
+          (currentAdmin.role.roleSettings[0] && currentAdmin.role.roleSettings[0].canEdit === true)
         )
       },
     },
@@ -54,7 +57,8 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canShowList === 'true'
+          (currentAdmin.role.roleSettings[0] &&
+            currentAdmin.role.roleSettings[0].canShowList === true)
         )
       },
     },
@@ -63,7 +67,8 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canShowList === 'true'
+          (currentAdmin.role.roleSettings[0] &&
+            currentAdmin.role.roleSettings[0].canShowList === true)
         )
       },
     },
@@ -73,7 +78,7 @@ export const biolinkOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[0].canShow === 'true'
+          (currentAdmin.role.roleSettings[0] && currentAdmin.role.roleSettings[0].canShow === true)
         )
       },
     },

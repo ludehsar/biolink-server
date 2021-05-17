@@ -19,7 +19,8 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canCreate === 'true'
+          (currentAdmin.role.roleSettings[1] &&
+            currentAdmin.role.roleSettings[1].canCreate === true)
         )
       },
     },
@@ -28,7 +29,8 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canDelete === 'true'
+          (currentAdmin.role.roleSettings[1] &&
+            currentAdmin.role.roleSettings[1].canDelete === true)
         )
       },
     },
@@ -37,7 +39,8 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canDelete === 'true'
+          (currentAdmin.role.roleSettings[1] &&
+            currentAdmin.role.roleSettings[1].canDelete === true)
         )
       },
     },
@@ -47,7 +50,7 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canEdit === 'true'
+          (currentAdmin.role.roleSettings[1] && currentAdmin.role.roleSettings[1].canEdit === true)
         )
       },
     },
@@ -56,7 +59,8 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canShowList === 'true'
+          (currentAdmin.role.roleSettings[1] &&
+            currentAdmin.role.roleSettings[1].canShowList === true)
         )
       },
     },
@@ -65,7 +69,8 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canShowList === 'true'
+          (currentAdmin.role.roleSettings[1] &&
+            currentAdmin.role.roleSettings[1].canShowList === true)
         )
       },
     },
@@ -75,7 +80,7 @@ export const blacklistOptions: ResourceOptions = {
         if (!currentAdmin) return false
         return (
           currentAdmin.role.roleName === 'Administrator' ||
-          currentAdmin.role.roleSettings[1].canShow === 'true'
+          (currentAdmin.role.roleSettings[1] && currentAdmin.role.roleSettings[1].canShow === true)
         )
       },
     },

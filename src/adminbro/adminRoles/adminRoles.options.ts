@@ -1,6 +1,7 @@
 import AdminBro, { ResourceOptions } from 'admin-bro'
 
 import { AdminRole } from '../../models/entities/AdminRole'
+import { before } from './actions/settings.hook'
 
 export const adminRoleOptions: ResourceOptions = {
   listProperties: ['id', 'roleName', 'roleDescription', 'createdAt', 'updatedAt'],
@@ -20,6 +21,7 @@ export const adminRoleOptions: ResourceOptions = {
   },
   actions: {
     new: {
+      before,
       isAccessible: ({ currentAdmin }): boolean => {
         if (!currentAdmin) return false
         return currentAdmin.role.roleName === 'Administrator'
@@ -38,6 +40,7 @@ export const adminRoleOptions: ResourceOptions = {
       },
     },
     edit: {
+      before,
       isAccessible: ({ currentAdmin }): boolean => {
         if (!currentAdmin) return false
         return currentAdmin.role.roleName === 'Administrator'
