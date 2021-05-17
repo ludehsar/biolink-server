@@ -1,4 +1,4 @@
-import useragent from 'useragent'
+import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import moment from 'moment'
 import publicIp from 'public-ip'
@@ -27,16 +27,20 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
 
   const geo = geoip.lookup(ip)
 
-  const agent = useragent.lookup(context.req.headers['user-agent'])
+  const deviceDetector = new DeviceDetector()
+
+  const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
   await TrackLink.create({
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
-    browserName: agent.family || 'Unknown',
+    browserName: device.client?.name || 'Unknown',
     cityName: geo?.city || 'Unknown',
     countryCode: geo?.country || 'Unknown',
-    deviceType: agent.device.family || 'Unknown',
+    deviceType: device.device
+      ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
+      : 'Unknown',
     link,
-    osName: agent.os.family || 'Unknown',
+    osName: device.os?.name || 'Unknown',
     referer: context.req.headers.referer || 'Unknown',
     utmCampaign: context.req.params.utm_campaign || 'Unknown',
     utmMedium: context.req.params.utm_medium || 'Unknown',
@@ -67,16 +71,20 @@ export const trackBiolink = async (
 
   const geo = geoip.lookup(ip)
 
-  const agent = useragent.lookup(context.req.headers['user-agent'])
+  const deviceDetector = new DeviceDetector()
+
+  const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
   await TrackLink.create({
     biolink,
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
-    browserName: agent.family || 'Unknown',
+    browserName: device.client?.name || 'Unknown',
     cityName: geo?.city || 'Unknown',
     countryCode: geo?.country || 'Unknown',
-    deviceType: agent.device.family || 'Unknown',
-    osName: agent.os.family || 'Unknown',
+    deviceType: device.device
+      ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
+      : 'Unknown',
+    osName: device.os?.name || 'Unknown',
     referer: context.req.headers.referer || 'Unknown',
     utmCampaign: context.req.params.utm_campaign || 'Unknown',
     utmMedium: context.req.params.utm_medium || 'Unknown',

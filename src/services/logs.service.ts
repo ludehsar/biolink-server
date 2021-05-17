@@ -1,4 +1,4 @@
-import useragent from 'useragent'
+import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import publicIp from 'public-ip'
 
@@ -26,18 +26,23 @@ export const captureUserActivity = async (
   const ip = await publicIp.v4()
 
   const geo = geoip.lookup(ip)
-  const agent = useragent.lookup(context.req.headers['user-agent'])
+
+  const deviceDetector = new DeviceDetector()
+
+  const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
   await UserLogs.create({
     user,
     description,
     ipAddress: ip,
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
-    browserName: agent.family || 'Unknown',
+    browserName: device.client?.name || 'Unknown',
     cityName: geo?.city || 'Unknown',
     countryCode: geo?.country || 'Unknown',
-    deviceType: agent.device.family || 'Unknown',
-    osName: agent.os.family || 'Unknown',
+    deviceType: device.device
+      ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
+      : 'Unknown',
+    osName: device.os?.name || 'Unknown',
   }).save()
 
   return {
