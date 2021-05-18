@@ -1,7 +1,7 @@
 import { Field, ObjectType, Query, Resolver } from 'type-graphql'
 
-import { Settings } from '../models/entities/Settings'
-import { MainSystemSettings } from '../models/jsonTypes/MainSystemSettings'
+import { Settings } from '../../models/entities/Settings'
+import { MainSystemSettings } from '../../models/jsonTypes/MainSystemSettings'
 
 @ObjectType()
 export class SettingsResponse {
@@ -35,7 +35,7 @@ export class SettingsResolver {
 
     if (!settings) return {}
 
-    const mainSettings = (settings.value as unknown) as MainSystemSettings
+    const mainSettings = settings.value as unknown as MainSystemSettings
 
     return mainSettings
   }

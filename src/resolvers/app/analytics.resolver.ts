@@ -1,10 +1,10 @@
 import { IsDate, IsNotEmpty } from 'class-validator'
 import { Arg, Field, InputType, Mutation, ObjectType, Resolver } from 'type-graphql'
 
-import CurrentUser from '../decorators/currentUser'
-import { User } from '../models/entities/User'
+import CurrentUser from '../../decorators/currentUser'
+import { User } from '../../models/entities/User'
 import { FieldError } from './commonTypes'
-import { getBiolinkTrackingsByBiolinkUsername } from '../services/analytics.service'
+import { getBiolinkTrackingsByBiolinkUsername } from '../../controllers/analytics.controller'
 
 @InputType()
 export class AnalyticsInput {

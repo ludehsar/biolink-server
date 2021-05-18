@@ -2,11 +2,10 @@ import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import axios from 'axios'
 
-import { BooleanResponse } from '../resolvers/commonTypes'
+import { BooleanResponse } from '../resolvers/app/commonTypes'
 import { UserLogs } from '../models/entities/UserLogs'
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
-import { ActiveStatus } from '../models/enums/ActiveStatus'
 import { CountryInfo } from '../interfaces/CountryInfo'
 
 export const captureUserActivity = async (
@@ -47,7 +46,6 @@ export const captureUserActivity = async (
     osName: device.os?.name || 'Unknown',
   }).save()
 
-  user.accountStatus = ActiveStatus.Active
   user.language = context.req.acceptsLanguages()[0] || 'Unknown'
   user.lastIPAddress = ip
   user.lastUserAgent = context.req.headers['user-agent'] || ''

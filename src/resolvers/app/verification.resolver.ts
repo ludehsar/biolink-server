@@ -3,11 +3,11 @@ import { GraphQLUpload } from 'apollo-server-core'
 import { IsNotEmpty } from 'class-validator'
 import { GraphQLScalarType } from 'graphql'
 
-import CurrentUser from '../decorators/currentUser'
-import { User } from '../models/entities/User'
+import CurrentUser from '../../decorators/currentUser'
+import { User } from '../../models/entities/User'
 import { BooleanResponse, FileType } from './commonTypes'
-import { createVerification } from '../services/verification.service'
-import { MyContext } from '../MyContext'
+import { createVerification } from '../../controllers/verification.controller'
+import { MyContext } from '../../MyContext'
 
 @InputType()
 export class VerificationInput {

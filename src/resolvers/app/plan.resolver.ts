@@ -1,7 +1,7 @@
 import { Query, Resolver } from 'type-graphql'
 
-import { Plan } from '../models/entities/Plan'
-import { getAllPlans } from '../services/plan.service'
+import { Plan } from '../../models/entities/Plan'
+import { getAllPlans } from '../../controllers/plan.controller'
 
 @Resolver()
 export class PlanResolver {

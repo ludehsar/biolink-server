@@ -11,16 +11,16 @@ import {
   UpdateBiolinkProfileInput,
   UpdateBiolinkSettingsInput,
   BiolinkConnection,
-} from '../resolvers/biolink.resolver'
+} from '../resolvers/app/biolink.resolver'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
-import { ValidationResponse } from '../resolvers/user.resolver'
+import { ValidationResponse } from '../resolvers/app/user.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse } from '../resolvers/commonTypes'
-import { trackBiolink } from './analytics.service'
+import { BooleanResponse } from '../resolvers/app/commonTypes'
+import { trackBiolink } from './analytics.controller'
 import { MyContext } from '../MyContext'
-import { captureUserActivity } from './logs.service'
-import { ConnectionArgs } from '../resolvers/relaySpec'
+import { captureUserActivity } from './logs.controller'
+import { ConnectionArgs } from '../resolvers/app/relaySpec'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput

@@ -1,8 +1,8 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
-import { User } from '../models/entities/User'
-import { MyContext } from '../MyContext'
+import { User } from '../../models/entities/User'
+import { MyContext } from '../../MyContext'
 import {
   loginUser,
   logoutUser,
@@ -12,9 +12,9 @@ import {
   validateUserRegistration,
   verifyEmailByActivationCode,
   verifyForgotPassword,
-} from '../services/user.service'
+} from '../../controllers/user.controller'
 import { BooleanResponse, FieldError } from './commonTypes'
-import CurrentUser from '../decorators/currentUser'
+import CurrentUser from '../../decorators/currentUser'
 import { NewBiolinkInput } from './biolink.resolver'
 
 @InputType()

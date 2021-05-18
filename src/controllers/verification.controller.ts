@@ -1,15 +1,15 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 
-import { VerificationInput } from '../resolvers/verification.resolver'
+import { VerificationInput } from '../resolvers/app/verification.resolver'
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Plan } from '../models/entities/Plan'
 import { Verification } from '../models/entities/Verification'
 import { Category } from '../models/entities/Category'
-import { BooleanResponse, FieldError } from '../resolvers/commonTypes'
+import { BooleanResponse, FieldError } from '../resolvers/app/commonTypes'
 import { MyContext } from '../MyContext'
-import { captureUserActivity } from './logs.service'
+import { captureUserActivity } from './logs.controller'
 
 export const createVerification = async (
   options: VerificationInput,
@@ -107,10 +107,8 @@ export const createVerification = async (
       })
     })
 
-  const {
-    createReadStream: businessDocumentCreateReadStream,
-    filename: businessDocumentFilename,
-  } = options.businessDocument
+  const { createReadStream: businessDocumentCreateReadStream, filename: businessDocumentFilename } =
+    options.businessDocument
 
   const businessDocumentExt = businessDocumentFilename.split('.').pop()
 
@@ -126,10 +124,8 @@ export const createVerification = async (
       })
     })
 
-  const {
-    createReadStream: otherDocumentsCreateReadStream,
-    filename: otherDocumentsFilename,
-  } = options.otherDocuments
+  const { createReadStream: otherDocumentsCreateReadStream, filename: otherDocumentsFilename } =
+    options.otherDocuments
 
   const otherDocumentsExt = otherDocumentsFilename.split('.').pop()
 

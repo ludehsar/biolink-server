@@ -6,9 +6,9 @@ import { Biolink } from '../models/entities/Biolink'
 import { Link } from '../models/entities/Link'
 import { TrackLink } from '../models/entities/TrackLink'
 import { MyContext } from '../MyContext'
-import { BooleanResponse } from '../resolvers/commonTypes'
+import { BooleanResponse } from '../resolvers/app/commonTypes'
 import { User } from '../models/entities/User'
-import { AnalyticsResponse } from '../resolvers/analytics.resolver'
+import { AnalyticsResponse } from '../resolvers/app/analytics.resolver'
 
 export const trackLink = async (link: Link, context: MyContext): Promise<BooleanResponse> => {
   if (!link) {

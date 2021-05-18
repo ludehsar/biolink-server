@@ -3,7 +3,7 @@ import { Request } from 'express'
 import {
   getStatisticsForAdmins,
   StatisticsForAdminsProps,
-} from '../../../services/analytics.service'
+} from '../../../controllers/analytics.controller'
 
 const statisticsHandler = async (req: Request): Promise<StatisticsForAdminsProps> => {
   const {
@@ -15,12 +15,12 @@ const statisticsHandler = async (req: Request): Promise<StatisticsForAdminsProps
     linkCreationEndDate,
   } = req.query
   const data = await getStatisticsForAdmins(
-    (userRegistrationStartDate as unknown) as Date,
-    (userRegistrationEndDate as unknown) as Date,
-    (biolinkCreationStartDate as unknown) as Date,
-    (biolinkCreationEndDate as unknown) as Date,
-    (linkCreationStartDate as unknown) as Date,
-    (linkCreationEndDate as unknown) as Date
+    userRegistrationStartDate as unknown as Date,
+    userRegistrationEndDate as unknown as Date,
+    biolinkCreationStartDate as unknown as Date,
+    biolinkCreationEndDate as unknown as Date,
+    linkCreationStartDate as unknown as Date,
+    linkCreationEndDate as unknown as Date
   )
   return data
 }

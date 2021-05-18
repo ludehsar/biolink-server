@@ -4,13 +4,13 @@ import randToken from 'rand-token'
 
 import { Link } from '../models/entities/Link'
 import { Biolink } from '../models/entities/Biolink'
-import { LinkResponse, NewLinkInput } from '../resolvers/link.resolver'
+import { LinkResponse, NewLinkInput } from '../resolvers/app/link.resolver'
 import { User } from '../models/entities/User'
 import { LinkType } from '../models/enums/LinkType'
 import { EnabledStatus } from '../models/enums/EnabledStatus'
 import { MyContext } from '../MyContext'
-import { trackLink } from './analytics.service'
-import { captureUserActivity } from './logs.service'
+import { trackLink } from './analytics.controller'
+import { captureUserActivity } from './logs.controller'
 
 export const getAllLinksFromBiolinkUsername = async (
   username: string,

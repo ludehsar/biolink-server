@@ -1,9 +1,9 @@
 import moment from 'moment'
 import { getRepository } from 'typeorm'
 
-import { ConnectionArgs } from '../resolvers/relaySpec'
+import { ConnectionArgs } from '../resolvers/app/relaySpec'
 import { Category } from '../models/entities/Category'
-import { CategoryConnection } from '../resolvers/category.resolver'
+import { CategoryConnection } from '../resolvers/app/category.resolver'
 
 export const getAllCateogories = async (options: ConnectionArgs): Promise<CategoryConnection> => {
   // Getting pageinfo

@@ -9,9 +9,9 @@ import {
 } from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
-import { Biolink } from '../models/entities/Biolink'
-import CurrentUser from '../decorators/currentUser'
-import { User } from '../models/entities/User'
+import { Biolink } from '../../models/entities/Biolink'
+import CurrentUser from '../../decorators/currentUser'
+import { User } from '../../models/entities/User'
 import { BooleanResponse, FieldError } from './commonTypes'
 import {
   createNewBiolink,
@@ -20,7 +20,7 @@ import {
   removeBiolinkByUsername,
   updateBiolinkFromUsername,
   updateBiolinkSettingsFromUsername,
-} from '../services/biolink.service'
+} from '../../controllers/biolink.controller'
 import { MyContext } from 'MyContext'
 import { EdgeType, ConnectionType, ConnectionArgs } from './relaySpec'
 

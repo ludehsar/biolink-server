@@ -9,20 +9,20 @@ import {
   RegisterInput,
   UserResponse,
   ValidationResponse,
-} from '../resolvers/user.resolver'
+} from '../resolvers/app/user.resolver'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { MyContext } from '../MyContext'
-import { newBiolinkValidation } from './biolink.service'
-import { NewBiolinkInput } from '../resolvers/biolink.resolver'
+import { newBiolinkValidation } from './biolink.controller'
+import { NewBiolinkInput } from '../resolvers/app/biolink.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { createReferralCode } from './code.service'
+import { createReferralCode } from './code.controller'
 import sgMail from '../utils/sendMail'
 import { FRONTEND_APP_URL } from '../config/app.config'
-import { BooleanResponse } from '../resolvers/commonTypes'
-import { captureUserActivity } from './logs.service'
+import { BooleanResponse } from '../resolvers/app/commonTypes'
+import { captureUserActivity } from './logs.controller'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,

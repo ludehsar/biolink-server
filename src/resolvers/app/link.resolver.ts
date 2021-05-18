@@ -1,6 +1,6 @@
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
-import { Link } from '../models/entities/Link'
+import { Link } from '../../models/entities/Link'
 import { FieldError } from './commonTypes'
 import {
   createLinkFromUsername,
@@ -8,10 +8,10 @@ import {
   getAllLinksFromBiolinkUsername,
   getLinkByShortenedUrl,
   removeLinkByShortenedUrl,
-} from '../services/link.service'
-import CurrentUser from '../decorators/currentUser'
-import { User } from '../models/entities/User'
-import { MyContext } from '../MyContext'
+} from '../../controllers/link.controller'
+import CurrentUser from '../../decorators/currentUser'
+import { User } from '../../models/entities/User'
+import { MyContext } from '../../MyContext'
 
 @InputType()
 export class NewLinkInput {

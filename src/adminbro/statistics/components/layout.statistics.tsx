@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import moment from 'moment'
 import React, { useState, useCallback, useEffect } from 'react'
 
-import { StatisticsForAdminsProps } from '../../../services/analytics.service'
+import { StatisticsForAdminsProps } from '../../../controllers/analytics.controller'
 
 import {
   Container,

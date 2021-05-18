@@ -1,7 +1,7 @@
 import { Arg, ObjectType, Query, Resolver } from 'type-graphql'
-import { getAllCateogories } from '../services/category.service'
+import { getAllCateogories } from '../../controllers/category.controller'
 
-import { Category } from '../models/entities/Category'
+import { Category } from '../../models/entities/Category'
 import { ConnectionArgs, ConnectionType, EdgeType } from './relaySpec'
 
 @ObjectType()

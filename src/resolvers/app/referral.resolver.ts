@@ -1,12 +1,12 @@
 import { IsEmail, IsNotEmpty } from 'class-validator'
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
-import CurrentUser from '../decorators/currentUser'
-import { Referral } from '../models/entities/Referral'
-import { User } from '../models/entities/User'
+import CurrentUser from '../../decorators/currentUser'
+import { Referral } from '../../models/entities/Referral'
+import { User } from '../../models/entities/User'
 import { FieldError } from './commonTypes'
-import { createReferrals, getReferralsList } from '../services/referral.service'
-import { MyContext } from '../MyContext'
+import { createReferrals, getReferralsList } from '../../controllers/referral.controller'
+import { MyContext } from '../../MyContext'
 
 @InputType()
 export class ReferredUserInfo {
