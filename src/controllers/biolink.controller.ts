@@ -5,22 +5,22 @@ import moment from 'moment'
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Category } from '../models/entities/Category'
+import { PremiumUsername } from '../models/entities/PremiumUsername'
+import { BlackList } from '../models/entities/BlackList'
+import { BlacklistType } from '../models/enums/BlacklistType'
+import { BooleanResponse } from '../typeDefs/common.typeDef'
+import { trackBiolink } from './analytics.controller'
+import { MyContext } from '../MyContext'
+import { captureUserActivity } from './logs.controller'
+import { ConnectionArgs } from '../typeDefs/relaySpec.typeDef'
 import {
   NewBiolinkInput,
   BiolinkResponse,
   UpdateBiolinkProfileInput,
   UpdateBiolinkSettingsInput,
   BiolinkConnection,
-} from '../resolvers/app/biolink.resolver'
-import { PremiumUsername } from '../models/entities/PremiumUsername'
-import { ValidationResponse } from '../resolvers/app/user.resolver'
-import { BlackList } from '../models/entities/BlackList'
-import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse } from '../resolvers/app/commonTypes'
-import { trackBiolink } from './analytics.controller'
-import { MyContext } from '../MyContext'
-import { captureUserActivity } from './logs.controller'
-import { ConnectionArgs } from '../resolvers/app/relaySpec'
+} from '../typeDefs/biolink.typeDef'
+import { ValidationResponse } from '../typeDefs/user.typeDef'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput

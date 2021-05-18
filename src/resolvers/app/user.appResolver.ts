@@ -1,5 +1,4 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
-import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import { User } from '../../models/entities/User'
 import { MyContext } from '../../MyContext'
@@ -13,56 +12,15 @@ import {
   verifyEmailByActivationCode,
   verifyForgotPassword,
 } from '../../controllers/user.controller'
-import { BooleanResponse, FieldError } from './commonTypes'
+import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import CurrentUser from '../../decorators/currentUser'
-import { NewBiolinkInput } from './biolink.resolver'
-
-@InputType()
-export class LoginInput {
-  @Field()
-  @IsNotEmpty()
-  @IsEmail()
-  email!: string
-
-  @Field()
-  @IsNotEmpty()
-  password!: string
-}
-
-@InputType()
-export class RegisterInput {
-  @Field()
-  @IsNotEmpty()
-  name?: string
-
-  @Field()
-  @IsNotEmpty()
-  @IsEmail()
-  email?: string
-
-  @Field()
-  @IsNotEmpty()
-  @MinLength(8)
-  password?: string
-}
-
-@ObjectType()
-export class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
-
-  @Field(() => User, { nullable: true })
-  user?: User
-}
-
-@ObjectType()
-export class ValidationResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
-
-  @Field(() => Boolean, { nullable: true })
-  passesValidation!: boolean
-}
+import { NewBiolinkInput } from '../../typeDefs/biolink.typeDef'
+import {
+  ValidationResponse,
+  RegisterInput,
+  UserResponse,
+  LoginInput,
+} from '../../typeDefs/user.typeDef'
 
 @Resolver()
 export class UserResolver {

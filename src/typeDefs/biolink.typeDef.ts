@@ -1,28 +1,17 @@
+import { InputType, Field, ObjectType } from 'type-graphql'
 import {
   IsNotEmpty,
+  IsUrl,
   Matches,
   IsInt,
-  IsUrl,
+  IsBoolean,
   IsEmail,
   IsPhoneNumber,
-  IsBoolean,
 } from 'class-validator'
-import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 
-import { Biolink } from '../../models/entities/Biolink'
-import CurrentUser from '../../decorators/currentUser'
-import { User } from '../../models/entities/User'
-import { BooleanResponse, FieldError } from './commonTypes'
-import {
-  createNewBiolink,
-  getAllDirectories,
-  getBiolinkFromUsername,
-  removeBiolinkByUsername,
-  updateBiolinkFromUsername,
-  updateBiolinkSettingsFromUsername,
-} from '../../controllers/biolink.controller'
-import { MyContext } from 'MyContext'
-import { EdgeType, ConnectionType, ConnectionArgs } from './relaySpec'
+import { Biolink } from '../models/entities/Biolink'
+import { FieldError } from './common.typeDef'
+import { EdgeType, ConnectionType } from './relaySpec.typeDef'
 
 @InputType()
 export class SingleSocialAccount {
@@ -179,61 +168,3 @@ export class BiolinkEdge extends EdgeType('category', Biolink) {}
 
 @ObjectType()
 export class BiolinkConnection extends ConnectionType<BiolinkEdge>('category', BiolinkEdge) {}
-
-@Resolver()
-export class BiolinkResolver {
-  @Mutation(() => BiolinkResponse)
-  async createNewBiolink(
-    @Arg('options') options: NewBiolinkInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await createNewBiolink(options, context, user)
-  }
-
-  @Query(() => BiolinkResponse)
-  async getBiolinkFromUsername(
-    @Arg('username') username: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await getBiolinkFromUsername(username, context, user)
-  }
-
-  @Mutation(() => BiolinkResponse)
-  async updateBiolinkFromUsername(
-    @Arg('username') username: string,
-    @Arg('options') options: UpdateBiolinkProfileInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateBiolinkFromUsername(user, username, options, context)
-  }
-
-  @Mutation(() => BiolinkResponse)
-  async updateBiolinkSettingsFromUsername(
-    @Arg('username') username: string,
-    @Arg('options') options: UpdateBiolinkSettingsInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateBiolinkSettingsFromUsername(user, username, options, context)
-  }
-
-  @Query(() => BiolinkConnection, { nullable: true })
-  async getAllDirectories(
-    @Arg('options') options: ConnectionArgs,
-    @Arg('categoryId', { defaultValue: 0 }) categoryId: number
-  ): Promise<BiolinkConnection> {
-    return await getAllDirectories(categoryId, options)
-  }
-
-  @Mutation(() => BooleanResponse)
-  async deleteBiolink(
-    @Arg('username') username: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BooleanResponse> {
-    return await removeBiolinkByUsername(username, context, user)
-  }
-}

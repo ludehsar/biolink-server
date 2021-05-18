@@ -4,25 +4,25 @@ import randToken from 'rand-token'
 import moment from 'moment'
 import { MailDataRequired } from '@sendgrid/mail'
 
-import {
-  LoginInput,
-  RegisterInput,
-  UserResponse,
-  ValidationResponse,
-} from '../resolvers/app/user.resolver'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
 import { User } from '../models/entities/User'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { MyContext } from '../MyContext'
 import { newBiolinkValidation } from './biolink.controller'
-import { NewBiolinkInput } from '../resolvers/app/biolink.resolver'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
 import { createReferralCode } from './code.controller'
 import sgMail from '../utils/sendMail'
 import { FRONTEND_APP_URL } from '../config/app.config'
-import { BooleanResponse } from '../resolvers/app/commonTypes'
+import { BooleanResponse } from '../typeDefs/common.typeDef'
 import { captureUserActivity } from './logs.controller'
+import { NewBiolinkInput } from '../typeDefs/biolink.typeDef'
+import {
+  RegisterInput,
+  ValidationResponse,
+  UserResponse,
+  LoginInput,
+} from '../typeDefs/user.typeDef'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,

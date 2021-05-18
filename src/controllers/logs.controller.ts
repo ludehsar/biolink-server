@@ -2,7 +2,7 @@ import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import axios from 'axios'
 
-import { BooleanResponse } from '../resolvers/app/commonTypes'
+import { BooleanResponse } from '../typeDefs/common.typeDef'
 import { UserLogs } from '../models/entities/UserLogs'
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'

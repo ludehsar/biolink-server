@@ -1,13 +1,9 @@
-import { Arg, Ctx, Field, InputType, Mutation, Resolver } from 'type-graphql'
-import { GraphQLUpload } from 'apollo-server-core'
 import { IsNotEmpty } from 'class-validator'
+import { GraphQLUpload } from 'apollo-server-express'
 import { GraphQLScalarType } from 'graphql'
+import { InputType, Field } from 'type-graphql'
 
-import CurrentUser from '../../decorators/currentUser'
-import { User } from '../../models/entities/User'
-import { BooleanResponse, FileType } from './commonTypes'
-import { createVerification } from '../../controllers/verification.controller'
-import { MyContext } from '../../MyContext'
+import { FileType } from './common.typeDef'
 
 @InputType()
 export class VerificationInput {
@@ -66,17 +62,4 @@ export class VerificationInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
   categoryId!: string
-}
-
-@Resolver()
-export class VerificationResolver {
-  @Mutation(() => BooleanResponse)
-  async verifyBiolinkByUsername(
-    @Arg('options') options: VerificationInput,
-    @Arg('biolinkUsername') biolinkUsername: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BooleanResponse> {
-    return await createVerification(options, biolinkUsername, user, context)
-  }
 }

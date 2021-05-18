@@ -1,15 +1,15 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 
-import { VerificationInput } from '../resolvers/app/verification.resolver'
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
 import { Plan } from '../models/entities/Plan'
 import { Verification } from '../models/entities/Verification'
 import { Category } from '../models/entities/Category'
-import { BooleanResponse, FieldError } from '../resolvers/app/commonTypes'
+import { BooleanResponse, FieldError } from '../typeDefs/common.typeDef'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.controller'
+import { VerificationInput } from '../typeDefs/verification.typeDef'
 
 export const createVerification = async (
   options: VerificationInput,
