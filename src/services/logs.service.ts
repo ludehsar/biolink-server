@@ -1,6 +1,5 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
-import publicIp from 'public-ip'
 import axios from 'axios'
 
 import { BooleanResponse } from '../resolvers/commonTypes'
@@ -26,7 +25,7 @@ export const captureUserActivity = async (
     }
   }
 
-  const ip = await publicIp.v4()
+  const ip = context.req.ip
 
   const geo = geoip.lookup(ip)
 

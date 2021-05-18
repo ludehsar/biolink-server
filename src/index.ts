@@ -33,6 +33,9 @@ const main = async (): Promise<void> => {
   // Configure app
   const app = express()
 
+  // Trust proxy
+  app.set('trust proxy', true)
+
   // cors
   app.use(cors(corsOptions))
 

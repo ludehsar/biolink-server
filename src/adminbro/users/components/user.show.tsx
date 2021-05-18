@@ -10,7 +10,6 @@ import { CardGridContainer, Container, Title } from '../../shared/components/Com
 import { UserLogs } from '../../../models/entities/UserLogs'
 
 const Show: React.FC<BasePropertyComponentProps> = (props) => {
-  console.log(props)
   const { record } = props
 
   return (

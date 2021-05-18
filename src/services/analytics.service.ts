@@ -1,7 +1,6 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import moment from 'moment'
-import publicIp from 'public-ip'
 
 import { Biolink } from '../models/entities/Biolink'
 import { Link } from '../models/entities/Link'
@@ -23,7 +22,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     }
   }
 
-  const ip = await publicIp.v4()
+  const ip = context.req.ip
 
   const geo = geoip.lookup(ip)
 
@@ -67,7 +66,7 @@ export const trackBiolink = async (
     }
   }
 
-  const ip = await publicIp.v4()
+  const ip = context.req.ip
 
   const geo = geoip.lookup(ip)
 

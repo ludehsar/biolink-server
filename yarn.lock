@@ -1616,6 +1616,11 @@
     "@styled-system/core" "^5.1.2"
     "@styled-system/css" "^5.1.5"
 
+"@supercharge/request-ip@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@supercharge/request-ip/-/request-ip-1.1.2.tgz#be9083aa50d3c6fc200f3ed5919e0b9c13fc8842"
+  integrity sha512-mtryG/uiSIVT0ga8A/F9hNEuBSbDxW7/m9PEtxIHqdkE/vr766m17mtLPhrXA4q4T+Qw44+33mg3Rtkl7o+OvQ==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
