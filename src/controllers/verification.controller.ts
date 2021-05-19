@@ -6,10 +6,11 @@ import { Biolink } from '../models/entities/Biolink'
 import { Plan } from '../models/entities/Plan'
 import { Verification } from '../models/entities/Verification'
 import { Category } from '../models/entities/Category'
-import { BooleanResponse, FieldError } from '../typeDefs/common.typeDef'
+import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.controller'
 import { VerificationInput } from '../typeDefs/verification.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const createVerification = async (
   options: VerificationInput,
@@ -21,7 +22,8 @@ export const createVerification = async (
     return {
       errors: [
         {
-          message: 'User not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
         },
       ],
       executed: false,
@@ -34,6 +36,7 @@ export const createVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'No biolink specified',
         },
       ],
@@ -45,6 +48,7 @@ export const createVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_ALREADY_VERIFIED,
           message: 'This biolink is already processed for verification',
         },
       ],
@@ -58,6 +62,7 @@ export const createVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
           message: 'Unrecognized plan',
         },
       ],
@@ -69,6 +74,7 @@ export const createVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
           message: 'Current plan does not support for verification. Please upgrade',
         },
       ],
@@ -82,6 +88,7 @@ export const createVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.CATEGORY_COULD_NOT_BE_FOUND,
           message: 'Unrecognized category',
         },
       ],
@@ -93,7 +100,7 @@ export const createVerification = async (
 
   const photoIdExt = photoIdFilename.split('.').pop()
 
-  const errors: FieldError[] = []
+  const errors: ErrorResponse[] = []
 
   const photoIdUrl =
     __dirname +
@@ -103,6 +110,7 @@ export const createVerification = async (
     .pipe(createWriteStream(__dirname + `../../assets/photoIds/${photoIdUrl}`))
     .on('error', () => {
       errors.push({
+        errorCode: ErrorCode.UPLOAD_ERROR,
         message: 'Unable to upload PhotoId',
       })
     })
@@ -120,6 +128,7 @@ export const createVerification = async (
     .pipe(createWriteStream(__dirname + `../../assets/business-documents/${businessDocumentUrl}`))
     .on('error', () => {
       errors.push({
+        errorCode: ErrorCode.UPLOAD_ERROR,
         message: 'Unable to upload business documents',
       })
     })
@@ -137,6 +146,7 @@ export const createVerification = async (
     .pipe(createWriteStream(__dirname + `../../assets/business-documents/${otherDocumentsUrl}`))
     .on('error', () => {
       errors.push({
+        errorCode: ErrorCode.UPLOAD_ERROR,
         message: 'Unable to upload other documents',
       })
     })

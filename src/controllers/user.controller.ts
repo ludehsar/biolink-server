@@ -23,6 +23,7 @@ import {
   UserResponse,
   LoginInput,
 } from '../typeDefs/user.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -53,6 +54,7 @@ export const userInputValidation = async (
     return {
       errors: validationErrors.map((err) => ({
         field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
       passesValidation: false,
@@ -69,6 +71,7 @@ export const userInputValidation = async (
       errors: [
         {
           field: 'email',
+          errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
           message: 'Cannot create new account.',
         },
       ],
@@ -83,6 +86,7 @@ export const userInputValidation = async (
       errors: [
         {
           field: 'email',
+          errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
           message: 'User with this email address already exists.',
         },
       ],
@@ -149,6 +153,7 @@ export const sendEmailForVerification = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User not authenticated',
         },
       ],
@@ -208,6 +213,7 @@ export const verifyEmailByActivationCode = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.INVALID_TOKEN,
           message: 'Invalid token',
         },
       ],
@@ -245,6 +251,7 @@ export const sendForgotPasswordVerificationEmail = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
           message: 'No user found with this email address',
         },
       ],
@@ -300,6 +307,7 @@ export const verifyForgotPassword = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
           message: 'Invalid email address',
         },
       ],
@@ -311,6 +319,7 @@ export const verifyForgotPassword = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.INVALID_TOKEN,
           message: 'Invalid forgot password code',
         },
       ],
@@ -324,6 +333,7 @@ export const verifyForgotPassword = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.INVALID_TOKEN,
           message: 'Invalid token',
         },
       ],
@@ -354,6 +364,7 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
     return {
       errors: validationErrors.map((err) => ({
         field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
     }
@@ -366,6 +377,7 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
       errors: [
         {
           field: 'email',
+          errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
           message: 'User with this email does not exist',
         },
       ],
@@ -379,6 +391,7 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
       errors: [
         {
           field: 'password',
+          errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
           message: 'Password did not match',
         },
       ],
@@ -406,6 +419,7 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Boolea
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'Invalid request',
         },
       ],
@@ -435,7 +449,8 @@ export const changeUserEmail = async (
     return {
       errors: [
         {
-          message: 'User not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
         },
       ],
       executed: false,
@@ -448,6 +463,7 @@ export const changeUserEmail = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
           message: 'User with this email already exists',
         },
       ],
@@ -476,7 +492,8 @@ export const changeUserPassword = async (
     return {
       errors: [
         {
-          message: 'User not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
         },
       ],
       executed: false,
@@ -489,6 +506,7 @@ export const changeUserPassword = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
           message: 'Password did not match',
         },
       ],
@@ -516,7 +534,8 @@ export const deleteUserAccount = async (
     return {
       errors: [
         {
-          message: 'User not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
         },
       ],
       executed: false,
@@ -529,6 +548,7 @@ export const deleteUserAccount = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
           message: 'Password did not match',
         },
       ],

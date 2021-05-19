@@ -2,7 +2,7 @@ import { IsNotEmpty, IsEmail, MinLength } from 'class-validator'
 import { InputType, Field, ObjectType } from 'type-graphql'
 
 import { User } from '../models/entities/User'
-import { FieldError } from './common.typeDef'
+import { ErrorResponse } from './common.typeDef'
 
 @InputType()
 export class LoginInput {
@@ -64,8 +64,8 @@ export class ChangePasswordInput {
 
 @ObjectType()
 export class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => User, { nullable: true })
   user?: User
@@ -73,8 +73,8 @@ export class UserResponse {
 
 @ObjectType()
 export class ValidationResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => Boolean, { nullable: true })
   passesValidation!: boolean

@@ -9,12 +9,14 @@ import { MyContext } from '../MyContext'
 import { BooleanResponse } from '../typeDefs/common.typeDef'
 import { User } from '../models/entities/User'
 import { AnalyticsResponse } from '../typeDefs/analytics.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const trackLink = async (link: Link, context: MyContext): Promise<BooleanResponse> => {
   if (!link) {
     return {
       errors: [
         {
+          errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
           message: 'Link could not be found',
         },
       ],
@@ -59,6 +61,7 @@ export const trackBiolink = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink could not be found',
         },
       ],
@@ -227,6 +230,7 @@ export const getBiolinkTrackingsByBiolinkUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User is not authenticated',
         },
       ],
@@ -239,6 +243,7 @@ export const getBiolinkTrackingsByBiolinkUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink with this username does not exist or the user is not authorized',
         },
       ],

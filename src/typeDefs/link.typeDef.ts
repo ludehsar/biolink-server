@@ -1,7 +1,7 @@
 import { InputType, Field, ObjectType } from 'type-graphql'
 
 import { Link } from '../models/entities/Link'
-import { FieldError } from './common.typeDef'
+import { ErrorResponse } from './common.typeDef'
 
 @InputType()
 export class NewLinkInput {
@@ -26,8 +26,8 @@ export class NewLinkInput {
 
 @ObjectType()
 export class LinkResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => [Link], { nullable: true })
   links?: Link[]

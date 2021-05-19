@@ -21,6 +21,7 @@ import {
   BiolinkConnection,
 } from '../typeDefs/biolink.typeDef'
 import { ValidationResponse } from '../typeDefs/user.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -31,6 +32,7 @@ export const newBiolinkValidation = async (
   if (validationErrors.length > 0) {
     return {
       errors: validationErrors.map((err) => ({
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         field: err.property,
         message: 'Not correctly formatted',
       })),
@@ -46,6 +48,7 @@ export const newBiolinkValidation = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USERNAME_BLACKLISTED,
           field: 'username',
           message: 'Cannot create account with this username.',
         },
@@ -61,6 +64,7 @@ export const newBiolinkValidation = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.CATEGORY_COULD_NOT_BE_FOUND,
           field: 'categoryId',
           message: 'Category not found',
         },
@@ -75,6 +79,7 @@ export const newBiolinkValidation = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
           field: 'username',
           message: 'Username has already been taken.',
         },
@@ -92,6 +97,7 @@ export const newBiolinkValidation = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
           field: 'username',
           message: 'Username has already been taken.',
         },
@@ -120,8 +126,8 @@ export const createNewBiolink = async (
     return {
       errors: [
         {
-          field: 'username',
-          message: 'User not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
         },
       ],
     }
@@ -188,7 +194,7 @@ export const getBiolinkFromUsername = async (
     return {
       errors: [
         {
-          field: 'username',
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink not found',
         },
       ],
@@ -214,7 +220,7 @@ export const updateBiolinkFromUsername = async (
     return {
       errors: [
         {
-          field: '',
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink not found',
         },
       ],
@@ -225,8 +231,8 @@ export const updateBiolinkFromUsername = async (
     return {
       errors: [
         {
-          field: '',
-          message: 'User not authenticated',
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
         },
       ],
     }
@@ -253,7 +259,7 @@ export const updateBiolinkSettingsFromUsername = async (
     return {
       errors: [
         {
-          field: '',
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink not found',
         },
       ],
@@ -264,8 +270,8 @@ export const updateBiolinkSettingsFromUsername = async (
     return {
       errors: [
         {
-          field: '',
-          message: 'User not authenticated',
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
         },
       ],
     }
@@ -485,6 +491,7 @@ export const removeBiolinkByUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User not authenticated',
         },
       ],
@@ -496,6 +503,7 @@ export const removeBiolinkByUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'No biolink found with this username',
         },
       ],
@@ -507,7 +515,8 @@ export const removeBiolinkByUsername = async (
     return {
       errors: [
         {
-          message: 'Not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
         },
       ],
       executed: false,

@@ -11,12 +11,14 @@ import { FRONTEND_APP_URL } from '../config/app.config'
 import { captureUserActivity } from './logs.controller'
 import { MyContext } from '../MyContext'
 import { ReferralResponse, ReferralInput } from '../typeDefs/referral.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const getReferralsList = async (user: User): Promise<ReferralResponse> => {
   if (!user) {
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User not authenticated',
         },
       ],
@@ -39,6 +41,7 @@ export const createReferrals = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User not authenticated',
         },
       ],
@@ -94,6 +97,7 @@ export const createReferrals = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.DATABASE_ERROR,
           message: 'Something went wrong',
         },
       ],

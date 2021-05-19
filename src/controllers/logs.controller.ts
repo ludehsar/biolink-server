@@ -7,6 +7,7 @@ import { UserLogs } from '../models/entities/UserLogs'
 import { User } from '../models/entities/User'
 import { MyContext } from '../MyContext'
 import { CountryInfo } from '../interfaces/CountryInfo'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const captureUserActivity = async (
   user: User,
@@ -17,6 +18,7 @@ export const captureUserActivity = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User is not authenticated',
         },
       ],

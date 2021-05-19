@@ -10,7 +10,7 @@ import {
 } from 'class-validator'
 
 import { Biolink } from '../models/entities/Biolink'
-import { FieldError } from './common.typeDef'
+import { ErrorResponse } from './common.typeDef'
 import { EdgeType, ConnectionType } from './relaySpec.typeDef'
 
 @InputType()
@@ -156,8 +156,8 @@ export class UpdateBiolinkSettingsInput {
 
 @ObjectType()
 export class BiolinkResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => Biolink, { nullable: true })
   biolink?: Biolink

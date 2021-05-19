@@ -2,7 +2,7 @@ import { IsNotEmpty, IsEmail } from 'class-validator'
 import { InputType, Field, ObjectType } from 'type-graphql'
 
 import { Referral } from '../models/entities/Referral'
-import { FieldError } from './common.typeDef'
+import { ErrorResponse } from './common.typeDef'
 
 @InputType()
 export class ReferredUserInfo {
@@ -33,8 +33,8 @@ export class ReferralInput {
 
 @ObjectType()
 export class ReferralResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => [Referral], { nullable: true })
   referrals?: Referral[]

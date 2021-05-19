@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsDate } from 'class-validator'
 import { InputType, Field, ObjectType } from 'type-graphql'
 
-import { FieldError } from './common.typeDef'
+import { ErrorResponse } from './common.typeDef'
 
 @InputType()
 export class AnalyticsInput {
@@ -29,8 +29,8 @@ export class TrackingUnit {
 
 @ObjectType()
 export class AnalyticsResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => [TrackingUnit], { nullable: true })
   result?: TrackingUnit[]

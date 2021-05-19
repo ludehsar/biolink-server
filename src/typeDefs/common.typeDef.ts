@@ -1,9 +1,12 @@
 import { Stream } from 'stream'
-import { ObjectType, Field, InputType } from 'type-graphql'
+import { ObjectType, Field, InputType, Int } from 'type-graphql'
 
 @ObjectType()
-export class FieldError {
-  @Field({ nullable: true })
+export class ErrorResponse {
+  @Field(() => Int)
+  errorCode!: number
+
+  @Field()
   field?: string
 
   @Field()
@@ -12,8 +15,8 @@ export class FieldError {
 
 @ObjectType()
 export class BooleanResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[]
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
   @Field(() => Boolean, { nullable: true })
   executed!: boolean

@@ -11,6 +11,7 @@ import { MyContext } from '../MyContext'
 import { trackLink } from './analytics.controller'
 import { captureUserActivity } from './logs.controller'
 import { LinkResponse, NewLinkInput } from '../typeDefs/link.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
 export const getAllLinksFromBiolinkUsername = async (
   username: string,
@@ -23,6 +24,7 @@ export const getAllLinksFromBiolinkUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink not found',
         },
       ],
@@ -45,6 +47,7 @@ export const getAllLinksFromBiolinkUsername = async (
       return {
         errors: [
           {
+            errorCode: ErrorCode.USER_NOT_AUTHORIZED,
             message: 'User is not authorized',
           },
         ],
@@ -64,6 +67,7 @@ export const getAllUserLinks = async (user: User): Promise<LinkResponse> => {
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'User is not authenticated',
         },
       ],
@@ -94,6 +98,7 @@ export const createLinkFromUsername = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
           message: 'Biolink not found',
         },
       ],
@@ -104,7 +109,8 @@ export const createLinkFromUsername = async (
     return {
       errors: [
         {
-          message: 'Not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
         },
       ],
     }
@@ -118,6 +124,7 @@ export const createLinkFromUsername = async (
       return {
         errors: [
           {
+            errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
             message: 'Shortened URL already taken',
           },
         ],
@@ -156,6 +163,7 @@ export const createLinkFromUsername = async (
         return {
           errors: [
             {
+              errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
               message: 'Shortened URL already taken',
             },
           ],
@@ -165,6 +173,7 @@ export const createLinkFromUsername = async (
         return {
           errors: [
             {
+              errorCode: ErrorCode.DATABASE_ERROR,
               message: 'Something went wrong',
             },
           ],
@@ -183,7 +192,8 @@ export const createNewLink = async (
     return {
       errors: [
         {
-          message: 'Not authorized',
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'Not authenticated',
         },
       ],
     }
@@ -197,6 +207,7 @@ export const createNewLink = async (
       return {
         errors: [
           {
+            errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
             message: 'Shortened URL already taken',
           },
         ],
@@ -231,6 +242,7 @@ export const createNewLink = async (
         return {
           errors: [
             {
+              errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
               message: 'Shortened URL already taken',
             },
           ],
@@ -240,6 +252,7 @@ export const createNewLink = async (
         return {
           errors: [
             {
+              errorCode: ErrorCode.DATABASE_ERROR,
               message: 'Something went wrong',
             },
           ],
@@ -260,6 +273,7 @@ export const getLinkByShortenedUrl = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
           message: 'No link found',
         },
       ],
@@ -274,6 +288,7 @@ export const getLinkByShortenedUrl = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
           message: 'Not authorized',
         },
       ],
@@ -296,6 +311,7 @@ export const removeLinkByShortenedUrl = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
           message: 'No link found',
         },
       ],
@@ -306,6 +322,7 @@ export const removeLinkByShortenedUrl = async (
     return {
       errors: [
         {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
           message: 'Not authorized',
         },
       ],
