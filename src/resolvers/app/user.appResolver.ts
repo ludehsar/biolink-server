@@ -3,6 +3,9 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User } from '../../models/entities/User'
 import { MyContext } from '../../MyContext'
 import {
+  changeUserEmail,
+  changeUserPassword,
+  deleteUserAccount,
   loginUser,
   logoutUser,
   registerUser,
@@ -20,6 +23,9 @@ import {
   RegisterInput,
   UserResponse,
   LoginInput,
+  EmailInput,
+  ChangePasswordInput,
+  PasswordInput,
 } from '../../typeDefs/user.typeDef'
 
 @Resolver()
@@ -84,6 +90,32 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
     return await verifyForgotPassword(options.email, options.password, forgotPasswordCode, context)
+  }
+
+  @Mutation(() => BooleanResponse)
+  async changeUserEmailAddress(
+    @Arg('options') options: EmailInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BooleanResponse> {
+    return await changeUserEmail(options.email, user, context)
+  }
+
+  @Mutation(() => BooleanResponse)
+  async changeUserPassword(
+    @Arg('options') options: ChangePasswordInput,
+    @CurrentUser() user: User
+  ): Promise<BooleanResponse> {
+    return await changeUserPassword(options.oldPassword, options.newPassword, user)
+  }
+
+  @Mutation(() => BooleanResponse)
+  async deleteUserAccount(
+    @Arg('options') options: PasswordInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BooleanResponse> {
+    return await deleteUserAccount(options.password, user, context)
   }
 
   @Mutation(() => BooleanResponse)

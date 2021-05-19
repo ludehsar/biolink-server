@@ -43,7 +43,7 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  emailVerifiedAt!: Date
+  emailVerifiedAt?: Date
 
   @Column({ nullable: true })
   emailActivationCode!: string

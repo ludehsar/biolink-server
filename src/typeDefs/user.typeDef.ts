@@ -33,6 +33,35 @@ export class RegisterInput {
   password?: string
 }
 
+@InputType()
+export class EmailInput {
+  @Field()
+  @IsNotEmpty()
+  @IsEmail()
+  email!: string
+}
+
+@InputType()
+export class PasswordInput {
+  @Field()
+  @IsNotEmpty()
+  @MinLength(8)
+  password!: string
+}
+
+@InputType()
+export class ChangePasswordInput {
+  @Field()
+  @IsNotEmpty()
+  @MinLength(8)
+  oldPassword!: string
+
+  @Field()
+  @IsNotEmpty()
+  @MinLength(8)
+  newPassword!: string
+}
+
 @ObjectType()
 export class UserResponse {
   @Field(() => [FieldError], { nullable: true })

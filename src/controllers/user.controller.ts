@@ -425,3 +425,122 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Boolea
     executed: true,
   }
 }
+
+export const changeUserEmail = async (
+  newEmail: string,
+  user: User,
+  context: MyContext
+): Promise<BooleanResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User not authorized',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  const otherUser = await User.findOne({ where: { email: newEmail } })
+
+  if (otherUser && otherUser.id !== user.id) {
+    return {
+      errors: [
+        {
+          message: 'User with this email already exists',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  user.email = newEmail
+  user.emailVerifiedAt = undefined
+
+  sendEmailForVerification(user, context)
+
+  await user.save()
+
+  return {
+    executed: true,
+  }
+}
+
+export const changeUserPassword = async (
+  oldPassword: string,
+  newPassword: string,
+  user: User
+): Promise<BooleanResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User not authorized',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  const isVerified = await argon2.verify(user.encryptedPassword, oldPassword)
+
+  if (!isVerified) {
+    return {
+      errors: [
+        {
+          message: 'Password did not match',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  const encryptedPassword = await argon2.hash(newPassword)
+
+  user.encryptedPassword = encryptedPassword
+
+  await user.save()
+
+  return {
+    executed: true,
+  }
+}
+
+export const deleteUserAccount = async (
+  password: string,
+  user: User,
+  context: MyContext
+): Promise<BooleanResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          message: 'User not authorized',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  const isVerified = await argon2.verify(user.encryptedPassword, password)
+
+  if (!isVerified) {
+    return {
+      errors: [
+        {
+          message: 'Password did not match',
+        },
+      ],
+      executed: false,
+    }
+  }
+
+  logoutUser(context, user)
+
+  await user.softRemove()
+
+  return {
+    executed: true,
+  }
+}
