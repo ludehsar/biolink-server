@@ -172,4 +172,11 @@ export class User extends BaseEntity {
 
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: number
+
+  @ManyToOne(() => Code, (code) => code.referredByUsers, { nullable: true })
+  @JoinColumn({ name: 'registeredByCodeId' })
+  registeredByCode!: Code
+
+  @RelationId((user: User) => user.registeredByCode)
+  registeredByCodeId!: string
 }

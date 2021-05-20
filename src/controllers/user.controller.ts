@@ -26,6 +26,7 @@ import {
   PasswordInput,
 } from '../typeDefs/user.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
+import { Code } from '../models/entities/Code'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -101,7 +102,8 @@ export const userInputValidation = async (userOptions: RegisterInput): Promise<B
 
 export const registerUser = async (
   userOptions: RegisterInput,
-  context: MyContext
+  context: MyContext,
+  referralToken?: string
 ): Promise<UserResponse> => {
   // Validating user input
   const userInputValidationReport = await userInputValidation(userOptions)
@@ -109,6 +111,27 @@ export const registerUser = async (
   if (!userInputValidationReport.executed) {
     return {
       errors: userInputValidationReport.errors,
+    }
+  }
+
+  // Checking referral token
+  let code = null
+  if (referralToken) {
+    code = await Code.findOne({
+      where: {
+        code: referralToken,
+      },
+    })
+
+    if (!code) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.INVALID_TOKEN,
+            message: 'Invalid referral token',
+          },
+        ],
+      }
     }
   }
 
@@ -125,6 +148,13 @@ export const registerUser = async (
     forgotPasswordCode: encryptedForgotPasswordCode,
     totalLogin: 1,
   }).save()
+
+  // TODO: Reduce price according to code
+  if (code) {
+    user.registeredByCode = code
+
+    await user.save()
+  }
 
   await createReferralCode(user)
 

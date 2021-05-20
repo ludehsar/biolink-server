@@ -7,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
@@ -57,4 +58,7 @@ export class Code extends BaseEntity {
 
   @RelationId((code: Code) => code.referrer)
   referrerId!: string
+
+  @OneToMany(() => User, (user) => user.registeredByCode)
+  referredByUsers!: User[]
 }

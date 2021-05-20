@@ -35,9 +35,10 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async registerUser(
     @Arg('options') options: RegisterInput,
-    @Ctx() context: MyContext
+    @Ctx() context: MyContext,
+    @Arg('referralToken') referralToken?: string
   ): Promise<UserResponse> {
-    return await registerUser(options, context)
+    return await registerUser(options, context, referralToken)
   }
 
   @Mutation(() => BooleanResponse)
