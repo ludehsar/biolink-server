@@ -2,8 +2,10 @@ import { getRepository } from 'typeorm'
 
 import { Plan } from '../models/entities/Plan'
 import { EnabledStatus } from '../models/enums/EnabledStatus'
+import { PlanResponse } from '../typeDefs/plan.typeDef'
+import { ErrorCode } from '../constants/errorCodes'
 
-export const getAllPlans = async (): Promise<Plan[] | null> => {
+export const getAllPlans = async (): Promise<PlanResponse> => {
   const plans = await getRepository(Plan)
     .createQueryBuilder()
     .where({
@@ -13,8 +15,17 @@ export const getAllPlans = async (): Promise<Plan[] | null> => {
     .getMany()
 
   if (!plans) {
-    return null
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.DATABASE_ERROR,
+          message: 'Something went wrong',
+        },
+      ],
+    }
   }
 
-  return plans
+  return {
+    plans,
+  }
 }

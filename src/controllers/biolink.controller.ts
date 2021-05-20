@@ -20,12 +20,11 @@ import {
   UpdateBiolinkSettingsInput,
   BiolinkConnection,
 } from '../typeDefs/biolink.typeDef'
-import { ValidationResponse } from '../typeDefs/user.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
-): Promise<ValidationResponse> => {
+): Promise<BooleanResponse> => {
   // Checks input validatation
   const validationErrors = await validate(biolinkOptions)
 
@@ -36,7 +35,7 @@ export const newBiolinkValidation = async (
         field: err.property,
         message: 'Not correctly formatted',
       })),
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -53,7 +52,7 @@ export const newBiolinkValidation = async (
           message: 'Cannot create account with this username.',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -69,7 +68,7 @@ export const newBiolinkValidation = async (
           message: 'Category not found',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -84,7 +83,7 @@ export const newBiolinkValidation = async (
           message: 'Username has already been taken.',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -102,12 +101,12 @@ export const newBiolinkValidation = async (
           message: 'Username has already been taken.',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
   return {
-    passesValidation: true,
+    executed: true,
   }
 }
 
@@ -117,7 +116,7 @@ export const createNewBiolink = async (
   user: User
 ): Promise<BiolinkResponse> => {
   const biolinkInputValidationReport = await newBiolinkValidation(options)
-  if (!biolinkInputValidationReport.passesValidation) {
+  if (!biolinkInputValidationReport.executed) {
     return { errors: biolinkInputValidationReport.errors }
   }
 

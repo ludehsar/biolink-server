@@ -70,12 +70,3 @@ export class UserResponse {
   @Field(() => User, { nullable: true })
   user?: User
 }
-
-@ObjectType()
-export class ValidationResponse {
-  @Field(() => [ErrorResponse], { nullable: true })
-  errors?: ErrorResponse[]
-
-  @Field(() => Boolean, { nullable: true })
-  passesValidation!: boolean
-}

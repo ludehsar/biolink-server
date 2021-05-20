@@ -11,15 +11,12 @@ import {
   registerUser,
   sendEmailForVerification,
   sendForgotPasswordVerificationEmail,
-  validateUserRegistration,
   verifyEmailByActivationCode,
   verifyForgotPassword,
 } from '../../controllers/user.controller'
 import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import CurrentUser from '../../decorators/currentUser'
-import { NewBiolinkInput } from '../../typeDefs/biolink.typeDef'
 import {
-  ValidationResponse,
   RegisterInput,
   UserResponse,
   LoginInput,
@@ -35,14 +32,6 @@ export class UserResolver {
     return user
   }
 
-  @Query(() => ValidationResponse, { nullable: true })
-  async userRegistrationValidationCheck(
-    @Arg('userOptions') userOptions: RegisterInput,
-    @Arg('biolinkOptions') biolinkOptions: NewBiolinkInput
-  ): Promise<ValidationResponse> {
-    return await validateUserRegistration(userOptions, biolinkOptions)
-  }
-
   @Mutation(() => UserResponse)
   async registerUser(
     @Arg('options') options: RegisterInput,
@@ -52,7 +41,7 @@ export class UserResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async sendEmailVerification(
+  async sendEmailForVerification(
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
@@ -60,7 +49,7 @@ export class UserResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async verifyUserEmail(
+  async verifyUserEmailByActivationCode(
     @Arg('emailActivationCode') emailActivationCode: string,
     @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
@@ -77,10 +66,10 @@ export class UserResolver {
 
   @Mutation(() => BooleanResponse)
   async sendForgotPasswordEmail(
-    @Arg('email') email: string,
+    @Arg('options') options: EmailInput,
     @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
-    return await sendForgotPasswordVerificationEmail(email, context)
+    return await sendForgotPasswordVerificationEmail(options, context)
   }
 
   @Mutation(() => BooleanResponse)
@@ -89,7 +78,7 @@ export class UserResolver {
     @Arg('forgotPasswordCode') forgotPasswordCode: string,
     @Ctx() context: MyContext
   ): Promise<BooleanResponse> {
-    return await verifyForgotPassword(options.email, options.password, forgotPasswordCode, context)
+    return await verifyForgotPassword(options, forgotPasswordCode, context)
   }
 
   @Mutation(() => BooleanResponse)
@@ -98,7 +87,7 @@ export class UserResolver {
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
-    return await changeUserEmail(options.email, user, context)
+    return await changeUserEmail(options, user, context)
   }
 
   @Mutation(() => BooleanResponse)
@@ -106,7 +95,7 @@ export class UserResolver {
     @Arg('options') options: ChangePasswordInput,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
-    return await changeUserPassword(options.oldPassword, options.newPassword, user)
+    return await changeUserPassword(options, user)
   }
 
   @Mutation(() => BooleanResponse)
@@ -115,7 +104,7 @@ export class UserResolver {
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
-    return await deleteUserAccount(options.password, user, context)
+    return await deleteUserAccount(options, user, context)
   }
 
   @Mutation(() => BooleanResponse)

@@ -19,32 +19,32 @@ import { captureUserActivity } from './logs.controller'
 import { NewBiolinkInput } from '../typeDefs/biolink.typeDef'
 import {
   RegisterInput,
-  ValidationResponse,
   UserResponse,
   LoginInput,
+  EmailInput,
+  ChangePasswordInput,
+  PasswordInput,
 } from '../typeDefs/user.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
   biolinkOptions: NewBiolinkInput
-): Promise<ValidationResponse> => {
+): Promise<BooleanResponse> => {
   const userInputValidationReport = await userInputValidation(userOptions)
-  if (!userInputValidationReport.passesValidation) {
+  if (!userInputValidationReport.executed) {
     return userInputValidationReport
   }
 
   const biolinkInputValidationReport = await newBiolinkValidation(biolinkOptions)
-  if (!biolinkInputValidationReport.passesValidation) {
+  if (!biolinkInputValidationReport.executed) {
     return biolinkInputValidationReport
   }
 
-  return { passesValidation: true }
+  return { executed: true }
 }
 
-export const userInputValidation = async (
-  userOptions: RegisterInput
-): Promise<ValidationResponse> => {
+export const userInputValidation = async (userOptions: RegisterInput): Promise<BooleanResponse> => {
   // TODO: If new user registration is not enabled
 
   // Validate input
@@ -57,7 +57,7 @@ export const userInputValidation = async (
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -75,7 +75,7 @@ export const userInputValidation = async (
           message: 'Cannot create new account.',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
@@ -90,12 +90,12 @@ export const userInputValidation = async (
           message: 'User with this email address already exists.',
         },
       ],
-      passesValidation: false,
+      executed: false,
     }
   }
 
   return {
-    passesValidation: true,
+    executed: true,
   }
 }
 
@@ -106,7 +106,7 @@ export const registerUser = async (
   // Validating user input
   const userInputValidationReport = await userInputValidation(userOptions)
 
-  if (!userInputValidationReport.passesValidation) {
+  if (!userInputValidationReport.executed) {
     return {
       errors: userInputValidationReport.errors,
     }
@@ -242,10 +242,24 @@ export const verifyEmailByActivationCode = async (
 }
 
 export const sendForgotPasswordVerificationEmail = async (
-  email: string,
+  options: EmailInput,
   context: MyContext
 ): Promise<BooleanResponse> => {
-  const user = await User.findOne({ where: { email } })
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+      executed: false,
+    }
+  }
+
+  const user = await User.findOne({ where: { email: options.email } })
 
   if (!user) {
     return {
@@ -296,12 +310,25 @@ export const sendForgotPasswordVerificationEmail = async (
 }
 
 export const verifyForgotPassword = async (
-  email: string,
-  password: string,
+  options: LoginInput,
   forgotPasswordCode: string,
   context: MyContext
 ): Promise<BooleanResponse> => {
-  const user = await User.findOne({ where: { email } })
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+      executed: false,
+    }
+  }
+
+  const user = await User.findOne({ where: { email: options.email } })
 
   if (!user) {
     return {
@@ -344,7 +371,7 @@ export const verifyForgotPassword = async (
   // Saving user password and resetting forgotPasswordCode
   const newForgotPasswordCode = randToken.generate(160)
 
-  user.encryptedPassword = await argon2.hash(password)
+  user.encryptedPassword = await argon2.hash(options.password)
   user.forgotPasswordCode = await argon2.hash(newForgotPasswordCode)
   await user.save()
 
@@ -441,10 +468,24 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Boolea
 }
 
 export const changeUserEmail = async (
-  newEmail: string,
+  options: EmailInput,
   user: User,
   context: MyContext
 ): Promise<BooleanResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+      executed: false,
+    }
+  }
+
   if (!user) {
     return {
       errors: [
@@ -457,7 +498,7 @@ export const changeUserEmail = async (
     }
   }
 
-  const otherUser = await User.findOne({ where: { email: newEmail } })
+  const otherUser = await User.findOne({ where: { email: options.email } })
 
   if (otherUser && otherUser.id !== user.id) {
     return {
@@ -471,8 +512,8 @@ export const changeUserEmail = async (
     }
   }
 
-  user.email = newEmail
-  user.emailVerifiedAt = undefined
+  user.email = options.email
+  user.emailVerifiedAt = null
 
   sendEmailForVerification(user, context)
 
@@ -484,10 +525,23 @@ export const changeUserEmail = async (
 }
 
 export const changeUserPassword = async (
-  oldPassword: string,
-  newPassword: string,
+  options: ChangePasswordInput,
   user: User
 ): Promise<BooleanResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+      executed: false,
+    }
+  }
+
   if (!user) {
     return {
       errors: [
@@ -500,7 +554,7 @@ export const changeUserPassword = async (
     }
   }
 
-  const isVerified = await argon2.verify(user.encryptedPassword, oldPassword)
+  const isVerified = await argon2.verify(user.encryptedPassword, options.oldPassword)
 
   if (!isVerified) {
     return {
@@ -514,7 +568,7 @@ export const changeUserPassword = async (
     }
   }
 
-  const encryptedPassword = await argon2.hash(newPassword)
+  const encryptedPassword = await argon2.hash(options.newPassword)
 
   user.encryptedPassword = encryptedPassword
 
@@ -526,10 +580,24 @@ export const changeUserPassword = async (
 }
 
 export const deleteUserAccount = async (
-  password: string,
+  options: PasswordInput,
   user: User,
   context: MyContext
 ): Promise<BooleanResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+      executed: false,
+    }
+  }
+
   if (!user) {
     return {
       errors: [
@@ -542,7 +610,7 @@ export const deleteUserAccount = async (
     }
   }
 
-  const isVerified = await argon2.verify(user.encryptedPassword, password)
+  const isVerified = await argon2.verify(user.encryptedPassword, options.password)
 
   if (!isVerified) {
     return {

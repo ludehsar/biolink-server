@@ -70,7 +70,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async deleteBiolink(
+  async deleteBiolinkByUsername(
     @Arg('username') username: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
