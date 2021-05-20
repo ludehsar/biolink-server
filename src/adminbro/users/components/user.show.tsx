@@ -131,7 +131,9 @@ const Show: React.FC<BasePropertyComponentProps> = (props) => {
           <Container display="flex" mt={30} flexGrow={1} justifyContent="flex-end">
             <Link
               href={
-                'http://localhost:4000/admin/resources/UserLogs?page=1&filters.userId=' + record?.id
+                window.location.origin +
+                '/admin/resources/UserLogs?page=1&filters.userId=' +
+                record?.id
               }
             >
               Show More
