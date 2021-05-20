@@ -292,59 +292,6 @@ export const getAllDirectories = async (
   categoryId: number,
   options: ConnectionArgs
 ): Promise<BiolinkConnection> => {
-  // Getting pageinfo
-  const firstBiolink = await getRepository(Biolink)
-    .createQueryBuilder('biolink')
-    .leftJoinAndSelect('biolink.category', 'category')
-    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
-    .andWhere(
-      new Brackets((qb) => {
-        qb.where(`LOWER(biolink.username) like :query`, {
-          query: `%${options.query.toLowerCase()}%`,
-        })
-          .orWhere(`LOWER(biolink.displayName) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(biolink.location) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(biolink.bio) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(category.categoryName) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-      })
-    )
-    .orderBy('biolink.createdAt', 'ASC')
-    .getOne()
-
-  const lastBiolink = await getRepository(Biolink)
-    .createQueryBuilder('biolink')
-    .leftJoinAndSelect('biolink.category', 'category')
-    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
-    .andWhere(
-      new Brackets((qb) => {
-        qb.where(`LOWER(biolink.username) like :query`, {
-          query: `%${options.query.toLowerCase()}%`,
-        })
-          .orWhere(`LOWER(biolink.displayName) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(biolink.location) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(biolink.bio) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-          .orWhere(`LOWER(category.categoryName) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-      })
-    )
-    .orderBy('biolink.createdAt', 'DESC')
-    .getOne()
-
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()
@@ -395,7 +342,7 @@ export const getAllDirectories = async (
     qb.andWhere('biolink.createdAt > :after', { after })
   }
 
-  qb.leftJoinAndSelect('biolink.user', 'user')
+  qb.leftJoinAndSelect('biolink.user', 'user').orderBy('biolink.createdAt', 'ASC')
 
   if (options.first) {
     qb.limit(options.first)
@@ -403,10 +350,12 @@ export const getAllDirectories = async (
 
   const biolinks = await qb.getMany()
 
+  const firstBiolink = biolinks[0]
+  const lastBiolink = biolinks[biolinks.length - 1]
+
   // Checking if previous page and next page is present
-  const dates = biolinks.map((c) => moment(c.createdAt))
-  const minDate = moment.min(dates).format('YYYY-MM-DD HH:mm:ss')
-  const maxDate = moment.max(dates).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
+  const minDate = moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment(lastBiolink?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
   connection.edges = biolinks.map((biolink) => ({
     node: biolink,

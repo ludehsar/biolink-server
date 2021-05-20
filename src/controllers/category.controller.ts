@@ -6,23 +6,6 @@ import { Category } from '../models/entities/Category'
 import { CategoryConnection } from '../typeDefs/category.typeDef'
 
 export const getAllCateogories = async (options: ConnectionArgs): Promise<CategoryConnection> => {
-  // Getting pageinfo
-  const firstCategory = await getRepository(Category)
-    .createQueryBuilder('category')
-    .where(`LOWER(category.categoryName) like :query`, {
-      query: `%${options.query.toLowerCase()}%`,
-    })
-    .orderBy('category.createdAt', 'ASC')
-    .getOne()
-
-  const lastCategory = await getRepository(Category)
-    .createQueryBuilder('category')
-    .where(`LOWER(category.categoryName) like :query`, {
-      query: `%${options.query.toLowerCase()}%`,
-    })
-    .orderBy('category.createdAt', 'DESC')
-    .getOne()
-
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()
@@ -48,7 +31,7 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
     qb.andWhere('category.createdAt > :after', { after })
   }
 
-  qb.orderBy('category.categoryName', 'ASC')
+  qb.orderBy('category.createdAt', 'ASC')
 
   if (options.first) {
     qb.limit(options.first)
@@ -56,10 +39,12 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   const categories = await qb.getMany()
 
+  const firstCategory = categories[0]
+  const lastCategory = categories[categories.length - 1]
+
   // Checking if previous page and next page is present
-  const dates = categories.map((c) => moment(c.createdAt))
-  const minDate = moment.min(dates).format('YYYY-MM-DD HH:mm:ss')
-  const maxDate = moment.max(dates).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
+  const minDate = moment(firstCategory?.createdAt).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment(lastCategory?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
   const previousCategories = await getRepository(Category)
     .createQueryBuilder('category')
