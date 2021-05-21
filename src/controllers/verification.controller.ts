@@ -102,9 +102,7 @@ export const createVerification = async (
 
   const errors: ErrorResponse[] = []
 
-  const photoIdUrl =
-    __dirname +
-    `../../assets/photoIds/${randToken.generate(20)}-${Date.now().toLocaleString()}.${photoIdExt}`
+  const photoIdUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${photoIdExt}`
 
   photoIdCreateReadStream()
     .pipe(createWriteStream(__dirname + `../../assets/photoIds/${photoIdUrl}`))
@@ -143,7 +141,7 @@ export const createVerification = async (
   )}-${Date.now().toLocaleString()}.${otherDocumentsExt}`
 
   otherDocumentsCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/business-documents/${otherDocumentsUrl}`))
+    .pipe(createWriteStream(__dirname + `../../assets/other-documents/${otherDocumentsUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,

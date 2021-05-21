@@ -2,6 +2,7 @@ import { validate } from 'class-validator'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
 import * as argon2 from 'argon2'
+import randToken from 'rand-token'
 
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
@@ -9,7 +10,7 @@ import { Category } from '../models/entities/Category'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
+import { BooleanResponse, ErrorResponse, FileType } from '../typeDefs/common.typeDef'
 import { trackBiolink } from './analytics.controller'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.controller'
@@ -32,6 +33,7 @@ import {
 } from '../typeDefs/biolink.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
 import { Link } from '../models/entities/Link'
+import { createWriteStream } from 'fs'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -253,6 +255,130 @@ export const updateBiolinkFromUsername = async (
   await biolink.reload()
 
   await captureUserActivity(user, context, `Updated ${biolink.username} biolink details`)
+
+  return { biolink }
+}
+
+export const uploadBiolinkProfilePhoto = async (
+  user: User,
+  username: string,
+  profilePhoto: FileType,
+  context: MyContext
+): Promise<BiolinkResponse> => {
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const { createReadStream, filename } = profilePhoto
+
+  const profilePhotoExt = filename.split('.').pop()
+
+  const errors: ErrorResponse[] = []
+
+  const profilePhotoUrl = `${randToken.generate(
+    20
+  )}-${Date.now().toLocaleString()}.${profilePhotoExt}`
+
+  createReadStream()
+    .pipe(createWriteStream(__dirname + `../../assets/profilePhotos/${profilePhotoUrl}`))
+    .on('error', () => {
+      errors.push({
+        errorCode: ErrorCode.UPLOAD_ERROR,
+        message: 'Unable to upload profile photo',
+      })
+    })
+
+  if (errors.length > 0) {
+    return {
+      errors,
+    }
+  }
+
+  biolink.profilePhotoUrl = profilePhotoUrl
+  await biolink.save()
+
+  await captureUserActivity(user, context, `Uploaded ${biolink.username} profile photo`)
+
+  return { biolink }
+}
+
+export const uploadBiolinkCoverPhoto = async (
+  user: User,
+  username: string,
+  coverPhoto: FileType,
+  context: MyContext
+): Promise<BiolinkResponse> => {
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const { createReadStream, filename } = coverPhoto
+
+  const coverPhotoExt = filename.split('.').pop()
+
+  const errors: ErrorResponse[] = []
+
+  const coverPhotoUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${coverPhotoExt}`
+
+  createReadStream()
+    .pipe(createWriteStream(__dirname + `../../assets/profilePhotos/${coverPhotoUrl}`))
+    .on('error', () => {
+      errors.push({
+        errorCode: ErrorCode.UPLOAD_ERROR,
+        message: 'Unable to upload profile photo',
+      })
+    })
+
+  if (errors.length > 0) {
+    return {
+      errors,
+    }
+  }
+
+  biolink.coverPhotoUrl = coverPhotoUrl
+  await biolink.save()
+
+  await captureUserActivity(user, context, `Uploaded ${biolink.username} cover photo`)
 
   return { biolink }
 }
