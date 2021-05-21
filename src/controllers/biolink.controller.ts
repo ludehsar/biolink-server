@@ -1,6 +1,7 @@
 import { validate } from 'class-validator'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
+import * as argon2 from 'argon2'
 
 import { User } from '../models/entities/User'
 import { Biolink } from '../models/entities/Biolink'
@@ -8,7 +9,7 @@ import { Category } from '../models/entities/Category'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse } from '../typeDefs/common.typeDef'
+import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
 import { trackBiolink } from './analytics.controller'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.controller'
@@ -17,10 +18,20 @@ import {
   NewBiolinkInput,
   BiolinkResponse,
   UpdateBiolinkProfileInput,
-  UpdateBiolinkSettingsInput,
   BiolinkConnection,
+  ContactButtonInput,
+  DarkModeInput,
+  SocialAccountsInput,
+  IntegrationInput,
+  UTMParameterInput,
+  SEOInput,
+  BrandingInput,
+  PrivacyInput,
+  DirectoryInput,
+  SortedLinksInput,
 } from '../typeDefs/biolink.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
+import { Link } from '../models/entities/Link'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -246,12 +257,25 @@ export const updateBiolinkFromUsername = async (
   return { biolink }
 }
 
-export const updateBiolinkSettingsFromUsername = async (
-  user: User,
+export const updateDarkModeOptions = async (
   username: string,
-  options: UpdateBiolinkSettingsInput,
-  context: MyContext
+  options: DarkModeInput,
+  context: MyContext,
+  user: User
 ): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   const biolink = await Biolink.findOne({ where: { username } })
 
   if (!biolink) {
@@ -265,7 +289,7 @@ export const updateBiolinkSettingsFromUsername = async (
     }
   }
 
-  if (biolink.userId !== user.id) {
+  if (!user || biolink.userId !== user.id) {
     return {
       errors: [
         {
@@ -276,14 +300,599 @@ export const updateBiolinkSettingsFromUsername = async (
     }
   }
 
-  // TODO: Configure settings according to user plans
-  await Biolink.update(biolink.id, {
-    settings: options,
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enableDarkMode = options.enableDarkMode || false
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated dark mode settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateContactButtonSettings = async (
+  username: string,
+  options: ContactButtonInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enableColoredContactButtons = options.enableColoredContactButtons || false
+  biolinkSettings.showEmail = options.showEmail || false
+  biolinkSettings.showPhone = options.showPhone || false
+  biolinkSettings.email = options.email || ''
+  biolinkSettings.phone = options.phone || ''
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated contact button settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateSocialAccountsSettings = async (
+  username: string,
+  options: SocialAccountsInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enableColoredSocialMediaIcons = options.enableColoredSocialMediaIcons || false
+  biolinkSettings.socialAccounts =
+    options.socialAccounts?.map((option) => ({
+      link: option.link || '#',
+      platform: option.platform || 'Unknown',
+    })) || []
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated social buttons settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateIntegrationSettings = async (
+  username: string,
+  options: IntegrationInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enableFacebookPixel = options.enableFacebookPixel || false
+  biolinkSettings.enableGoogleAnalytics = options.enableGoogleAnalytics || false
+  biolinkSettings.facebookPixelId = options.facebookPixelId || ''
+  biolinkSettings.googleAnalyticsCode = options.googleAnalyticsCode || ''
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated integration settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateUTMParameterSettings = async (
+  username: string,
+  options: UTMParameterInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enableUtmParameters = options.enableUtmParameters || false
+  biolinkSettings.utmCampaign = options.utmCampaign || ''
+  biolinkSettings.utmMedium = options.utmMedium || ''
+  biolinkSettings.utmSource = options.utmSource || ''
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated utm parameter settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateSEOSettings = async (
+  username: string,
+  options: SEOInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.blockSearchEngineIndexing = options.blockSearchEngineIndexing || false
+  biolinkSettings.pageTitle = options.pageTitle || ''
+  biolinkSettings.metaDescription = options.metaDescription || ''
+  biolinkSettings.opengraphImageUrl = options.opengraphImageUrl || '' // TODO: Image upload
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(user, context, `Updated seo settings of biolink: ${biolink.username}`)
+
+  return { biolink }
+}
+
+export const updateBrandingSettings = async (
+  username: string,
+  options: BrandingInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.removeDefaultBranding = options.removeDefaultBranding || false
+  biolinkSettings.enableCustomBranding = options.enableCustomBranding || false
+  biolinkSettings.customBrandingName = options.customBrandingName || ''
+  biolinkSettings.customBrandingUrl = options.customBrandingUrl || ''
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(user, context, `Updated brand settings of biolink: ${biolink.username}`)
+
+  return { biolink }
+}
+
+export const updatePrivacySettings = async (
+  username: string,
+  options: PrivacyInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.enablePasswordProtection = options.enablePasswordProtection || false
+  biolinkSettings.enableSensitiveContentWarning = options.enableSensitiveContentWarning || false
+  biolinkSettings.password = await argon2.hash(options.password || '')
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated privacy settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const updateDirectorySettings = async (
+  username: string,
+  options: DirectoryInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  // TODO: change according to plan
+  biolinkSettings.addedToDirectory = options.addedToDirectory || false
+  biolinkSettings.directoryBio = options.directoryBio || ''
+
+  biolink.settings = biolinkSettings
+  await biolink.save()
+
+  await captureUserActivity(
+    user,
+    context,
+    `Updated directory settings of biolink: ${biolink.username}`
+  )
+
+  return { biolink }
+}
+
+export const sortBiolinkLinks = async (
+  username: string,
+  options: SortedLinksInput,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  // Validate input
+  const validationErrors = await validate(options)
+
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink not found',
+        },
+      ],
+    }
+  }
+
+  if (!user || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const errors: ErrorResponse[] = []
+
+  options.shortenedLinks?.map(async (shortendLink, id) => {
+    const link = await Link.findOne({
+      where: {
+        shortenedUrl: shortendLink,
+      },
+    })
+
+    if (!link) {
+      errors.push({
+        errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
+        message: 'Link with this shortened url could not be found',
+      })
+    }
+
+    if (!user || link?.userId !== user.id) {
+      errors.push({
+        errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+        message: 'The user is not authorized',
+      })
+    }
+
+    if (link?.biolinkId !== biolink.id) {
+      errors.push({
+        errorCode: ErrorCode.DATABASE_ERROR,
+        message: 'The link is not of this biolink',
+      })
+    }
+
+    if (errors.length <= 0) {
+      ;(link as Link).order = id
+      await (link as Link).save()
+    }
   })
 
-  await biolink.reload()
-
-  await captureUserActivity(user, context, `Updated ${biolink.username} biolink settings`)
+  await captureUserActivity(user, context, `Sorted links of biolink: ${biolink.username}`)
 
   return { biolink }
 }

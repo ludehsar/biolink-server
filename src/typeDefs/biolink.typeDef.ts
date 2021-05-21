@@ -7,6 +7,7 @@ import {
   IsBoolean,
   IsEmail,
   IsPhoneNumber,
+  IsArray,
 } from 'class-validator'
 
 import { Biolink } from '../models/entities/Biolink'
@@ -51,11 +52,14 @@ export class UpdateBiolinkProfileInput {
 }
 
 @InputType()
-export class UpdateBiolinkSettingsInput {
+export class DarkModeInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableDarkMode?: boolean
+}
 
+@InputType()
+export class ContactButtonInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   showEmail?: boolean
@@ -75,18 +79,20 @@ export class UpdateBiolinkSettingsInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableColoredContactButtons?: boolean
+}
 
-  @Field({ nullable: true, defaultValue: false })
-  @IsBoolean()
-  addedToDirectory?: boolean
-
+@InputType()
+export class SocialAccountsInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableColoredSocialMediaIcons?: boolean
 
   @Field(() => [SingleSocialAccount], { nullable: true, defaultValue: [] })
   socialAccounts?: SingleSocialAccount[]
+}
 
+@InputType()
+export class IntegrationInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableFacebookPixel?: boolean
@@ -100,7 +106,10 @@ export class UpdateBiolinkSettingsInput {
 
   @Field({ nullable: true })
   googleAnalyticsCode?: string
+}
 
+@InputType()
+export class UTMParameterInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableUtmParameters?: boolean
@@ -113,7 +122,10 @@ export class UpdateBiolinkSettingsInput {
 
   @Field({ nullable: true })
   utmCampaign?: string
+}
 
+@InputType()
+export class SEOInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   blockSearchEngineIndexing?: boolean
@@ -126,7 +138,10 @@ export class UpdateBiolinkSettingsInput {
 
   @Field({ nullable: true })
   opengraphImageUrl?: string
+}
 
+@InputType()
+export class BrandingInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   removeDefaultBranding?: boolean
@@ -141,7 +156,10 @@ export class UpdateBiolinkSettingsInput {
   @Field({ nullable: true })
   @IsUrl()
   customBrandingUrl?: string
+}
 
+@InputType()
+export class PrivacyInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enablePasswordProtection?: boolean
@@ -152,6 +170,23 @@ export class UpdateBiolinkSettingsInput {
   @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
   enableSensitiveContentWarning?: boolean
+}
+
+@InputType()
+export class DirectoryInput {
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  addedToDirectory?: boolean
+
+  @Field({ nullable: true })
+  directoryBio?: string
+}
+
+@InputType()
+export class SortedLinksInput {
+  @Field(() => [String], { defaultValue: [] })
+  @IsArray()
+  shortenedLinks?: string[]
 }
 
 @ObjectType()

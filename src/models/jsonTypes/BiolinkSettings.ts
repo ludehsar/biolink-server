@@ -31,8 +31,12 @@ export class BiolinkSettings {
   @Field(() => Boolean, { nullable: true })
   enableColoredContactButtons!: boolean
 
+  // ----- Directory Settings ----- //
   @Field(() => Boolean, { nullable: true })
   addedToDirectory!: boolean
+
+  @Field(() => String, { nullable: true })
+  directoryBio!: string
 
   // ----- Social Media Icons ----- //
   @Field(() => Boolean, { nullable: true })

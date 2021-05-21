@@ -8,8 +8,17 @@ import {
   getAllDirectories,
   getBiolinkFromUsername,
   removeBiolinkByUsername,
+  sortBiolinkLinks,
   updateBiolinkFromUsername,
-  updateBiolinkSettingsFromUsername,
+  updateBrandingSettings,
+  updateContactButtonSettings,
+  updateDarkModeOptions,
+  updateDirectorySettings,
+  updateIntegrationSettings,
+  updatePrivacySettings,
+  updateSEOSettings,
+  updateSocialAccountsSettings,
+  updateUTMParameterSettings,
 } from '../../controllers/biolink.controller'
 import { MyContext } from 'MyContext'
 import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
@@ -17,8 +26,17 @@ import {
   BiolinkResponse,
   NewBiolinkInput,
   UpdateBiolinkProfileInput,
-  UpdateBiolinkSettingsInput,
   BiolinkConnection,
+  ContactButtonInput,
+  DarkModeInput,
+  SocialAccountsInput,
+  IntegrationInput,
+  UTMParameterInput,
+  SEOInput,
+  BrandingInput,
+  PrivacyInput,
+  DirectoryInput,
+  SortedLinksInput,
 } from '../../typeDefs/biolink.typeDef'
 
 @Resolver()
@@ -52,13 +70,103 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateBiolinkSettingsFromUsername(
+  async updateDarkModeOptionsByBiolinkUsername(
     @Arg('username') username: string,
-    @Arg('options') options: UpdateBiolinkSettingsInput,
+    @Arg('options') options: DarkModeInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateBiolinkSettingsFromUsername(user, username, options, context)
+    return await updateDarkModeOptions(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateContactButtonSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: ContactButtonInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateContactButtonSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateSocialAccountsSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: SocialAccountsInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateSocialAccountsSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateIntegrationSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: IntegrationInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateIntegrationSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateUTMParameterSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: UTMParameterInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateUTMParameterSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateSEOSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: SEOInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateSEOSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateBrandingSettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: BrandingInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateBrandingSettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updatePrivacySettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: PrivacyInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updatePrivacySettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateDirectorySettingsByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: DirectoryInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateDirectorySettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async sortBiolinkLinksByBiolinkUsername(
+    @Arg('username') username: string,
+    @Arg('options') options: SortedLinksInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await sortBiolinkLinks(username, options, context, user)
   }
 
   @Query(() => BiolinkConnection, { nullable: true })
