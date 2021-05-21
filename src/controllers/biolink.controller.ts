@@ -361,7 +361,7 @@ export const uploadBiolinkCoverPhoto = async (
   const coverPhotoUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${coverPhotoExt}`
 
   createReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/profilePhotos/${coverPhotoUrl}`))
+    .pipe(createWriteStream(__dirname + `../../assets/coverPhotos/${coverPhotoUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
