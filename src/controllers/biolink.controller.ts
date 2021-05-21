@@ -930,7 +930,7 @@ export const getAllDirectories = async (
           .orWhere(`LOWER(biolink.location) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.bio) like :query`, {
+          .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(category.categoryName) like :query`, {
@@ -986,7 +986,7 @@ export const getAllDirectories = async (
           .orWhere(`LOWER(biolink.location) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.bio) like :query`, {
+          .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(category.categoryName) like :query`, {
@@ -1012,7 +1012,7 @@ export const getAllDirectories = async (
           .orWhere(`LOWER(biolink.location) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.bio) like :query`, {
+          .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(category.categoryName) like :query`, {
