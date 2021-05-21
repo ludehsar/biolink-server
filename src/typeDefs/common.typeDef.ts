@@ -1,4 +1,3 @@
-import { Stream } from 'stream'
 import { ObjectType, Field, InputType, Int } from 'type-graphql'
 
 @ObjectType()
@@ -32,7 +31,4 @@ export class FileType {
 
   @Field()
   encoding!: string
-
-  @Field(() => Stream)
-  createReadStream!: () => Stream
 }

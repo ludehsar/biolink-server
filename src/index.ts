@@ -8,6 +8,7 @@ import { createConnection } from 'typeorm'
 import { Database, Resource } from '@admin-bro/typeorm'
 import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
+import { graphqlUploadExpress } from 'graphql-upload'
 
 import { port } from './config/app.config'
 import corsOptions from './config/cors.config'
@@ -65,10 +66,13 @@ const main = async (): Promise<void> => {
       ],
       validate: false,
     }),
+    uploads: false,
     context: ({ req, res }): MyContext => ({ req, res }),
     playground: true, // TODO: disable playground in production
     introspection: true, // TODO: disable introspection in production
   })
+
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 
   apolloServer.applyMiddleware({
     app,

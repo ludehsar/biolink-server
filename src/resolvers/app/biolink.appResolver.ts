@@ -19,6 +19,8 @@ import {
   updateSEOSettings,
   updateSocialAccountsSettings,
   updateUTMParameterSettings,
+  uploadBiolinkCoverPhoto,
+  uploadBiolinkProfilePhoto,
 } from '../../controllers/biolink.controller'
 import { MyContext } from 'MyContext'
 import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
@@ -38,6 +40,7 @@ import {
   DirectoryInput,
   SortedLinksInput,
 } from '../../typeDefs/biolink.typeDef'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 
 @Resolver()
 export class BiolinkResolver {
@@ -147,6 +150,26 @@ export class BiolinkResolver {
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
     return await updatePrivacySettings(username, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async uploadBiolinkProfilePhoto(
+    @Arg('username') username: string,
+    @Arg('profilePhoto', () => GraphQLUpload) profilePhoto: FileUpload,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await uploadBiolinkProfilePhoto(username, profilePhoto, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async uploadBiolinkCoverPhoto(
+    @Arg('username') username: string,
+    @Arg('coverPhoto', () => GraphQLUpload) coverPhoto: FileUpload,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await uploadBiolinkCoverPhoto(username, coverPhoto, context, user)
   }
 
   @Mutation(() => BiolinkResponse)

@@ -1,9 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
-import { GraphQLUpload } from 'apollo-server-express'
-import { GraphQLScalarType } from 'graphql'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
-
-import { FileType } from './common.typeDef'
 
 @InputType()
 export class VerificationInput {
@@ -47,17 +44,17 @@ export class VerificationInput {
   @IsNotEmpty()
   linkedinAccount!: string
 
-  @Field(() => GraphQLUpload as GraphQLScalarType, { nullable: true })
+  @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  photoId!: FileType
+  photoId!: FileUpload
 
-  @Field(() => GraphQLUpload as GraphQLScalarType, { nullable: true })
+  @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  businessDocument!: FileType
+  businessDocument!: FileUpload
 
-  @Field(() => GraphQLUpload as GraphQLScalarType, { nullable: true })
+  @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  otherDocuments!: FileType
+  otherDocuments!: FileUpload
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()

@@ -1,3 +1,5 @@
+import { createWriteStream } from 'fs'
+import { FileUpload } from 'graphql-upload'
 import { validate } from 'class-validator'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
@@ -10,7 +12,7 @@ import { Category } from '../models/entities/Category'
 import { PremiumUsername } from '../models/entities/PremiumUsername'
 import { BlackList } from '../models/entities/BlackList'
 import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse, ErrorResponse, FileType } from '../typeDefs/common.typeDef'
+import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
 import { trackBiolink } from './analytics.controller'
 import { MyContext } from '../MyContext'
 import { captureUserActivity } from './logs.controller'
@@ -33,7 +35,6 @@ import {
 } from '../typeDefs/biolink.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
 import { Link } from '../models/entities/Link'
-import { createWriteStream } from 'fs'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -260,10 +261,10 @@ export const updateBiolinkFromUsername = async (
 }
 
 export const uploadBiolinkProfilePhoto = async (
-  user: User,
   username: string,
-  profilePhoto: FileType,
-  context: MyContext
+  profilePhoto: FileUpload,
+  context: MyContext,
+  user: User
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
@@ -323,10 +324,10 @@ export const uploadBiolinkProfilePhoto = async (
 }
 
 export const uploadBiolinkCoverPhoto = async (
-  user: User,
   username: string,
-  coverPhoto: FileType,
-  context: MyContext
+  coverPhoto: FileUpload,
+  context: MyContext,
+  user: User
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
 
