@@ -24,9 +24,12 @@ import {
   EmailInput,
   ChangePasswordInput,
   PasswordInput,
+  EmailAndUsernameInput,
 } from '../typeDefs/user.typeDef'
 import { ErrorCode } from '../constants/errorCodes'
 import { Code } from '../models/entities/Code'
+import { Biolink } from '../models/entities/Biolink'
+import { PremiumUsername } from '../models/entities/PremiumUsername'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,
@@ -497,14 +500,14 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Boolea
   }
 }
 
-export const changeUserEmail = async (
-  options: EmailInput,
+export const changeUserAccountInfoByUsername = async (
+  options: EmailAndUsernameInput,
+  username: string,
   user: User,
   context: MyContext
 ): Promise<BooleanResponse> => {
   // Validate input
   const validationErrors = await validate(options)
-
   if (validationErrors.length > 0) {
     return {
       errors: validationErrors.map((err) => ({
@@ -528,26 +531,97 @@ export const changeUserEmail = async (
     }
   }
 
-  const otherUser = await User.findOne({ where: { email: options.email } })
+  const biolink = await Biolink.findOne({ where: { username } })
 
-  if (otherUser && otherUser.id !== user.id) {
+  if (!biolink || biolink.userId !== user.id) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
-          message: 'User with this email already exists',
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
         },
       ],
       executed: false,
     }
   }
 
-  user.email = options.email
-  user.emailVerifiedAt = null
+  if (options.email) {
+    const otherUser = await User.findOne({ where: { email: options.email } })
 
-  sendEmailForVerification(user, context)
+    if (otherUser && otherUser.id !== user.id) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
+            message: 'User with this email already exists',
+          },
+        ],
+        executed: false,
+      }
+    }
 
-  await user.save()
+    user.email = options.email
+    user.emailVerifiedAt = null
+
+    sendEmailForVerification(user, context)
+
+    await user.save()
+  }
+
+  if (options.username) {
+    const otherBiolik = await Biolink.findOne({ where: { username: options.username } })
+
+    if (otherBiolik && otherBiolik.id !== biolink.id) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
+            message: 'Biolink with this username already exists',
+          },
+        ],
+        executed: false,
+      }
+    }
+
+    // Checks blacklisted username
+    const blacklisted = await BlackList.findOne({
+      where: { blacklistType: BlacklistType.Username, keyword: options.username },
+    })
+    if (blacklisted) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USERNAME_BLACKLISTED,
+            field: 'username',
+            message: 'Cannot create account with this username.',
+          },
+        ],
+        executed: false,
+      }
+    }
+
+    // Checks premium username which has not yet purchased
+    const premiumUsername = await PremiumUsername.findOne({
+      where: { username: options.username },
+    })
+
+    if (premiumUsername && premiumUsername.ownerId !== null) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
+            field: 'username',
+            message: 'Username has already been taken.',
+          },
+        ],
+        executed: false,
+      }
+    }
+
+    biolink.username = options.username
+
+    await biolink.save()
+  }
 
   return {
     executed: true,

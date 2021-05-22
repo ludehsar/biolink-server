@@ -3,7 +3,7 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User } from '../../models/entities/User'
 import { MyContext } from '../../MyContext'
 import {
-  changeUserEmail,
+  changeUserAccountInfoByUsername,
   changeUserPassword,
   deleteUserAccount,
   loginUser,
@@ -20,9 +20,10 @@ import {
   RegisterInput,
   UserResponse,
   LoginInput,
-  EmailInput,
   ChangePasswordInput,
   PasswordInput,
+  EmailAndUsernameInput,
+  EmailInput,
 } from '../../typeDefs/user.typeDef'
 
 @Resolver()
@@ -83,12 +84,13 @@ export class UserResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async changeUserEmailAddress(
-    @Arg('options') options: EmailInput,
+  async changeUserAccountInfoByUsername(
+    @Arg('options') options: EmailAndUsernameInput,
+    @Arg('username') username: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
-    return await changeUserEmail(options, user, context)
+    return await changeUserAccountInfoByUsername(options, username, user, context)
   }
 
   @Mutation(() => BooleanResponse)

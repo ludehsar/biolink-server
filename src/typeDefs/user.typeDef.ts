@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, MinLength } from 'class-validator'
+import { IsNotEmpty, IsEmail, MinLength, Matches, IsOptional } from 'class-validator'
 import { InputType, Field, ObjectType } from 'type-graphql'
 
 import { User } from '../models/entities/User'
@@ -39,6 +39,19 @@ export class EmailInput {
   @IsNotEmpty()
   @IsEmail()
   email!: string
+}
+
+@InputType()
+export class EmailAndUsernameInput {
+  @Field({ nullable: true })
+  @IsEmail()
+  @IsOptional()
+  email?: string
+
+  @Field({ nullable: true })
+  @Matches('^[a-zA-Z0-9_.]{4,20}$')
+  @IsOptional()
+  username?: string
 }
 
 @InputType()

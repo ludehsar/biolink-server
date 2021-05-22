@@ -5,7 +5,7 @@ export class ErrorResponse {
   @Field(() => Int)
   errorCode!: number
 
-  @Field()
+  @Field({ nullable: true })
   field?: string
 
   @Field()
