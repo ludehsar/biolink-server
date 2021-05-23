@@ -6,7 +6,7 @@ import {
   getAllLinksFromBiolinkUsername,
   getLinkByShortenedUrl,
   removeLinkByShortenedUrl,
-} from '../../controllers/link.controller'
+} from '../../controllers/app/link.controller'
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
 import { MyContext } from '../../MyContext'

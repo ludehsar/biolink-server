@@ -1,16 +1,16 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 
-import { User } from '../models/entities/User'
-import { Biolink } from '../models/entities/Biolink'
-import { Plan } from '../models/entities/Plan'
-import { Verification } from '../models/entities/Verification'
-import { Category } from '../models/entities/Category'
-import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
-import { MyContext } from '../MyContext'
+import { User } from '../../models/entities/User'
+import { Biolink } from '../../models/entities/Biolink'
+import { Plan } from '../../models/entities/Plan'
+import { Verification } from '../../models/entities/Verification'
+import { Category } from '../../models/entities/Category'
+import { BooleanResponse, ErrorResponse } from '../../typeDefs/common.typeDef'
+import { MyContext } from '../../MyContext'
 import { captureUserActivity } from './logs.controller'
-import { VerificationInput } from '../typeDefs/verification.typeDef'
-import { ErrorCode } from '../constants/errorCodes'
+import { VerificationInput } from '../../typeDefs/verification.typeDef'
+import { ErrorCode } from '../../constants/errorCodes'
 
 export const createVerification = async (
   options: VerificationInput,
@@ -105,7 +105,7 @@ export const createVerification = async (
   const photoIdUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${photoIdExt}`
 
   photoIdCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/photoIds/${photoIdUrl}`))
+    .pipe(createWriteStream(__dirname + `../../../assets/photoIds/${photoIdUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -123,7 +123,9 @@ export const createVerification = async (
   )}-${Date.now().toLocaleString()}.${businessDocumentExt}`
 
   businessDocumentCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/business-documents/${businessDocumentUrl}`))
+    .pipe(
+      createWriteStream(__dirname + `../../../assets/business-documents/${businessDocumentUrl}`)
+    )
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -141,7 +143,7 @@ export const createVerification = async (
   )}-${Date.now().toLocaleString()}.${otherDocumentsExt}`
 
   otherDocumentsCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/other-documents/${otherDocumentsUrl}`))
+    .pipe(createWriteStream(__dirname + `../../../assets/other-documents/${otherDocumentsUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,

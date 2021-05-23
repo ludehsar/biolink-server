@@ -1,7 +1,7 @@
 import { Arg, Query, Resolver } from 'type-graphql'
 
 import { CategoryConnection } from '../../typeDefs/category.typeDef'
-import { getAllCateogories } from '../../controllers/category.controller'
+import { getAllCateogories } from '../../controllers/app/category.controller'
 import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
 
 @Resolver()

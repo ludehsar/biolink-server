@@ -1,6 +1,6 @@
 import { Query, Resolver } from 'type-graphql'
 
-import { getAllPlans } from '../../controllers/plan.controller'
+import { getAllPlans } from '../../controllers/app/plan.controller'
 import { PlanResponse } from '../../typeDefs/plan.typeDef'
 
 @Resolver()

@@ -4,19 +4,19 @@ import randToken from 'rand-token'
 import moment from 'moment'
 import { MailDataRequired } from '@sendgrid/mail'
 
-import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../config/cookie.config'
-import { User } from '../models/entities/User'
-import { createAuthTokens } from '../utils/createAuthTokens'
-import { MyContext } from '../MyContext'
+import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../../config/cookie.config'
+import { User } from '../../models/entities/User'
+import { createAuthTokens } from '../../utils/createAuthTokens'
+import { MyContext } from '../../MyContext'
 import { newBiolinkValidation } from './biolink.controller'
-import { BlackList } from '../models/entities/BlackList'
-import { BlacklistType } from '../models/enums/BlacklistType'
+import { BlackList } from '../../models/entities/BlackList'
+import { BlacklistType } from '../../models/enums/BlacklistType'
 import { createReferralCode } from './code.controller'
-import sgMail from '../utils/sendMail'
-import { FRONTEND_APP_URL } from '../config/app.config'
-import { BooleanResponse } from '../typeDefs/common.typeDef'
+import sgMail from '../../utils/sendMail'
+import { FRONTEND_APP_URL } from '../../config/app.config'
+import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import { captureUserActivity } from './logs.controller'
-import { NewBiolinkInput } from '../typeDefs/biolink.typeDef'
+import { NewBiolinkInput } from '../../typeDefs/biolink.typeDef'
 import {
   RegisterInput,
   UserResponse,
@@ -25,11 +25,11 @@ import {
   ChangePasswordInput,
   PasswordInput,
   EmailAndUsernameInput,
-} from '../typeDefs/user.typeDef'
-import { ErrorCode } from '../constants/errorCodes'
-import { Code } from '../models/entities/Code'
-import { Biolink } from '../models/entities/Biolink'
-import { PremiumUsername } from '../models/entities/PremiumUsername'
+} from '../../typeDefs/user.typeDef'
+import { ErrorCode } from '../../constants/errorCodes'
+import { Code } from '../../models/entities/Code'
+import { Biolink } from '../../models/entities/Biolink'
+import { PremiumUsername } from '../../models/entities/PremiumUsername'
 
 export const validateUserRegistration = async (
   userOptions: RegisterInput,

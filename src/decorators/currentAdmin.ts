@@ -7,6 +7,7 @@ import { MyContext } from '../MyContext'
 import { createAuthTokens } from '../utils/createAuthTokens'
 import { refreshTokenSecret, accessTokenSecret } from '../config/app.config'
 import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../config/cookie.config'
+import { AdminRole } from '../models/entities/AdminRole'
 
 interface DataProps {
   userId: string
@@ -27,7 +28,7 @@ const generateNewToken = async (user: User, res: Response): Promise<void> => {
   res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
 }
 
-export default function CurrentUser(): ParameterDecorator {
+export default function CurrentAdmin(): ParameterDecorator {
   return createParamDecorator<MyContext>(async ({ context }): Promise<User | null> => {
     context.userId = null
 
@@ -40,7 +41,14 @@ export default function CurrentUser(): ParameterDecorator {
 
         const user = await User.findOne({ where: { id: data.userId } })
 
-        if (!user) {
+        if (!user || user.adminRoleId === null) {
+          invalidateToken(context.res)
+          return null
+        }
+
+        const adminRole = await AdminRole.findOne(user.adminRoleId)
+
+        if (!adminRole) {
           invalidateToken(context.res)
           return null
         }
@@ -57,7 +65,14 @@ export default function CurrentUser(): ParameterDecorator {
 
         const user = await User.findOne({ where: { id: data.userId, tokenCode: refreshToken } })
 
-        if (!user) {
+        if (!user || user.adminRoleId === null) {
+          invalidateToken(context.res)
+          return null
+        }
+
+        const adminRole = await AdminRole.findOne(user.adminRoleId)
+
+        if (!adminRole) {
           invalidateToken(context.res)
           return null
         }

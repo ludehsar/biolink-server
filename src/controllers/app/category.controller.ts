@@ -1,9 +1,9 @@
 import moment from 'moment'
 import { getRepository } from 'typeorm'
 
-import { ConnectionArgs } from '../typeDefs/relaySpec.typeDef'
-import { Category } from '../models/entities/Category'
-import { CategoryConnection } from '../typeDefs/category.typeDef'
+import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
+import { Category } from '../../models/entities/Category'
+import { CategoryConnection } from '../../typeDefs/category.typeDef'
 
 export const getAllCateogories = async (options: ConnectionArgs): Promise<CategoryConnection> => {
   // Getting before and after cursors from connection args

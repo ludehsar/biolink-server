@@ -3,7 +3,7 @@ import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
 import { BooleanResponse } from '../../typeDefs/common.typeDef'
-import { createVerification } from '../../controllers/verification.controller'
+import { createVerification } from '../../controllers/app/verification.controller'
 import { MyContext } from '../../MyContext'
 import { VerificationInput } from '../../typeDefs/verification.typeDef'
 

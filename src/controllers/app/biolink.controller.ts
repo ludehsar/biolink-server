@@ -6,17 +6,17 @@ import moment from 'moment'
 import * as argon2 from 'argon2'
 import randToken from 'rand-token'
 
-import { User } from '../models/entities/User'
-import { Biolink } from '../models/entities/Biolink'
-import { Category } from '../models/entities/Category'
-import { PremiumUsername } from '../models/entities/PremiumUsername'
-import { BlackList } from '../models/entities/BlackList'
-import { BlacklistType } from '../models/enums/BlacklistType'
-import { BooleanResponse, ErrorResponse } from '../typeDefs/common.typeDef'
+import { User } from '../../models/entities/User'
+import { Biolink } from '../../models/entities/Biolink'
+import { Category } from '../../models/entities/Category'
+import { PremiumUsername } from '../../models/entities/PremiumUsername'
+import { BlackList } from '../../models/entities/BlackList'
+import { BlacklistType } from '../../models/enums/BlacklistType'
+import { BooleanResponse, ErrorResponse } from '../../typeDefs/common.typeDef'
 import { trackBiolink } from './analytics.controller'
-import { MyContext } from '../MyContext'
+import { MyContext } from '../../MyContext'
 import { captureUserActivity } from './logs.controller'
-import { ConnectionArgs } from '../typeDefs/relaySpec.typeDef'
+import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
 import {
   NewBiolinkInput,
   BiolinkResponse,
@@ -32,9 +32,9 @@ import {
   PrivacyInput,
   DirectoryInput,
   SortedLinksInput,
-} from '../typeDefs/biolink.typeDef'
-import { ErrorCode } from '../constants/errorCodes'
-import { Link } from '../models/entities/Link'
+} from '../../typeDefs/biolink.typeDef'
+import { ErrorCode } from '../../constants/errorCodes'
+import { Link } from '../../models/entities/Link'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -301,7 +301,7 @@ export const uploadBiolinkProfilePhoto = async (
   )}-${Date.now().toLocaleString()}.${profilePhotoExt}`
 
   createReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/profilePhotos/${profilePhotoUrl}`))
+    .pipe(createWriteStream(__dirname + `../../../assets/profilePhotos/${profilePhotoUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -362,7 +362,7 @@ export const uploadBiolinkCoverPhoto = async (
   const coverPhotoUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${coverPhotoExt}`
 
   createReadStream()
-    .pipe(createWriteStream(__dirname + `../../assets/coverPhotos/${coverPhotoUrl}`))
+    .pipe(createWriteStream(__dirname + `../../../assets/coverPhotos/${coverPhotoUrl}`))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,

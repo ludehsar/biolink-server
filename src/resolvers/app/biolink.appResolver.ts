@@ -21,7 +21,7 @@ import {
   updateUTMParameterSettings,
   uploadBiolinkCoverPhoto,
   uploadBiolinkProfilePhoto,
-} from '../../controllers/biolink.controller'
+} from '../../controllers/app/biolink.controller'
 import { MyContext } from 'MyContext'
 import { ConnectionArgs } from '../../typeDefs/relaySpec.typeDef'
 import {

@@ -1,6 +1,6 @@
 import { ApiClient } from 'admin-bro'
 import { AxiosResponse } from 'axios'
-import { StatisticsForAdminsProps } from '../../../controllers/analytics.controller'
+import { StatisticsForAdminsProps } from '../../../controllers/app/analytics.controller'
 
 const api = new ApiClient()
 

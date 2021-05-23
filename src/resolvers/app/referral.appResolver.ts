@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
-import { createReferrals, getReferralsList } from '../../controllers/referral.controller'
+import { createReferrals, getReferralsList } from '../../controllers/app/referral.controller'
 import { MyContext } from '../../MyContext'
 import { ReferralResponse, ReferralInput } from '../../typeDefs/referral.typeDef'
 

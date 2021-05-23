@@ -12,7 +12,6 @@ import { graphqlUploadExpress } from 'graphql-upload'
 
 import { port } from './config/app.config'
 import corsOptions from './config/cors.config'
-import { HelloResolver } from './resolvers/app/hello.appResolver'
 import { UserResolver } from './resolvers/app/user.appResolver'
 import adminbroOptions from './adminbro/admin.options'
 import buildAdminRouter from './adminbro/admin.route'
@@ -26,6 +25,7 @@ import { PlanResolver } from './resolvers/app/plan.appResolver'
 import { ReferralResolver } from './resolvers/app/referral.appResolver'
 import { VerificationResolver } from './resolvers/app/verification.appResolver'
 import { AnalyticsResolver } from './resolvers/app/analytics.appResolver'
+import { AuthResolver } from './resolvers/admin/auth.adminResolver'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -49,12 +49,14 @@ const main = async (): Promise<void> => {
   // Stripe router
   app.use('/api/stripe', stripeRoutes)
 
-  // Configuring apollo server
-  const apolloServer = new ApolloServer({
+  // Configure graphql upload express middleware
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
+
+  // Configuring frontend app api
+  const appServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
         AnalyticsResolver,
-        HelloResolver,
         SettingsResolver,
         UserResolver,
         CategoryResolver,
@@ -72,10 +74,25 @@ const main = async (): Promise<void> => {
     introspection: true, // TODO: disable introspection in production
   })
 
-  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
-
-  apolloServer.applyMiddleware({
+  appServer.applyMiddleware({
     app,
+    path: '/graphql',
+    cors: false,
+  })
+
+  // Configuring admin app api
+  const adminServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [AuthResolver],
+      validate: false,
+    }),
+    uploads: false,
+    context: ({ req, res }): MyContext => ({ req, res }),
+  })
+
+  adminServer.applyMiddleware({
+    app,
+    path: '/admin/graphql',
     cors: false,
   })
 

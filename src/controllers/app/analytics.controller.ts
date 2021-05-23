@@ -2,14 +2,14 @@ import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import moment from 'moment'
 
-import { Biolink } from '../models/entities/Biolink'
-import { Link } from '../models/entities/Link'
-import { TrackLink } from '../models/entities/TrackLink'
-import { MyContext } from '../MyContext'
-import { BooleanResponse } from '../typeDefs/common.typeDef'
-import { User } from '../models/entities/User'
-import { AnalyticsResponse } from '../typeDefs/analytics.typeDef'
-import { ErrorCode } from '../constants/errorCodes'
+import { Biolink } from '../../models/entities/Biolink'
+import { Link } from '../../models/entities/Link'
+import { TrackLink } from '../../models/entities/TrackLink'
+import { MyContext } from '../../MyContext'
+import { BooleanResponse } from '../../typeDefs/common.typeDef'
+import { User } from '../../models/entities/User'
+import { AnalyticsResponse } from '../../typeDefs/analytics.typeDef'
+import { ErrorCode } from '../../constants/errorCodes'
 
 export const trackLink = async (link: Link, context: MyContext): Promise<BooleanResponse> => {
   if (!link) {

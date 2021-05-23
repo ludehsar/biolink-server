@@ -3,7 +3,7 @@ import { Arg, Mutation, Resolver } from 'type-graphql'
 
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
-import { getBiolinkTrackingsByBiolinkUsername } from '../../controllers/analytics.controller'
+import { getBiolinkTrackingsByBiolinkUsername } from '../../controllers/app/analytics.controller'
 import { AnalyticsInput, AnalyticsResponse } from '../../typeDefs/analytics.typeDef'
 import { ErrorCode } from '../../constants/errorCodes'
 

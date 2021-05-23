@@ -3,7 +3,7 @@ import { Request } from 'express'
 import {
   getStatisticsForAdmins,
   StatisticsForAdminsProps,
-} from '../../../controllers/analytics.controller'
+} from '../../../controllers/app/analytics.controller'
 
 const statisticsHandler = async (req: Request): Promise<StatisticsForAdminsProps> => {
   const {

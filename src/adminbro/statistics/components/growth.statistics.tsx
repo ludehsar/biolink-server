@@ -6,7 +6,7 @@ import {
   LinkStatisticsForAdminProps,
   StatisticsForAdminsProps,
   UserStatisticsForAdminProps,
-} from '../../../controllers/analytics.controller'
+} from '../../../controllers/app/analytics.controller'
 import SingleStatistics from '../../shared/components/SingleStatistics'
 
 interface GrowthStatisticsProps {

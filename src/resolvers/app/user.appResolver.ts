@@ -13,7 +13,7 @@ import {
   sendForgotPasswordVerificationEmail,
   verifyEmailByActivationCode,
   verifyForgotPassword,
-} from '../../controllers/user.controller'
+} from '../../controllers/app/user.controller'
 import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import CurrentUser from '../../decorators/currentUser'
 import {

@@ -1,17 +1,17 @@
 import { MailDataRequired } from '@sendgrid/mail'
 import { getRepository } from 'typeorm'
 
-import sgMail from '../utils/sendMail'
-import { Referral } from '../models/entities/Referral'
-import { User } from '../models/entities/User'
-import { Code } from '../models/entities/Code'
-import { CodeType } from '../models/enums/CodeType'
+import sgMail from '../../utils/sendMail'
+import { Referral } from '../../models/entities/Referral'
+import { User } from '../../models/entities/User'
+import { Code } from '../../models/entities/Code'
+import { CodeType } from '../../models/enums/CodeType'
 import { createReferralCode } from './code.controller'
-import { FRONTEND_APP_URL } from '../config/app.config'
+import { FRONTEND_APP_URL } from '../../config/app.config'
 import { captureUserActivity } from './logs.controller'
-import { MyContext } from '../MyContext'
-import { ReferralResponse, ReferralInput } from '../typeDefs/referral.typeDef'
-import { ErrorCode } from '../constants/errorCodes'
+import { MyContext } from '../../MyContext'
+import { ReferralResponse, ReferralInput } from '../../typeDefs/referral.typeDef'
+import { ErrorCode } from '../../constants/errorCodes'
 
 export const getReferralsList = async (user: User): Promise<ReferralResponse> => {
   if (!user) {
