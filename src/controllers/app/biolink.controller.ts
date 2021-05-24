@@ -1088,21 +1088,25 @@ export const getAllDirectories = async (
     qb.andWhere('biolink.categoryId = :categoryId', { categoryId })
   }
 
+  qb.leftJoinAndSelect('biolink.user', 'user')
+
   if (before) {
     qb.andWhere('biolink.createdAt < :before', { before })
-  }
-
-  if (after) {
+      .orderBy('biolink.createdAt', 'DESC')
+      .limit(options.first)
+  } else if (after) {
     qb.andWhere('biolink.createdAt > :after', { after })
-  }
-
-  qb.leftJoinAndSelect('biolink.user', 'user').orderBy('biolink.createdAt', 'ASC')
-
-  if (options.first) {
-    qb.limit(options.first)
+      .orderBy('biolink.createdAt', 'ASC')
+      .limit(options.first)
+  } else {
+    qb.orderBy('biolink.createdAt', 'ASC').limit(options.first)
   }
 
   const biolinks = await qb.getMany()
+
+  if (before) {
+    biolinks.reverse()
+  }
 
   const firstBiolink = biolinks[0]
   const lastBiolink = biolinks[biolinks.length - 1]

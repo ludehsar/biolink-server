@@ -25,19 +25,21 @@ export const getAllCateogories = async (options: ConnectionArgs): Promise<Catego
 
   if (before) {
     qb.andWhere('category.createdAt < :before', { before })
-  }
-
-  if (after) {
+      .orderBy('category.createdAt', 'DESC')
+      .limit(options.first)
+  } else if (after) {
     qb.andWhere('category.createdAt > :after', { after })
-  }
-
-  qb.orderBy('category.createdAt', 'ASC')
-
-  if (options.first) {
-    qb.limit(options.first)
+      .orderBy('category.createdAt', 'ASC')
+      .limit(options.first)
+  } else {
+    qb.orderBy('category.categoryName', 'ASC').limit(options.first)
   }
 
   const categories = await qb.getMany()
+
+  if (before) {
+    categories.reverse()
+  }
 
   const firstCategory = categories[0]
   const lastCategory = categories[categories.length - 1]
