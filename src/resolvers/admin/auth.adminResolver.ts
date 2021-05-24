@@ -6,8 +6,8 @@ import { MyContext } from '../../MyContext'
 import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import { UserResponse, LoginInput, EmailInput } from '../../typeDefs/user.typeDef'
 import {
+  logoutUser,
   sendForgotPasswordVerificationEmail,
-  verifyForgotPassword,
 } from '../../controllers/app/user.controller'
 import { loginAdminUser } from '../../controllers/admin/auth.adminController'
 
@@ -35,11 +35,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => BooleanResponse)
-  async verifyForgotPassword(
-    @Arg('options') options: LoginInput,
-    @Arg('forgotPasswordCode') forgotPasswordCode: string,
-    @Ctx() context: MyContext
-  ): Promise<BooleanResponse> {
-    return await verifyForgotPassword(options, forgotPasswordCode, context)
+  async logout(@Ctx() context: MyContext, @CurrentAdmin() user: User): Promise<BooleanResponse> {
+    return await logoutUser(context, user)
   }
 }
