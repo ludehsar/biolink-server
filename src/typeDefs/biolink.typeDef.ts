@@ -199,6 +199,15 @@ export class BiolinkResponse {
 }
 
 @ObjectType()
+export class BiolinkListResponse {
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
+
+  @Field(() => [Biolink], { nullable: true })
+  biolinks?: Biolink[]
+}
+
+@ObjectType()
 export class BiolinkEdge extends EdgeType('category', Biolink) {}
 
 @ObjectType()

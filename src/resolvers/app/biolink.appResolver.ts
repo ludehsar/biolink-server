@@ -6,6 +6,7 @@ import { BooleanResponse } from '../../typeDefs/common.typeDef'
 import {
   createNewBiolink,
   getAllDirectories,
+  getAllUserBiolinks,
   getBiolinkFromUsername,
   removeBiolinkByUsername,
   sortBiolinkLinks,
@@ -39,6 +40,7 @@ import {
   PrivacyInput,
   DirectoryInput,
   SortedLinksInput,
+  BiolinkListResponse,
 } from '../../typeDefs/biolink.typeDef'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 
@@ -60,6 +62,11 @@ export class BiolinkResolver {
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
     return await getBiolinkFromUsername(username, context, user)
+  }
+
+  @Query(() => BiolinkListResponse)
+  async getAllUserBiolinks(@CurrentUser() user: User): Promise<BiolinkListResponse> {
+    return await getAllUserBiolinks(user)
   }
 
   @Mutation(() => BiolinkResponse)

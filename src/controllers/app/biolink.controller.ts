@@ -32,6 +32,7 @@ import {
   PrivacyInput,
   DirectoryInput,
   SortedLinksInput,
+  BiolinkListResponse,
 } from '../../typeDefs/biolink.typeDef'
 import { ErrorCode } from '../../constants/errorCodes'
 import { Link } from '../../models/entities/Link'
@@ -193,6 +194,23 @@ export const createNewBiolink = async (
   await captureUserActivity(user, context, `Created new biolink ${biolink.username}`)
 
   return { biolink }
+}
+
+export const getAllUserBiolinks = async (user: User): Promise<BiolinkListResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
+        },
+      ],
+    }
+  }
+
+  const biolinks = await Biolink.find({ where: { user } })
+
+  return { biolinks }
 }
 
 export const getBiolinkFromUsername = async (
