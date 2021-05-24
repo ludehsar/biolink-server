@@ -18,4 +18,5 @@ export class ErrorCode {
   public static UPLOAD_ERROR = 16
 
   public static DATABASE_ERROR = 9999
+  public static CLIENT_SIDE_ERROR = 10000
 }
