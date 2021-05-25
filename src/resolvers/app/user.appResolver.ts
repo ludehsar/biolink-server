@@ -25,6 +25,7 @@ import {
   EmailAndUsernameInput,
   EmailInput,
 } from '../../typeDefs/user.typeDef'
+import { NewBiolinkInput } from '../../typeDefs/biolink.typeDef'
 
 @Resolver()
 export class UserResolver {
@@ -35,11 +36,12 @@ export class UserResolver {
 
   @Mutation(() => UserResponse)
   async registerUser(
-    @Arg('options') options: RegisterInput,
+    @Arg('userOptions') userOptions: RegisterInput,
+    @Arg('biolinkOptions') biolinkOptions: NewBiolinkInput,
     @Ctx() context: MyContext,
-    @Arg('referralToken') referralToken?: string
+    @Arg('referralToken', { nullable: true }) referralToken?: string
   ): Promise<UserResponse> {
-    return await registerUser(options, context, referralToken)
+    return await registerUser(userOptions, biolinkOptions, context, referralToken)
   }
 
   @Mutation(() => BooleanResponse)

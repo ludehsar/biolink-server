@@ -8,7 +8,7 @@ import { accessTokenCookieOptions, refreshTokenCookieOptions } from '../../confi
 import { User } from '../../models/entities/User'
 import { createAuthTokens } from '../../utils/createAuthTokens'
 import { MyContext } from '../../MyContext'
-import { newBiolinkValidation } from './biolink.controller'
+import { createNewBiolink, newBiolinkValidation } from './biolink.controller'
 import { BlackList } from '../../models/entities/BlackList'
 import { BlacklistType } from '../../models/enums/BlacklistType'
 import { createReferralCode } from './code.controller'
@@ -105,11 +105,12 @@ export const userInputValidation = async (userOptions: RegisterInput): Promise<B
 
 export const registerUser = async (
   userOptions: RegisterInput,
+  biolinkOptions: NewBiolinkInput,
   context: MyContext,
   referralToken?: string
 ): Promise<UserResponse> => {
   // Validating user input
-  const userInputValidationReport = await userInputValidation(userOptions)
+  const userInputValidationReport = await validateUserRegistration(userOptions, biolinkOptions)
 
   if (!userInputValidationReport.executed) {
     return {
@@ -159,6 +160,8 @@ export const registerUser = async (
     await user.save()
   }
 
+  await createNewBiolink(biolinkOptions, context, user)
+
   await createReferralCode(user)
 
   // Implement jwt
@@ -175,6 +178,7 @@ export const registerUser = async (
 
   // Send email to admins, if new user email is checked
 
+  await user.reload()
   return { user }
 }
 
