@@ -6,7 +6,6 @@ import { Link } from '../../models/entities/Link'
 import { Biolink } from '../../models/entities/Biolink'
 import { User } from '../../models/entities/User'
 import { LinkType } from '../../models/enums/LinkType'
-import { EnabledStatus } from '../../models/enums/EnabledStatus'
 import { MyContext } from '../../MyContext'
 import { trackLink } from './analytics.controller'
 import { captureUserActivity } from './logs.controller'
@@ -147,7 +146,6 @@ export const createLinkFromUsername = async (
       shortenedUrl,
       startDate: options.startDate,
       endDate: options.endDate,
-      status: options.status as EnabledStatus,
       biolink,
       user,
       order,
@@ -228,7 +226,6 @@ export const createNewLink = async (
       shortenedUrl,
       startDate: options.startDate,
       endDate: options.endDate,
-      status: options.status as EnabledStatus,
       user,
     }).save()
 
@@ -282,8 +279,8 @@ export const getLinkByShortenedUrl = async (
 
   if (
     (!user || user.id !== link.userId) &&
-    (link.status === ('Disabled' as EnabledStatus) ||
-      (link.startDate <= moment().toDate() && link.endDate >= moment().toDate()))
+    link.startDate <= moment().toDate() &&
+    link.endDate >= moment().toDate()
   ) {
     return {
       errors: [
