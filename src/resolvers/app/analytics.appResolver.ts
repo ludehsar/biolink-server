@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { Arg, Mutation, Resolver } from 'type-graphql'
+import { Arg, Query, Resolver } from 'type-graphql'
 
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
@@ -9,7 +9,7 @@ import { ErrorCode } from '../../constants/errorCodes'
 
 @Resolver()
 export class AnalyticsResolver {
-  @Mutation(() => AnalyticsResponse)
+  @Query(() => AnalyticsResponse)
   async getBiolinkAnalyticsByUsername(
     @Arg('options') options: AnalyticsInput,
     @CurrentUser() user: User

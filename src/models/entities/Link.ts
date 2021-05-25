@@ -49,6 +49,13 @@ export class Link extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   endDate!: Date
 
+  @Field(() => Boolean, { nullable: true })
+  @Column({ type: 'boolean', default: false })
+  enablePasswordProtection!: boolean
+
+  @Column({ nullable: true })
+  password?: string
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date

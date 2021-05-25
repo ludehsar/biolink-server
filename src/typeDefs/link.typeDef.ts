@@ -22,6 +22,12 @@ export class NewLinkInput {
 
   @Field(() => String, { defaultValue: 'Disabled' })
   status!: string
+
+  @Field(() => Boolean, { defaultValue: false })
+  enablePasswordProtection!: boolean
+
+  @Field(() => String, { nullable: true })
+  password?: string
 }
 
 @ObjectType()
@@ -29,9 +35,15 @@ export class LinkResponse {
   @Field(() => [ErrorResponse], { nullable: true })
   errors?: ErrorResponse[]
 
-  @Field(() => [Link], { nullable: true })
-  links?: Link[]
-
   @Field(() => Link, { nullable: true })
   link?: Link
+}
+
+@ObjectType()
+export class LinkListResponse {
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
+
+  @Field(() => [Link], { nullable: true })
+  links?: Link[]
 }
