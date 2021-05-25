@@ -13,7 +13,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-import { EnabledStatus } from '../enums/EnabledStatus'
 import { User } from './User'
 import { TrackLink } from './TrackLink'
 import { Biolink } from './Biolink'
@@ -40,10 +39,6 @@ export class Link extends BaseEntity {
 
   @Field(() => Int, { nullable: true })
   @Column({ default: 0 })
-  clicks!: number
-
-  @Field(() => Int, { nullable: true })
-  @Column({ default: 0 })
   order!: number
 
   @Field(() => String, { nullable: true })
@@ -54,10 +49,6 @@ export class Link extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   endDate!: Date
 
-  @Field(() => String, { nullable: true, deprecationReason: 'Status currently is disabled' })
-  @Column({ type: 'enum', enum: EnabledStatus, default: EnabledStatus.Disabled })
-  status!: EnabledStatus
-
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
@@ -66,11 +57,11 @@ export class Link extends BaseEntity {
   @UpdateDateColumn()
   updatedAt!: Date
 
+  @Field(() => String, { nullable: true })
   @DeleteDateColumn()
   deletedAt?: Date
 
   // Relationships
-  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.links)
   @JoinColumn({ name: 'userId' })
   user!: User
@@ -78,7 +69,6 @@ export class Link extends BaseEntity {
   @RelationId((link: Link) => link.user)
   userId!: string
 
-  @Field(() => Biolink, { nullable: true })
   @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true })
   @JoinColumn({ name: 'biolinkId' })
   biolink!: Biolink
@@ -86,7 +76,6 @@ export class Link extends BaseEntity {
   @RelationId((link: Link) => link.biolink)
   biolinkId!: string
 
-  @Field(() => TrackLink, { nullable: true })
   @OneToMany(() => TrackLink, (trackLink) => trackLink.link)
   trackLinks!: TrackLink[]
 }

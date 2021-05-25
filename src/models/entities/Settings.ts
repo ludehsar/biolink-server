@@ -1,9 +1,11 @@
-import { Field } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
+@ObjectType()
 @Entity()
 export class Settings extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field(() => Int, { nullable: true })
   id!: number
 
   @Field(() => String, { nullable: true })

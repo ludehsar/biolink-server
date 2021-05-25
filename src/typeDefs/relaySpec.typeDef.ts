@@ -18,7 +18,7 @@ export class ConnectionArgs implements Relay.ConnectionArguments {
   @Field(() => String, { defaultValue: '', description: 'Search query' })
   query!: string
 
-  @Field(() => Number, { nullable: true, defaultValue: 10, description: 'Paginate first' })
+  @Field(() => Number, { defaultValue: 10, description: 'Paginate first' })
   first?: number
 }
 

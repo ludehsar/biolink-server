@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -52,11 +53,17 @@ export class Plan extends BaseEntity {
   @Column({ default: false })
   visibilityStatus!: boolean
 
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
+  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
+  deletedAt?: Date
 
   // Relationships
   @OneToMany(() => User, (user) => user.plan)

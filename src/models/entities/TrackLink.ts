@@ -22,6 +22,10 @@ export class TrackLink extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  ipAddress!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   countryCode!: string
 
   @Field(() => String, { nullable: true })
@@ -66,7 +70,7 @@ export class TrackLink extends BaseEntity {
 
   // Relationships
   @Field(() => Link, { nullable: true })
-  @ManyToOne(() => Link, (link) => link.trackLinks, { nullable: true })
+  @ManyToOne(() => Link, (link) => link.trackLinks, { nullable: true, eager: true })
   @JoinColumn({ name: 'linkId' })
   link!: Link
 
@@ -74,7 +78,7 @@ export class TrackLink extends BaseEntity {
   linkId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @ManyToOne(() => Biolink, (biolink) => biolink.trackLinks, { nullable: true })
+  @ManyToOne(() => Biolink, (biolink) => biolink.trackLinks, { nullable: true, eager: true })
   @JoinColumn({ name: 'biolinkId' })
   biolink!: Biolink
 

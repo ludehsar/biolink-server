@@ -16,7 +16,6 @@ import {
 
 import { Billing } from '../jsonTypes/Billing'
 import { Domain } from './Domain'
-import { UserRole } from '../enums/UserRole'
 import { Plan } from './Plan'
 import { Biolink } from './Biolink'
 import { Link } from './Link'
@@ -33,7 +32,7 @@ import { AdminRole } from './AdminRole'
 @Entity()
 @Unique(['email', 'deletedAt'])
 export class User extends BaseEntity {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
@@ -57,9 +56,6 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   name!: string
-
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.User })
-  userRole!: UserRole
 
   @Field(() => Billing, { nullable: true })
   @Column({ type: 'json', nullable: true })
@@ -122,15 +118,16 @@ export class User extends BaseEntity {
   updatedAt!: Date
 
   @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
   deletedAt?: Date
 
   // Relationships
   @Field(() => [Biolink], { nullable: true })
-  @OneToMany(() => Biolink, (biolink) => biolink.user)
+  @OneToMany(() => Biolink, (biolink) => biolink.user, { eager: true })
   biolinks!: Biolink[]
 
   @Field(() => [Domain], { nullable: true })
-  @OneToMany(() => Domain, (domain) => domain.user)
+  @OneToMany(() => Domain, (domain) => domain.user, { eager: true })
   domains!: Domain[]
 
   @Field(() => [UserLogs], { nullable: true })
@@ -138,11 +135,11 @@ export class User extends BaseEntity {
   activities!: UserLogs[]
 
   @Field(() => [Link], { nullable: true })
-  @OneToMany(() => Link, (link) => link.user)
+  @OneToMany(() => Link, (link) => link.user, { eager: true })
   links!: Link[]
 
   @Field(() => Plan, { nullable: true })
-  @ManyToOne(() => Plan, (plan) => plan.users)
+  @ManyToOne(() => Plan, (plan) => plan.users, { eager: true })
   @JoinColumn({ name: 'planId' })
   plan!: Plan
 
@@ -152,28 +149,30 @@ export class User extends BaseEntity {
   @OneToMany(() => PremiumUsername, (premiumUsername) => premiumUsername.owner)
   premiumUsernames!: PremiumUsername[]
 
-  @OneToMany(() => Payment, (payment) => payment.user)
+  @Field(() => [Payment], { nullable: true })
+  @OneToMany(() => Payment, (payment) => payment.user, { eager: true })
   payments!: Payment[]
 
   @Field(() => [Code], { nullable: true })
-  @OneToMany(() => Code, (code) => code.referrer)
+  @OneToMany(() => Code, (code) => code.referrer, { eager: true })
   codes!: Code[]
 
   @Field(() => [Referral], { nullable: true })
-  @OneToMany(() => Referral, (referral) => referral.referredBy)
+  @OneToMany(() => Referral, (referral) => referral.referredBy, { eager: true })
   referrals!: Referral[]
 
   @OneToMany(() => Verification, (verification) => verification.user)
   verifications!: Verification[]
 
-  @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true })
+  @Field(() => AdminRole, { nullable: true })
+  @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true, eager: true })
   @JoinColumn({ name: 'adminRoleId' })
   adminRole!: AdminRole
 
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: number
 
-  @ManyToOne(() => Code, (code) => code.referredByUsers, { nullable: true })
+  @ManyToOne(() => Code, (code) => code.referredByUsers, { nullable: true, eager: true })
   @JoinColumn({ name: 'registeredByCodeId' })
   registeredByCode!: Code
 

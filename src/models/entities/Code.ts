@@ -20,6 +20,7 @@ import { User } from './User'
 @Entity()
 export class Code extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })
@@ -42,12 +43,15 @@ export class Code extends BaseEntity {
   @Column({ type: 'date', nullable: true })
   expireDate!: Date
 
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
+  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
 
+  @Field(() => String, { nullable: true })
   @DeleteDateColumn()
   deletedAt?: Date
 

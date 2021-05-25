@@ -47,7 +47,6 @@ export class Domain extends BaseEntity {
   updatedAt!: Date
 
   // Relationships
-  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.domains)
   @JoinColumn({ name: 'userId' })
   user!: User

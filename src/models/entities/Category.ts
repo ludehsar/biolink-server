@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -23,11 +24,17 @@ export class Category extends BaseEntity {
   @Column({ unique: true })
   categoryName!: string
 
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
+  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
+  deletedAt?: Date
 
   // Relationships
   @OneToMany(() => Biolink, (biolink) => biolink.category)

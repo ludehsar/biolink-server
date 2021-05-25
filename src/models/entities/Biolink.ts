@@ -26,51 +26,51 @@ import { Verification } from './Verification'
 @Entity()
 @Unique(['username', 'deletedAt'])
 export class Biolink extends BaseEntity {
-  @Field(() => String, { nullable: true })
   @PrimaryGeneratedColumn('uuid')
+  @Field(() => String, { nullable: true })
   id!: string
 
-  @Field(() => String, { nullable: true })
   @Column()
+  @Field(() => String, { nullable: true })
   username!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   profilePhotoUrl!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   coverPhotoUrl!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   displayName!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   location!: string
 
-  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   bio!: string
 
-  @Field(() => BiolinkSettings, { nullable: true })
   @Column({ type: 'json', nullable: true })
+  @Field(() => BiolinkSettings, { nullable: true })
   settings!: BiolinkSettings
 
-  @Field(() => String, { nullable: true })
   @CreateDateColumn()
+  @Field(() => String, { nullable: true })
   createdAt!: Date
 
-  @Field(() => String, { nullable: true })
   @UpdateDateColumn()
+  @Field(() => String, { nullable: true })
   updatedAt!: Date
 
   @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
   deletedAt?: Date
 
   // Relationships
-  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.biolinks)
   @JoinColumn({ name: 'userId' })
   user!: User
@@ -79,22 +79,20 @@ export class Biolink extends BaseEntity {
   userId!: string
 
   @Field(() => [Link], { nullable: true })
-  @OneToMany(() => Link, (link) => link.biolink)
+  @OneToMany(() => Link, (link) => link.biolink, { eager: true })
   links!: Link[]
 
-  @Field(() => [TrackLink], { nullable: true })
   @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink)
   trackLinks!: TrackLink[]
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.biolinks)
+  @ManyToOne(() => Category, (category) => category.biolinks, { eager: true })
   @JoinColumn({ name: 'categoryId' })
   category!: Category
 
   @RelationId((biolink: Biolink) => biolink.category)
   categoryId!: number
 
-  @Field(() => Verification, { nullable: true })
   @OneToOne(() => Verification, (verification) => verification.biolink, { nullable: true })
   @JoinColumn({ name: 'verificationId' })
   verification!: Verification

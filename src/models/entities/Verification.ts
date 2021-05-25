@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -88,9 +89,13 @@ export class Verification extends BaseEntity {
   @UpdateDateColumn()
   updatedAt!: Date
 
+  @Field(() => String, { nullable: true })
+  @DeleteDateColumn()
+  deletedAt?: Date
+
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.verifications)
+  @ManyToOne(() => User, (user) => user.verifications, { eager: true })
   @JoinColumn({ name: 'userId' })
   user!: User
 
@@ -98,7 +103,7 @@ export class Verification extends BaseEntity {
   userId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @OneToOne(() => Biolink, (biolink) => biolink.verification)
+  @OneToOne(() => Biolink, (biolink) => biolink.verification, { eager: true })
   @JoinColumn({ name: 'biolinkId' })
   biolink!: Biolink
 
@@ -106,7 +111,7 @@ export class Verification extends BaseEntity {
   biolinkId!: string
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.verifications)
+  @ManyToOne(() => Category, (category) => category.verifications, { eager: true })
   @JoinColumn({ name: 'categoryId' })
   category!: Category
 
