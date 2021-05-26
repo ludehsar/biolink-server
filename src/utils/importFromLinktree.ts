@@ -44,15 +44,17 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
   })
 
   return {
-    bio: $('div[class="sc-bdfBwQ ciojAP"] > p').text().trim(),
-    links: Array.from($('div[class="sc-bdfBwQ pkAuV"] > div > a')).map((element) => ({
-      url: element.attribs['href'].trim(),
-      linkTitle: $(element).find('p').text().trim(),
-    })),
-    socials: Array.from($('div[class="sc-bdfBwQ kMVUFR"] > div > a')).map((element) => ({
-      platform: element.attribs['aria-label'].trim(),
-      link: element.attribs['href'].trim(),
-    })),
+    bio: $('div[class="sc-bdfBwQ ciojAP"] > p').text().trim() || '',
+    links:
+      Array.from($('div[class="sc-bdfBwQ pkAuV"] > div > a')).map((element) => ({
+        url: element.attribs['href'].trim(),
+        linkTitle: $(element).find('p').text().trim(),
+      })) || [],
+    socials:
+      Array.from($('div[class="sc-bdfBwQ kMVUFR"] > div > a')).map((element) => ({
+        platform: element.attribs['aria-label'].trim(),
+        link: element.attribs['href'].trim(),
+      })) || [],
     profilePhotoUrl,
   }
 }
