@@ -158,9 +158,7 @@ export const createVerification = async (
     }
   }
 
-  await Verification.create({
-    biolink,
-    category,
+  const verification = Verification.create({
     username: options.username,
     firstName: options.firstName,
     lastName: options.lastName,
@@ -174,8 +172,13 @@ export const createVerification = async (
     instagramUrl: options.instagramAccount,
     twitterUrl: options.twitterAccount,
     linkedinUrl: options.linkedinAccount,
-    user,
-  }).save()
+  })
+
+  verification.biolink = Promise.resolve(biolink)
+  verification.category = Promise.resolve(category)
+  verification.user = Promise.resolve(user)
+
+  await verification.save()
 
   // Capture user log
   await captureUserActivity(user, context, 'Successfully applied for verification')

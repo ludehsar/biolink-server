@@ -70,17 +70,17 @@ export class TrackLink extends BaseEntity {
 
   // Relationships
   @Field(() => Link, { nullable: true })
-  @ManyToOne(() => Link, (link) => link.trackLinks, { nullable: true, eager: true })
+  @ManyToOne(() => Link, (link) => link.trackLinks, { nullable: true, lazy: true })
   @JoinColumn({ name: 'linkId' })
-  link!: Link
+  link!: Promise<Link>
 
   @RelationId((trackLink: TrackLink) => trackLink.link)
   linkId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @ManyToOne(() => Biolink, (biolink) => biolink.trackLinks, { nullable: true, eager: true })
+  @ManyToOne(() => Biolink, (biolink) => biolink.trackLinks, { nullable: true, lazy: true })
   @JoinColumn({ name: 'biolinkId' })
-  biolink!: Biolink
+  biolink!: Promise<Biolink>
 
   @RelationId((trackLink: TrackLink) => trackLink.biolink)
   biolinkId!: string

@@ -71,22 +71,6 @@ export const newBiolinkValidation = async (
     }
   }
 
-  // Checks category
-  const category = await Category.findOne({ where: { id: biolinkOptions.categoryId } })
-
-  if (!category) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.CATEGORY_COULD_NOT_BE_FOUND,
-          field: 'categoryId',
-          message: 'Category not found',
-        },
-      ],
-      executed: false,
-    }
-  }
-
   // Checks if username already exists
   const biolink = await Biolink.findOne({ where: { username: biolinkOptions.username } })
   if (biolink) {
@@ -182,13 +166,14 @@ export const createNewBiolink = async (
   // }
 
   // Creates biolink
-  const category = await Category.findOne({ where: { id: options.categoryId } })
 
-  const biolink = await Biolink.create({
+  const biolink = Biolink.create({
     username: options.username,
-    category,
-    user: user,
-  }).save()
+  })
+
+  biolink.user = Promise.resolve(user)
+
+  await biolink.save()
 
   // Capture user log
   await captureUserActivity(user, context, `Created new biolink ${biolink.username}`)
@@ -269,9 +254,30 @@ export const updateBiolinkFromUsername = async (
     }
   }
 
-  await Biolink.update(biolink.id, options)
+  biolink.displayName = options.displayName || ''
+  biolink.location = options.location || ''
+  biolink.bio = options.bio || ''
 
-  await biolink.reload()
+  if (options.categoryId) {
+    const category = await Category.findOne(options.categoryId)
+
+    if (!category) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.CATEGORY_COULD_NOT_BE_FOUND,
+            message: 'Invalid category',
+          },
+        ],
+      }
+    }
+
+    biolink.category = Promise.resolve(category)
+  } else {
+    biolink.category = undefined
+  }
+
+  await biolink.save()
 
   await captureUserActivity(user, context, `Updated ${biolink.username} biolink details`)
 

@@ -20,10 +20,6 @@ export class LoginInput {
 export class RegisterInput {
   @Field()
   @IsNotEmpty()
-  name?: string
-
-  @Field()
-  @IsNotEmpty()
   @IsEmail()
   email?: string
 

@@ -43,11 +43,11 @@ export class Link extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  startDate!: Date
+  startDate?: Date
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  endDate!: Date
+  endDate?: Date
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })
@@ -69,20 +69,20 @@ export class Link extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.links)
+  @ManyToOne(() => User, (user) => user.links, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((link: Link) => link.user)
   userId!: string
 
-  @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true })
+  @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true, lazy: true })
   @JoinColumn({ name: 'biolinkId' })
-  biolink!: Biolink
+  biolink?: Promise<Biolink>
 
   @RelationId((link: Link) => link.biolink)
   biolinkId!: string
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.link)
-  trackLinks!: TrackLink[]
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.link, { lazy: true })
+  trackLinks!: Promise<TrackLink[]>
 }

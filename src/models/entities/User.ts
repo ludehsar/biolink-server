@@ -53,10 +53,6 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   forgotPasswordCode!: string
 
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  name!: string
-
   @Field(() => Billing, { nullable: true })
   @Column({ type: 'json', nullable: true })
   billing!: Billing
@@ -123,58 +119,58 @@ export class User extends BaseEntity {
 
   // Relationships
   @Field(() => [Biolink], { nullable: true })
-  @OneToMany(() => Biolink, (biolink) => biolink.user, { eager: true })
-  biolinks!: Biolink[]
+  @OneToMany(() => Biolink, (biolink) => biolink.user, { lazy: true })
+  biolinks!: Promise<Biolink[]>
 
   @Field(() => [Domain], { nullable: true })
-  @OneToMany(() => Domain, (domain) => domain.user, { eager: true })
-  domains!: Domain[]
+  @OneToMany(() => Domain, (domain) => domain.user, { lazy: true })
+  domains!: Promise<Domain[]>
 
   @Field(() => [UserLogs], { nullable: true })
-  @OneToMany(() => UserLogs, (activity) => activity.user)
-  activities!: UserLogs[]
+  @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true })
+  activities!: Promise<UserLogs[]>
 
   @Field(() => [Link], { nullable: true })
-  @OneToMany(() => Link, (link) => link.user, { eager: true })
-  links!: Link[]
+  @OneToMany(() => Link, (link) => link.user, { lazy: true })
+  links!: Promise<Link[]>
 
   @Field(() => Plan, { nullable: true })
-  @ManyToOne(() => Plan, (plan) => plan.users, { eager: true })
+  @ManyToOne(() => Plan, (plan) => plan.users, { lazy: true })
   @JoinColumn({ name: 'planId' })
-  plan!: Plan
+  plan!: Promise<Plan>
 
   @RelationId((user: User) => user.plan)
   planId!: number
 
-  @OneToMany(() => PremiumUsername, (premiumUsername) => premiumUsername.owner)
-  premiumUsernames!: PremiumUsername[]
+  @OneToMany(() => PremiumUsername, (premiumUsername) => premiumUsername.owner, { lazy: true })
+  premiumUsernames!: Promise<PremiumUsername[]>
 
   @Field(() => [Payment], { nullable: true })
-  @OneToMany(() => Payment, (payment) => payment.user, { eager: true })
-  payments!: Payment[]
+  @OneToMany(() => Payment, (payment) => payment.user, { lazy: true })
+  payments!: Promise<Payment[]>
 
   @Field(() => [Code], { nullable: true })
-  @OneToMany(() => Code, (code) => code.referrer, { eager: true })
-  codes!: Code[]
+  @OneToMany(() => Code, (code) => code.referrer, { lazy: true })
+  codes!: Promise<Code[]>
 
   @Field(() => [Referral], { nullable: true })
-  @OneToMany(() => Referral, (referral) => referral.referredBy, { eager: true })
-  referrals!: Referral[]
+  @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true })
+  referrals!: Promise<Referral[]>
 
-  @OneToMany(() => Verification, (verification) => verification.user)
-  verifications!: Verification[]
+  @OneToMany(() => Verification, (verification) => verification.user, { lazy: true })
+  verifications!: Promise<Verification[]>
 
   @Field(() => AdminRole, { nullable: true })
-  @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true, eager: true })
+  @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true, lazy: true })
   @JoinColumn({ name: 'adminRoleId' })
-  adminRole!: AdminRole
+  adminRole!: Promise<AdminRole>
 
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: number
 
-  @ManyToOne(() => Code, (code) => code.referredByUsers, { nullable: true, eager: true })
+  @ManyToOne(() => Code, (code) => code.referredByUsers, { nullable: true, lazy: true })
   @JoinColumn({ name: 'registeredByCodeId' })
-  registeredByCode!: Code
+  registeredByCode!: Promise<Code>
 
   @RelationId((user: User) => user.registeredByCode)
   registeredByCodeId!: string

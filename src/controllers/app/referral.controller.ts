@@ -87,7 +87,7 @@ export const createReferrals = async (
         referralOptions.userInfo.map((referredTo) => ({
           referredByEmail: referralOptions.referredByEmail,
           referredByName: referralOptions.referredByName,
-          referredBy: user,
+          referredBy: Promise.resolve(user),
           referredToEmail: referredTo.referredToEmail,
           referredToName: referredTo.referredToName,
         }))

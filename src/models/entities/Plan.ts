@@ -66,6 +66,6 @@ export class Plan extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @OneToMany(() => User, (user) => user.plan)
-  users!: User[]
+  @OneToMany(() => User, (user) => user.plan, { lazy: true })
+  users!: Promise<User[]>
 }

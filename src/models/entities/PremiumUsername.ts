@@ -48,9 +48,9 @@ export class PremiumUsername extends BaseEntity {
 
   // Relationships
   @Field(() => String, { nullable: true })
-  @ManyToOne(() => User, (user) => user.premiumUsernames, { nullable: true, eager: true })
+  @ManyToOne(() => User, (user) => user.premiumUsernames, { nullable: true, lazy: true })
   @JoinColumn({ name: 'ownerId' })
-  owner!: User
+  owner!: Promise<User>
 
   @RelationId((premiumUsername: PremiumUsername) => premiumUsername.owner)
   ownerId!: string

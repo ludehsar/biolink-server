@@ -32,7 +32,7 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
 
   const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
-  await TrackLink.create({
+  const trackLink = TrackLink.create({
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
     browserName: device.client?.name || 'Unknown',
     cityName: geo?.city || 'Unknown',
@@ -40,13 +40,16 @@ export const trackLink = async (link: Link, context: MyContext): Promise<Boolean
     deviceType: device.device
       ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
       : 'Unknown',
-    link,
     osName: device.os?.name || 'Unknown',
     referer: context.req.headers.referer || 'Unknown',
     utmCampaign: context.req.params.utm_campaign || 'Unknown',
     utmMedium: context.req.params.utm_medium || 'Unknown',
     utmSource: context.req.params.utm_source || 'Unknown',
-  }).save()
+  })
+
+  trackLink.link = Promise.resolve(link)
+
+  await trackLink.save()
 
   return {
     executed: true,
@@ -77,8 +80,7 @@ export const trackBiolink = async (
 
   const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
-  await TrackLink.create({
-    biolink,
+  const trackBiolink = TrackLink.create({
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
     browserName: device.client?.name || 'Unknown',
     cityName: geo?.city || 'Unknown',
@@ -91,7 +93,11 @@ export const trackBiolink = async (
     utmCampaign: context.req.params.utm_campaign || 'Unknown',
     utmMedium: context.req.params.utm_medium || 'Unknown',
     utmSource: context.req.params.utm_source || 'Unknown',
-  }).save()
+  })
+
+  trackBiolink.biolink = Promise.resolve(biolink)
+
+  await trackBiolink.save()
 
   return {
     executed: true,

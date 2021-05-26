@@ -146,7 +146,6 @@ export const registerUser = async (
   const encryptedForgotPasswordCode = await argon2.hash(randToken.generate(160))
 
   const user = await User.create({
-    name: userOptions.name,
     email: userOptions.email,
     encryptedPassword: hashedPassword,
     forgotPasswordCode: encryptedForgotPasswordCode,
@@ -155,7 +154,7 @@ export const registerUser = async (
 
   // TODO: Reduce price according to code
   if (code) {
-    user.registeredByCode = code
+    user.registeredByCode = Promise.resolve(code)
 
     await user.save()
   }
@@ -211,7 +210,6 @@ export const sendEmailForVerification = async (
 
   const emailActivationMailData: MailDataRequired = {
     to: {
-      name: user.name,
       email: user.email,
     },
     from: {
@@ -317,7 +315,6 @@ export const sendForgotPasswordVerificationEmail = async (
 
   const forgetPasswordMailData: MailDataRequired = {
     to: {
-      name: user.name,
       email: user.email,
     },
     from: {

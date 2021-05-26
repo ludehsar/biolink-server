@@ -6,6 +6,7 @@ import {
   getAllUserLinks,
   getLinkByShortenedUrl,
   removeLinkByShortenedUrl,
+  updateLinkByShortenedUrl,
 } from '../../controllers/app/link.controller'
 import CurrentUser from '../../decorators/currentUser'
 import { User } from '../../models/entities/User'
@@ -29,22 +30,24 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
-  async createLinkFromBiolinkUsername(
-    @Arg('username') username: string,
+  async createNewLink(
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,
-    @CurrentUser() user: User
+    @CurrentUser() user: User,
+    @Arg('username', { nullable: true }) username?: string
   ): Promise<LinkResponse> {
     return await createNewLink(options, user, context, username)
   }
 
   @Mutation(() => LinkResponse)
-  async createNewLink(
+  async updateLinkByShortenedUrl(
+    @Arg('shortenedUrl') shortenedUrl: string,
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,
-    @CurrentUser() user: User
+    @CurrentUser() user: User,
+    @Arg('username', { nullable: true }) username?: string
   ): Promise<LinkResponse> {
-    return await createNewLink(options, user, context)
+    return await updateLinkByShortenedUrl(shortenedUrl, options, user, context, username)
   }
 
   @Query(() => LinkResponse)

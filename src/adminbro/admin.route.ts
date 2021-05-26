@@ -24,8 +24,7 @@ const buildAdminRouter = (admin: AdminBro): Router => {
             return {
               id: user.id,
               email: user.email,
-              title: user.name,
-              avatarUrl: `https://ui-avatars.com/api/?name=${user.name}`,
+              title: role.roleName,
               role,
             }
           }

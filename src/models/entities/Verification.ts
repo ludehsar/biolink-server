@@ -95,25 +95,25 @@ export class Verification extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.verifications, { eager: true })
+  @ManyToOne(() => User, (user) => user.verifications, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((verification: Verification) => verification.user)
   userId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @OneToOne(() => Biolink, (biolink) => biolink.verification, { eager: true })
+  @OneToOne(() => Biolink, (biolink) => biolink.verification, { lazy: true })
   @JoinColumn({ name: 'biolinkId' })
-  biolink!: Biolink
+  biolink!: Promise<Biolink>
 
   @RelationId((verification: Verification) => verification.biolink)
   biolinkId!: string
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.verifications, { eager: true })
+  @ManyToOne(() => Category, (category) => category.verifications, { lazy: true })
   @JoinColumn({ name: 'categoryId' })
-  category!: Category
+  category!: Promise<Category>
 
   @RelationId((verification: Verification) => verification.category)
   categoryId!: string

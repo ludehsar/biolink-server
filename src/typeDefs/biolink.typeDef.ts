@@ -32,11 +32,6 @@ export class NewBiolinkInput {
   @IsNotEmpty()
   @Matches('^[a-zA-Z0-9_.]{4,20}$')
   username?: string
-
-  @Field()
-  @IsNotEmpty()
-  @IsInt()
-  categoryId?: number
 }
 
 @InputType()
@@ -49,6 +44,10 @@ export class UpdateBiolinkProfileInput {
 
   @Field({ nullable: true })
   bio?: string
+
+  @Field({ nullable: true })
+  @IsInt()
+  categoryId?: number
 }
 
 @InputType()

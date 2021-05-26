@@ -57,9 +57,9 @@ export class UserLogs extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.activities, { eager: true })
+  @ManyToOne(() => User, (user) => user.activities, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((userLogs: UserLogs) => userLogs.user)
   userId!: string

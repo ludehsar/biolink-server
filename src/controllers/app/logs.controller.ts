@@ -34,8 +34,7 @@ export const captureUserActivity = async (
 
   const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
-  await UserLogs.create({
-    user,
+  const userLog = UserLogs.create({
     description,
     ipAddress: ip,
     browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
@@ -46,7 +45,11 @@ export const captureUserActivity = async (
       ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
       : 'Unknown',
     osName: device.os?.name || 'Unknown',
-  }).save()
+  })
+
+  userLog.user = Promise.resolve(user)
+
+  await userLog.save()
 
   user.language = context.req.acceptsLanguages()[0] || 'Unknown'
   user.lastIPAddress = ip

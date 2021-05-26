@@ -5,20 +5,11 @@ import { after, before } from './actions/password.hook'
 import { fetchWithUserLogs } from './actions/userShow.hook'
 
 export const userOptions: ResourceOptions = {
-  listProperties: [
-    'name',
-    'email',
-    'adminRoleId',
-    'accountStatus',
-    'country',
-    'createdAt',
-    'updatedAt',
-  ],
-  editProperties: ['name', 'email', 'adminRoleId', 'password'],
+  listProperties: ['email', 'adminRoleId', 'accountStatus', 'country', 'createdAt', 'updatedAt'],
+  editProperties: ['email', 'adminRoleId', 'password'],
   showProperties: [
     'adminRoleId',
     'email',
-    'name',
     'accountStatus',
     'lastIPAddress',
     'country',
@@ -28,7 +19,6 @@ export const userOptions: ResourceOptions = {
     'totalLogin',
   ],
   filterProperties: [
-    'name',
     'email',
     'emailVerifiedAt',
     'adminRoleId',

@@ -75,9 +75,9 @@ export class Payment extends BaseEntity {
   createdAt!: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.payments)
+  @ManyToOne(() => User, (user) => user.payments, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((payment: Payment) => payment.user)
   userId!: string

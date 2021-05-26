@@ -47,9 +47,9 @@ export class Domain extends BaseEntity {
   updatedAt!: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.domains)
+  @ManyToOne(() => User, (user) => user.domains, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((domain: Domain) => domain.user)
   userId!: string

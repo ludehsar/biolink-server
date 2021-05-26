@@ -37,8 +37,8 @@ export class Category extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @OneToMany(() => Biolink, (biolink) => biolink.category)
-  biolinks!: Biolink[]
+  @OneToMany(() => Biolink, (biolink) => biolink.category, { lazy: true })
+  biolinks!: Promise<Biolink[]>
 
   @OneToMany(() => Verification, (verification) => verification.category)
   verifications!: Verification[]

@@ -71,31 +71,34 @@ export class Biolink extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.biolinks)
+  @ManyToOne(() => User, (user) => user.biolinks, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: User
+  user!: Promise<User>
 
   @RelationId((biolink: Biolink) => biolink.user)
   userId!: string
 
   @Field(() => [Link], { nullable: true })
-  @OneToMany(() => Link, (link) => link.biolink, { eager: true })
-  links!: Link[]
+  @OneToMany(() => Link, (link) => link.biolink, { lazy: true })
+  links!: Promise<Link[]>
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink)
-  trackLinks!: TrackLink[]
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true })
+  trackLinks!: Promise<TrackLink[]>
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.biolinks, { eager: true })
+  @ManyToOne(() => Category, (category) => category.biolinks, { nullable: true, lazy: true })
   @JoinColumn({ name: 'categoryId' })
-  category!: Category
+  category?: Promise<Category>
 
   @RelationId((biolink: Biolink) => biolink.category)
   categoryId!: number
 
-  @OneToOne(() => Verification, (verification) => verification.biolink, { nullable: true })
+  @OneToOne(() => Verification, (verification) => verification.biolink, {
+    nullable: true,
+    lazy: true,
+  })
   @JoinColumn({ name: 'verificationId' })
-  verification!: Verification
+  verification!: Promise<Verification>
 
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string

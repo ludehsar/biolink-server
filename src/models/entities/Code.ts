@@ -56,13 +56,13 @@ export class Code extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.codes, { nullable: true })
+  @ManyToOne(() => User, (user) => user.codes, { nullable: true, lazy: true })
   @JoinColumn({ name: 'referrerId' })
-  referrer!: User
+  referrer!: Promise<User>
 
   @RelationId((code: Code) => code.referrer)
   referrerId!: string
 
-  @OneToMany(() => User, (user) => user.registeredByCode)
-  referredByUsers!: User[]
+  @OneToMany(() => User, (user) => user.registeredByCode, { lazy: true })
+  referredByUsers!: Promise<User[]>
 }
