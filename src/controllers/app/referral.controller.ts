@@ -25,7 +25,7 @@ export const getReferralsList = async (user: User): Promise<ReferralResponse> =>
     }
   }
 
-  const referrals = await Referral.find({ where: { referredBy: user } })
+  const referrals = await user.referrals
 
   return {
     referrals,
@@ -87,7 +87,7 @@ export const createReferrals = async (
         referralOptions.userInfo.map((referredTo) => ({
           referredByEmail: referralOptions.referredByEmail,
           referredByName: referralOptions.referredByName,
-          referredBy: Promise.resolve(user),
+          referredBy: user,
           referredToEmail: referredTo.referredToEmail,
           referredToName: referredTo.referredToName,
         }))

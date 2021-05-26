@@ -43,7 +43,7 @@ export class Referral extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.referrals, { lazy: true })
   @JoinColumn({ name: 'referredById' })
-  referredBy!: Promise<User>
+  referredBy!: Promise<User> | User
 
   @RelationId((referral: Referral) => referral.referredBy)
   referredById!: string

@@ -71,6 +71,7 @@ export class Biolink extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.biolinks, { lazy: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>
