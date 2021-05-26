@@ -1,5 +1,6 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
+import path from 'path'
 
 import { User } from '../../models/entities/User'
 import { Biolink } from '../../models/entities/Biolink'
@@ -102,10 +103,12 @@ export const createVerification = async (
 
   const errors: ErrorResponse[] = []
 
-  const photoIdUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${photoIdExt}`
+  const photoIdUrl = `${randToken.generate(20)}-${Date.now().toString()}.${photoIdExt}`
+
+  const photoIdDir = path.join(__dirname, `../../../assets/photoIds/${photoIdUrl}`)
 
   photoIdCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../../assets/photoIds/${photoIdUrl}`))
+    .pipe(createWriteStream(photoIdDir))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -120,12 +123,15 @@ export const createVerification = async (
 
   const businessDocumentUrl = `${randToken.generate(
     20
-  )}-${Date.now().toLocaleString()}.${businessDocumentExt}`
+  )}-${Date.now().toString()}.${businessDocumentExt}`
+
+  const businessDocumentDir = path.join(
+    __dirname,
+    `../../../assets/businessDocuments/${businessDocumentUrl}`
+  )
 
   businessDocumentCreateReadStream()
-    .pipe(
-      createWriteStream(__dirname + `../../../assets/business-documents/${businessDocumentUrl}`)
-    )
+    .pipe(createWriteStream(businessDocumentDir))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -140,10 +146,15 @@ export const createVerification = async (
 
   const otherDocumentsUrl = `${randToken.generate(
     20
-  )}-${Date.now().toLocaleString()}.${otherDocumentsExt}`
+  )}-${Date.now().toString()}.${otherDocumentsExt}`
+
+  const otherDocumentsDir = path.join(
+    __dirname,
+    `../../../assets/otherDocuments/${otherDocumentsUrl}`
+  )
 
   otherDocumentsCreateReadStream()
-    .pipe(createWriteStream(__dirname + `../../../assets/other-documents/${otherDocumentsUrl}`))
+    .pipe(createWriteStream(otherDocumentsDir))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,

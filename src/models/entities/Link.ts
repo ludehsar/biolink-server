@@ -30,6 +30,10 @@ export class Link extends BaseEntity {
   linkType!: LinkType
 
   @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  linkTitle?: string
+
+  @Field(() => String, { nullable: true })
   @Column()
   url!: string
 
@@ -55,6 +59,10 @@ export class Link extends BaseEntity {
 
   @Column({ nullable: true })
   password?: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  note?: string
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()

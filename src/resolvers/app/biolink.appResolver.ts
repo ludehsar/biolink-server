@@ -8,6 +8,7 @@ import {
   getAllDirectories,
   getAllUserBiolinks,
   getBiolinkFromUsername,
+  importFromLinktree,
   removeBiolinkByUsername,
   sortBiolinkLinks,
   updateBiolinkFromUsername,
@@ -214,5 +215,15 @@ export class BiolinkResolver {
     @CurrentUser() user: User
   ): Promise<BooleanResponse> {
     return await removeBiolinkByUsername(username, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async importBiolinkDetailsFromLinktreeProfile(
+    @Arg('username') username: string,
+    @Arg('linktreeUsername') linktreeUsername: string,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await importFromLinktree(username, linktreeUsername, context, user)
   }
 }

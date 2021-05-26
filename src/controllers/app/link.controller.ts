@@ -127,12 +127,14 @@ export const createNewLink = async (
 
   try {
     const link = Link.create({
+      linkTitle: options.linkTitle,
       linkType: options.linkType as LinkType,
       url: options.url,
       shortenedUrl,
       startDate: options.startDate,
       endDate: options.endDate,
       enablePasswordProtection: options.enablePasswordProtection,
+      note: options.note,
     })
 
     link.user = Promise.resolve(user)
@@ -257,6 +259,8 @@ export const updateLinkByShortenedUrl = async (
     }
   }
 
+  link.linkTitle = options.linkTitle
+  link.note = options.note
   link.linkType = options.linkType as LinkType
   link.url = options.url
   link.startDate = options.startDate

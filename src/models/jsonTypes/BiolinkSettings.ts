@@ -1,7 +1,7 @@
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
-class SocialMediaProps {
+export class SocialMediaProps {
   @Field(() => String, { nullable: true })
   platform!: string
 

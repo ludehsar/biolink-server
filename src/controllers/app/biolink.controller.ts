@@ -5,6 +5,7 @@ import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
 import * as argon2 from 'argon2'
 import randToken from 'rand-token'
+import path from 'path'
 
 import { User } from '../../models/entities/User'
 import { Biolink } from '../../models/entities/Biolink'
@@ -36,6 +37,8 @@ import {
 } from '../../typeDefs/biolink.typeDef'
 import { ErrorCode } from '../../constants/errorCodes'
 import { Link } from '../../models/entities/Link'
+import { linktreeImportHandler } from '../../utils/importFromLinktree'
+import { createNewLink } from './link.controller'
 
 export const newBiolinkValidation = async (
   biolinkOptions: NewBiolinkInput
@@ -320,12 +323,12 @@ export const uploadBiolinkProfilePhoto = async (
 
   const errors: ErrorResponse[] = []
 
-  const profilePhotoUrl = `${randToken.generate(
-    20
-  )}-${Date.now().toLocaleString()}.${profilePhotoExt}`
+  const profilePhotoUrl = `${randToken.generate(20)}-${Date.now().toString()}.${profilePhotoExt}`
+
+  const directory = path.join(__dirname, `../../../assets/profilePhotos/${profilePhotoUrl}`)
 
   createReadStream()
-    .pipe(createWriteStream(__dirname + `../../../assets/profilePhotos/${profilePhotoUrl}`))
+    .pipe(createWriteStream(directory))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -383,10 +386,12 @@ export const uploadBiolinkCoverPhoto = async (
 
   const errors: ErrorResponse[] = []
 
-  const coverPhotoUrl = `${randToken.generate(20)}-${Date.now().toLocaleString()}.${coverPhotoExt}`
+  const coverPhotoUrl = `${randToken.generate(20)}-${Date.now().toString()}.${coverPhotoExt}`
+
+  const directory = path.join(__dirname, `../../../assets/coverPhotos/${coverPhotoUrl}`)
 
   createReadStream()
-    .pipe(createWriteStream(__dirname + `../../../assets/coverPhotos/${coverPhotoUrl}`))
+    .pipe(createWriteStream(directory))
     .on('error', () => {
       errors.push({
         errorCode: ErrorCode.UPLOAD_ERROR,
@@ -1241,5 +1246,78 @@ export const removeBiolinkByUsername = async (
 
   return {
     executed: true,
+  }
+}
+
+export const importFromLinktree = async (
+  username: string,
+  linktreeUsername: string,
+  context: MyContext,
+  user: User
+): Promise<BiolinkResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User is not authenticated',
+        },
+      ],
+    }
+  }
+
+  const biolink = await Biolink.findOne({ where: { username } })
+
+  if (!biolink || biolink.userId !== user.id) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
+  const url = `https://linktr.ee/${linktreeUsername}`
+
+  try {
+    const res = await linktreeImportHandler(url)
+
+    if (res.bio) biolink.bio = res.bio
+
+    if (res.links) {
+      res.links.forEach(async (link) => {
+        await createNewLink(
+          { url: link.url, linkTitle: link.linkTitle, enablePasswordProtection: false },
+          user,
+          context,
+          username
+        )
+      })
+    }
+
+    if (res.profilePhotoUrl) biolink.profilePhotoUrl = res.profilePhotoUrl
+
+    if (res.socials) {
+      const biolinkSettings = biolink.settings || {}
+
+      biolinkSettings.socialAccounts = res.socials
+
+      biolink.settings = biolinkSettings
+    }
+
+    await biolink.save()
+
+    return { biolink }
+  } catch (err) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.INVALID_TOKEN,
+          message: err.message,
+        },
+      ],
+    }
   }
 }

@@ -6,10 +6,16 @@ import { ErrorResponse } from './common.typeDef'
 @InputType()
 export class NewLinkInput {
   @Field(() => String, { defaultValue: 'Link' })
-  linkType!: string
+  linkType?: string
 
   @Field(() => String)
   url!: string
+
+  @Field(() => String, { nullable: true })
+  linkTitle?: string
+
+  @Field(() => String, { nullable: true })
+  note?: string
 
   @Field(() => String, { nullable: true })
   shortenedUrl?: string
@@ -21,7 +27,7 @@ export class NewLinkInput {
   endDate?: Date
 
   @Field(() => String, { defaultValue: 'Disabled' })
-  status!: string
+  status?: string
 
   @Field(() => Boolean, { defaultValue: false })
   enablePasswordProtection!: boolean
