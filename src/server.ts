@@ -8,17 +8,19 @@ import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
 import { graphqlUploadExpress } from 'graphql-upload'
 import { corsOptions, port } from 'config'
-import { AuthResolver } from './resolvers/admin/auth.admin.resolver'
-import { BiolinkResolver } from './resolvers/app/biolink.app.resolver'
-import { CategoryResolver } from './resolvers/app/category.app.resolver'
-import { LinkResolver } from './resolvers/app/link.app.resolver'
-import { PlanResolver } from './resolvers/app/plan.app.resolver'
-import { ReferralResolver } from './resolvers/app/referral.app.resolver'
-import { SettingsResolver } from './resolvers/app/settings.app.resolver'
-import { UserResolver } from './resolvers/app/user.app.resolver'
-import { VerificationResolver } from './resolvers/app/verification.app.resolver'
 import { stripeRoutes } from 'routers'
 import { MyContext } from 'types'
+import {
+  SettingsResolver,
+  UserResolver,
+  CategoryResolver,
+  BiolinkResolver,
+  LinkResolver,
+  PlanResolver,
+  ReferralResolver,
+  VerificationResolver,
+} from 'resolvers/app'
+import { AuthResolver } from 'resolvers/admin'
 // import AdminBro from 'admin-bro'
 // import { Database, Resource } from '@admin-bro/typeorm'
 // import buildAdminRouter from './adminbro/admin.route'
