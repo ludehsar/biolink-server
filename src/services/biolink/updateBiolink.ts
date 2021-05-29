@@ -4,13 +4,13 @@ import { BiolinkResponse } from 'object-types'
 import { captureUserActivity } from 'services'
 import { MyContext, ErrorCode } from 'types'
 
-export const updateBiolinkFromUsername = async (
+export const updateBiolink = async (
   user: User,
-  username: string,
+  id: string,
   options: UpdateBiolinkProfileInput,
   context: MyContext
 ): Promise<BiolinkResponse> => {
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
     return {

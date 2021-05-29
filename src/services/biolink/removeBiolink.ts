@@ -4,13 +4,13 @@ import { captureUserActivity } from 'services'
 import { MyContext, ErrorCode } from 'types'
 
 export const removeBiolink = async (
-  username: string,
+  id: string,
   context: MyContext,
   user: User
 ): Promise<ErrorResponse[]> => {
   const errors: ErrorResponse[] = []
 
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!user) {
     errors.push({

@@ -6,7 +6,7 @@ import { captureUserActivity } from 'services'
 import { MyContext, ErrorCode } from 'types'
 
 export const updateSocialAccountsSettings = async (
-  username: string,
+  id: string,
   options: SocialAccountsInput,
   context: MyContext,
   user: User
@@ -24,7 +24,7 @@ export const updateSocialAccountsSettings = async (
     }
   }
 
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
     return {

@@ -7,7 +7,7 @@ import { MyContext, ErrorCode } from 'types'
 import argon2 from 'argon2'
 
 export const updateLink = async (
-  shortenedUrl: string,
+  id: string,
   options: NewLinkInput,
   user: User,
   context: MyContext,
@@ -24,7 +24,7 @@ export const updateLink = async (
     }
   }
 
-  const link = await Link.findOne({ where: { shortenedUrl } })
+  const link = await Link.findOne(id)
 
   if (!link) {
     return {

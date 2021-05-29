@@ -8,12 +8,12 @@ import { captureUserActivity } from 'services'
 import { MyContext, ErrorCode } from 'types'
 
 export const uploadBiolinkCoverPhoto = async (
-  username: string,
+  id: string,
   coverPhoto: FileUpload,
   context: MyContext,
   user: User
 ): Promise<BiolinkResponse> => {
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
     return {

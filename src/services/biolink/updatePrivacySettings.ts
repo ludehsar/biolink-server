@@ -7,7 +7,7 @@ import { MyContext, ErrorCode } from 'types'
 import argon2 from 'argon2'
 
 export const updatePrivacySettings = async (
-  username: string,
+  id: string,
   options: PrivacyInput,
   context: MyContext,
   user: User
@@ -25,7 +25,7 @@ export const updatePrivacySettings = async (
     }
   }
 
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
     return {

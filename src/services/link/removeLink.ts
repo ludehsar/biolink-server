@@ -4,11 +4,11 @@ import { captureUserActivity } from 'services'
 import { MyContext, ErrorCode } from 'types'
 
 export const removeLink = async (
-  shortenedUrl: string,
+  id: string,
   user: User,
   context: MyContext
 ): Promise<LinkResponse> => {
-  const link = await Link.findOne({ where: { shortenedUrl } })
+  const link = await Link.findOne(id)
 
   if (!link) {
     return {

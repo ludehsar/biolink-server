@@ -5,11 +5,11 @@ import { getRepository } from 'typeorm'
 import { ErrorCode } from 'types'
 
 export const getAllLinksOfBiolink = async (
-  username: string,
+  biolinkId: string,
   showOnPage: boolean,
   currentUser: User
 ): Promise<LinkListResponse> => {
-  const biolink = await Biolink.findOne({ where: { username: username } })
+  const biolink = await Biolink.findOne(biolinkId)
 
   if (!biolink) {
     return {

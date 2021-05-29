@@ -5,7 +5,7 @@ import { MyContext, ErrorCode } from 'types'
 import { linktreeImportHandler } from 'utilities'
 
 export const importFromLinktree = async (
-  username: string,
+  id: string,
   linktreeUsername: string,
   context: MyContext,
   user: User
@@ -21,7 +21,7 @@ export const importFromLinktree = async (
     }
   }
 
-  const biolink = await Biolink.findOne({ where: { username } })
+  const biolink = await Biolink.findOne(id)
 
   if (!biolink || biolink.userId !== user.id) {
     return {
@@ -47,7 +47,7 @@ export const importFromLinktree = async (
           { url: link.url, linkTitle: link.linkTitle, enablePasswordProtection: false },
           user,
           context,
-          username
+          id
         )
       })
     }

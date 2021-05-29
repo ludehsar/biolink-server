@@ -27,7 +27,7 @@ import {
   createBiolink,
   getBiolinkFromUsername,
   getUserBiolinks,
-  updateBiolinkFromUsername,
+  updateBiolink,
   updateDarkModeSettings,
   updateContactButtonSettings,
   updateSocialAccountsSettings,
@@ -60,7 +60,7 @@ export class BiolinkResolver {
 
   @Query(() => BiolinkResponse)
   async getBiolinkFromUsername(
-    @Arg('username') username: string,
+    @Arg('username', { description: 'Biolink Username' }) username: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
@@ -73,133 +73,133 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateBiolinkFromUsername(
-    @Arg('username') username: string,
+  async updateBiolink(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UpdateBiolinkProfileInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateBiolinkFromUsername(user, username, options, context)
+    return await updateBiolink(user, id, options, context)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateDarkModeOptionsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateDarkModeOptions(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DarkModeInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateDarkModeSettings(username, options, context, user)
+    return await updateDarkModeSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateContactButtonSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateContactButtonSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: ContactButtonInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateContactButtonSettings(username, options, context, user)
+    return await updateContactButtonSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateSocialAccountsSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateSocialAccountsSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SocialAccountsInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateSocialAccountsSettings(username, options, context, user)
+    return await updateSocialAccountsSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateIntegrationSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateIntegrationSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: IntegrationInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateIntegrationSettings(username, options, context, user)
+    return await updateIntegrationSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateUTMParameterSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateUTMParameterSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UTMParameterInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateUTMParameterSettings(username, options, context, user)
+    return await updateUTMParameterSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateSEOSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateSEOSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SEOInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateSEOSettings(username, options, context, user)
+    return await updateSEOSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateBrandingSettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateBrandingSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: BrandingInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateBrandingSettings(username, options, context, user)
+    return await updateBrandingSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updatePrivacySettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updatePrivacySettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: PrivacyInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updatePrivacySettings(username, options, context, user)
+    return await updatePrivacySettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
   async uploadBiolinkProfilePhoto(
-    @Arg('username') username: string,
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('profilePhoto', () => GraphQLUpload) profilePhoto: FileUpload,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await uploadBiolinkProfilePhoto(username, profilePhoto, context, user)
+    return await uploadBiolinkProfilePhoto(id, profilePhoto, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
   async uploadBiolinkCoverPhoto(
-    @Arg('username') username: string,
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('coverPhoto', () => GraphQLUpload) coverPhoto: FileUpload,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await uploadBiolinkCoverPhoto(username, coverPhoto, context, user)
+    return await uploadBiolinkCoverPhoto(id, coverPhoto, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async updateDirectorySettingsByBiolinkUsername(
-    @Arg('username') username: string,
+  async updateDirectorySettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DirectoryInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await updateDirectorySettings(username, options, context, user)
+    return await updateDirectorySettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
-  async sortBiolinkLinksByBiolinkUsername(
-    @Arg('username') username: string,
+  async sortBiolinkLinks(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SortedLinksInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await sortBiolinkLinks(username, options, context, user)
+    return await sortBiolinkLinks(id, options, context, user)
   }
 
   @Query(() => BiolinkConnection, { nullable: true })
@@ -211,21 +211,21 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => [ErrorResponse])
-  async deleteBiolinkByUsername(
-    @Arg('username') username: string,
+  async removeBiolink(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<ErrorResponse[]> {
-    return await removeBiolink(username, context, user)
+    return await removeBiolink(id, context, user)
   }
 
   @Mutation(() => BiolinkResponse)
   async importBiolinkDetailsFromLinktreeProfile(
-    @Arg('username') username: string,
+    @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('linktreeUsername') linktreeUsername: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
-    return await importFromLinktree(username, linktreeUsername, context, user)
+    return await importFromLinktree(id, linktreeUsername, context, user)
   }
 }

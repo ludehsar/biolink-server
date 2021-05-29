@@ -13,12 +13,12 @@ import { verifyForgotPasswordToken } from './auth/verifyForgotPasswordToken'
 // Biolink
 import { createBiolink } from './biolink/createBiolink'
 import { getAllDirectories } from './biolink/getAllDirectories'
-import { getBiolinkFromUsername } from './biolink/getBiolink'
+import { getBiolinkFromUsername } from './biolink/getBiolinkFromUsername'
 import { getUserBiolinks } from './biolink/getUserBiolinks'
 import { importFromLinktree } from './biolink/importFromLinktree'
 import { removeBiolink } from './biolink/removeBiolink'
 import { sortBiolinkLinks } from './biolink/sortBiolinkLinks'
-import { updateBiolinkFromUsername } from './biolink/updateBiolink'
+import { updateBiolink } from './biolink/updateBiolink'
 import { updateBrandingSettings } from './biolink/updateBrandSettings'
 import { updateContactButtonSettings } from './biolink/updateContactButtonSettings'
 import { updateDarkModeSettings } from './biolink/updateDarkModeSettings'
@@ -71,7 +71,7 @@ export {
   createBiolink,
   getBiolinkFromUsername,
   getUserBiolinks,
-  updateBiolinkFromUsername,
+  updateBiolink,
   uploadBiolinkCoverPhoto,
   uploadBiolinkProfilePhoto,
   updateDarkModeSettings,

@@ -16,12 +16,12 @@ import { MyContext } from 'types'
 @Resolver()
 export class LinkResolver {
   @Query(() => LinkListResponse)
-  async getAllLinksFromBiolinkUsername(
-    @Arg('username') username: string,
+  async getAllLinksOfBiolink(
+    @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Arg('showOnPage') showOnPage: boolean,
     @CurrentUser() currentUser: User
   ): Promise<LinkListResponse> {
-    return await getAllLinksOfBiolink(username, showOnPage, currentUser)
+    return await getAllLinksOfBiolink(biolinkId, showOnPage, currentUser)
   }
 
   @Query(() => LinkListResponse)
@@ -40,19 +40,19 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
-  async updateLinkByShortenedUrl(
-    @Arg('shortenedUrl') shortenedUrl: string,
+  async updateLink(
+    @Arg('id', { description: 'Link ID' }) id: string,
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User,
     @Arg('username', { nullable: true }) username?: string
   ): Promise<LinkResponse> {
-    return await updateLink(shortenedUrl, options, user, context, username)
+    return await updateLink(id, options, user, context, username)
   }
 
   @Query(() => LinkResponse)
   async getLinkByShortenedUrl(
-    @Arg('shortenedUrl') shortenedUrl: string,
+    @Arg('shortenedUrl', { description: 'Shortened URL' }) shortenedUrl: string,
     @Arg('password', { nullable: true }) password: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
@@ -61,11 +61,11 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
-  async removeLinkByShortenedUrl(
-    @Arg('shortenedUrl') shortenedUrl: string,
+  async removeLink(
+    @Arg('id', { description: 'Link ID' }) id: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<LinkResponse> {
-    return await removeLink(shortenedUrl, user, context)
+    return await removeLink(id, user, context)
   }
 }
