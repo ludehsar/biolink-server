@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
-import { User, BlackList, Biolink, PremiumUsername } from 'entities'
-import { BlacklistType } from 'enums'
-import { NewBiolinkInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User, BlackList, Biolink, PremiumUsername } from '../../entities'
+import { BlacklistType } from '../../enums'
+import { NewBiolinkInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const createBiolinkValidated = async (
   options: NewBiolinkInput,

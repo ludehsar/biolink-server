@@ -1,16 +1,16 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from 'config'
-import { Code, User, Plan } from 'entities'
-import { RegisterInput } from 'input-types'
-import { UserResponse } from 'object-types'
+import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { Code, User, Plan } from '../../entities'
+import { RegisterInput } from '../../input-types'
+import { UserResponse } from '../../object-types'
 import {
   createBiolink,
   createReferralCode,
   captureUserActivity,
   sendVerificationEmail,
-} from 'services'
-import { MyContext } from 'types'
-import { createAuthTokens } from 'utilities'
-import { registerUserValidated } from 'validations'
+} from '../../services'
+import { MyContext } from '../../types'
+import { createAuthTokens } from '../../utilities'
+import { registerUserValidated } from '../../validations'
 import argon2 from 'argon2'
 import randToken from 'rand-token'
 

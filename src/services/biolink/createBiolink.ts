@@ -1,9 +1,9 @@
-import { User, Biolink } from 'entities'
-import { NewBiolinkInput } from 'input-types'
-import { BiolinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext } from 'types'
-import { createBiolinkValidated } from 'validations'
+import { User, Biolink } from '../../entities'
+import { NewBiolinkInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext } from '../../types'
+import { createBiolinkValidated } from '../../validations'
 
 export const createBiolink = async (
   options: NewBiolinkInput,

@@ -1,6 +1,6 @@
-import { refreshTokenSecret, accessTokenSecret } from 'config'
-import { User } from 'entities'
 import { sign } from 'jsonwebtoken'
+import { refreshTokenSecret, accessTokenSecret } from '../config'
+import { User } from '../entities'
 
 export const createAuthTokens = async (
   user: User

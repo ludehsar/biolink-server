@@ -1,4 +1,3 @@
-import { Biolink, Verification } from 'entities'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -10,6 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { Biolink, Verification } from '../entities'
 
 @ObjectType()
 @Entity()

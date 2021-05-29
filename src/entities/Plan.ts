@@ -1,6 +1,3 @@
-import { User } from 'entities'
-import { EnabledStatus } from 'enums'
-import { PlanSettings } from 'json-types'
 import { Field, Float, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -12,6 +9,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { PlanSettings } from '../json-types'
+import { User } from '../entities'
+import { EnabledStatus } from '../enums'
 
 @ObjectType()
 @Entity()

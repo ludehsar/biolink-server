@@ -1,5 +1,4 @@
-import { User } from 'entities'
-import { RoleSettings } from 'json-types'
+import { RoleSettings } from '../json-types'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -10,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { User } from '../entities'
 
 @ObjectType()
 @Entity()

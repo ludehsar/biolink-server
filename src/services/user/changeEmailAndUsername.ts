@@ -1,10 +1,10 @@
 import { validate } from 'class-validator'
-import { User, Biolink, BlackList, PremiumUsername } from 'entities'
-import { BlacklistType } from 'enums'
-import { EmailAndUsernameInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { sendVerificationEmail } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink, BlackList, PremiumUsername } from '../../entities'
+import { BlacklistType } from '../../enums'
+import { EmailAndUsernameInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { sendVerificationEmail } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const changeEmailAndUsername = async (
   options: EmailAndUsernameInput,

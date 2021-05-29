@@ -1,8 +1,8 @@
-import { Plan } from 'entities'
-import { EnabledStatus } from 'enums'
-import { PlanResponse } from 'object-types'
 import { getRepository } from 'typeorm'
-import { ErrorCode } from 'types'
+import { Plan } from '../../entities'
+import { EnabledStatus } from '../../enums'
+import { PlanResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const getAllPlans = async (): Promise<PlanResponse> => {
   const plans = await getRepository(Plan)

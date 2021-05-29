@@ -4,7 +4,7 @@ import fs from 'fs'
 import request from 'request'
 import path from 'path'
 import randToken from 'rand-token'
-import { SocialMediaProps } from 'json-types'
+import { SocialMediaProps } from '../json-types'
 
 export interface LinktreeParsingProps {
   bio?: string

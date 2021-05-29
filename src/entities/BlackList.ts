@@ -1,4 +1,3 @@
-import { BlacklistType } from 'enums'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -10,6 +9,8 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { BlacklistType } from '../enums'
 
 @ObjectType()
 @Entity()

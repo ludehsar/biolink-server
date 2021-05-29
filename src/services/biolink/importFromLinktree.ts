@@ -1,8 +1,8 @@
-import { User, Biolink } from 'entities'
-import { BiolinkResponse } from 'object-types'
-import { createNewLink, captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
-import { linktreeImportHandler } from 'utilities'
+import { User, Biolink } from '../../entities'
+import { BiolinkResponse } from '../../object-types'
+import { createNewLink, captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
+import { linktreeImportHandler } from '../../utilities'
 
 export const importFromLinktree = async (
   id: string,

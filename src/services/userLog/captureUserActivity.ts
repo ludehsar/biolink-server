@@ -1,10 +1,10 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import axios from 'axios'
-import { User, UserLogs } from 'entities'
-import { CountryInfo } from 'interfaces'
-import { ErrorResponse } from 'object-types'
-import { MyContext, ErrorCode } from 'types'
+import { User, UserLogs } from '../../entities'
+import { CountryInfo } from '../../interfaces'
+import { ErrorResponse } from '../../object-types'
+import { MyContext, ErrorCode } from '../../types'
 
 export const captureUserActivity = async (
   user: User,

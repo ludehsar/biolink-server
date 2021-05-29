@@ -1,11 +1,11 @@
-import { MailDataRequired } from '@sendgrid/mail'
-import { FRONTEND_APP_URL } from 'config'
-import { User } from 'entities'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
-import { sgMail } from 'utilities'
 import randToken from 'rand-token'
+import { MailDataRequired } from '@sendgrid/mail'
+import { FRONTEND_APP_URL } from '../../config'
+import { User } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
+import { sgMail } from '../../utilities'
 
 export const sendVerificationEmail = async (
   user: User,

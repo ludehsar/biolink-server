@@ -1,8 +1,9 @@
 import geoip from 'geoip-lite'
 import DeviceDetector from 'device-detector-js'
-import { Biolink, TrackLink } from 'entities'
-import { ErrorResponse } from 'object-types'
-import { MyContext, ErrorCode } from 'types'
+
+import { Biolink, TrackLink } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { MyContext, ErrorCode } from '../../types'
 
 export const trackBiolinkClicks = async (
   biolink: Biolink,

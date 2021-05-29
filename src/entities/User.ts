@@ -1,18 +1,3 @@
-import {
-  Biolink,
-  Domain,
-  Code,
-  UserLogs,
-  Link,
-  Plan,
-  PremiumUsername,
-  Payment,
-  Referral,
-  Verification,
-  AdminRole,
-} from 'entities'
-import { ActiveStatus } from 'enums'
-import { Billing } from 'json-types'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -28,6 +13,22 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm'
+
+import {
+  Biolink,
+  Domain,
+  Code,
+  UserLogs,
+  Link,
+  Plan,
+  PremiumUsername,
+  Payment,
+  Referral,
+  Verification,
+  AdminRole,
+} from '../entities'
+import { ActiveStatus } from '../enums'
+import { Billing } from '../json-types'
 
 @ObjectType()
 @Entity()

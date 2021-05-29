@@ -1,7 +1,7 @@
-import { User, Biolink, PremiumUsername } from 'entities'
-import { BiolinkResponse } from 'object-types'
-import { trackBiolinkClicks } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink, PremiumUsername } from '../../entities'
+import { BiolinkResponse } from '../../object-types'
+import { trackBiolinkClicks } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const getBiolinkFromUsername = async (
   username: string,

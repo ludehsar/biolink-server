@@ -1,4 +1,4 @@
-import { ErrorResponse, TrackingUnit } from 'object-types'
+import { ErrorResponse, TrackingUnit } from '../../object-types'
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()

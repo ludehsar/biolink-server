@@ -7,9 +7,9 @@ import { createConnection } from 'typeorm'
 import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
 import { graphqlUploadExpress } from 'graphql-upload'
-import { corsOptions, port } from 'config'
-import { stripeRoutes } from 'routers'
-import { MyContext } from 'types'
+import { corsOptions, port } from './config'
+import { stripeRoutes } from './routers'
+import { MyContext } from './types'
 import {
   SettingsResolver,
   UserResolver,
@@ -19,8 +19,8 @@ import {
   PlanResolver,
   ReferralResolver,
   VerificationResolver,
-} from 'resolvers/app'
-import { AuthResolver } from 'resolvers/admin'
+} from './resolvers/app'
+import { AuthResolver } from './resolvers/admin'
 // import AdminBro from 'admin-bro'
 // import { Database, Resource } from '@admin-bro/typeorm'
 // import buildAdminRouter from './adminbro/admin.route'

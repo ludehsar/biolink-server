@@ -1,8 +1,8 @@
-import { Category, Biolink } from 'entities'
-import { ConnectionArgs } from 'input-types'
-import moment from 'moment'
-import { BiolinkConnection } from 'object-types'
 import { getRepository, Brackets } from 'typeorm'
+import moment from 'moment'
+import { Category, Biolink } from '../../entities'
+import { ConnectionArgs } from '../../input-types'
+import { BiolinkConnection } from '../../object-types'
 
 export const getAllDirectories = async (
   categoryId: number,

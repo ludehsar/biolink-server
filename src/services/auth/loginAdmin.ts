@@ -1,11 +1,11 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from 'config'
-import { User } from 'entities'
-import { LoginInput } from 'input-types'
-import { UserResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext } from 'types'
-import { createAuthTokens } from 'utilities'
-import { loginAdminValidated } from 'validations'
+import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { User } from '../../entities'
+import { LoginInput } from '../../input-types'
+import { UserResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext } from '../../types'
+import { createAuthTokens } from '../../utilities'
+import { loginAdminValidated } from '../../validations'
 
 export const loginAdmin = async (
   options: LoginInput,

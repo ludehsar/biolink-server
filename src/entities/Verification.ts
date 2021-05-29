@@ -1,5 +1,3 @@
-import { User, Biolink, Category } from 'entities'
-import { VerificationStatus } from 'enums'
 import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -14,6 +12,9 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { User, Biolink, Category } from '../entities'
+import { VerificationStatus } from '../enums'
 
 @ObjectType()
 @Entity()

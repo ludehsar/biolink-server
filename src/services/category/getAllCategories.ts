@@ -1,8 +1,8 @@
-import { Category } from 'entities'
-import { ConnectionArgs } from 'input-types'
-import moment from 'moment'
-import { CategoryConnection } from 'object-types'
 import { getRepository } from 'typeorm'
+import moment from 'moment'
+import { Category } from '../../entities'
+import { ConnectionArgs } from '../../input-types'
+import { CategoryConnection } from '../../object-types'
 
 export const getAllCateogories = async (options: ConnectionArgs): Promise<CategoryConnection> => {
   // Getting before and after cursors from connection args

@@ -1,5 +1,3 @@
-import { User, Link, TrackLink, Category, Verification } from 'entities'
-import { BiolinkSettings } from 'json-types'
 import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -16,6 +14,9 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { BiolinkSettings } from '../json-types'
+import { User, Link, TrackLink, Category, Verification } from '../entities'
 
 @ObjectType()
 @Entity()

@@ -1,14 +1,15 @@
 import randToken from 'rand-token'
 import argon2 from 'argon2'
 import { MailDataRequired } from '@sendgrid/mail'
-import { FRONTEND_APP_URL } from 'config'
-import { User } from 'entities'
 import { validate } from 'class-validator'
-import { EmailInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
-import { sgMail } from 'utilities'
+
+import { FRONTEND_APP_URL } from '../../config'
+import { User } from '../../entities'
+import { EmailInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
+import { sgMail } from '../../utilities'
 
 export const sendForgotPasswordEmail = async (
   options: EmailInput,

@@ -1,7 +1,7 @@
-import { User, Biolink } from 'entities'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const removeBiolink = async (
   id: string,

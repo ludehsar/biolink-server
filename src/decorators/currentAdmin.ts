@@ -1,15 +1,16 @@
+import { Response } from 'express'
+import { verify } from 'jsonwebtoken'
+import { createParamDecorator } from 'type-graphql'
+
 import {
   refreshTokenCookieOptions,
   accessTokenCookieOptions,
   accessTokenSecret,
   refreshTokenSecret,
-} from 'config'
-import { User, AdminRole } from 'entities'
-import { Response } from 'express'
-import { verify } from 'jsonwebtoken'
-import { createParamDecorator } from 'type-graphql'
-import { MyContext } from 'types'
-import { createAuthTokens } from 'utilities'
+} from '../config'
+import { User, AdminRole } from '../entities'
+import { MyContext } from '../types'
+import { createAuthTokens } from '../utilities'
 
 interface DataProps {
   userId: string

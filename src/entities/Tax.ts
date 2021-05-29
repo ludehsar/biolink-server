@@ -1,4 +1,3 @@
-import { TaxValueType, TaxType, TaxBillingForType } from 'enums'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -9,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { TaxValueType, TaxType, TaxBillingForType } from '../enums'
 
 @ObjectType()
 @Entity()

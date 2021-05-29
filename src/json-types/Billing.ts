@@ -1,5 +1,6 @@
-import { BillingType } from 'enums'
 import { Field, ObjectType } from 'type-graphql'
+
+import { BillingType } from '../enums'
 
 @ObjectType()
 export class Billing {

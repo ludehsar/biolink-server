@@ -1,6 +1,6 @@
-import { User } from 'entities'
-import { ReferralResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User } from '../../entities'
+import { ReferralResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const getUserReferrals = async (user: User): Promise<ReferralResponse> => {
   if (!user) {

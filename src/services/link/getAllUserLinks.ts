@@ -1,6 +1,6 @@
-import { User, Link } from 'entities'
-import { LinkListResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User, Link } from '../../entities'
+import { LinkListResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const getAllUserLinks = async (user: User): Promise<LinkListResponse> => {
   if (!user) {

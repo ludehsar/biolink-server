@@ -1,4 +1,4 @@
-import { Biolink } from 'entities'
+import { Biolink } from '../../entities'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()

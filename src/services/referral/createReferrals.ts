@@ -1,13 +1,13 @@
-import { MailDataRequired } from '@sendgrid/mail'
-import { FRONTEND_APP_URL } from 'config'
-import { User, Code, Referral } from 'entities'
-import { CodeType } from 'enums'
-import { ReferralInput } from 'input-types'
-import { ReferralResponse } from 'object-types'
-import { createReferralCode, captureUserActivity, getUserReferrals } from 'services'
 import { getRepository } from 'typeorm'
-import { MyContext, ErrorCode } from 'types'
-import { sgMail } from 'utilities'
+import { MailDataRequired } from '@sendgrid/mail'
+import { FRONTEND_APP_URL } from '../../config'
+import { User, Code, Referral } from '../../entities'
+import { CodeType } from '../../enums'
+import { ReferralInput } from '../../input-types'
+import { ReferralResponse } from '../../object-types'
+import { createReferralCode, captureUserActivity, getUserReferrals } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
+import { sgMail } from '../../utilities'
 
 export const createReferrals = async (
   referralOptions: ReferralInput,

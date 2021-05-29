@@ -1,10 +1,11 @@
-import { CurrentAdmin } from 'decorators'
-import { User } from 'entities'
-import { LoginInput, EmailInput } from 'input-types'
-import { UserResponse, ErrorResponse } from 'object-types'
-import { loginAdmin, sendForgotPasswordEmail, logoutUser } from 'services'
+import { LoginInput, EmailInput } from '../../input-types'
 import { Query, Mutation, Arg, Ctx, Resolver } from 'type-graphql'
-import { MyContext } from 'types'
+
+import { CurrentAdmin } from '../../decorators'
+import { User } from '../../entities'
+import { UserResponse, ErrorResponse } from '../../object-types'
+import { loginAdmin, sendForgotPasswordEmail, logoutUser } from '../../services'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class AuthResolver {

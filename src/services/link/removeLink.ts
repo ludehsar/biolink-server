@@ -1,7 +1,7 @@
-import { User, Link } from 'entities'
-import { LinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Link } from '../../entities'
+import { LinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const removeLink = async (
   id: string,

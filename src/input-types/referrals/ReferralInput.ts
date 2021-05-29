@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsEmail } from 'class-validator'
-import { ReferredUserInfo } from 'input-types'
 import { InputType, Field } from 'type-graphql'
+import { ReferredUserInfo } from '../../input-types'
 
 @InputType()
 export class ReferralInput {

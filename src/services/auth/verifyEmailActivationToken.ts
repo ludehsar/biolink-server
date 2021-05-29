@@ -1,9 +1,9 @@
-import { User } from 'entities'
-import moment from 'moment'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
 import randToken from 'rand-token'
+import moment from 'moment'
+import { User } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const verifyEmailActivationToken = async (
   emailActivationCode: string,

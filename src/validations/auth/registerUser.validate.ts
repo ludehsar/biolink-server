@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
-import { BlackList, User, Code, Biolink, PremiumUsername } from 'entities'
-import { BlacklistType } from 'enums'
-import { RegisterInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { BlackList, User, Code, Biolink, PremiumUsername } from '../../entities'
+import { BlacklistType } from '../../enums'
+import { RegisterInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const registerUserValidated = async (
   options: RegisterInput,

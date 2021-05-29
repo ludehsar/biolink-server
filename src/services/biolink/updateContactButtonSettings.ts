@@ -1,9 +1,9 @@
-import { User, Biolink } from 'entities'
 import { validate } from 'class-validator'
-import { ContactButtonInput } from 'input-types'
-import { BiolinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink } from '../../entities'
+import { ContactButtonInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const updateContactButtonSettings = async (
   id: string,

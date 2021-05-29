@@ -1,5 +1,6 @@
-import { BiolinkEdge, PageInfo } from 'object-types'
 import { Field, ObjectType } from 'type-graphql'
+
+import { BiolinkEdge, PageInfo } from '../../object-types'
 
 @ObjectType()
 export class BiolinkConnection {

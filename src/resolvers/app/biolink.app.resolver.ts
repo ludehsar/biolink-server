@@ -1,7 +1,9 @@
-import { GraphQLUpload } from 'graphql-upload'
-import { CurrentUser } from 'decorators'
-import { User } from 'entities'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { FileUpload } from 'graphql-upload'
+import { GraphQLUpload } from 'graphql-upload'
+
+import { CurrentUser } from '../../decorators'
+import { User } from '../../entities'
 import {
   NewBiolinkInput,
   UpdateBiolinkProfileInput,
@@ -16,13 +18,13 @@ import {
   DirectoryInput,
   SortedLinksInput,
   ConnectionArgs,
-} from 'input-types'
+} from '../../input-types'
 import {
   BiolinkResponse,
   BiolinkListResponse,
   BiolinkConnection,
   ErrorResponse,
-} from 'object-types'
+} from '../../object-types'
 import {
   createBiolink,
   getBiolinkFromUsername,
@@ -43,9 +45,8 @@ import {
   getAllDirectories,
   removeBiolink,
   importFromLinktree,
-} from 'services'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { MyContext } from 'types'
+} from '../../services'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class BiolinkResolver {

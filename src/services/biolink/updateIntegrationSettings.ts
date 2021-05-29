@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from 'entities'
-import { IntegrationInput } from 'input-types'
-import { BiolinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink } from '../../entities'
+import { IntegrationInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const updateIntegrationSettings = async (
   id: string,

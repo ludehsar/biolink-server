@@ -1,8 +1,8 @@
-import { User, Biolink, Category } from 'entities'
-import { UpdateBiolinkProfileInput } from 'input-types'
-import { BiolinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink, Category } from '../../entities'
+import { UpdateBiolinkProfileInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const updateBiolink = async (
   user: User,

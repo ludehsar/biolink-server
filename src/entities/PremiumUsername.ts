@@ -1,5 +1,3 @@
-import { User } from 'entities'
-import { PremiumUsernameType } from 'enums'
 import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -13,6 +11,9 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { User } from '../entities'
+import { PremiumUsernameType } from '../enums'
 
 @ObjectType()
 @Entity()

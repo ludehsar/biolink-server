@@ -1,5 +1,5 @@
 import { Router, Response } from 'express'
-import { stripe } from 'utilities'
+import { stripe } from '../utilities'
 
 const stripeRoutes = Router()
 

@@ -1,5 +1,5 @@
-import { Link } from 'entities'
-import { ErrorResponse } from 'object-types'
+import { Link } from '../../entities'
+import { ErrorResponse } from '../../object-types'
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()

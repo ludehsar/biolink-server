@@ -1,6 +1,6 @@
-import { User, Biolink } from 'entities'
-import { BiolinkListResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User, Biolink } from '../../entities'
+import { BiolinkListResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const getUserBiolinks = async (user: User): Promise<BiolinkListResponse> => {
   if (!user) {

@@ -1,7 +1,8 @@
-import { CurrentUser } from 'decorators'
-import { User } from 'entities'
-import { NewLinkInput } from 'input-types'
-import { LinkListResponse, LinkResponse } from 'object-types'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { CurrentUser } from '../../decorators'
+import { User } from '../../entities'
+import { NewLinkInput } from '../../input-types'
+import { LinkListResponse, LinkResponse } from '../../object-types'
 import {
   getAllLinksOfBiolink,
   getAllUserLinks,
@@ -9,9 +10,8 @@ import {
   updateLink,
   getLinkByShortenedUrl,
   removeLink,
-} from 'services'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { MyContext } from 'types'
+} from '../../services'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class LinkResolver {

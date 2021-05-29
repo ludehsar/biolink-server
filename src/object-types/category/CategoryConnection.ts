@@ -1,4 +1,4 @@
-import { CategoryEdge, PageInfo } from 'object-types'
+import { CategoryEdge, PageInfo } from '../../object-types'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()

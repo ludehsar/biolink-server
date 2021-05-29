@@ -1,8 +1,8 @@
-import { User, Biolink, Link } from 'entities'
 import moment from 'moment'
-import { LinkListResponse } from 'object-types'
 import { getRepository } from 'typeorm'
-import { ErrorCode } from 'types'
+import { User, Biolink, Link } from '../../entities'
+import { LinkListResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const getAllLinksOfBiolink = async (
   biolinkId: string,

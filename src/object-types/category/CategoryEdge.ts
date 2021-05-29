@@ -1,4 +1,4 @@
-import { Category } from 'entities'
+import { Category } from '../../entities'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()

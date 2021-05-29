@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from 'entities'
-import { UTMParameterInput } from 'input-types'
-import { BiolinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink } from '../../entities'
+import { UTMParameterInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const updateUTMParameterSettings = async (
   id: string,

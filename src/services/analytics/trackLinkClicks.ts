@@ -1,8 +1,8 @@
 import geoip from 'geoip-lite'
 import DeviceDetector from 'device-detector-js'
-import { Link, TrackLink } from 'entities'
-import { ErrorResponse } from 'object-types'
-import { MyContext, ErrorCode } from 'types'
+import { Link, TrackLink } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { MyContext, ErrorCode } from '../../types'
 
 export const trackLinkClicks = async (link: Link, context: MyContext): Promise<ErrorResponse[]> => {
   const errors: ErrorResponse[] = []

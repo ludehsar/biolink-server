@@ -1,11 +1,11 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 import path from 'path'
-import { User, Biolink, Plan, Category, Verification } from 'entities'
-import { VerificationInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { User, Biolink, Plan, Category, Verification } from '../../entities'
+import { VerificationInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const createVerification = async (
   options: VerificationInput,

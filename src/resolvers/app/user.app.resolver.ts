@@ -1,5 +1,6 @@
-import { CurrentUser } from 'decorators'
-import { User } from 'entities'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { CurrentUser } from '../../decorators'
+import { User } from '../../entities'
 import {
   RegisterInput,
   LoginInput,
@@ -7,8 +8,8 @@ import {
   EmailAndUsernameInput,
   ChangePasswordInput,
   PasswordInput,
-} from 'input-types'
-import { UserResponse, ErrorResponse } from 'object-types'
+} from '../../input-types'
+import { UserResponse, ErrorResponse } from '../../object-types'
 import {
   registerUser,
   sendVerificationEmail,
@@ -20,9 +21,8 @@ import {
   changePassword,
   deleteAccount,
   logoutUser,
-} from 'services'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { MyContext } from 'types'
+} from '../../services'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class UserResolver {

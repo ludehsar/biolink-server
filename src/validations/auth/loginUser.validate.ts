@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
 import argon2 from 'argon2'
-import { User } from 'entities'
-import { LoginInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User } from '../../entities'
+import { LoginInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const loginUserValidated = async (options: LoginInput): Promise<ErrorResponse[]> => {
   let errors: ErrorResponse[] = []

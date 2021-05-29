@@ -1,6 +1,6 @@
-import { Settings } from 'entities'
-import { MainSystemSettings } from 'json-types'
-import { SettingsResponse } from 'object-types'
+import { Settings } from '../../entities'
+import { MainSystemSettings } from '../../json-types'
+import { SettingsResponse } from '../../object-types'
 import { Query, Resolver } from 'type-graphql'
 
 @Resolver()

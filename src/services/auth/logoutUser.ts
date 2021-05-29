@@ -1,8 +1,8 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from 'config'
-import { User } from 'entities'
-import { ErrorResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { User } from '../../entities'
+import { ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const logoutUser = async (context: MyContext, user: User): Promise<ErrorResponse[]> => {
   const errors: ErrorResponse[] = []

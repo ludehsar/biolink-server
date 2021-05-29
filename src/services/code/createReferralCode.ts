@@ -1,6 +1,6 @@
-import { User, Code } from 'entities'
-import { CodeType } from 'enums'
 import randToken from 'rand-token'
+import { User, Code } from '../../entities'
+import { CodeType } from '../../enums'
 
 export const createReferralCode = async (user: User): Promise<Code> => {
   if (!user) {

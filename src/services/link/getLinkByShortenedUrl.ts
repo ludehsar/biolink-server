@@ -1,9 +1,9 @@
-import { User, Link } from 'entities'
-import moment from 'moment'
-import { LinkResponse } from 'object-types'
-import { trackLinkClicks } from 'services'
-import { MyContext, ErrorCode } from 'types'
 import argon2 from 'argon2'
+import moment from 'moment'
+import { User, Link } from '../../entities'
+import { LinkResponse } from '../../object-types'
+import { trackLinkClicks } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const getLinkByShortenedUrl = async (
   shortenedUrl: string,

@@ -1,5 +1,3 @@
-import { User, Biolink, TrackLink } from 'entities'
-import { LinkType } from 'enums'
 import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -14,6 +12,9 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { User, Biolink, TrackLink } from '../entities'
+import { LinkType } from '../enums'
 
 @ObjectType()
 @Entity()

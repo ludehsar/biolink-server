@@ -1,4 +1,3 @@
-import { User } from 'entities'
 import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -10,6 +9,8 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm'
+
+import { User } from '../entities'
 
 @ObjectType()
 @Entity()

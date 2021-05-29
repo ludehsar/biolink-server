@@ -1,5 +1,3 @@
-import { User } from 'entities'
-import { DomainScheme, EnabledStatus } from 'enums'
 import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
@@ -12,6 +10,9 @@ import {
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
+
+import { User } from '../entities'
+import { DomainScheme, EnabledStatus } from '../enums'
 
 @ObjectType()
 @Entity()

@@ -1,10 +1,10 @@
-import { CurrentUser } from 'decorators'
-import { User } from 'entities'
-import { ReferralInput } from 'input-types'
-import { ReferralResponse } from 'object-types'
-import { getUserReferrals, createReferrals } from 'services'
+import { CurrentUser } from '../../decorators'
+import { User } from '../../entities'
+import { ReferralInput } from '../../input-types'
+import { ReferralResponse } from '../../object-types'
+import { getUserReferrals, createReferrals } from '../../services'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { MyContext } from 'types'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class ReferralResolver {

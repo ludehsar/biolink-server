@@ -1,9 +1,9 @@
 import { validate } from 'class-validator'
 import argon2 from 'argon2'
-import { User } from 'entities'
-import { ChangePasswordInput } from 'input-types'
-import { ErrorResponse } from 'object-types'
-import { ErrorCode } from 'types'
+import { User } from '../../entities'
+import { ChangePasswordInput } from '../../input-types'
+import { ErrorResponse } from '../../object-types'
+import { ErrorCode } from '../../types'
 
 export const changePassword = async (
   options: ChangePasswordInput,

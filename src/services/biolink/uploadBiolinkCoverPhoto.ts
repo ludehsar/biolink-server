@@ -1,11 +1,12 @@
-import { User, Biolink } from 'entities'
 import { createWriteStream } from 'fs'
 import { FileUpload } from 'graphql-upload'
-import { BiolinkResponse, ErrorResponse } from 'object-types'
 import path from 'path'
 import randToken from 'rand-token'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
+
+import { User, Biolink } from '../../entities'
+import { BiolinkResponse, ErrorResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const uploadBiolinkCoverPhoto = async (
   id: string,

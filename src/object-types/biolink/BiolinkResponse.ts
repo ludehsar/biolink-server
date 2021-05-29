@@ -1,5 +1,5 @@
-import { Biolink } from 'entities'
-import { ErrorResponse } from 'object-types'
+import { Biolink } from '../../entities'
+import { ErrorResponse } from '../../object-types'
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()

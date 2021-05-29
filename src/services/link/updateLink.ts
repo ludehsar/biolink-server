@@ -1,10 +1,10 @@
-import { User, Link, Biolink } from 'entities'
-import { LinkType } from 'enums'
-import { NewLinkInput } from 'input-types'
-import { LinkResponse } from 'object-types'
-import { captureUserActivity } from 'services'
-import { MyContext, ErrorCode } from 'types'
 import argon2 from 'argon2'
+import { User, Link, Biolink } from '../../entities'
+import { LinkType } from '../../enums'
+import { NewLinkInput } from '../../input-types'
+import { LinkResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
+import { MyContext, ErrorCode } from '../../types'
 
 export const updateLink = async (
   id: string,

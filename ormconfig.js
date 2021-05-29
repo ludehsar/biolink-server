@@ -9,11 +9,11 @@ module.exports = {
   password: process.env.DATABASE_PASSWORD,
   logging: true,
   synchronize: false,
-  entities: ['src/entities/**/*.ts'],
+  entities: ['build/entities/**/*.js'],
   migrations: ['build/migrations/**/*.js'],
   subscribers: ['build/subscribers/**/*.js'],
   cli: {
-    entitiesDir: 'src/entities',
+    entitiesDir: 'build/entities',
     migrationsDir: 'src/migrations',
     subscribersDir: 'src/subscribers'
   },
