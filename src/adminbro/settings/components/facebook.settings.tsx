@@ -11,7 +11,7 @@ import {
   MainTabContainer,
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
-import { FacebookSystemSettings } from '../../../models/jsonTypes/FacebookSystemSettings'
+import { FacebookSystemSettings } from 'json-types'
 import { saveFacebookLoginSettings } from '../actions/facebookSettingsAction'
 
 const FacebookSettings: React.FC<CommonSettingsProps> = (props) => {

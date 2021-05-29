@@ -18,7 +18,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveBusinessSettings } from '../actions/businessSettingsAction'
-import { BusinessSystemSettings } from '../../../models/jsonTypes/BusinessSystemSettings'
+import { BusinessSystemSettings } from 'json-types'
 
 const BusinessSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

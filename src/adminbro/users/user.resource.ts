@@ -1,6 +1,6 @@
 import AdminBro, { ResourceOptions } from 'admin-bro'
 
-import { User } from '../../models/entities/User'
+import { User } from '../../entities/User'
 import { after, before } from './actions/password.hook'
 import { fetchWithUserLogs } from './actions/userShow.hook'
 

@@ -1,6 +1,6 @@
 import AdminBro, { ResourceOptions } from 'admin-bro'
 
-import { AdminRole } from '../../models/entities/AdminRole'
+import { AdminRole } from '../../entities/AdminRole'
 import { before } from './actions/settings.hook'
 
 export const adminRoleOptions: ResourceOptions = {

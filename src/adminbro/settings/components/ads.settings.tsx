@@ -14,7 +14,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveAdsSettings } from '../actions/adsSettingsAction'
-import { AdsSystemSettings } from '../../../models/jsonTypes/AdsSystemSettings'
+import { AdsSystemSettings } from 'json-types'
 
 const AdsSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

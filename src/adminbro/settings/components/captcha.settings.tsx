@@ -12,7 +12,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { saveCaptchaSettings } from '../actions/captchaSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
-import { CaptchaSystemSettings } from '../../../models/jsonTypes/CaptchaSystemSettings'
+import { CaptchaSystemSettings } from 'json-types'
 
 const CaptchaSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

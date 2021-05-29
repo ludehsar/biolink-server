@@ -14,7 +14,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveEmailNotificationSettings } from '../actions/notificationSettingsAction'
-import { NotificationSystemSettings } from '../../../models/jsonTypes/NotificationSystemSettings'
+import { NotificationSystemSettings } from 'json-types'
 
 const NotificationSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

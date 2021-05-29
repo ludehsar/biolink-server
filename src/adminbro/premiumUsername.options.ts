@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { PremiumUsername } from '../models/entities/PremiumUsername'
+import { PremiumUsername } from '../entities/PremiumUsername'
 
 export const premiumUsernameOptions: ResourceOptions = {
   listProperties: ['username', 'ownerId', 'price', 'usernameType', 'createdAt', 'updatedAt'],

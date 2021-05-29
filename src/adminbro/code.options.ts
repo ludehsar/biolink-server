@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Code } from '../models/entities/Code'
+import { Code } from '../entities/Code'
 
 export const codeOptions: ResourceOptions = {
   listProperties: ['type', 'code', 'discount', 'quantity', 'expireDate', 'createdAt', 'updatedAt'],

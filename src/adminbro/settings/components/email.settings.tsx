@@ -13,7 +13,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { saveEmailSettings } from '../actions/emailSettingsAction'
 import { CommonSettingsProps } from './CommonSettingsProps'
-import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'
+import { EmailSystemSettings } from 'json-types'
 
 const EmailSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

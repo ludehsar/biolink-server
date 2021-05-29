@@ -1,6 +1,5 @@
 import { ResourceOptions } from 'admin-bro'
-
-import { Biolink } from '../models/entities/Biolink'
+import { Biolink } from 'entities'
 
 export const biolinkOptions: ResourceOptions = {
   listProperties: ['userId', 'username', 'categoryId', 'createdAt', 'updatedAt'],

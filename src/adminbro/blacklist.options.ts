@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { BlackList } from '../models/entities/BlackList'
+import { BlackList } from '../entities/BlackList'
 
 export const blacklistOptions: ResourceOptions = {
   listProperties: ['id', 'blacklistType', 'keyword', 'reason', 'createdAt', 'updatedAt'],

@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Domain } from '../models/entities/Domain'
+import { Domain } from '../entities/Domain'
 
 export const domainOptions: ResourceOptions = {
   listProperties: [

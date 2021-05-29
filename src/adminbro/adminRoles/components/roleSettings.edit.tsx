@@ -10,7 +10,7 @@ import {
 } from '@admin-bro/design-system'
 
 import { Title, FormInput, Container } from '../../shared/components/Common.styled'
-import { RoleSettings as Settings } from '../../../models/jsonTypes/RoleSettings'
+import { RoleSettings as Settings } from '../../../json-types/RoleSettings'
 
 const RoleSettings: React.FC<BasePropertyProps> = (props) => {
   const { property, record, onChange } = props

@@ -1,12 +1,15 @@
+import {
+  refreshTokenCookieOptions,
+  accessTokenCookieOptions,
+  accessTokenSecret,
+  refreshTokenSecret,
+} from 'config'
+import { User } from 'entities'
 import { Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { createParamDecorator } from 'type-graphql'
-
-import { User } from '../models/entities/User'
-import { MyContext } from '../MyContext'
-import { createAuthTokens } from '../utils/createAuthTokens'
-import { refreshTokenSecret, accessTokenSecret } from '../config/app.config'
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../config/cookie.config'
+import { MyContext } from 'types'
+import { createAuthTokens } from 'utilities'
 
 interface DataProps {
   userId: string

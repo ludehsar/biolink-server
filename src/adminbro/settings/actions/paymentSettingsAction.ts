@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { PaymentSystemSettings } from '../../../models/jsonTypes/PaymentSystemSettings'
+import { PaymentSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

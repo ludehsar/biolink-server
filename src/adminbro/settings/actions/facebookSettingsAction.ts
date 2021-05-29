@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { FacebookSystemSettings } from '../../../models/jsonTypes/FacebookSystemSettings'
+import { FacebookSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

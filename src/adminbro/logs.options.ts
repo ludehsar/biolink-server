@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { UserLogs } from '../models/entities/UserLogs'
+import { UserLogs } from '../entities/UserLogs'
 
 export const logsOptions: ResourceOptions = {
   listProperties: ['userId', 'ipAddress', 'deviceType', 'countryCode', 'description', 'createdAt'],

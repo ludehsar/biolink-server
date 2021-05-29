@@ -1,20 +1,18 @@
 import AdminBro, { AdminBroOptions } from 'admin-bro'
-
+import { adminRoleResources, adminRoleOptions } from './adminRoles/adminRoles.options'
+import { biolinkResource, biolinkOptions } from './biolink.options'
+import { blacklistResource, blacklistOptions } from './blacklist.options'
+import { categoryResource, categoryOptions } from './category.options'
+import { codeResource, codeOptions } from './code.options'
+import { domainResource, domainOptions } from './domain.options'
+import { linkResource, linkOptions } from './link.options'
+import { logsResources, logsOptions } from './logs.options'
+import { planResource, planOptions } from './plan/plan.options'
+import { premiumUsernameResource, premiumUsernameOptions } from './premiumUsername.options'
+import { settingsResource, settingsOptions } from './settings/settings.options'
+import { taxResource, taxOptions } from './tax.options'
 import { userOptions, userResource } from './users/user.resource'
-import { categoryOptions, categoryResource } from './category.options'
-import { blacklistOptions, blacklistResource } from './blacklist.options'
-import { premiumUsernameOptions, premiumUsernameResource } from './premiumUsername.options'
-import { linkOptions, linkResource } from './link.options'
-import { domainOptions, domainResource } from './domain.options'
-import { biolinkOptions, biolinkResource } from './biolink.options'
-import { codeOptions, codeResource } from './code.options'
-import { taxOptions, taxResource } from './tax.options'
-import { planOptions, planResource } from './plan/plan.options'
-import { settingsOptions, settingsResource } from './settings/settings.options'
-import statisticsHandler from './statistics/actions/statisticsHandler'
-import { verificationOptions, verificationResource } from './verification.options'
-import { adminRoleOptions, adminRoleResources } from './adminRoles/adminRoles.options'
-import { logsOptions, logsResources } from './logs.options'
+import { verificationResource, verificationOptions } from './verification.options'
 
 const options: AdminBroOptions = {
   resources: [
@@ -91,13 +89,6 @@ const options: AdminBroOptions = {
   },
   dashboard: {
     component: AdminBro.bundle('./dashboard/components/dashboard.tsx'),
-  },
-  pages: {
-    Statistics: {
-      handler: statisticsHandler,
-      component: AdminBro.bundle('./statistics/components/layout.statistics.tsx'),
-      icon: 'Activity',
-    },
   },
 }
 

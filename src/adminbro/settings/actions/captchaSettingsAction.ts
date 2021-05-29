@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { CaptchaSystemSettings } from '../../../models/jsonTypes/CaptchaSystemSettings'
+import { CaptchaSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

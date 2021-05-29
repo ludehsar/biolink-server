@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { EmailSystemSettings } from '../../../models/jsonTypes/EmailSystemSettings'
+import { EmailSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

@@ -1,10 +1,10 @@
 import { ActionResponse } from 'admin-bro'
 
-import { UserLogs } from '../../../models/entities/UserLogs'
-import { Biolink } from '../../../models/entities/Biolink'
-import { Link } from '../../../models/entities/Link'
-import { Domain } from '../../../models/entities/Domain'
-import { Payment } from '../../../models/entities/Payment'
+import { UserLogs } from '../../../entities/UserLogs'
+import { Biolink } from '../../../entities/Biolink'
+import { Link } from '../../../entities/Link'
+import { Domain } from '../../../entities/Domain'
+import { Payment } from '../../../entities/Payment'
 
 export const fetchWithUserLogs = async (res: ActionResponse): Promise<ActionResponse> => {
   if (res.record && res.record.params) {

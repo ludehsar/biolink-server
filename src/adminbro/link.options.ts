@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Link } from '../models/entities/Link'
+import { Link } from '../entities/Link'
 
 export const linkOptions: ResourceOptions = {
   listProperties: [

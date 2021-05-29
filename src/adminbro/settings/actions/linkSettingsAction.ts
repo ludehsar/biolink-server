@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { BiolinkSystemSettings } from '../../../models/jsonTypes/BiolinkSystemSettings'
+import { BiolinkSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

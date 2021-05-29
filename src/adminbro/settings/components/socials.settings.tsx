@@ -14,7 +14,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveSocialSettings } from '../actions/socialSettingsAction'
-import { SocialSystemSettings } from '../../../models/jsonTypes/SocialSystemSettings'
+import { SocialSystemSettings } from 'json-types'
 
 const SocialSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

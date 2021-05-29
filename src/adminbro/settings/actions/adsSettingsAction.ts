@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { AdsSystemSettings } from '../../../models/jsonTypes/AdsSystemSettings'
+import { AdsSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { NotificationSystemSettings } from '../../../models/jsonTypes/NotificationSystemSettings'
+import { NotificationSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

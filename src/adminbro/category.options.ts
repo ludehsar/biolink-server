@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Category } from '../models/entities/Category'
+import { Category } from '../entities/Category'
 
 export const categoryOptions: ResourceOptions = {
   listProperties: ['id', 'categoryName', 'createdAt', 'updatedAt'],

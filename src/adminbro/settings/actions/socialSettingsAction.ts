@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { SocialSystemSettings } from '../../../models/jsonTypes/SocialSystemSettings'
+import { SocialSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

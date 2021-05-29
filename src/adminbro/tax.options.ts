@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Tax } from '../models/entities/Tax'
+import { Tax } from '../entities/Tax'
 
 export const taxOptions: ResourceOptions = {
   listProperties: [

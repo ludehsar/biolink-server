@@ -7,7 +7,7 @@ import { FlexContainer, UserDetailsContainer } from './user.show.styled'
 import Card from '../../shared/components/DashboardCard'
 import UserDetails from './UserDetails'
 import { CardGridContainer, Container, Title } from '../../shared/components/Common.styled'
-import { UserLogs } from '../../../models/entities/UserLogs'
+import { UserLogs } from '../../../entities/UserLogs'
 
 const Show: React.FC<BasePropertyComponentProps> = (props) => {
   const { record } = props

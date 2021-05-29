@@ -1,6 +1,6 @@
 import { ApiClient, BaseRecord } from 'admin-bro'
 
-import { BusinessSystemSettings } from '../../../models/jsonTypes/BusinessSystemSettings'
+import { BusinessSystemSettings } from 'json-types'
 
 const api = new ApiClient()
 

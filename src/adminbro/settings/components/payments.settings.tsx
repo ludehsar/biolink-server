@@ -13,7 +13,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { savePaymentSettings } from '../actions/paymentSettingsAction'
-import { PaymentSystemSettings } from '../../../models/jsonTypes/PaymentSystemSettings'
+import { PaymentSystemSettings } from 'json-types'
 
 const PaymentSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

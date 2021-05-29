@@ -14,7 +14,7 @@ import {
 } from '../../shared/components/Common.styled'
 import { CommonSettingsProps } from './CommonSettingsProps'
 import { saveMainSettings } from '../actions/mainSettingsAction'
-import { MainSystemSettings } from '../../../models/jsonTypes/MainSystemSettings'
+import { MainSystemSettings } from 'json-types'
 
 const MainSettings: React.FC<CommonSettingsProps> = (props) => {
   const { className, id, value, addNotice } = props

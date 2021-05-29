@@ -1,7 +1,7 @@
 import { FormGroup } from '@admin-bro/design-system'
 import { withNotice } from 'admin-bro'
 import { Formik, Form } from 'formik'
-import { BiolinkSystemSettings } from 'models/jsonTypes/BiolinkSystemSettings'
+import { BiolinkSystemSettings } from 'json-types'
 import React from 'react'
 import { saveLinkSettings } from '../actions/linkSettingsAction'
 

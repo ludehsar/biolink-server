@@ -1,5 +1,5 @@
+import { COOKIE_SAMESITE, COOKIE_SECURE } from 'config'
 import { CookieOptions } from 'express'
-import { COOKIE_SAMESITE, COOKIE_SECURE } from './app.config'
 
 export const accessTokenCookieOptions: CookieOptions = {
   maxAge: 1000 * 60 * 15,

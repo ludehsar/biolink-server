@@ -1,6 +1,6 @@
 import AdminBro, { ResourceOptions } from 'admin-bro'
 
-import { Settings } from '../../models/entities/Settings'
+import { Settings } from '../../entities/Settings'
 
 export const settingsOptions: ResourceOptions = {
   actions: {

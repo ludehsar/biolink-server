@@ -1,6 +1,6 @@
 import { ResourceOptions } from 'admin-bro'
 
-import { Verification } from '../models/entities/Verification'
+import { Verification } from '../entities/Verification'
 
 export const verificationOptions: ResourceOptions = {
   listProperties: [

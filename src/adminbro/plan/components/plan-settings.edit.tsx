@@ -9,7 +9,7 @@ import {
   FormInput,
   FormHelper,
 } from '../../shared/components/Common.styled'
-import { PlanSettings as Settings } from '../../../models/jsonTypes/PlanSettings'
+import { PlanSettings as Settings } from 'json-types'
 
 const PlanSettings: React.FC<BasePropertyProps> = (props) => {
   const { property, record, onChange } = props

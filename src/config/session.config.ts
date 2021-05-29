@@ -1,9 +1,7 @@
+import { redisOptions, COOKIE_NAME, COOKIE_SAMESITE, COOKIE_SECURE, appKey } from 'config'
 import connectRedis from 'connect-redis'
 import session, { SessionOptions } from 'express-session'
 import redis from 'redis'
-
-import { COOKIE_NAME, COOKIE_SAMESITE, COOKIE_SECURE, appKey } from './app.config'
-import redisOptions from './redis.config'
 
 const RedisStore = connectRedis(session)
 const redisClient = redis.createClient(redisOptions)
