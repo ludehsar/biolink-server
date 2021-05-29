@@ -1,4 +1,5 @@
-import { redisOptions, COOKIE_NAME, COOKIE_SAMESITE, COOKIE_SECURE, appKey } from 'config'
+import { COOKIE_NAME, COOKIE_SAMESITE, COOKIE_SECURE, appKey } from 'config'
+import redisOptions from './redis.config'
 import connectRedis from 'connect-redis'
 import session, { SessionOptions } from 'express-session'
 import redis from 'redis'

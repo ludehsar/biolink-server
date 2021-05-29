@@ -14,8 +14,6 @@ import {
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from './cookie.config'
 import corsOptions from './cors.config'
 import { dbHost, dbName, dbPassword, dbPort, dbType, dbUser } from './database.config'
-import redisOptions from './redis.config'
-import sessionOptions from './session.config'
 
 export {
   COOKIE_NAME,
@@ -36,8 +34,6 @@ export {
   dbType,
   dbUser,
   port,
-  redisOptions,
   refreshTokenCookieOptions,
   refreshTokenSecret,
-  sessionOptions,
 }
