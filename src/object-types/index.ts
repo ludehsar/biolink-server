@@ -12,6 +12,7 @@ import { CategoryEdge } from './category/CategoryEdge'
 // Common
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
+import { ConnectionType, EdgeType } from './common/RelayPagination'
 // Links
 import { LinkListResponse } from './links/LinkListResponse'
 import { LinkResponse } from './links/LinkResponse'
@@ -32,6 +33,8 @@ export {
   BiolinkResponse,
   CategoryConnection,
   CategoryEdge,
+  ConnectionType,
+  EdgeType,
   ErrorResponse,
   LinkListResponse,
   LinkResponse,
