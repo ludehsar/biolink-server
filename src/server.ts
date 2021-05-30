@@ -22,10 +22,6 @@ import {
   AnalyticsResolver,
 } from './resolvers/app'
 import { AuthResolver } from './resolvers/admin'
-// import AdminBro from 'admin-bro'
-// import { Database, Resource } from '@admin-bro/typeorm'
-// import buildAdminRouter from './adminbro/admin.route'
-// import adminbroOptions from './adminbro/admin.options'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -95,13 +91,6 @@ const main = async (): Promise<void> => {
     path: '/admin/graphql',
     cors: false,
   })
-
-  // Adminbro
-  // AdminBro.registerAdapter({ Database, Resource })
-
-  // const adminBro = new AdminBro(adminbroOptions)
-
-  // app.use(adminBro.options.rootPath, buildAdminRouter(adminBro))
 
   // Listen to the port
   app.listen(port, () => {
