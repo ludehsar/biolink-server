@@ -1,6 +1,8 @@
 // Analytics
 import { ChartResponse } from './analytics/ChartResponse'
 import { ChartValue } from './analytics/ChartValue'
+import { LinkClicksResponse } from './analytics/LinkClicksResponse'
+import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
 // Biolink
 import { BiolinkConnection } from './biolink/BiolinkConnection'
 import { BiolinkEdge } from './biolink/BiolinkEdge'
@@ -34,11 +36,13 @@ export {
   ChartResponse,
   ChartValue,
   ErrorResponse,
+  LinkClicksResponse,
   LinkListResponse,
   LinkResponse,
   PageInfo,
   PlanResponse,
   ReferralResponse,
   SettingsResponse,
+  SingleLinkClickCount,
   UserResponse,
 }

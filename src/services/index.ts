@@ -1,5 +1,6 @@
 // Analytics
 import { getBiolinkChartData } from './analytics/getBiolinkChartData'
+import { getLinkClicksData } from './analytics/getLinkClicksData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
@@ -59,6 +60,7 @@ import { createVerification } from './verification/createVerification'
 
 export {
   getBiolinkChartData,
+  getLinkClicksData,
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth
