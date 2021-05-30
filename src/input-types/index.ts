@@ -23,6 +23,7 @@ import { NewLinkInput } from './links/NewLinkInput'
 import { ReferralInput } from './referrals/ReferralInput'
 import { ReferredUserInfo } from './referrals/ReferredUserInfo'
 // Users
+import { BillingInput } from './user/BillingInput'
 import { ChangePasswordInput } from './user/ChangePasswordInput'
 import { EmailAndUsernameInput } from './user/EmailAndUsernameInput'
 import { EmailInput } from './user/EmailInput'
@@ -58,6 +59,7 @@ export {
   ReferralInput,
   ReferredUserInfo,
   // User
+  BillingInput,
   ChangePasswordInput,
   EmailAndUsernameInput,
   EmailInput,

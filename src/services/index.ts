@@ -50,6 +50,7 @@ import { getUserReferrals } from './referral/getUserReferrals'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
 import { changePassword } from './user/changePassword'
 import { deleteAccount } from './user/deleteAccount'
+import { updateBilling } from './user/updateBilling'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
 // Verification
@@ -109,6 +110,7 @@ export {
   changeEmailAndUsername,
   changePassword,
   deleteAccount,
+  updateBilling,
   // Verification
   createVerification,
 }

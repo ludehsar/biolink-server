@@ -8,6 +8,7 @@ import {
   EmailAndUsernameInput,
   ChangePasswordInput,
   PasswordInput,
+  BillingInput,
 } from '../../input-types'
 import { UserResponse, ErrorResponse } from '../../object-types'
 import {
@@ -21,6 +22,7 @@ import {
   changePassword,
   deleteAccount,
   logoutUser,
+  updateBilling,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -106,6 +108,15 @@ export class UserResolver {
     @CurrentUser() user: User
   ): Promise<ErrorResponse[]> {
     return await deleteAccount(options, user, context)
+  }
+
+  @Mutation(() => UserResponse)
+  async updateBilling(
+    @Arg('options') options: BillingInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<UserResponse> {
+    return await updateBilling(options, user, context)
   }
 
   @Mutation(() => [ErrorResponse])

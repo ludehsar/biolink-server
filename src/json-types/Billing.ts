@@ -11,10 +11,16 @@ export class Billing {
   name!: string
 
   @Field(() => String, { nullable: true })
-  address!: string
+  address1!: string
+
+  @Field(() => String, { nullable: true })
+  address2!: string
 
   @Field(() => String, { nullable: true })
   city!: string
+
+  @Field(() => String, { nullable: true })
+  state!: string
 
   @Field(() => String, { nullable: true })
   country!: string
