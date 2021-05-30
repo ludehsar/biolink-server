@@ -1,4 +1,4 @@
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { createNewLink, captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
@@ -34,6 +34,21 @@ export const importFromLinktree = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const url = `https://linktr.ee/${linktreeUsername}`
 
   try {
@@ -54,7 +69,7 @@ export const importFromLinktree = async (
 
     if (res.profilePhotoUrl) biolink.profilePhotoUrl = res.profilePhotoUrl
 
-    if (res.socials) {
+    if (planSettings.socialEnabled && res.socials) {
       const biolinkSettings = biolink.settings || {}
 
       biolinkSettings.socialAccounts = res.socials

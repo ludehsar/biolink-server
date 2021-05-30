@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { PrivacyInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -49,12 +49,54 @@ export const updatePrivacySettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.enablePasswordProtection = options.enablePasswordProtection || false
-  biolinkSettings.enableSensitiveContentWarning = options.enableSensitiveContentWarning || false
-  biolinkSettings.password = await argon2.hash(options.password || '')
+  if (planSettings.passwordProtectionEnabled) {
+    biolinkSettings.enablePasswordProtection = options.enablePasswordProtection || false
+    biolinkSettings.password = await argon2.hash(options.password || '')
+  } else if (
+    (options.enablePasswordProtection !== undefined && options.enablePasswordProtection) ||
+    (options.password !== undefined && options.password.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Password protection is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
+
+  if (planSettings.sensitiveContentWarningEnabled) {
+    biolinkSettings.enableSensitiveContentWarning = options.enableSensitiveContentWarning || false
+  } else if (options.enableSensitiveContentWarning) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Sensitive content warning is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

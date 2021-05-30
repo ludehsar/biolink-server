@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, BlackList, Biolink, PremiumUsername } from '../../entities'
+import { User, BlackList, Biolink, PremiumUsername, Plan } from '../../entities'
 import { BlacklistType } from '../../enums'
 import { NewBiolinkInput } from '../../input-types'
 import { ErrorResponse } from '../../object-types'
@@ -77,7 +77,7 @@ export const createBiolinkValidated = async (
   // Checks plan
   const currentBiolinkCount = (await user.biolinks).length
 
-  const plan = await user.plan
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
 
   if (!plan) {
     errors.push({
@@ -88,15 +88,16 @@ export const createBiolinkValidated = async (
     return errors
   }
 
-  const planSettings = plan.settings
+  const planSettings = plan.settings || {}
 
   if (
+    planSettings.totalBiolinksLimit &&
     planSettings.totalBiolinksLimit !== -1 &&
     currentBiolinkCount >= planSettings.totalBiolinksLimit
   ) {
     errors.push({
       errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
-      message: 'Current plan does not support creating another biolink.',
+      message: 'Maximum biolink limit reached. Please upgrade your account.',
     })
   }
 

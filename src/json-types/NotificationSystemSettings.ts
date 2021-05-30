@@ -5,12 +5,12 @@ export class NotificationSystemSettings {
   @Field(() => [String], { nullable: true })
   emailsToBeNotified!: string[]
 
-  @Field(() => String, { nullable: true })
-  emailOnNewUser!: string
+  @Field(() => Boolean, { nullable: true })
+  emailOnNewUser!: boolean
 
-  @Field(() => String, { nullable: true })
-  emailOnNewPayment!: string
+  @Field(() => Boolean, { nullable: true })
+  emailOnNewPayment!: boolean
 
-  @Field(() => String, { nullable: true })
-  emailOnNewCustomDomain!: string
+  @Field(() => Boolean, { nullable: true })
+  emailOnNewCustomDomain!: boolean
 }

@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { SEOInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,13 +48,39 @@ export const updateSEOSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.blockSearchEngineIndexing = options.blockSearchEngineIndexing || false
-  biolinkSettings.pageTitle = options.pageTitle || ''
-  biolinkSettings.metaDescription = options.metaDescription || ''
-  biolinkSettings.opengraphImageUrl = options.opengraphImageUrl || '' // TODO: Image upload
+  if (planSettings.seoEnabled) {
+    biolinkSettings.blockSearchEngineIndexing = options.blockSearchEngineIndexing || false
+    biolinkSettings.pageTitle = options.pageTitle || ''
+    biolinkSettings.metaDescription = options.metaDescription || ''
+    biolinkSettings.opengraphImageUrl = options.opengraphImageUrl || '' // TODO: Image upload
+  } else {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling SEO is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

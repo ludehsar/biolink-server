@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { IntegrationInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,13 +48,57 @@ export const updateIntegrationSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.enableFacebookPixel = options.enableFacebookPixel || false
-  biolinkSettings.enableGoogleAnalytics = options.enableGoogleAnalytics || false
-  biolinkSettings.facebookPixelId = options.facebookPixelId || ''
-  biolinkSettings.googleAnalyticsCode = options.googleAnalyticsCode || ''
+  if (planSettings.facebookPixelEnabled) {
+    biolinkSettings.enableFacebookPixel = options.enableFacebookPixel || false
+    biolinkSettings.facebookPixelId = options.facebookPixelId || ''
+  } else if (
+    (options.enableFacebookPixel !== undefined && options.enableFacebookPixel) ||
+    (options.facebookPixelId !== undefined && options.facebookPixelId.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling Facebook pixel is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
+  if (planSettings.googleAnalyticsEnabled) {
+    biolinkSettings.enableGoogleAnalytics = options.enableGoogleAnalytics || false
+    biolinkSettings.googleAnalyticsCode = options.googleAnalyticsCode || ''
+  } else if (
+    (options.enableGoogleAnalytics !== undefined && options.enableGoogleAnalytics) ||
+    (options.googleAnalyticsCode !== undefined && options.googleAnalyticsCode.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling Google analytics is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

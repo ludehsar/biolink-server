@@ -45,9 +45,9 @@ export class LinkResolver {
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User,
-    @Arg('username', { nullable: true }) username?: string
+    @Arg('biolinkId', { nullable: true, description: 'Biolink ID' }) biolinkId?: string
   ): Promise<LinkResponse> {
-    return await updateLink(id, options, user, context, username)
+    return await updateLink(id, options, user, context, biolinkId)
   }
 
   @Query(() => LinkResponse)

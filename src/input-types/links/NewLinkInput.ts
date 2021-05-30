@@ -23,9 +23,6 @@ export class NewLinkInput {
   @Field(() => String, { nullable: true })
   endDate?: Date
 
-  @Field(() => String, { defaultValue: 'Disabled' })
-  status?: string
-
   @Field(() => Boolean, { defaultValue: false })
   enablePasswordProtection!: boolean
 

@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { SocialAccountsInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,15 +48,53 @@ export const updateSocialAccountsSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.enableColoredSocialMediaIcons = options.enableColoredSocialMediaIcons || false
-  biolinkSettings.socialAccounts =
-    options.socialAccounts?.map((option) => ({
-      link: option.link || '#',
-      platform: option.platform || 'Unknown',
-    })) || []
+  if (planSettings.socialEnabled) {
+    if (planSettings.coloredLinksEnabled)
+      biolinkSettings.enableColoredSocialMediaIcons = options.enableColoredSocialMediaIcons || false
+    else if (options.enableColoredSocialMediaIcons) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+            message:
+              'Colored link is not supported with the current plan. Please upgrade your plan to continue.',
+          },
+        ],
+      }
+    }
+    biolinkSettings.socialAccounts =
+      options.socialAccounts?.map((option) => ({
+        link: option.link || '#',
+        platform: option.platform || 'Unknown',
+      })) || []
+  } else {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Social accounts is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

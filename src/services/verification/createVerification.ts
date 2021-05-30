@@ -55,7 +55,9 @@ export const createVerification = async (
     return errors
   }
 
-  if (!userPlan.settings.verifiedCheckmarkEnabled) {
+  const userPlanSettings = userPlan.settings
+
+  if (!userPlanSettings.verifiedCheckmarkEnabled) {
     errors.push({
       errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
       message: 'Current plan does not support for verification. Please upgrade',

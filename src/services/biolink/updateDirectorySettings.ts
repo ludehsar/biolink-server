@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { DirectoryInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,11 +48,40 @@ export const updateDirectorySettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.addedToDirectory = options.addedToDirectory || false
-  biolinkSettings.directoryBio = options.directoryBio || ''
+  if (planSettings.addedToDirectoryEnabled) {
+    biolinkSettings.addedToDirectory = options.addedToDirectory || false
+    biolinkSettings.directoryBio = options.directoryBio || ''
+  } else if (
+    options.addedToDirectory === true ||
+    (options.directoryBio !== undefined && options.directoryBio.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Adding to the directory is not supported with your account. Please contact customer care to upgrade your plan.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

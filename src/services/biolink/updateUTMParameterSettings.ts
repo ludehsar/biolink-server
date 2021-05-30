@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { UTMParameterInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,13 +48,39 @@ export const updateUTMParameterSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.enableUtmParameters = options.enableUtmParameters || false
-  biolinkSettings.utmCampaign = options.utmCampaign || ''
-  biolinkSettings.utmMedium = options.utmMedium || ''
-  biolinkSettings.utmSource = options.utmSource || ''
+  if (planSettings.utmParametersEnabled) {
+    biolinkSettings.enableUtmParameters = options.enableUtmParameters || false
+    biolinkSettings.utmCampaign = options.utmCampaign || ''
+    biolinkSettings.utmMedium = options.utmMedium || ''
+    biolinkSettings.utmSource = options.utmSource || ''
+  } else {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling UTM Parameters is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

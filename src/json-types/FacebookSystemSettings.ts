@@ -2,6 +2,6 @@ import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class FacebookSystemSettings {
-  @Field(() => String, { nullable: true })
-  enableFacebookLogin!: string
+  @Field(() => Boolean, { nullable: true })
+  enableFacebookLogin!: boolean
 }

@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { ContactButtonInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,10 +48,40 @@ export const updateContactButtonSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
-  biolinkSettings.enableColoredContactButtons = options.enableColoredContactButtons || false
+  if (planSettings.coloredLinksEnabled) {
+    biolinkSettings.enableColoredContactButtons = options.enableColoredContactButtons || false
+  } else if (
+    options.enableColoredContactButtons !== undefined &&
+    options.enableColoredContactButtons
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Colored links are not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
+
   biolinkSettings.showEmail = options.showEmail || false
   biolinkSettings.showPhone = options.showPhone || false
   biolinkSettings.email = options.email || ''

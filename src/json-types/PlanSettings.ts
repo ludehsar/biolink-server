@@ -11,51 +11,54 @@ export class PlanSettings {
   @Field(() => Int, { nullable: true })
   totalCustomDomainLimit!: number
 
-  @Field(() => String, { nullable: true })
-  customBackHalfEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  darkModeEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  noAdsEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  addedToDirectoryEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  removableBrandingEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  customBackHalfEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  customFooterBrandingEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  noAdsEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  coloredLinksEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  removableBrandingEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  googleAnalyticsEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  customFooterBrandingEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  facebookPixelEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  coloredLinksEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  customBackgroundEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  googleAnalyticsEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  verifiedCheckmarkEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  facebookPixelEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  linksSchedulingEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  verifiedCheckmarkEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  seoEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  linksSchedulingEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  socialEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  seoEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  utmParametersEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  socialEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  passwordProtectionEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  utmParametersEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  sensitiveContentWarningEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  passwordProtectionEnabled!: boolean
 
-  @Field(() => String, { nullable: true })
-  leapLinkEnabled!: string
+  @Field(() => Boolean, { nullable: true })
+  sensitiveContentWarningEnabled!: boolean
+
+  @Field(() => Boolean, { nullable: true })
+  leapLinkEnabled!: boolean
 }

@@ -1,6 +1,6 @@
 import randToken from 'rand-token'
 import argon2 from 'argon2'
-import { User, Link, Biolink } from '../../entities'
+import { User, Link, Biolink, Plan } from '../../entities'
 import { LinkType } from '../../enums'
 import { NewLinkInput } from '../../input-types'
 import { LinkResponse } from '../../object-types'
@@ -19,6 +19,38 @@ export const createNewLink = async (
         {
           errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
           message: 'Not authenticated',
+        },
+      ],
+    }
+  }
+
+  const currentLinksCount = (await user.links).length
+
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
+  if (
+    planSettings.totalLinksLimit &&
+    planSettings.totalLinksLimit !== -1 &&
+    currentLinksCount >= planSettings.totalLinksLimit
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message: 'Maximum link limit reached. Please upgrade your account.',
         },
       ],
     }

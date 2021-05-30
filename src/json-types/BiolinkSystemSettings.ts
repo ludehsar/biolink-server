@@ -5,14 +5,14 @@ export class BiolinkSystemSettings {
   @Field(() => String, { nullable: true })
   branding!: string
 
-  @Field(() => String, { nullable: true })
-  enableLinkShortenerSystem!: string
+  @Field(() => Boolean, { nullable: true })
+  enableLinkShortenerSystem!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableCustomDomainSystem!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCustomDomainSystem!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableMainDomainUsage!: string
+  @Field(() => Boolean, { nullable: true })
+  enableMainDomainUsage!: boolean
 
   @Field(() => [String], { nullable: true })
   blacklistedDomains!: string[]
@@ -20,9 +20,9 @@ export class BiolinkSystemSettings {
   @Field(() => [String], { nullable: true })
   blacklistedKeywords!: string[]
 
-  @Field(() => String, { nullable: true })
-  enablePhishtank!: string
+  @Field(() => Boolean, { nullable: true })
+  enablePhishtank!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableGoogleSafeBrowsing!: string
+  @Field(() => Boolean, { nullable: true })
+  enableGoogleSafeBrowsing!: boolean
 }

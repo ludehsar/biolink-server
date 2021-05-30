@@ -1,5 +1,5 @@
 import { validate } from 'class-validator'
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Plan } from '../../entities'
 import { BrandingInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -48,13 +48,57 @@ export const updateBrandingSettings = async (
     }
   }
 
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
   const biolinkSettings = biolink.settings || {}
 
   // TODO: change according to plan
-  biolinkSettings.removeDefaultBranding = options.removeDefaultBranding || false
-  biolinkSettings.enableCustomBranding = options.enableCustomBranding || false
-  biolinkSettings.customBrandingName = options.customBrandingName || ''
-  biolinkSettings.customBrandingUrl = options.customBrandingUrl || ''
+  if (planSettings.removableBrandingEnabled)
+    biolinkSettings.removeDefaultBranding = options.removeDefaultBranding || false
+  else if (options.removeDefaultBranding === true) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Removing brand is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
+
+  if (planSettings.customFooterBrandingEnabled) {
+    biolinkSettings.enableCustomBranding = options.enableCustomBranding || false
+    biolinkSettings.customBrandingName = options.customBrandingName || ''
+    biolinkSettings.customBrandingUrl = options.customBrandingUrl || ''
+  } else if (
+    (options.enableCustomBranding !== undefined && options.enableCustomBranding) ||
+    (options.customBrandingName !== undefined && options.customBrandingName.trim().length > 0) ||
+    (options.customBrandingUrl !== undefined && options.customBrandingUrl.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling custom brand is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()

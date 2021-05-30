@@ -17,11 +17,11 @@ export class MainSystemSettings {
   @Field(() => String, { nullable: true })
   defaultTimezone!: string
 
-  @Field(() => String, { nullable: true })
-  enableEmailConfirmation!: string
+  @Field(() => Boolean, { nullable: true })
+  enableEmailConfirmation!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableNewUserRegistration!: string
+  @Field(() => Boolean, { nullable: true })
+  enableNewUserRegistration!: boolean
 
   @Field(() => String, { nullable: true })
   termsAndConditionsUrl!: string

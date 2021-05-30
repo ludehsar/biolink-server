@@ -5,15 +5,15 @@ export class CaptchaSystemSettings {
   @Field(() => String, { nullable: true })
   captchaType!: string
 
-  @Field(() => String, { nullable: true })
-  enableCaptchaOnLoginPage!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCaptchaOnLoginPage!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableCaptchaOnRegisterPage!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCaptchaOnRegisterPage!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableCaptchaOnLostPasswordPage!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCaptchaOnLostPasswordPage!: boolean
 
-  @Field(() => String, { nullable: true })
-  enableCaptchaOnResendActivationPage!: string
+  @Field(() => Boolean, { nullable: true })
+  enableCaptchaOnResendActivationPage!: boolean
 }

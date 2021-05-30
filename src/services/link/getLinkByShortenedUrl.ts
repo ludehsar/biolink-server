@@ -1,6 +1,6 @@
 import argon2 from 'argon2'
 import moment from 'moment'
-import { User, Link } from '../../entities'
+import { User, Link, Plan } from '../../entities'
 import { LinkResponse } from '../../object-types'
 import { trackLinkClicks } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
@@ -26,10 +26,8 @@ export const getLinkByShortenedUrl = async (
 
   if (
     (!user || user.id !== link.userId) &&
-    link.startDate &&
-    link.startDate <= moment().toDate() &&
-    link.endDate &&
-    link.endDate >= moment().toDate()
+    ((link.startDate && link.startDate > moment().toDate()) ||
+      (link.endDate && link.endDate < moment().toDate()))
   ) {
     return {
       errors: [
@@ -61,6 +59,36 @@ export const getLinkByShortenedUrl = async (
             message: 'Password did not match',
           },
         ],
+      }
+    }
+  }
+
+  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+
+  if (!plan) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  const planSettings = plan.settings || {}
+
+  if (planSettings.utmParametersEnabled) {
+    const biolink = await link.biolink
+
+    if (biolink) {
+      const biolinkSettings = biolink.settings
+
+      if (biolinkSettings.enableUtmParameters) {
+        if (link.url.includes('?'))
+          link.url += `&utm_medium=${biolinkSettings.utmMedium}&utm_source=${biolinkSettings.utmSource}&utm_campaign=${biolinkSettings.utmCampaign}`
+        else
+          link.url += `?utm_medium=${biolinkSettings.utmMedium}&utm_source=${biolinkSettings.utmSource}&utm_campaign=${biolinkSettings.utmCampaign}`
       }
     }
   }
