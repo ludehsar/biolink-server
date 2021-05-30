@@ -1,4 +1,5 @@
 // Analytics
+import { getBiolinkChartData } from './analytics/getBiolinkChartData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
@@ -57,6 +58,7 @@ import { captureUserActivity } from './userLog/captureUserActivity'
 import { createVerification } from './verification/createVerification'
 
 export {
+  getBiolinkChartData,
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth

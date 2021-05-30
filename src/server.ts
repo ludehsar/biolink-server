@@ -19,6 +19,7 @@ import {
   PlanResolver,
   ReferralResolver,
   VerificationResolver,
+  AnalyticsResolver,
 } from './resolvers/app'
 import { AuthResolver } from './resolvers/admin'
 // import AdminBro from 'admin-bro'
@@ -55,6 +56,7 @@ const main = async (): Promise<void> => {
   const appServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
+        AnalyticsResolver,
         SettingsResolver,
         UserResolver,
         CategoryResolver,

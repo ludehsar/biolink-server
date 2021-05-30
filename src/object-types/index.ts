@@ -1,6 +1,6 @@
 // Analytics
-import { AnalyticsResponse } from './analytics/AnalyticsResponse'
-import { TrackingUnit } from './analytics/TrackingUnit'
+import { ChartResponse } from './analytics/ChartResponse'
+import { ChartValue } from './analytics/ChartValue'
 // Biolink
 import { BiolinkConnection } from './biolink/BiolinkConnection'
 import { BiolinkEdge } from './biolink/BiolinkEdge'
@@ -12,7 +12,6 @@ import { CategoryEdge } from './category/CategoryEdge'
 // Common
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
-import { ConnectionType, EdgeType } from './common/RelayPagination'
 // Links
 import { LinkListResponse } from './links/LinkListResponse'
 import { LinkResponse } from './links/LinkResponse'
@@ -26,15 +25,14 @@ import { SettingsResponse } from './settings/SettingsResponse'
 import { UserResponse } from './user/UserResponse'
 
 export {
-  AnalyticsResponse,
   BiolinkConnection,
   BiolinkEdge,
   BiolinkListResponse,
   BiolinkResponse,
   CategoryConnection,
   CategoryEdge,
-  ConnectionType,
-  EdgeType,
+  ChartResponse,
+  ChartValue,
   ErrorResponse,
   LinkListResponse,
   LinkResponse,
@@ -42,6 +40,5 @@ export {
   PlanResponse,
   ReferralResponse,
   SettingsResponse,
-  TrackingUnit,
   UserResponse,
 }

@@ -1,12 +1,11 @@
-import { User, Biolink, PremiumUsername } from '../../entities'
+import { Biolink, PremiumUsername } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { trackBiolinkClicks } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 
 export const getBiolinkFromUsername = async (
   username: string,
-  context: MyContext,
-  user: User
+  context: MyContext
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
   const premiumUsername = await PremiumUsername.findOne({ where: { username } })
@@ -22,9 +21,7 @@ export const getBiolinkFromUsername = async (
     }
   }
 
-  if (user && user.id !== biolink.userId) {
-    await trackBiolinkClicks(biolink, context)
-  }
+  await trackBiolinkClicks(biolink, context)
 
   return { biolink }
 }

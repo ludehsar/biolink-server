@@ -62,10 +62,9 @@ export class BiolinkResolver {
   @Query(() => BiolinkResponse)
   async getBiolinkFromUsername(
     @Arg('username', { description: 'Biolink Username' }) username: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
+    @Ctx() context: MyContext
   ): Promise<BiolinkResponse> {
-    return await getBiolinkFromUsername(username, context, user)
+    return await getBiolinkFromUsername(username, context)
   }
 
   @Query(() => BiolinkListResponse)

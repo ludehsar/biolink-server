@@ -1,3 +1,4 @@
+import { AnalyticsResolver } from './analytics.app.resolver'
 import { BiolinkResolver } from './biolink.app.resolver'
 import { CategoryResolver } from './category.app.resolver'
 import { LinkResolver } from './link.app.resolver'
@@ -8,6 +9,7 @@ import { UserResolver } from './user.app.resolver'
 import { VerificationResolver } from './verification.app.resolver'
 
 export {
+  AnalyticsResolver,
   BiolinkResolver,
   CategoryResolver,
   LinkResolver,
