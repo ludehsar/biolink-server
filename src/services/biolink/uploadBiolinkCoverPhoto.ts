@@ -63,7 +63,7 @@ export const uploadBiolinkCoverPhoto = async (
     }
   }
 
-  biolink.coverPhotoUrl = window.location.origin + '/static/coverPhotos/' + coverPhotoName
+  biolink.coverPhotoUrl = context.req.get('origin') + '/static/coverPhotos/' + coverPhotoName
   await biolink.save()
 
   await captureUserActivity(user, context, `Uploaded ${biolink.username} cover photo`)
