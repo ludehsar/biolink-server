@@ -12,6 +12,7 @@ import { BiolinkResponse } from './biolink/BiolinkResponse'
 import { CategoryConnection } from './category/CategoryConnection'
 import { CategoryEdge } from './category/CategoryEdge'
 // Common
+import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
 // Links
@@ -24,6 +25,8 @@ import { ReferralResponse } from './referrals/ReferralResponse'
 // Settings
 import { SettingsResponse } from './settings/SettingsResponse'
 // User
+import { UserConnection } from './user/UserConnection'
+import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
 
 export {
@@ -35,6 +38,7 @@ export {
   CategoryEdge,
   ChartResponse,
   ChartValue,
+  DefaultResponse,
   ErrorResponse,
   LinkClicksResponse,
   LinkListResponse,
@@ -44,5 +48,7 @@ export {
   ReferralResponse,
   SettingsResponse,
   SingleLinkClickCount,
+  UserConnection,
+  UserEdge,
   UserResponse,
 }

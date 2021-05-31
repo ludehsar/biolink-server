@@ -1,24 +1,25 @@
 import randToken from 'rand-token'
 import moment from 'moment'
 import { User } from '../../entities'
-import { ErrorResponse } from '../../object-types'
+import { DefaultResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 
 export const verifyEmailActivationToken = async (
   emailActivationCode: string,
   context: MyContext
-): Promise<ErrorResponse[]> => {
-  const errors: ErrorResponse[] = []
+): Promise<DefaultResponse> => {
   const user = await User.findOne({ where: { emailActivationCode } })
 
   if (!user) {
-    errors.push({
-      errorCode: ErrorCode.INVALID_TOKEN,
-      message: 'Invalid token',
-    })
-
-    return errors
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.INVALID_TOKEN,
+          message: 'Invalid token',
+        },
+      ],
+    }
   }
 
   let newEmailActivationCode = randToken.generate(132)
@@ -36,5 +37,5 @@ export const verifyEmailActivationToken = async (
   // Capture user log
   await captureUserActivity(user, context, 'Email has been verified')
 
-  return errors
+  return {}
 }

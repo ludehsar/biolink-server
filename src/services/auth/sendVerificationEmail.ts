@@ -2,7 +2,7 @@ import randToken from 'rand-token'
 import { MailDataRequired } from '@sendgrid/mail'
 import { FRONTEND_APP_URL } from '../../config'
 import { User } from '../../entities'
-import { ErrorResponse } from '../../object-types'
+import { DefaultResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { sgMail } from '../../utilities'
@@ -10,13 +10,16 @@ import { sgMail } from '../../utilities'
 export const sendVerificationEmail = async (
   user: User,
   context: MyContext
-): Promise<ErrorResponse[]> => {
-  const errors: ErrorResponse[] = []
+): Promise<DefaultResponse> => {
   if (!user) {
-    errors.push({
-      errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-      message: 'User not authenticated',
-    })
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
+        },
+      ],
+    }
   }
 
   let emailActivationCode = randToken.generate(132)
@@ -42,6 +45,7 @@ export const sendVerificationEmail = async (
     html: `Click <a href="${FRONTEND_APP_URL}/auth/email_verification?token=${emailActivationCode}" target="_blank">here</a> to verify your email address.`,
   }
 
+  const errors: ErrorResponse[] = []
   await sgMail.send(emailActivationMailData, false, (err) => {
     errors.push({
       errorCode: ErrorCode.DATABASE_ERROR,
@@ -49,8 +53,12 @@ export const sendVerificationEmail = async (
     })
   })
 
+  if (errors.length > 0) {
+    return { errors }
+  }
+
   // Capture user log
   await captureUserActivity(user, context, 'Requested User Email Verification')
 
-  return errors
+  return {}
 }

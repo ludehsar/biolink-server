@@ -1,6 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { FileUpload } from 'graphql-upload'
-import { GraphQLUpload } from 'graphql-upload'
+import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
@@ -23,7 +22,7 @@ import {
   BiolinkResponse,
   BiolinkListResponse,
   BiolinkConnection,
-  ErrorResponse,
+  DefaultResponse,
 } from '../../object-types'
 import {
   createBiolink,
@@ -42,7 +41,7 @@ import {
   uploadBiolinkCoverPhoto,
   updateDirectorySettings,
   sortBiolinkLinks,
-  getAllDirectories,
+  getDirectoriesPaginated,
   removeBiolink,
   importFromLinktree,
 } from '../../services'
@@ -207,15 +206,15 @@ export class BiolinkResolver {
     @Arg('options') options: ConnectionArgs,
     @Arg('categoryId', { defaultValue: 0 }) categoryId: number
   ): Promise<BiolinkConnection> {
-    return await getAllDirectories(categoryId, options)
+    return await getDirectoriesPaginated(categoryId, options)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async removeBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await removeBiolink(id, context, user)
   }
 

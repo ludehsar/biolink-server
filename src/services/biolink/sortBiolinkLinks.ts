@@ -48,14 +48,9 @@ export const sortBiolinkLinks = async (
     }
   }
 
-  const errors: ErrorResponse[] = []
-
-  options.shortenedLinks?.map(async (shortendLink, id) => {
-    const link = await Link.findOne({
-      where: {
-        shortenedUrl: shortendLink,
-      },
-    })
+  options.linkIds?.map(async (linkId, id) => {
+    const link = await Link.findOne(linkId)
+    const errors: ErrorResponse[] = []
 
     if (!link) {
       errors.push({

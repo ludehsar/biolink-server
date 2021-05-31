@@ -2,22 +2,22 @@ import geoip from 'geoip-lite'
 import DeviceDetector from 'device-detector-js'
 
 import { Biolink, TrackLink } from '../../entities'
-import { ErrorResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
+import { DefaultResponse } from '../../object-types'
 
 export const trackBiolinkClicks = async (
   biolink: Biolink,
   context: MyContext
-): Promise<ErrorResponse[]> => {
-  const errors: ErrorResponse[] = []
-
+): Promise<DefaultResponse> => {
   if (!biolink) {
-    errors.push({
-      errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
-      message: 'Biolink could not be found',
-    })
-
-    return errors
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink could not be found',
+        },
+      ],
+    }
   }
 
   // Collecting information
@@ -46,5 +46,5 @@ export const trackBiolinkClicks = async (
 
   await trackBiolink.save()
 
-  return errors
+  return {}
 }

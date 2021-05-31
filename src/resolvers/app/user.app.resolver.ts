@@ -10,7 +10,7 @@ import {
   PasswordInput,
   BillingInput,
 } from '../../input-types'
-import { UserResponse, ErrorResponse } from '../../object-types'
+import { UserResponse, DefaultResponse } from '../../object-types'
 import {
   registerUser,
   sendVerificationEmail,
@@ -42,19 +42,19 @@ export class UserResolver {
     return await registerUser(options, context, referralToken)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async sendEmailForVerification(
     @Ctx() context: MyContext,
     @CurrentUser() user: User
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await sendVerificationEmail(user, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async verifyUserEmailByActivationCode(
     @Arg('emailActivationCode') emailActivationCode: string,
     @Ctx() context: MyContext
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await verifyEmailActivationToken(emailActivationCode, context)
   }
 
@@ -66,47 +66,47 @@ export class UserResolver {
     return await loginUser(options, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async sendForgotPasswordEmail(
     @Arg('options') options: EmailInput,
     @Ctx() context: MyContext
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await sendForgotPasswordEmail(options, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async verifyForgotPassword(
     @Arg('options') options: LoginInput,
     @Arg('forgotPasswordCode') forgotPasswordCode: string,
     @Ctx() context: MyContext
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await verifyForgotPasswordToken(options, forgotPasswordCode, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async changeUserAccountInfoByUsername(
     @Arg('options') options: EmailAndUsernameInput,
     @Arg('username') username: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await changeEmailAndUsername(options, username, user, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async changeUserPassword(
     @Arg('options') options: ChangePasswordInput,
     @CurrentUser() user: User
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await changePassword(options, user)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async deleteUserAccount(
     @Arg('options') options: PasswordInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await deleteAccount(options, user, context)
   }
 
@@ -119,8 +119,8 @@ export class UserResolver {
     return await updateBilling(options, user, context)
   }
 
-  @Mutation(() => [ErrorResponse])
-  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<ErrorResponse[]> {
+  @Mutation(() => DefaultResponse)
+  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<DefaultResponse> {
     return await logoutUser(context, user)
   }
 }

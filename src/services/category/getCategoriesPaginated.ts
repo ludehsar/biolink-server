@@ -4,7 +4,9 @@ import { Category } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { CategoryConnection } from '../../object-types'
 
-export const getAllCateogories = async (options: ConnectionArgs): Promise<CategoryConnection> => {
+export const getCategoriesPaginated = async (
+  options: ConnectionArgs
+): Promise<CategoryConnection> => {
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()

@@ -1,19 +1,19 @@
 import geoip from 'geoip-lite'
 import DeviceDetector from 'device-detector-js'
 import { Link, TrackLink } from '../../entities'
-import { ErrorResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
+import { DefaultResponse } from '../../object-types'
 
-export const trackLinkClicks = async (link: Link, context: MyContext): Promise<ErrorResponse[]> => {
-  const errors: ErrorResponse[] = []
-
+export const trackLinkClicks = async (link: Link, context: MyContext): Promise<DefaultResponse> => {
   if (!link) {
-    errors.push({
-      errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
-      message: 'Link could not be found',
-    })
-
-    return errors
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_COULD_NOT_BE_FOUND,
+          message: 'Link could not be found',
+        },
+      ],
+    }
   }
 
   // Collecting information
@@ -42,5 +42,5 @@ export const trackLinkClicks = async (link: Link, context: MyContext): Promise<E
 
   await trackLink.save()
 
-  return errors
+  return {}
 }

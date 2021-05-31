@@ -3,7 +3,7 @@ import { Query, Mutation, Arg, Ctx, Resolver } from 'type-graphql'
 
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
-import { UserResponse, ErrorResponse } from '../../object-types'
+import { UserResponse, DefaultResponse } from '../../object-types'
 import { loginAdmin, sendForgotPasswordEmail, logoutUser } from '../../services'
 import { MyContext } from '../../types'
 
@@ -22,16 +22,16 @@ export class AuthResolver {
     return await loginAdmin(options, context)
   }
 
-  @Mutation(() => [ErrorResponse])
+  @Mutation(() => DefaultResponse)
   async sendForgotPasswordEmail(
     @Arg('options') options: EmailInput,
     @Ctx() context: MyContext
-  ): Promise<ErrorResponse[]> {
+  ): Promise<DefaultResponse> {
     return await sendForgotPasswordEmail(options, context)
   }
 
-  @Mutation(() => [ErrorResponse])
-  async logout(@Ctx() context: MyContext, @CurrentAdmin() user: User): Promise<ErrorResponse[]> {
+  @Mutation(() => DefaultResponse)
+  async logout(@Ctx() context: MyContext, @CurrentAdmin() user: User): Promise<DefaultResponse> {
     return await logoutUser(context, user)
   }
 }

@@ -6,7 +6,7 @@ import { validate } from 'class-validator'
 import { FRONTEND_APP_URL } from '../../config'
 import { User } from '../../entities'
 import { EmailInput } from '../../input-types'
-import { ErrorResponse } from '../../object-types'
+import { DefaultResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { sgMail } from '../../utilities'
@@ -14,32 +14,30 @@ import { sgMail } from '../../utilities'
 export const sendForgotPasswordEmail = async (
   options: EmailInput,
   context: MyContext
-): Promise<ErrorResponse[]> => {
-  let errors: ErrorResponse[] = []
-
+): Promise<DefaultResponse> => {
   const validationErrors = await validate(options)
 
   if (validationErrors.length > 0) {
-    errors = errors.concat(
-      validationErrors.map((err) => ({
+    return {
+      errors: validationErrors.map((err) => ({
         field: err.property,
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
-      }))
-    )
-
-    return errors
+      })),
+    }
   }
 
   const user = await User.findOne({ where: { email: options.email } })
 
   if (!user) {
-    errors.push({
-      errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
-      message: 'Invalid email address',
-    })
-
-    return errors
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
+          message: 'Invalid email address',
+        },
+      ],
+    }
   }
 
   const forgotPasswordCode = randToken.generate(160)
@@ -59,6 +57,7 @@ export const sendForgotPasswordEmail = async (
     html: `Click <a href="${FRONTEND_APP_URL}/auth/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
 
+  const errors: ErrorResponse[] = []
   await sgMail.send(forgetPasswordMailData, false, (err) => {
     errors.push({
       errorCode: ErrorCode.DATABASE_ERROR,
@@ -66,8 +65,10 @@ export const sendForgotPasswordEmail = async (
     })
   })
 
+  if (errors.length > 0) return { errors }
+
   // Capture user log
   await captureUserActivity(user, context, 'Requested Forgot Password Verification Email')
 
-  return errors
+  return {}
 }

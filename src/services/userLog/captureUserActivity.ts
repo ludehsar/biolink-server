@@ -3,21 +3,23 @@ import geoip from 'geoip-lite'
 import axios from 'axios'
 import { User, UserLogs } from '../../entities'
 import { CountryInfo } from '../../interfaces'
-import { ErrorResponse } from '../../object-types'
+import { DefaultResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
 
 export const captureUserActivity = async (
   user: User,
   context: MyContext,
   description: string
-): Promise<ErrorResponse[]> => {
-  const errors: ErrorResponse[] = []
-
+): Promise<DefaultResponse> => {
   if (!user) {
-    errors.push({
-      errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-      message: 'User is not authenticated',
-    })
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User is not authenticated',
+        },
+      ],
+    }
   }
 
   const ip = context.req.ip
@@ -58,5 +60,5 @@ export const captureUserActivity = async (
 
   await user.save()
 
-  return errors
+  return {}
 }

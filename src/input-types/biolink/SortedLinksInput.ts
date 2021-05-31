@@ -5,5 +5,5 @@ import { IsArray } from 'class-validator'
 export class SortedLinksInput {
   @Field(() => [String], { defaultValue: [] })
   @IsArray()
-  shortenedLinks?: string[]
+  linkIds?: string[]
 }

@@ -14,7 +14,7 @@ import { verifyEmailActivationToken } from './auth/verifyEmailActivationToken'
 import { verifyForgotPasswordToken } from './auth/verifyForgotPasswordToken'
 // Biolink
 import { createBiolink } from './biolink/createBiolink'
-import { getAllDirectories } from './biolink/getAllDirectories'
+import { getDirectoriesPaginated } from './biolink/getDirectoriesPaginated'
 import { getBiolinkFromUsername } from './biolink/getBiolinkFromUsername'
 import { getUserBiolinks } from './biolink/getUserBiolinks'
 import { importFromLinktree } from './biolink/importFromLinktree'
@@ -33,7 +33,7 @@ import { updateUTMParameterSettings } from './biolink/updateUTMParameterSettings
 import { uploadBiolinkCoverPhoto } from './biolink/uploadBiolinkCoverPhoto'
 import { uploadBiolinkProfilePhoto } from './biolink/uploadBiolinkProfilePhoto'
 // Category
-import { getAllCateogories } from './category/getAllCategories'
+import { getCategoriesPaginated } from './category/getCategoriesPaginated'
 // Code
 import { createReferralCode } from './code/createReferralCode'
 import { createNewLink } from './link/createNewLink'
@@ -89,11 +89,11 @@ export {
   updatePrivacySettings,
   updateDirectorySettings,
   sortBiolinkLinks,
-  getAllDirectories,
+  getDirectoriesPaginated,
   removeBiolink,
   importFromLinktree,
   // Categories
-  getAllCateogories,
+  getCategoriesPaginated,
   // Code
   createReferralCode,
   // Link

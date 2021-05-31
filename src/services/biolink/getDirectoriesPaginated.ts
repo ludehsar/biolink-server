@@ -4,7 +4,7 @@ import { Category, Biolink } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 
-export const getAllDirectories = async (
+export const getDirectoriesPaginated = async (
   categoryId: number,
   options: ConnectionArgs
 ): Promise<BiolinkConnection> => {

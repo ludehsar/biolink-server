@@ -11,7 +11,7 @@ export const createNewLink = async (
   options: NewLinkInput,
   user: User,
   context: MyContext,
-  username?: string
+  biolinkId?: string
 ): Promise<LinkResponse> => {
   if (!user) {
     return {
@@ -107,8 +107,8 @@ export const createNewLink = async (
       link.password = password
     }
 
-    if (username) {
-      const biolink = await Biolink.findOne({ where: { username } })
+    if (biolinkId) {
+      const biolink = await Biolink.findOne(biolinkId)
 
       if (!biolink) {
         return {
