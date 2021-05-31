@@ -55,8 +55,8 @@ export class Link extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   enablePasswordProtection!: boolean
 
-  @Column({ nullable: true })
-  password?: string
+  @Column({ type: 'text', nullable: true })
+  password!: string | null
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })

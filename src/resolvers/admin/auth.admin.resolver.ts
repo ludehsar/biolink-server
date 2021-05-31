@@ -8,7 +8,7 @@ import { loginAdmin, sendForgotPasswordEmail, logoutUser } from '../../services'
 import { MyContext } from '../../types'
 
 @Resolver()
-export class AuthResolver {
+export class AuthAdminResolver {
   @Query(() => User, { nullable: true })
   me(@CurrentAdmin() user: User): User | null {
     return user

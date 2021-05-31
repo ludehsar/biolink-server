@@ -2,12 +2,12 @@ import { UserConnection } from '../../object-types'
 import { ConnectionArgs } from '../../input-types'
 import { ErrorCode } from '../../types'
 import { User } from '../../entities'
-import { getRepository } from 'typeorm'
+import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
 
-export const getUserPaginated = async (
+export const getUsersPaginated = async (
   options: ConnectionArgs,
-  user?: User
+  user: User
 ): Promise<UserConnection> => {
   if (!user) {
     return {
@@ -42,19 +42,55 @@ export const getUserPaginated = async (
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()
+
   let after = null
   if (options.after)
     after = moment(Buffer.from(options.after, 'base64').toString())
       .add(1, 'second')
       .format('YYYY-MM-DD HH:mm:ss')
 
-  // Preparing object
+  // Gettings the directories and preparing objects
   const connection = new UserConnection()
+
   const qb = getRepository(User)
     .createQueryBuilder('user')
-    .where(`LOWER(user.email) like :query`, {
-      query: `%${options.query.toLowerCase()}%`,
-    })
+    .where(
+      new Brackets((qb) => {
+        qb.where(`LOWER(user.email) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER("user"."billing"->>'name') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address1') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address2') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'city') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'state') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'country') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'zip') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'phone') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.lastIPAddress) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.country) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
 
   if (before) {
     qb.andWhere('user.createdAt < :before', { before })
@@ -65,52 +101,120 @@ export const getUserPaginated = async (
       .orderBy('user.createdAt', 'ASC')
       .limit(options.first)
   } else {
-    qb.orderBy('user.email', 'ASC').limit(options.first)
+    qb.orderBy('user.createdAt', 'ASC').limit(options.first)
   }
 
-  const categories = await qb.getMany()
+  const users = await qb.getMany()
 
   if (before) {
-    categories.reverse()
+    users.reverse()
   }
 
-  const firstUser = categories[0]
-  const lastUser = categories[categories.length - 1]
+  const firstBiolink = users[0]
+  const lastBiolink = users[users.length - 1]
 
   // Checking if previous page and next page is present
-  const minDate = moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss')
-  const maxDate = moment(lastUser?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
+  const minDate = moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment(lastBiolink?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
-  const previousCategories = await getRepository(User)
-    .createQueryBuilder('user')
-    .where(`LOWER(user.email) like :query`, {
-      query: `%${options.query.toLowerCase()}%`,
-    })
-    .andWhere('user.createdAt < :minDate', { minDate })
-    .getMany()
-
-  const nextCategories = await getRepository(User)
-    .createQueryBuilder('user')
-    .where(`LOWER(user.email) like :query`, {
-      query: `%${options.query.toLowerCase()}%`,
-    })
-    .andWhere('user.createdAt > :maxDate', { maxDate })
-    .getMany()
-
-  connection.edges = categories.map((user) => ({
+  connection.edges = users.map((user) => ({
     node: user,
     cursor: Buffer.from(moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
   }))
 
+  const previousBiolinks = await getRepository(User)
+    .createQueryBuilder('user')
+    .where(
+      new Brackets((qb) => {
+        qb.where(`LOWER(user.email) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER("user"."billing"->>'name') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address1') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address2') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'city') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'state') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'country') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'zip') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'phone') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.lastIPAddress) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.country) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
+    .where('user.createdAt < :minDate', { minDate })
+    .getMany()
+
+  const nextBiolinks = await getRepository(User)
+    .createQueryBuilder('user')
+    .where(
+      new Brackets((qb) => {
+        qb.where(`LOWER(user.email) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER("user"."billing"->>'name') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address1') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'address2') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'city') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'state') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'country') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'zip') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER("user"."billing"->>'phone') like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.lastIPAddress) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.country) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
+    .where('user.createdAt > :maxDate', { maxDate })
+    .getMany()
+
   connection.pageInfo = {
     startCursor: Buffer.from(
-      moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
     endCursor: Buffer.from(
-      moment(lastUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(lastBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
-    hasNextPage: !!nextCategories.length,
-    hasPreviousPage: !!previousCategories.length,
+    hasNextPage: !!nextBiolinks.length,
+    hasPreviousPage: !!previousBiolinks.length,
   }
 
   return connection

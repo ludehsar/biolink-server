@@ -114,7 +114,10 @@ export const updateLink = async (
   link.enablePasswordProtection = options.enablePasswordProtection
 
   if (options.enablePasswordProtection) {
-    if (!options.password) {
+    if (options.password) {
+      const password = await argon2.hash(options.password)
+      link.password = password
+    } else if (link.password === null) {
       return {
         errors: [
           {
@@ -124,8 +127,8 @@ export const updateLink = async (
         ],
       }
     }
-    const password = await argon2.hash(options.password)
-    link.password = password
+  } else {
+    link.password = null
   }
 
   if (biolinkId) {

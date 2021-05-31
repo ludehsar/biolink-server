@@ -1,3 +1,4 @@
-import { AuthResolver } from './auth.admin.resolver'
+import { AuthAdminResolver } from './auth.admin.resolver'
+import { UserAdminResolver } from './user.admin.resolver'
 
-export { AuthResolver }
+export { AuthAdminResolver, UserAdminResolver }

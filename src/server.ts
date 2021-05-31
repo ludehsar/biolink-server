@@ -21,7 +21,7 @@ import {
   VerificationResolver,
   AnalyticsResolver,
 } from './resolvers/app'
-import { AuthResolver } from './resolvers/admin'
+import { AuthAdminResolver, UserAdminResolver } from './resolvers/admin'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -79,7 +79,7 @@ const main = async (): Promise<void> => {
   // Configuring admin app api
   const adminServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AuthResolver],
+      resolvers: [AuthAdminResolver, UserAdminResolver],
       validate: false,
     }),
     uploads: false,
