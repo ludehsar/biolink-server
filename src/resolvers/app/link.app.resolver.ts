@@ -36,7 +36,7 @@ export class LinkResolver {
     @CurrentUser() user: User,
     @Arg('biolinkId', { nullable: true, description: 'Biolink ID' }) biolinkId?: string
   ): Promise<LinkResponse> {
-    return await createNewLink(options, user, context, biolinkId)
+    return await createNewLink(options, context, user, biolinkId)
   }
 
   @Mutation(() => LinkResponse)

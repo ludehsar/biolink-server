@@ -75,6 +75,7 @@ export class Link extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.links, { lazy: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>
@@ -82,6 +83,7 @@ export class Link extends BaseEntity {
   @RelationId((link: Link) => link.user)
   userId!: string
 
+  @Field(() => Biolink, { nullable: true })
   @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true, lazy: true })
   @JoinColumn({ name: 'biolinkId' })
   biolink?: Promise<Biolink>

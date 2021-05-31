@@ -60,8 +60,8 @@ export const importFromLinktree = async (
       res.links.forEach(async (link) => {
         await createNewLink(
           { url: link.url, linkTitle: link.linkTitle, enablePasswordProtection: false },
-          user,
           context,
+          user,
           id
         )
       })

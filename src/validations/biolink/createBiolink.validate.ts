@@ -1,4 +1,5 @@
 import { validate } from 'class-validator'
+import { getRepository } from 'typeorm'
 import { User, BlackList, Biolink, PremiumUsername, Plan } from '../../entities'
 import { BlacklistType } from '../../enums'
 import { NewBiolinkInput } from '../../input-types'
@@ -75,7 +76,10 @@ export const createBiolinkValidated = async (
   }
 
   // Checks plan
-  const currentBiolinkCount = (await user.biolinks).length
+  const currentBiolinkCount = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .where('biolink.userId = :userId', { userId: user.id })
+    .getCount()
 
   const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
 

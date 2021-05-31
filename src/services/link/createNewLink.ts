@@ -6,11 +6,12 @@ import { NewLinkInput } from '../../input-types'
 import { LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
+import { getRepository } from 'typeorm'
 
 export const createNewLink = async (
   options: NewLinkInput,
-  user: User,
   context: MyContext,
+  user: User,
   biolinkId?: string
 ): Promise<LinkResponse> => {
   if (!user) {
@@ -24,9 +25,12 @@ export const createNewLink = async (
     }
   }
 
-  const currentLinksCount = (await user.links).length
+  const currentLinksCount = await getRepository(Link)
+    .createQueryBuilder('link')
+    .where('link.userId = :userId', { userId: user.id })
+    .getCount()
 
-  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+  const plan = (await user.plan) || (await Plan.findOne({ where: { name: 'Free' } }))
 
   if (!plan) {
     return {
@@ -90,8 +94,6 @@ export const createNewLink = async (
       note: options.note,
     })
 
-    link.user = Promise.resolve(user)
-
     if (options.enablePasswordProtection) {
       if (!options.password) {
         return {
@@ -135,9 +137,9 @@ export const createNewLink = async (
       link.biolink = Promise.resolve(biolink)
     }
 
-    await link.save()
+    link.user = Promise.resolve(user)
 
-    console.log('User ID#:', link.userId)
+    await link.save()
 
     // Capture user log
     await captureUserActivity(user, context, `Created new link ${link.url}`)
