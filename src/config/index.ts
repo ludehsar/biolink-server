@@ -1,4 +1,5 @@
 import {
+  BACKEND_URL,
   COOKIE_NAME,
   COOKIE_SAMESITE,
   COOKIE_SECURE,
@@ -16,6 +17,7 @@ import corsOptions from './cors.config'
 import { dbHost, dbName, dbPassword, dbPort, dbType, dbUser } from './database.config'
 
 export {
+  BACKEND_URL,
   COOKIE_NAME,
   COOKIE_SAMESITE,
   COOKIE_SECURE,

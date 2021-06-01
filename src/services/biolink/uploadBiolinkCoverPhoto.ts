@@ -3,6 +3,7 @@ import { FileUpload } from 'graphql-upload'
 import path from 'path'
 import randToken from 'rand-token'
 
+import { BACKEND_URL } from '../../config'
 import { User, Biolink } from '../../entities'
 import { BiolinkResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -63,7 +64,7 @@ export const uploadBiolinkCoverPhoto = async (
     }
   }
 
-  biolink.coverPhotoUrl = context.req.get('origin') + '/static/coverPhotos/' + coverPhotoName
+  biolink.coverPhotoUrl = BACKEND_URL + '/static/coverPhotos/' + coverPhotoName
   await biolink.save()
 
   await captureUserActivity(user, context, `Uploaded ${biolink.username} cover photo`)
