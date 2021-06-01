@@ -1,7 +1,8 @@
 import { CorsOptions } from 'cors'
+import { FRONTEND_APP_URL, ADMIN_APP_URL } from '../config'
 
 const options: CorsOptions = {
-  origin: [process.env.FRONTEND_APP_URL as string, 'http://localhost:3000'], // TODO: should be removed in production
+  origin: [FRONTEND_APP_URL, ADMIN_APP_URL, 'http://localhost:3000'], // TODO: should be removed in production
   credentials: true,
 }
 

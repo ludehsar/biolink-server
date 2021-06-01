@@ -1,4 +1,5 @@
 import { Router, Response } from 'express'
+import { FRONTEND_APP_URL } from '../config'
 import { stripe } from '../utilities'
 
 const stripeRoutes = Router()
@@ -20,8 +21,8 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
       // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
-      success_url: `${process.env.FRONTEND_APP_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_APP_URL}/canceled.html`,
+      success_url: `${FRONTEND_APP_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${FRONTEND_APP_URL}/canceled.html`,
     })
 
     res.send({
