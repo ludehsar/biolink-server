@@ -45,6 +45,7 @@ import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
 // Plan
 import { getAllPlans } from './plan/getAllPlans'
+import { getVisiblePlans } from './plan/getVisiblePlans'
 // Referral
 import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
@@ -108,6 +109,7 @@ export {
   captureUserActivity,
   // Plan
   getAllPlans,
+  getVisiblePlans,
   // Referral
   createReferrals,
   getUserReferrals,

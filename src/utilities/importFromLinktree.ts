@@ -5,6 +5,7 @@ import request from 'request'
 import path from 'path'
 import randToken from 'rand-token'
 import { SocialMediaProps } from '../json-types'
+import { BACKEND_URL } from '../config'
 
 export interface LinktreeParsingProps {
   bio?: string
@@ -34,9 +35,9 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
 
   const imageUrl = $('div[class="sc-bdfBwQ eZNKTD"] > div > div > img')[0].attribs['src']
 
-  const profilePhotoUrl = `${randToken.generate(20)}-${Date.now().toString()}`
+  const profilePhotoName = `${randToken.generate(20)}-${Date.now().toString()}`
 
-  const directory = path.join(__dirname, `../../assets/profilePhotos/${profilePhotoUrl}`)
+  const directory = path.join(__dirname, `../../assets/profilePhotos/${profilePhotoName}`)
 
   download(imageUrl, directory, (err) => {
     return Promise.reject(err)
@@ -54,6 +55,6 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
         platform: element.attribs['aria-label'].trim(),
         link: element.attribs['href'].trim(),
       })) || [],
-    profilePhotoUrl,
+    profilePhotoUrl: BACKEND_URL + '/static/profilePhotos/' + profilePhotoName,
   }
 }
