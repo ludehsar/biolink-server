@@ -1,3 +1,5 @@
+// Admin Role
+import { getAdminRoles } from './adminRole/getAdminRoles'
 // Analytics
 import { getBiolinkChartData } from './analytics/getBiolinkChartData'
 import { getLinkClicksData } from './analytics/getLinkClicksData'
@@ -50,6 +52,7 @@ import { getVisiblePlans } from './plan/getVisiblePlans'
 import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
 // User
+import { addNewUser } from './user/addNewUser'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
 import { changePassword } from './user/changePassword'
 import { deleteAccount } from './user/deleteAccount'
@@ -61,6 +64,9 @@ import { captureUserActivity } from './userLog/captureUserActivity'
 import { createVerification } from './verification/createVerification'
 
 export {
+  // Admin Role
+  getAdminRoles,
+  // Analytics
   getBiolinkChartData,
   getLinkClicksData,
   trackBiolinkClicks,
@@ -114,6 +120,7 @@ export {
   createReferrals,
   getUserReferrals,
   // User
+  addNewUser,
   changeEmailAndUsername,
   changePassword,
   deleteAccount,

@@ -28,6 +28,7 @@ import { ChangePasswordInput } from './user/ChangePasswordInput'
 import { EmailAndUsernameInput } from './user/EmailAndUsernameInput'
 import { EmailInput } from './user/EmailInput'
 import { LoginInput } from './user/LoginInput'
+import { NewUserInput } from './user/NewUserInput'
 import { PasswordInput } from './user/PasswordInput'
 import { RegisterInput } from './user/RegisterInput'
 // Verification
@@ -64,6 +65,7 @@ export {
   EmailAndUsernameInput,
   EmailInput,
   LoginInput,
+  NewUserInput,
   PasswordInput,
   RegisterInput,
   // Verification

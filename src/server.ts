@@ -22,6 +22,7 @@ import {
   AnalyticsResolver,
 } from './resolvers/app'
 import {
+  AdminRoleAdminResolver,
   AuthAdminResolver,
   CategoryAdminResolver,
   PlanAdminResolver,
@@ -84,7 +85,13 @@ const main = async (): Promise<void> => {
   // Configuring admin app api
   const adminServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AuthAdminResolver, CategoryAdminResolver, PlanAdminResolver, UserAdminResolver],
+      resolvers: [
+        AdminRoleAdminResolver,
+        AuthAdminResolver,
+        CategoryAdminResolver,
+        PlanAdminResolver,
+        UserAdminResolver,
+      ],
       validate: false,
     }),
     uploads: false,

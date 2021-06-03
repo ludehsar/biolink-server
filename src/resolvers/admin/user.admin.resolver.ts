@@ -1,10 +1,11 @@
-import { Arg, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
-import { UserConnection } from '../../object-types'
-import { ConnectionArgs } from '../../input-types'
+import { DefaultResponse, UserConnection } from '../../object-types'
+import { ConnectionArgs, NewUserInput } from '../../input-types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
-import { getUsersPaginated } from '../../services'
+import { addNewUser, getUsersPaginated } from '../../services'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class UserAdminResolver {
@@ -14,5 +15,14 @@ export class UserAdminResolver {
     @CurrentAdmin() admin: User
   ): Promise<UserConnection> {
     return await getUsersPaginated(options, admin)
+  }
+
+  @Mutation(() => DefaultResponse, { nullable: true })
+  async addNewUser(
+    @Arg('options') options: NewUserInput,
+    @CurrentAdmin() admin: User,
+    @Ctx() context: MyContext
+  ): Promise<DefaultResponse> {
+    return await addNewUser(options, admin, context)
   }
 }

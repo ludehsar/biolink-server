@@ -1,3 +1,5 @@
+// Admin Role
+import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { ChartResponse } from './analytics/ChartResponse'
 import { ChartValue } from './analytics/ChartValue'
@@ -30,6 +32,7 @@ import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
 
 export {
+  AdminRoleResponse,
   BiolinkConnection,
   BiolinkEdge,
   BiolinkListResponse,

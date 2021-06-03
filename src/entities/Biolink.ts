@@ -97,6 +97,7 @@ export class Biolink extends BaseEntity {
   @JoinColumn({ name: 'verificationId' })
   verification!: Promise<Verification>
 
+  @Field(() => String, { nullable: true })
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string
 }

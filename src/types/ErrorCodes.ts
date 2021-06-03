@@ -16,6 +16,7 @@ export class ErrorCode {
   public static PLAN_COULD_NOT_BE_FOUND = 14
   public static CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST = 15
   public static UPLOAD_ERROR = 16
+  public static ADMIN_ROLE_NOT_FOUND = 17
 
   public static DATABASE_ERROR = 9999
   public static CLIENT_SIDE_ERROR = 10000
