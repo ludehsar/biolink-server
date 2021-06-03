@@ -1,11 +1,11 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
-import { Category, Biolink } from '../../entities'
+import { Biolink } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 
 export const getDirectoriesPaginated = async (
-  categoryId: number,
+  categoryIds: number[],
   options: ConnectionArgs
 ): Promise<BiolinkConnection> => {
   // Getting before and after cursors from connection args
@@ -20,7 +20,6 @@ export const getDirectoriesPaginated = async (
 
   // Gettings the directories and preparing objects
   const connection = new BiolinkConnection()
-  const category = await Category.findOne(categoryId)
 
   const qb = getRepository(Biolink)
     .createQueryBuilder('biolink')
@@ -46,8 +45,8 @@ export const getDirectoriesPaginated = async (
       })
     )
 
-  if (category) {
-    qb.andWhere('biolink.categoryId = :categoryId', { categoryId })
+  if (categoryIds) {
+    qb.andWhere('biolink.categoryId in (:...categoryIds)', { categoryIds })
   }
 
   qb.leftJoinAndSelect('biolink.user', 'user')

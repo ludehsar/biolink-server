@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
 import { CurrentUser } from '../../decorators'
@@ -204,9 +204,9 @@ export class BiolinkResolver {
   @Query(() => BiolinkConnection, { nullable: true })
   async getAllDirectories(
     @Arg('options') options: ConnectionArgs,
-    @Arg('categoryId', { defaultValue: 0 }) categoryId: number
+    @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
   ): Promise<BiolinkConnection> {
-    return await getDirectoriesPaginated(categoryId, options)
+    return await getDirectoriesPaginated(categoryIds, options)
   }
 
   @Mutation(() => DefaultResponse)

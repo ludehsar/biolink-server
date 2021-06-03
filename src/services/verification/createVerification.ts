@@ -7,6 +7,7 @@ import { DefaultResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
+import { VerificationStatus } from '../../enums'
 
 export const createVerification = async (
   options: VerificationInput,
@@ -179,6 +180,9 @@ export const createVerification = async (
   verification.category = Promise.resolve(category)
   verification.user = Promise.resolve(user)
 
+  biolink.verificationStatus = VerificationStatus.Pending
+
+  await biolink.save()
   await verification.save()
 
   // Capture user log

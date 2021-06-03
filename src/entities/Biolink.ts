@@ -17,6 +17,7 @@ import {
 
 import { BiolinkSettings } from '../json-types'
 import { User, Link, TrackLink, Category, Verification } from '../entities'
+import { VerificationStatus } from '../enums'
 
 @ObjectType()
 @Entity()
@@ -53,6 +54,15 @@ export class Biolink extends BaseEntity {
   @Column({ type: 'json', nullable: true })
   @Field(() => BiolinkSettings, { nullable: true })
   settings!: BiolinkSettings
+
+  @Field(() => String, { nullable: true })
+  @Column({
+    type: 'enum',
+    enum: VerificationStatus,
+    default: VerificationStatus.NotApplied,
+    nullable: true,
+  })
+  verificationStatus!: VerificationStatus
 
   @CreateDateColumn()
   @Field(() => String, { nullable: true })
@@ -97,7 +107,6 @@ export class Biolink extends BaseEntity {
   @JoinColumn({ name: 'verificationId' })
   verification!: Promise<Verification>
 
-  @Field(() => String, { nullable: true })
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string
 }
