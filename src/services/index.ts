@@ -57,6 +57,7 @@ import { changeEmailAndUsername } from './user/changeEmailAndUsername'
 import { changePassword } from './user/changePassword'
 import { deleteAccount } from './user/deleteAccount'
 import { updateBilling } from './user/updateBilling'
+import { getAdminsPaginated } from './user/getAdminsPaginated'
 import { getUsersPaginated } from './user/getUsersPaginated'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
@@ -124,6 +125,7 @@ export {
   changeEmailAndUsername,
   changePassword,
   deleteAccount,
+  getAdminsPaginated,
   getUsersPaginated,
   updateBilling,
   // Verification
