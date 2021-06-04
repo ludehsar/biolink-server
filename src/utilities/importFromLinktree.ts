@@ -18,9 +18,13 @@ export interface LinktreeParsingProps {
 }
 
 const download = (url: string, path: string, errorCallback: (err: Error) => void): void => {
-  request.head(url, () => {
-    request(url).pipe(fs.createWriteStream(path)).on('error', errorCallback)
-  })
+  try {
+    request.head(url, () => {
+      request(url).pipe(fs.createWriteStream(path)).on('error', errorCallback)
+    })
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const linktreeImportHandler = async (url: string): Promise<LinktreeParsingProps> => {
@@ -39,11 +43,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
 
   const directory = path.join(__dirname, `../../assets/profilePhotos/${profilePhotoName}`)
 
-  download(imageUrl, directory, (err) => {
-    return Promise.reject(err)
-  })
-
-  return {
+  const result: LinktreeParsingProps = {
     bio: $('div[class="sc-bdfBwQ ciojAP"] > p').text().trim() || '',
     links:
       Array.from($('div[class="sc-bdfBwQ pkAuV"] > div > a')).map((element) => ({
@@ -55,6 +55,13 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
         platform: element.attribs['aria-label'].trim(),
         link: element.attribs['href'].trim(),
       })) || [],
-    profilePhotoUrl: BACKEND_URL + '/static/profilePhotos/' + profilePhotoName,
   }
+
+  download(imageUrl, directory, () => {
+    return result
+  })
+
+  result.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
+
+  return result
 }

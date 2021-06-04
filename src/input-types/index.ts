@@ -26,6 +26,7 @@ import { ReferredUserInfo } from './referrals/ReferredUserInfo'
 import { BillingInput } from './user/BillingInput'
 import { ChangePasswordInput } from './user/ChangePasswordInput'
 import { EmailAndUsernameInput } from './user/EmailAndUsernameInput'
+import { EditUserInput } from './user/EditUserInput'
 import { EmailInput } from './user/EmailInput'
 import { LoginInput } from './user/LoginInput'
 import { NewUserInput } from './user/NewUserInput'
@@ -63,6 +64,7 @@ export {
   BillingInput,
   ChangePasswordInput,
   EmailAndUsernameInput,
+  EditUserInput,
   EmailInput,
   LoginInput,
   NewUserInput,
