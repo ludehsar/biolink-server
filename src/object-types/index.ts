@@ -13,6 +13,7 @@ import { BiolinkResponse } from './biolink/BiolinkResponse'
 // Category
 import { CategoryConnection } from './category/CategoryConnection'
 import { CategoryEdge } from './category/CategoryEdge'
+import { CategoryResponse } from './category/CategoryResponse'
 // Common
 import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
@@ -39,6 +40,7 @@ export {
   BiolinkResponse,
   CategoryConnection,
   CategoryEdge,
+  CategoryResponse,
   ChartResponse,
   ChartValue,
   DefaultResponse,

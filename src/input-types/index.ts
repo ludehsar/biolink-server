@@ -14,6 +14,8 @@ import { SocialAccountsInput } from './biolink/SocialAccountsInput'
 import { SortedLinksInput } from './biolink/SortedLinksInput'
 import { UTMParameterInput } from './biolink/UTMParameterInput'
 import { UpdateBiolinkProfileInput } from './biolink/UpdateBiolinkProfileInput'
+// Category
+import { NewCategoryInput } from './category/NewCategoryInput'
 // Common
 import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
@@ -52,6 +54,8 @@ export {
   SortedLinksInput,
   UTMParameterInput,
   UpdateBiolinkProfileInput,
+  // Category
+  NewCategoryInput,
   // Common
   ConnectionArgs,
   FileType,

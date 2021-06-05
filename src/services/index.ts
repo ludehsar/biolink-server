@@ -35,6 +35,9 @@ import { updateUTMParameterSettings } from './biolink/updateUTMParameterSettings
 import { uploadBiolinkCoverPhoto } from './biolink/uploadBiolinkCoverPhoto'
 import { uploadBiolinkProfilePhoto } from './biolink/uploadBiolinkProfilePhoto'
 // Category
+import { addCategory } from './category/addCategory'
+import { editCategory } from './category/editCategory'
+import { getCategory } from './category/getCategory'
 import { getCategoriesPaginated } from './category/getCategoriesPaginated'
 // Code
 import { createReferralCode } from './code/createReferralCode'
@@ -104,7 +107,10 @@ export {
   removeBiolink,
   importFromLinktree,
   // Categories
+  addCategory,
+  editCategory,
   getCategoriesPaginated,
+  getCategory,
   // Code
   createReferralCode,
   // Link
