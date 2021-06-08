@@ -27,7 +27,7 @@ export class AdminRole extends BaseEntity {
   roleDescription!: string
 
   @Column({ type: 'json', nullable: true })
-  @Field(() => String, { nullable: true })
+  @Field(() => [RoleSettings], { nullable: true })
   roleSettings!: RoleSettings[]
 
   @CreateDateColumn()

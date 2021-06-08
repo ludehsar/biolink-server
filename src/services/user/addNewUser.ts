@@ -54,7 +54,10 @@ export const addNewUser = async (
     return role.resource === 'user'
   })
 
-  if (!adminRole || !userSettings || !userSettings.canCreate) {
+  if (
+    (!adminRole || !userSettings || !userSettings.canCreate) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
     return {
       errors: [
         {

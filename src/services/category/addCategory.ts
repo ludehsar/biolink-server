@@ -39,7 +39,10 @@ export const addCategory = async (
     return role.resource === 'category'
   })
 
-  if (!adminRole || !userSettings || !userSettings.canCreate) {
+  if (
+    (!adminRole || !userSettings || !userSettings.canCreate) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
     return {
       errors: [
         {

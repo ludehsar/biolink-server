@@ -43,7 +43,10 @@ export const editUser = async (
     return role.resource === 'user'
   })
 
-  if (!adminRole || !userSettings || !userSettings.canEdit) {
+  if (
+    (!adminRole || !userSettings || !userSettings.canEdit) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
     return {
       errors: [
         {

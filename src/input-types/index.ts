@@ -1,3 +1,6 @@
+// Admin Role
+import { NewAdminRoleInput } from './adminRole/NewAdminRoleInput'
+import { RoleSettingsInput } from './adminRole/RoleSettingsInput'
 // Analytics
 import { AnalyticsInput } from './analytics/AnalyticsInput'
 // Biolink
@@ -38,6 +41,9 @@ import { RegisterInput } from './user/RegisterInput'
 import { VerificationInput } from './verification/VerificationInput'
 
 export {
+  //Admin Role
+  NewAdminRoleInput,
+  RoleSettingsInput,
   // Analytics
   AnalyticsInput,
   // Biolink

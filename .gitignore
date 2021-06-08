@@ -132,4 +132,5 @@ build
 # End of https://www.toptal.com/developers/gitignore/api/node,dotenv,vscode
 
 # Assets
-assets
+assets/profilePhotos
+assets/coverPhotos

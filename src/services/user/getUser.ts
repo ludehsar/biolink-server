@@ -24,7 +24,10 @@ export const getUser = async (id: string, adminUser: User): Promise<UserResponse
     return role.resource === 'user'
   })
 
-  if (!adminRole || !userSettings || !userSettings.canShow) {
+  if (
+    (!adminRole || !userSettings || !userSettings.canShow) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
     return {
       errors: [
         {

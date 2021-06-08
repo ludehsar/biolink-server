@@ -1,16 +1,15 @@
-import { validate } from 'class-validator'
-import { CategoryResponse } from '../../object-types'
-import { NewCategoryInput } from '../../input-types'
 import { ErrorCode, MyContext } from '../../types'
-import { Category, User } from '../../entities'
+import { NewAdminRoleInput } from '../../input-types'
+import { AdminRole, User } from '../../entities'
+import { AdminRoleResponse } from '../../object-types'
+import { validate } from 'class-validator'
 import { captureUserActivity } from '../../services'
 
-export const editCategory = async (
-  id: number,
-  options: NewCategoryInput,
+export const createAdminRole = async (
+  options: NewAdminRoleInput,
   adminUser: User,
   context: MyContext
-): Promise<CategoryResponse> => {
+): Promise<AdminRoleResponse> => {
   const validationErrors = await validate(options)
   if (validationErrors.length > 0) {
     return {
@@ -37,11 +36,11 @@ export const editCategory = async (
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {
-    return role.resource === 'category'
+    return role.resource === 'adminRole'
   })
 
   if (
-    (!adminRole || !userSettings || !userSettings.canEdit) &&
+    (!adminRole || !userSettings || !userSettings.canCreate) &&
     adminRole.roleName !== 'Administrator'
   ) {
     return {
@@ -54,31 +53,21 @@ export const editCategory = async (
     }
   }
 
-  const category = await Category.findOne(id)
-
-  if (!category) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.CATEGORY_COULD_NOT_BE_FOUND,
-          message: 'Category not found',
-        },
-      ],
-    }
-  }
-
   try {
-    category.categoryName = options.categoryName as string
-    await category.save()
+    const newAdminRole = await AdminRole.create({
+      roleName: options.roleName,
+      roleDescription: options.roleDescription,
+      roleSettings: options.roleSettings,
+    }).save()
 
-    await captureUserActivity(adminUser, context, `Edited category to ${category.categoryName}`)
+    await captureUserActivity(adminUser, context, `Created new admin role ${newAdminRole.roleName}`)
 
-    return { category }
+    return { adminRole: newAdminRole }
   } catch (err) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.CATEGORY_ALREADY_EXISTS,
+          errorCode: ErrorCode.DATABASE_ERROR,
           message: err.message,
         },
       ],

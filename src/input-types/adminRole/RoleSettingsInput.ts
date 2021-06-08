@@ -1,7 +1,7 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, InputType } from 'type-graphql'
 
-@ObjectType()
-export class RoleSettings {
+@InputType()
+export class RoleSettingsInput {
   @Field(() => String, { nullable: true })
   resource!: string
 

@@ -1,4 +1,5 @@
 // Admin Role
+import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { ChartResponse } from './analytics/ChartResponse'
@@ -33,6 +34,7 @@ import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
 
 export {
+  AdminRoleListResponse,
   AdminRoleResponse,
   BiolinkConnection,
   BiolinkEdge,

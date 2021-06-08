@@ -28,7 +28,10 @@ export const getAdminsPaginated = async (
     return role.resource === 'user'
   })
 
-  if (!adminRole || !userSettings || !userSettings.canShowList) {
+  if (
+    (!adminRole || !userSettings || !userSettings.canShowList) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
     return {
       errors: [
         {

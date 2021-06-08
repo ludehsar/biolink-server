@@ -3,10 +3,10 @@ import { ErrorResponse } from '..'
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
-export class AdminRoleResponse {
+export class AdminRoleListResponse {
   @Field(() => [ErrorResponse], { nullable: true })
   errors?: ErrorResponse[]
 
-  @Field(() => AdminRole, { nullable: true })
-  adminRole?: AdminRole
+  @Field(() => [AdminRole], { nullable: true })
+  adminRoles?: AdminRole[]
 }

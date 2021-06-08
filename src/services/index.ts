@@ -1,4 +1,7 @@
 // Admin Role
+import { createAdminRole } from './adminRole/createAdminRole'
+import { editAdminRole } from './adminRole/editAdminRole'
+import { getAdminRole } from './adminRole/getAdminRole'
 import { getAdminRoles } from './adminRole/getAdminRoles'
 // Analytics
 import { getBiolinkChartData } from './analytics/getBiolinkChartData'
@@ -71,6 +74,9 @@ import { createVerification } from './verification/createVerification'
 
 export {
   // Admin Role
+  createAdminRole,
+  editAdminRole,
+  getAdminRole,
   getAdminRoles,
   // Analytics
   getBiolinkChartData,

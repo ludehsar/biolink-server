@@ -1,8 +1,8 @@
-import { AdminRole, User } from '../../entities'
-import { AdminRoleListResponse } from '../../object-types'
 import { ErrorCode } from '../../types'
+import { AdminRole, User } from '../../entities'
+import { AdminRoleResponse } from '../../object-types'
 
-export const getAdminRoles = async (adminUser: User): Promise<AdminRoleListResponse> => {
+export const getAdminRole = async (id: number, adminUser: User): Promise<AdminRoleResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -22,7 +22,7 @@ export const getAdminRoles = async (adminUser: User): Promise<AdminRoleListRespo
   })
 
   if (
-    (!adminRole || !userSettings || !userSettings.canCreate) &&
+    (!adminRole || !userSettings || !userSettings.canShow) &&
     adminRole.roleName !== 'Administrator'
   ) {
     return {
@@ -35,20 +35,18 @@ export const getAdminRoles = async (adminUser: User): Promise<AdminRoleListRespo
     }
   }
 
-  const adminRoles = await AdminRole.find()
+  const requiredAdminRole = await AdminRole.findOne(id)
 
-  if (!adminRoles) {
+  if (!requiredAdminRole) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.DATABASE_ERROR,
-          message: 'Something went wrong',
+          errorCode: ErrorCode.ADMIN_ROLE_NOT_FOUND,
+          message: 'Admin role not found',
         },
       ],
     }
   }
 
-  return {
-    adminRoles,
-  }
+  return { adminRole: requiredAdminRole }
 }

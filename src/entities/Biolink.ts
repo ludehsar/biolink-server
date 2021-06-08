@@ -18,6 +18,7 @@ import {
 import { BiolinkSettings } from '../json-types'
 import { User, Link, TrackLink, Category, Verification } from '../entities'
 import { VerificationStatus } from '../enums'
+import { BACKEND_URL } from '../config'
 
 @ObjectType()
 @Entity()
@@ -32,11 +33,17 @@ export class Biolink extends BaseEntity {
   username!: string
 
   @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    defaultValue: BACKEND_URL + '/static/defaultProfilePhoto.png',
+  })
   profilePhotoUrl!: string
 
   @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    defaultValue: BACKEND_URL + '/static/defaultCoverPhoto.png',
+  })
   coverPhotoUrl!: string
 
   @Column({ nullable: true })
