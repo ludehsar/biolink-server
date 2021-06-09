@@ -20,4 +20,13 @@ export class IntegrationInput {
   @Field({ nullable: true })
   @IsOptional()
   googleAnalyticsCode?: string
+
+  @Field({ nullable: true, defaultValue: false })
+  @IsBoolean()
+  @IsOptional()
+  enableEmailCapture?: boolean
+
+  @Field({ nullable: true })
+  @IsOptional()
+  emailCaptureId?: string
 }

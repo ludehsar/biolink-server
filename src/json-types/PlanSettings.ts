@@ -39,6 +39,9 @@ export class PlanSettings {
   facebookPixelEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
+  emailCaptureEnabled!: boolean
+
+  @Field(() => Boolean, { nullable: true })
   verifiedCheckmarkEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })

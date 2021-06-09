@@ -58,6 +58,12 @@ export class BiolinkSettings {
   @Field(() => String, { nullable: true })
   googleAnalyticsCode!: string
 
+  @Field(() => Boolean, { nullable: true })
+  enableEmailCapture!: boolean
+
+  @Field(() => String, { nullable: true })
+  emailCaptureId!: string
+
   // ----- UTM Parameter ----- //
   @Field(() => Boolean, { nullable: true })
   enableUtmParameters!: boolean

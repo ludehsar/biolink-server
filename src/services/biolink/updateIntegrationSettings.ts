@@ -99,6 +99,23 @@ export const updateIntegrationSettings = async (
       ],
     }
   }
+  if (planSettings.emailCaptureEnabled) {
+    biolinkSettings.enableEmailCapture = options.enableEmailCapture || false
+    biolinkSettings.emailCaptureId = options.emailCaptureId || ''
+  } else if (
+    (options.enableEmailCapture !== undefined && options.enableEmailCapture) ||
+    (options.emailCaptureId !== undefined && options.emailCaptureId.trim().length > 0)
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
+          message:
+            'Enabling email capture is not supported with the current plan. Please upgrade your plan to continue.',
+        },
+      ],
+    }
+  }
 
   biolink.settings = biolinkSettings
   await biolink.save()
