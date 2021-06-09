@@ -20,6 +20,8 @@ import {
   ReferralResolver,
   VerificationResolver,
   AnalyticsResolver,
+  ReportResolver,
+  SupportResolver,
 } from './resolvers/app'
 import {
   AdminRoleAdminResolver,
@@ -66,6 +68,8 @@ const main = async (): Promise<void> => {
         LinkResolver,
         PlanResolver,
         ReferralResolver,
+        ReportResolver,
+        SupportResolver,
         VerificationResolver,
       ],
       validate: false,

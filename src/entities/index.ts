@@ -9,7 +9,9 @@ import { Payment } from './Payment'
 import { Plan } from './Plan'
 import { PremiumUsername } from './PremiumUsername'
 import { Referral } from './Referral'
+import { Report } from './Report'
 import { Settings } from './Settings'
+import { Support } from './Support'
 import { Tax } from './Tax'
 import { TrackLink } from './TrackLink'
 import { User } from './User'
@@ -28,7 +30,9 @@ export {
   Plan,
   PremiumUsername,
   Referral,
+  Report,
   Settings,
+  Support,
   Tax,
   TrackLink,
   User,

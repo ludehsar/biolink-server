@@ -57,6 +57,10 @@ import { getVisiblePlans } from './plan/getVisiblePlans'
 // Referral
 import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
+// Report
+import { addReport } from './report/addReport'
+// Support
+import { addSupport } from './support/addSupport'
 // User
 import { addNewUser } from './user/addNewUser'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
@@ -134,6 +138,10 @@ export {
   // Referral
   createReferrals,
   getUserReferrals,
+  // Report
+  addReport,
+  // Support
+  addSupport,
   // User
   addNewUser,
   changeEmailAndUsername,

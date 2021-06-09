@@ -26,6 +26,8 @@ import {
   Referral,
   Verification,
   AdminRole,
+  Report,
+  Support,
 } from '../entities'
 import { ActiveStatus } from '../enums'
 import { Billing } from '../json-types'
@@ -158,6 +160,14 @@ export class User extends BaseEntity {
   @Field(() => [Referral], { nullable: true })
   @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true })
   referrals!: Promise<Referral[]>
+
+  @Field(() => [Report], { nullable: true })
+  @OneToMany(() => Report, (report) => report.reporter, { lazy: true })
+  reports!: Promise<Report[]>
+
+  @Field(() => [Support], { nullable: true })
+  @OneToMany(() => Support, (support) => support.user, { lazy: true })
+  supports!: Promise<Support[]>
 
   @OneToMany(() => Verification, (verification) => verification.user, { lazy: true })
   verifications!: Promise<Verification[]>

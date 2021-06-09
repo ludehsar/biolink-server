@@ -6,6 +6,7 @@ import { DomainScheme } from './DomainScheme'
 import { EnabledStatus } from './EnabledStatus'
 import { LinkType } from './LinkType'
 import { PremiumUsernameType } from './PremiumUsernameType'
+import { ResolveStatus } from './ResolveStatus'
 import { TaxBillingForType } from './TaxBillingForType'
 import { TaxType } from './TaxType'
 import { TaxValueType } from './TaxValueType'
@@ -21,6 +22,7 @@ export {
   EnabledStatus,
   LinkType,
   PremiumUsernameType,
+  ResolveStatus,
   TaxBillingForType,
   TaxType,
   TaxValueType,
