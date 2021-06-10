@@ -46,15 +46,7 @@ export const createReferrals = async (
     },
   }
 
-  await sgMail.sendMultiple(sendReferralData, (err) => {
-    return {
-      errors: [
-        {
-          message: err.message,
-        },
-      ],
-    }
-  })
+  await sgMail.sendMultiple(sendReferralData)
 
   try {
     await getRepository(Referral)

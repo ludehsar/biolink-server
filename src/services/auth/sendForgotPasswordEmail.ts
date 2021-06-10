@@ -6,7 +6,7 @@ import { validate } from 'class-validator'
 import { FRONTEND_APP_URL } from '../../config'
 import { User } from '../../entities'
 import { EmailInput } from '../../input-types'
-import { DefaultResponse, ErrorResponse } from '../../object-types'
+import { DefaultResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { sgMail } from '../../utilities'
@@ -57,15 +57,7 @@ export const sendForgotPasswordEmail = async (
     html: `Click <a href="${FRONTEND_APP_URL}/auth/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
 
-  const errors: ErrorResponse[] = []
-  await sgMail.send(forgetPasswordMailData, false, (err) => {
-    errors.push({
-      errorCode: ErrorCode.DATABASE_ERROR,
-      message: err.message,
-    })
-  })
-
-  if (errors.length > 0) return { errors }
+  await sgMail.send(forgetPasswordMailData, false)
 
   // Capture user log
   await captureUserActivity(user, context, 'Requested Forgot Password Verification Email')
