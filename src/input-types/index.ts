@@ -43,6 +43,7 @@ import { PasswordInput } from './user/PasswordInput'
 import { RegisterInput } from './user/RegisterInput'
 // Verification
 import { VerificationInput } from './verification/VerificationInput'
+import { VerificationStatusInput } from './verification/VerificationStatusInput'
 
 export {
   //Admin Role
@@ -90,4 +91,5 @@ export {
   RegisterInput,
   // Verification
   VerificationInput,
+  VerificationStatusInput,
 }

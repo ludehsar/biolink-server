@@ -71,6 +71,22 @@ export class Biolink extends BaseEntity {
   })
   verificationStatus!: VerificationStatus
 
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedGovernmentId!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedEmail!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedPhoneNumber!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedWorkEmail!: boolean
+
   @CreateDateColumn()
   @Field(() => String, { nullable: true })
   createdAt!: Date

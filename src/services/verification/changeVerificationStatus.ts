@@ -1,12 +1,12 @@
 import { ErrorCode, MyContext } from '../../types'
 import { User, Verification } from '../../entities'
-import { VerificationStatus } from '../../enums'
 import { DefaultResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
+import { VerificationStatusInput } from '../../input-types'
 
 export const changeVerificationStatus = async (
   id: string,
-  status: VerificationStatus,
+  options: VerificationStatusInput,
   adminUser: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
@@ -52,10 +52,19 @@ export const changeVerificationStatus = async (
     }
   }
 
-  verification.verificationStatus = status
+  verification.verificationStatus = options.status
+  verification.verifiedEmail = options.verifiedEmail
+  verification.verifiedGovernmentId = options.verifiedGovernmentId
+  verification.verifiedPhoneNumber = options.verifiedPhoneNumber
+  verification.verifiedWorkEmail = options.verifiedWorkEmail
+
   const biolink = await verification.biolink
 
-  biolink.verificationStatus = status
+  biolink.verificationStatus = options.status
+  biolink.verifiedEmail = options.verifiedEmail
+  biolink.verifiedGovernmentId = options.verifiedGovernmentId
+  biolink.verifiedPhoneNumber = options.verifiedPhoneNumber
+  biolink.verifiedWorkEmail = options.verifiedWorkEmail
 
   await verification.save()
   await biolink.save()

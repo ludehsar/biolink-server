@@ -27,6 +27,22 @@ export class Verification extends BaseEntity {
   @Column({ type: 'enum', enum: VerificationStatus, default: VerificationStatus.Pending })
   verificationStatus!: VerificationStatus
 
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedGovernmentId!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedEmail!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedPhoneNumber!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  verifiedWorkEmail!: boolean
+
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   username!: string
