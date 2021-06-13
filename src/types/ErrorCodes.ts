@@ -20,6 +20,7 @@ export class ErrorCode {
   public static VERIFICATION_NOT_FOUND = 18
   public static USER_NOT_FOUND = 19
   public static CATEGORY_ALREADY_EXISTS = 20
+  public static PLAN_ALREADY_EXISTS = 21
 
   public static DATABASE_ERROR = 9999
   public static CLIENT_SIDE_ERROR = 10000

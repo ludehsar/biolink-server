@@ -24,6 +24,8 @@ import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
 // Links
 import { NewLinkInput } from './links/NewLinkInput'
+// Plans
+import { PlanInput } from './plan/PlanInput'
 // Referrals
 import { ReferralInput } from './referrals/ReferralInput'
 import { ReferredUserInfo } from './referrals/ReferredUserInfo'
@@ -72,6 +74,8 @@ export {
   FileType,
   // Links
   NewLinkInput,
+  // Plans
+  PlanInput,
   // Referrals
   ReferralInput,
   ReferredUserInfo,

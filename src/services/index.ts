@@ -52,7 +52,10 @@ import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
 // Plan
+import { createPlan } from './plan/createPlan'
+import { editPlan } from './plan/editPlan'
 import { getAllPlans } from './plan/getAllPlans'
+import { getPlan } from './plan/getPlan'
 import { getVisiblePlans } from './plan/getVisiblePlans'
 // Referral
 import { createReferrals } from './referral/createReferrals'
@@ -133,7 +136,10 @@ export {
   // User Log
   captureUserActivity,
   // Plan
+  createPlan,
+  editPlan,
   getAllPlans,
+  getPlan,
   getVisiblePlans,
   // Referral
   createReferrals,

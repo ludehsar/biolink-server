@@ -1,11 +1,11 @@
 import { Query, Resolver } from 'type-graphql'
-import { PlanResponse } from '../../object-types'
+import { PlanListResponse } from '../../object-types'
 import { getVisiblePlans } from '../../services'
 
 @Resolver()
 export class PlanResolver {
-  @Query(() => PlanResponse)
-  async getAllPlans(): Promise<PlanResponse> {
+  @Query(() => PlanListResponse)
+  async getAllPlans(): Promise<PlanListResponse> {
     return await getVisiblePlans()
   }
 }

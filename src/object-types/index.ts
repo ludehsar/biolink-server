@@ -23,6 +23,7 @@ import { PageInfo } from './common/PageInfo'
 import { LinkListResponse } from './links/LinkListResponse'
 import { LinkResponse } from './links/LinkResponse'
 // Plans
+import { PlanListResponse } from './plans/PlanListResponse'
 import { PlanResponse } from './plans/PlanResponse'
 // Referrals
 import { ReferralResponse } from './referrals/ReferralResponse'
@@ -51,6 +52,7 @@ export {
   LinkListResponse,
   LinkResponse,
   PageInfo,
+  PlanListResponse,
   PlanResponse,
   ReferralResponse,
   SettingsResponse,

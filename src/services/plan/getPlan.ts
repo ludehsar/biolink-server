@@ -1,8 +1,8 @@
 import { Plan, User } from '../../entities'
-import { PlanListResponse } from '../../object-types'
+import { PlanResponse } from '../../object-types'
 import { ErrorCode } from '../../types'
 
-export const getAllPlans = async (adminUser: User): Promise<PlanListResponse> => {
+export const getPlan = async (id: number, adminUser: User): Promise<PlanResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -22,7 +22,7 @@ export const getAllPlans = async (adminUser: User): Promise<PlanListResponse> =>
   })
 
   if (
-    (!adminRole || !userSettings || !userSettings.canShowList) &&
+    (!adminRole || !userSettings || !userSettings.canShow) &&
     adminRole.roleName !== 'Administrator'
   ) {
     return {
@@ -35,20 +35,20 @@ export const getAllPlans = async (adminUser: User): Promise<PlanListResponse> =>
     }
   }
 
-  const plans = await Plan.find()
+  const plan = await Plan.findOne(id)
 
-  if (!plans) {
+  if (!plan) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.DATABASE_ERROR,
-          message: 'Something went wrong',
+          errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
+          message: 'Plan not found',
         },
       ],
     }
   }
 
   return {
-    plans,
+    plan,
   }
 }

@@ -3,10 +3,10 @@ import { ErrorResponse } from '..'
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
-export class PlanResponse {
+export class PlanListResponse {
   @Field(() => [ErrorResponse], { nullable: true })
   errors?: ErrorResponse[]
 
-  @Field(() => Plan, { nullable: true })
-  plan?: Plan
+  @Field(() => [Plan], { nullable: true })
+  plans?: Plan[]
 }
