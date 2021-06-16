@@ -114,6 +114,8 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
           user,
           { req, res }
         )
+      } else {
+        console.error('No user!')
       }
       break
     case 'invoice.payment_failed':
