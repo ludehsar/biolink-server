@@ -56,7 +56,7 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
 
     try {
       event = stripe.webhooks.constructEvent(
-        req.body,
+        (req as any).rawBody,
         signature as string | string[] | Buffer,
         webhookSecret
       )

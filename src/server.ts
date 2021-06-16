@@ -50,6 +50,18 @@ const main = async (): Promise<void> => {
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
 
+  app.use(
+    express.json({
+      // We need the raw body to verify webhook signatures.
+      // Let's compute it only when hitting the Stripe webhook endpoint.
+      verify: function (req: any, _, buf) {
+        if (req.originalUrl.startsWith('/webhook')) {
+          req.rawBody = buf.toString()
+        }
+      },
+    })
+  )
+
   // Stripe router
   app.use('/api/stripe', stripeRoutes)
 
