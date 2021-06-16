@@ -54,7 +54,7 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
     let event
     const signature = req.headers['stripe-signature']
 
-    console.log('Signature: ', signature, '. Webhook Secret: ', webhookSecret)
+    console.log((req as any).rawBody)
 
     try {
       event = stripe.webhooks.constructEvent(
