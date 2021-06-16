@@ -7,15 +7,16 @@ import { captureUserActivity, subscribePlan } from '../../services'
 
 export const savePayment = async (
   options: NewPaymentInput,
-  user: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
+  const user = await User.findOne({ where: { stripeCustomerId: options.stripeCustomerId } })
+
   if (!user) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-          message: 'User not authenticated',
+          errorCode: ErrorCode.USER_NOT_FOUND,
+          message: 'User not found',
         },
       ],
     }

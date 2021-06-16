@@ -1,6 +1,6 @@
 import { Router, Response } from 'express'
 
-import { savePayment, saveStripeCustomerId } from '../services'
+import { savePayment } from '../services'
 import { FRONTEND_APP_URL, STRIPE_WEBHOOK_SECRET } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
@@ -8,6 +8,17 @@ import { PaymentMethod } from '../enums'
 const stripeRoutes = Router()
 
 stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response | void> => {
+  const user = await getAuthUser(req, res)
+
+  if (!user) {
+    res.status(401)
+    return res.send({
+      error: {
+        message: 'User not authenticated',
+      },
+    })
+  }
+
   const { priceId } = req.body
 
   // See https://stripe.com/docs/api/checkout/sessions/create
@@ -22,6 +33,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
           quantity: 1,
         },
       ],
+      customer: user.stripeCustomerId,
       // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
@@ -45,7 +57,6 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
 stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
   let data
   let eventType
-  const user = await getAuthUser(req, res)
 
   // Check if webhook signing is configured.
   const webhookSecret = STRIPE_WEBHOOK_SECRET
@@ -75,48 +86,36 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
   }
 
   switch (eventType) {
-    case 'checkout.session.completed':
-      // Payment is successful and the subscription is created.
-      // You should provision the subscription and save the customer ID to your database.
-      if (user) {
-        await saveStripeCustomerId(user, data.object.customer)
-      }
-      break
     case 'invoice.paid':
       // Continue to provision the subscription as payments continue to be made.
       // Store the status in your database and check when a user accesses your service.
       // This approach helps you avoid hitting rate limits.
-      if (user) {
-        await savePayment(
-          {
-            stripeAmountDue: data.object.amount_due,
-            stripeAmountPaid: data.object.amount_paid,
-            stripeAmountRemaining: data.object.amount_remaining,
-            stripeChargeId: data.object.charge,
-            stripeCustomerAddress: data.object.customer_address,
-            stripeCustomerEmail: data.object.customer_email,
-            stripeCustomerId: data.object.customer,
-            stripeCustomerName: data.object.customer_name,
-            stripeCustomerPhone: data.object.customer_phone,
-            stripeCustomerShipping: data.object.customer_shipping,
-            stripeDiscount: data.object.discount,
-            stripeInvoiceCreated: data.object.created,
-            stripeInvoiceNumber: data.object.number,
-            stripeInvoicePdfUrl: data.object.invoice_pdf,
-            stripePaymentCurrency: data.object.currency,
-            stripePeriodEnd: data.object.lines.data[0].period.end,
-            stripePeriodStart: data.object.lines.data[0].period.start,
-            stripePriceId: data.object.lines.data[0].price.id,
-            stripeStatus: data.object.status,
-            stripeSubscriptionId: data.object.subscription,
-            paymentType: PaymentMethod.Stripe,
-          },
-          user,
-          { req, res }
-        )
-      } else {
-        console.error('No user!')
-      }
+      await savePayment(
+        {
+          stripeAmountDue: data.object.amount_due,
+          stripeAmountPaid: data.object.amount_paid,
+          stripeAmountRemaining: data.object.amount_remaining,
+          stripeChargeId: data.object.charge,
+          stripeCustomerAddress: data.object.customer_address,
+          stripeCustomerEmail: data.object.customer_email,
+          stripeCustomerId: data.object.customer,
+          stripeCustomerName: data.object.customer_name,
+          stripeCustomerPhone: data.object.customer_phone,
+          stripeCustomerShipping: data.object.customer_shipping,
+          stripeDiscount: data.object.discount,
+          stripeInvoiceCreated: data.object.created,
+          stripeInvoiceNumber: data.object.number,
+          stripeInvoicePdfUrl: data.object.invoice_pdf,
+          stripePaymentCurrency: data.object.currency,
+          stripePeriodEnd: data.object.lines.data[0].period.end,
+          stripePeriodStart: data.object.lines.data[0].period.start,
+          stripePriceId: data.object.lines.data[0].price.id,
+          stripeStatus: data.object.status,
+          stripeSubscriptionId: data.object.subscription,
+          paymentType: PaymentMethod.Stripe,
+        },
+        { req, res }
+      )
       break
     case 'invoice.payment_failed':
       // The payment failed or the customer does not have a valid payment method.
