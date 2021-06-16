@@ -51,12 +51,16 @@ import { getAllUserLinks } from './link/getAllUserLinks'
 import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
+// Payment
+import { savePayment } from './payments/savePayment'
+import { saveStripeCustomerId } from './payments/saveStripeCustomerId'
 // Plan
 import { createPlan } from './plan/createPlan'
 import { editPlan } from './plan/editPlan'
 import { getAllPlans } from './plan/getAllPlans'
 import { getPlan } from './plan/getPlan'
 import { getVisiblePlans } from './plan/getVisiblePlans'
+import { subscribePlan } from './plan/subscribePlan'
 // Referral
 import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
@@ -135,12 +139,16 @@ export {
   removeLink,
   // User Log
   captureUserActivity,
+  // Payment
+  savePayment,
+  saveStripeCustomerId,
   // Plan
   createPlan,
   editPlan,
   getAllPlans,
   getPlan,
   getVisiblePlans,
+  subscribePlan,
   // Referral
   createReferrals,
   getUserReferrals,

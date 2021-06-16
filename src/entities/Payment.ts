@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -11,6 +11,7 @@ import {
 } from 'typeorm'
 
 import { User } from '../entities'
+import { PaymentMethod } from '../enums'
 
 @ObjectType()
 @Entity()
@@ -19,59 +20,92 @@ export class Payment extends BaseEntity {
   @Field(() => String, { nullable: true })
   id!: string
 
+  @Field(() => String, { nullable: true })
+  @Column({ type: 'enum', enum: PaymentMethod, default: PaymentMethod.Stripe })
+  paymentType!: PaymentMethod
+
   @Column({ nullable: true })
-  stripeId!: string
+  @Field(() => Int, { nullable: true })
+  stripeAmountDue!: number
+
+  @Column({ nullable: true })
+  @Field(() => Int, { nullable: true })
+  stripeAmountPaid!: number
+
+  @Column({ nullable: true })
+  @Field(() => Int, { nullable: true })
+  stripeAmountRemaining!: number
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  clientIp!: string
+  stripeChargeId!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  stripePaymentCreatedAt!: string
+  stripeInvoiceCreated!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  email!: string
+  stripePaymentCurrency!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  methodType!: string
+  stripeCustomerId!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  cardBrand!: string
+  stripeCustomerAddress!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  country!: string
+  stripeCustomerEmail!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  cvcCheck!: string
+  stripeCustomerName!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  expMonth!: string
+  stripeCustomerPhone!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  expYear!: string
+  stripeCustomerShipping!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  funding!: string
+  stripeDiscount!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  cardId!: string
+  stripeInvoicePdfUrl!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  last4!: string
+  stripePriceId!: string
 
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  stripeSubscriptionId!: string
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  stripeInvoiceNumber!: string
+
+  @Column({ type: 'date', nullable: true })
+  @Field(() => String, { nullable: true })
+  stripePeriodStart!: Date
+
+  @Column({ type: 'date', nullable: true })
+  @Field(() => String, { nullable: true })
+  stripePeriodEnd!: Date
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  stripeStatus!: string
+
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
-  @Field(() => String, { nullable: true })
   createdAt!: Date
 
   // Relationships

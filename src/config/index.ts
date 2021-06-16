@@ -13,6 +13,7 @@ import {
   appKey,
   port,
   refreshTokenSecret,
+  STRIPE_WEBHOOK_SECRET,
 } from './app.config'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from './cookie.config'
 import corsOptions from './cors.config'
@@ -27,6 +28,7 @@ export {
   FRONTEND_APP_URL,
   SENDGRID_API_KEY,
   STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET,
   __prod__,
   accessTokenCookieOptions,
   accessTokenSecret,

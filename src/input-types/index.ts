@@ -24,6 +24,8 @@ import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
 // Links
 import { NewLinkInput } from './links/NewLinkInput'
+// Payments
+import { NewPaymentInput } from './payments/NewPaymentInput'
 // Plans
 import { PlanInput } from './plan/PlanInput'
 // Referrals
@@ -74,6 +76,8 @@ export {
   FileType,
   // Links
   NewLinkInput,
+  // Payment
+  NewPaymentInput,
   // Plans
   PlanInput,
   // Referrals

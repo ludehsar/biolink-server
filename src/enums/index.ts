@@ -5,6 +5,7 @@ import { CodeType } from './CodeType'
 import { DomainScheme } from './DomainScheme'
 import { EnabledStatus } from './EnabledStatus'
 import { LinkType } from './LinkType'
+import { PaymentMethod } from './PaymentMethod'
 import { PremiumUsernameType } from './PremiumUsernameType'
 import { ResolveStatus } from './ResolveStatus'
 import { TaxBillingForType } from './TaxBillingForType'
@@ -21,6 +22,7 @@ export {
   DomainScheme,
   EnabledStatus,
   LinkType,
+  PaymentMethod,
   PremiumUsernameType,
   ResolveStatus,
   TaxBillingForType,

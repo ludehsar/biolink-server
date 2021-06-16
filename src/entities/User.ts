@@ -83,7 +83,7 @@ export class User extends BaseEntity {
   planTrialDone!: boolean
 
   @Column({ nullable: true })
-  stripeSubscriptionId!: string
+  stripeCustomerId!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })

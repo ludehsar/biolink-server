@@ -13,3 +13,4 @@ export const FRONTEND_APP_URL = process.env.FRONTEND_APP_URL || 'http://localhos
 export const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:4000'
 export const ADMIN_APP_URL = process.env.ADMIN_APP_URL || 'http://localhost:3000'
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
+export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || ''
