@@ -55,7 +55,7 @@ const main = async (): Promise<void> => {
       // We need the raw body to verify webhook signatures.
       // Let's compute it only when hitting the Stripe webhook endpoint.
       verify: function (req: any, _, buf) {
-        if (req.originalUrl.startsWith('/webhook')) {
+        if (req.originalUrl.startsWith('/api/stripe/webhook')) {
           req.rawBody = buf.toString()
         }
       },
