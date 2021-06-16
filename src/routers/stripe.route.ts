@@ -54,8 +54,6 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
     let event
     const signature = req.headers['stripe-signature']
 
-    console.log((req as any).rawBody)
-
     try {
       event = stripe.webhooks.constructEvent(
         (req as any).rawBody,
@@ -89,7 +87,7 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
       // Store the status in your database and check when a user accesses your service.
       // This approach helps you avoid hitting rate limits.
       if (user) {
-        savePayment(
+        await savePayment(
           {
             stripeAmountDue: data.object.amount_due,
             stripeAmountPaid: data.object.amount_paid,
