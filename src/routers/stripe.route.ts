@@ -1,6 +1,6 @@
 import { Router, Response } from 'express'
 
-import { savePayment } from '../services'
+import { savePayment, saveStripeCustomerId } from '../services'
 import { FRONTEND_APP_URL, STRIPE_WEBHOOK_SECRET } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
@@ -17,6 +17,10 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
         message: 'User not authenticated',
       },
     })
+  }
+
+  if (!user.stripeCustomerId || user.stripeCustomerId.trim().length <= 0) {
+    await saveStripeCustomerId(user)
   }
 
   const { priceId } = req.body
