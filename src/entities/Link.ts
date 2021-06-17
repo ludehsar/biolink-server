@@ -15,6 +15,7 @@ import {
 
 import { User, Biolink, TrackLink } from '../entities'
 import { LinkType } from '../enums'
+import { BACKEND_URL } from '../config'
 
 @ObjectType()
 @Entity()
@@ -30,6 +31,13 @@ export class Link extends BaseEntity {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   linkTitle?: string
+
+  @Column({ nullable: true })
+  @Field(() => String, {
+    nullable: true,
+    defaultValue: BACKEND_URL + '/static/defaultLinkImage.jpg',
+  })
+  linkImageUrl?: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })

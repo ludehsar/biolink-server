@@ -1,13 +1,16 @@
 import randToken from 'rand-token'
 import { validate } from 'class-validator'
 import argon2 from 'argon2'
+import path from 'path'
+import { createWriteStream } from 'fs'
 
 import { User, Link, Biolink, Plan } from '../../entities'
 import { LinkType } from '../../enums'
 import { NewLinkInput } from '../../input-types'
-import { LinkResponse } from '../../object-types'
+import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
+import { BACKEND_URL } from '../../config'
 
 export const updateLink = async (
   id: string,
@@ -172,6 +175,31 @@ export const updateLink = async (
     link.biolink = Promise.resolve(biolink)
   } else {
     link.biolink = undefined
+  }
+
+  if (options.linkImage) {
+    const { createReadStream, filename } = options.linkImage
+    const linkImageExt = filename.split('.').pop()
+    const errors: ErrorResponse[] = []
+    const linkImageName = `${randToken.generate(20)}-${Date.now().toString()}.${linkImageExt}`
+    const directory = path.join(__dirname, `../../../assets/linkImages/${linkImageName}`)
+
+    createReadStream()
+      .pipe(createWriteStream(directory))
+      .on('error', () => {
+        errors.push({
+          errorCode: ErrorCode.UPLOAD_ERROR,
+          message: 'Unable to upload link image',
+        })
+      })
+
+    if (errors.length > 0) {
+      return {
+        errors,
+      }
+    }
+
+    link.linkImageUrl = BACKEND_URL + '/static/linkImages/' + linkImageName
   }
 
   await link.save()

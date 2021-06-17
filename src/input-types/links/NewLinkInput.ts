@@ -1,3 +1,4 @@
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { IsEnum } from 'class-validator'
 import { InputType, Field } from 'type-graphql'
 import { LinkType } from '../../enums'
@@ -13,6 +14,9 @@ export class NewLinkInput {
 
   @Field(() => String, { nullable: true })
   linkTitle?: string
+
+  @Field(() => GraphQLUpload, { nullable: true })
+  linkImage?: FileUpload
 
   @Field(() => String, { nullable: true })
   note?: string

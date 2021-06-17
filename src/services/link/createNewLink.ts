@@ -2,13 +2,16 @@ import { getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 import randToken from 'rand-token'
 import argon2 from 'argon2'
+import { createWriteStream } from 'fs'
+import path from 'path'
 
 import { User, Link, Biolink, Plan } from '../../entities'
 import { LinkType } from '../../enums'
 import { NewLinkInput } from '../../input-types'
-import { LinkResponse } from '../../object-types'
+import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
+import { BACKEND_URL } from '../../config'
 
 export const createNewLink = async (
   options: NewLinkInput,
@@ -148,6 +151,31 @@ export const createNewLink = async (
       }
 
       link.biolink = Promise.resolve(biolink)
+    }
+
+    if (options.linkImage) {
+      const { createReadStream, filename } = options.linkImage
+      const linkImageExt = filename.split('.').pop()
+      const errors: ErrorResponse[] = []
+      const linkImageName = `${randToken.generate(20)}-${Date.now().toString()}.${linkImageExt}`
+      const directory = path.join(__dirname, `../../../assets/linkImages/${linkImageName}`)
+
+      createReadStream()
+        .pipe(createWriteStream(directory))
+        .on('error', () => {
+          errors.push({
+            errorCode: ErrorCode.UPLOAD_ERROR,
+            message: 'Unable to upload link image',
+          })
+        })
+
+      if (errors.length > 0) {
+        return {
+          errors,
+        }
+      }
+
+      link.linkImageUrl = BACKEND_URL + '/static/linkImages/' + linkImageName
     }
 
     link.user = Promise.resolve(user)
