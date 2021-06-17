@@ -1,12 +1,15 @@
+import { IsEnum } from 'class-validator'
 import { InputType, Field } from 'type-graphql'
+import { LinkType } from '../../enums'
 
 @InputType()
 export class NewLinkInput {
   @Field(() => String, { defaultValue: 'Link' })
-  linkType?: string
+  @IsEnum(LinkType)
+  linkType?: LinkType
 
   @Field(() => String)
-  url!: string
+  url?: string
 
   @Field(() => String, { nullable: true })
   linkTitle?: string
