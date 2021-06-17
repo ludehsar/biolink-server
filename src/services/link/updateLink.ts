@@ -90,7 +90,7 @@ export const updateLink = async (
   link.linkTitle = options.linkTitle
   link.note = options.note
   link.linkType = options.linkType as LinkType
-  link.url = options.url
+  link.url = options.url || ''
   link.shortenedUrl = shortenedUrl
 
   if (planSettings.linksSchedulingEnabled) {
