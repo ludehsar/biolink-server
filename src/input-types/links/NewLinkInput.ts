@@ -8,7 +8,7 @@ export class NewLinkInput {
   @IsEnum(LinkType)
   linkType?: LinkType
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   url?: string
 
   @Field(() => String, { nullable: true })
