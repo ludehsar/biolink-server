@@ -1,12 +1,14 @@
+import { getRepository } from 'typeorm'
+import { validate } from 'class-validator'
 import randToken from 'rand-token'
 import argon2 from 'argon2'
+
 import { User, Link, Biolink, Plan } from '../../entities'
 import { LinkType } from '../../enums'
 import { NewLinkInput } from '../../input-types'
 import { LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { getRepository } from 'typeorm'
 
 export const createNewLink = async (
   options: NewLinkInput,
@@ -14,6 +16,17 @@ export const createNewLink = async (
   user: User,
   biolinkId?: string
 ): Promise<LinkResponse> => {
+  const validationErrors = await validate(options)
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   if (!user) {
     return {
       errors: [
