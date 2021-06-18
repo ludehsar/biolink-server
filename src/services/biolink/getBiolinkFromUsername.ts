@@ -1,3 +1,4 @@
+import argon2 from 'argon2'
 import { Biolink, PremiumUsername } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { trackBiolinkClicks } from '../../services'
@@ -5,7 +6,8 @@ import { MyContext, ErrorCode } from '../../types'
 
 export const getBiolinkFromUsername = async (
   username: string,
-  context: MyContext
+  context: MyContext,
+  password?: string
 ): Promise<BiolinkResponse> => {
   const biolink = await Biolink.findOne({ where: { username } })
   const premiumUsername = await PremiumUsername.findOne({ where: { username } })
@@ -18,6 +20,34 @@ export const getBiolinkFromUsername = async (
           message: 'Biolink not found',
         },
       ],
+    }
+  }
+
+  const biolinkSettings = biolink.settings || {}
+
+  if (biolinkSettings.enablePasswordProtection) {
+    if (!password) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+            message: 'Enter password to access the biolink',
+          },
+        ],
+      }
+    }
+
+    const passwordVerified = await argon2.verify(biolinkSettings.password, password)
+
+    if (!passwordVerified) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
+            message: 'Password did not match',
+          },
+        ],
+      }
     }
   }
 
