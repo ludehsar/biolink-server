@@ -76,10 +76,10 @@ export const createNewLink = async (
     }
   }
 
-  let shortenedUrl = randToken.generate(8)
+  let shortenedUrl = '0' + randToken.generate(8)
   let otherLink = await Link.findOne({ where: { shortenedUrl } })
   while (otherLink) {
-    shortenedUrl = randToken.generate(8)
+    shortenedUrl = '0' + randToken.generate(8)
     otherLink = await Link.findOne({ where: { shortenedUrl } })
   }
 
