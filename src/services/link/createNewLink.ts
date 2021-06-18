@@ -76,26 +76,11 @@ export const createNewLink = async (
     }
   }
 
-  let shortenedUrl = options.shortenedUrl ? options.shortenedUrl : randToken.generate(8)
-  if (options.shortenedUrl) {
-    const link = await Link.findOne({ where: { shortenedUrl: options.shortenedUrl } })
-
-    if (link) {
-      return {
-        errors: [
-          {
-            errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
-            message: 'Shortened URL already taken',
-          },
-        ],
-      }
-    }
-  } else {
-    let link = await Link.findOne({ where: { shortenedUrl } })
-    while (link) {
-      shortenedUrl = randToken.generate(8)
-      link = await Link.findOne({ where: { shortenedUrl } })
-    }
+  let shortenedUrl = randToken.generate(8)
+  let otherLink = await Link.findOne({ where: { shortenedUrl } })
+  while (otherLink) {
+    shortenedUrl = randToken.generate(8)
+    otherLink = await Link.findOne({ where: { shortenedUrl } })
   }
 
   try {

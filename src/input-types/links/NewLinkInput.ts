@@ -22,9 +22,6 @@ export class NewLinkInput {
   note?: string
 
   @Field(() => String, { nullable: true })
-  shortenedUrl?: string
-
-  @Field(() => String, { nullable: true })
   startDate?: Date
 
   @Field(() => String, { nullable: true })

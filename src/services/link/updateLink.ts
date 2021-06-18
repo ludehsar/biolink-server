@@ -80,34 +80,10 @@ export const updateLink = async (
 
   const planSettings = plan.settings || {}
 
-  let shortenedUrl = options.shortenedUrl ? options.shortenedUrl : randToken.generate(8)
-  if (options.shortenedUrl) {
-    const otherLink = await Link.findOne({ where: { shortenedUrl: options.shortenedUrl } })
-
-    if (otherLink && otherLink.id !== link.id) {
-      return {
-        errors: [
-          {
-            errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
-            message: 'Shortened URL already taken',
-          },
-        ],
-      }
-    }
-  } else {
-    let otherLink = await Link.findOne({ where: { shortenedUrl } })
-
-    while (otherLink && otherLink.id !== link.id) {
-      shortenedUrl = randToken.generate(8)
-      otherLink = await Link.findOne({ where: { shortenedUrl } })
-    }
-  }
-
   link.linkTitle = options.linkTitle
   link.note = options.note
   link.linkType = options.linkType as LinkType
   link.url = options.url || ''
-  link.shortenedUrl = shortenedUrl
 
   if (planSettings.linksSchedulingEnabled) {
     link.startDate = options.startDate
