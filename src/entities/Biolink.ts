@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -52,7 +52,23 @@ export class Biolink extends BaseEntity {
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  location!: string
+  city!: string
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  state!: string
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  country!: string
+
+  @Column({ nullable: true })
+  @Field(() => Float, { nullable: true })
+  latitude!: number
+
+  @Column({ nullable: true })
+  @Field(() => Float, { nullable: true })
+  longitude!: number
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })

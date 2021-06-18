@@ -35,7 +35,11 @@ export const updateBiolink = async (
   }
 
   biolink.displayName = options.displayName || ''
-  biolink.location = options.location || ''
+  biolink.city = options.city || ''
+  biolink.country = options.country || ''
+  biolink.latitude = options.latitude || 0.0
+  biolink.longitude = options.longitude || 0.0
+  biolink.state = options.state || ''
   biolink.bio = options.bio || ''
 
   if (options.categoryId) {
