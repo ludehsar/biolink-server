@@ -65,12 +65,23 @@ export const changeEmailAndUsername = async (
     user.email = options.email
     user.emailVerifiedAt = null
 
-    sendVerificationEmail(user, context)
+    await sendVerificationEmail(user, context)
 
     await user.save()
   }
 
   if (options.username) {
+    if (options.username.startsWith('0')) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
+            message: 'Username already taken',
+          },
+        ],
+      }
+    }
+
     const otherBiolik = await Biolink.findOne({ where: { username: options.username } })
 
     if (otherBiolik && otherBiolik.id !== biolink.id) {

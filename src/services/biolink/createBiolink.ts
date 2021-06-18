@@ -2,7 +2,7 @@ import { User, Biolink } from '../../entities'
 import { NewBiolinkInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
-import { MyContext } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { createBiolinkValidated } from '../../validations'
 
 export const createBiolink = async (
@@ -15,6 +15,17 @@ export const createBiolink = async (
   if (errors.length > 0) {
     return {
       errors,
+    }
+  }
+
+  if (options.username?.startsWith('0')) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
+          message: 'Username already taken',
+        },
+      ],
     }
   }
 
