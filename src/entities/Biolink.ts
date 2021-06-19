@@ -62,11 +62,11 @@ export class Biolink extends BaseEntity {
   @Field(() => String, { nullable: true })
   country!: string
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   @Field(() => Float, { nullable: true })
   latitude!: number
 
-  @Column({ nullable: true })
+  @Column({ type: 'float', nullable: true })
   @Field(() => Float, { nullable: true })
   longitude!: number
 
