@@ -22,10 +22,12 @@ export const addSupport = async (
   }
 
   const support = Support.create({
-    description: options.description,
+    company: options.company,
     email: options.email,
-    firstName: options.firstName,
-    lastName: options.lastName,
+    fullName: options.fullName,
+    message: options.message,
+    phoneNumber: options.phoneNumber,
+    subject: options.subject,
   })
 
   if (user) {

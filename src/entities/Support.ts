@@ -23,11 +23,7 @@ export class Support extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  firstName!: string
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  lastName!: string
+  fullName!: string
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
@@ -35,7 +31,19 @@ export class Support extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  description!: string
+  phoneNumber!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  company!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  subject!: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  message!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: ResolveStatus, default: ResolveStatus.Pending })

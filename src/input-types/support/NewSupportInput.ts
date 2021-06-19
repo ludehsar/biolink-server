@@ -1,22 +1,31 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber } from 'class-validator'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()
 export class NewSupportInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  firstName?: string
-
-  @Field(() => String, { nullable: true })
-  @IsNotEmpty()
-  lastName?: string
+  fullName!: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
   @IsEmail()
-  email?: string
+  email!: string
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  @IsPhoneNumber()
+  phoneNumber!: string
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  description?: string
+  company!: string
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  subject!: string
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  message!: string
 }
