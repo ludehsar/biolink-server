@@ -37,7 +37,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
   const html = await res.data
   const $ = cheerio.load(html)
 
-  const imageUrl = $('div[class="sc-bdfBwQ eZNKTD"] > div > div > img')[0].attribs['src']
+  const imageUrl = $('img[class="sc-dIUggk iqTbIW"]').attr('src') || ''
 
   const profilePhotoName = `${randToken.generate(20)}-${Date.now().toString()}`
 
@@ -46,22 +46,21 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
   const result: LinktreeParsingProps = {
     bio: $('div[class="sc-bdfBwQ ciojAP"] > p').text().trim() || '',
     links:
-      Array.from($('div[class="sc-bdfBwQ pkAuV"] > div > a')).map((element) => ({
+      Array.from($('div[class="sc-bqyKva dIStmn"] > div > a')).map((element) => ({
         url: element.attribs['href'].trim(),
         linkTitle: $(element).find('p').text().trim(),
       })) || [],
     socials:
-      Array.from($('div[class="sc-bdfBwQ kMVUFR"] > div > a')).map((element) => ({
+      Array.from($('div[class="sc-bqyKva fWWLBz"] > div > a')).map((element) => ({
         platform: element.attribs['aria-label'].trim(),
         link: element.attribs['href'].trim(),
       })) || [],
   }
 
-  download(imageUrl, directory, () => {
-    return result
-  })
-
-  result.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
+  if (imageUrl) {
+    download(imageUrl, directory, (err) => console.log(err.message))
+    result.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
+  }
 
   return result
 }
