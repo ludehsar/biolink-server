@@ -33,7 +33,13 @@ export const getDirectoriesPaginated = async (
           .orWhere(`LOWER(biolink.displayName) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.location) like :query`, {
+          .orWhere(`LOWER(biolink.city) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.state) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.country) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
@@ -93,7 +99,13 @@ export const getDirectoriesPaginated = async (
           .orWhere(`LOWER(biolink.displayName) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.location) like :query`, {
+          .orWhere(`LOWER(biolink.city) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.state) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.country) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
@@ -119,7 +131,13 @@ export const getDirectoriesPaginated = async (
           .orWhere(`LOWER(biolink.displayName) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-          .orWhere(`LOWER(biolink.location) like :query`, {
+          .orWhere(`LOWER(biolink.city) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.state) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(biolink.country) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
           .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
