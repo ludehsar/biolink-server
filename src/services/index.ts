@@ -19,6 +19,7 @@ import { verifyEmailActivationToken } from './auth/verifyEmailActivationToken'
 import { verifyForgotPasswordToken } from './auth/verifyForgotPasswordToken'
 // Biolink
 import { createBiolink } from './biolink/createBiolink'
+import { getBiolinksPaginated } from './biolink/getBiolinksPaginated'
 import { getDirectoriesPaginated } from './biolink/getDirectoriesPaginated'
 import { getBiolinkFromUsername } from './biolink/getBiolinkFromUsername'
 import { getUserBiolinks } from './biolink/getUserBiolinks'
@@ -105,6 +106,7 @@ export {
   logoutUser,
   // Biolink
   createBiolink,
+  getBiolinksPaginated,
   getBiolinkFromUsername,
   getUserBiolinks,
   updateBiolink,

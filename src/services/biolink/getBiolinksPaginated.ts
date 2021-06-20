@@ -4,10 +4,7 @@ import { Biolink } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 
-export const getDirectoriesPaginated = async (
-  categoryIds: number[],
-  options: ConnectionArgs
-): Promise<BiolinkConnection> => {
+export const getBiolinksPaginated = async (options: ConnectionArgs): Promise<BiolinkConnection> => {
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()
@@ -25,8 +22,7 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
-    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
-    .andWhere(
+    .where(
       new Brackets((qb) => {
         qb.where(`LOWER(biolink.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
@@ -57,10 +53,6 @@ export const getDirectoriesPaginated = async (
           })
       })
     )
-
-  if (categoryIds) {
-    qb.andWhere('biolink.categoryId in (:...categoryIds)', { categoryIds })
-  }
 
   if (before) {
     qb.andWhere('biolink.createdAt < :before', { before })
@@ -96,8 +88,7 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
-    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
-    .andWhere(
+    .where(
       new Brackets((qb) => {
         qb.where(`LOWER(biolink.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
@@ -135,8 +126,7 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
-    .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
-    .andWhere(
+    .where(
       new Brackets((qb) => {
         qb.where(`LOWER(biolink.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
