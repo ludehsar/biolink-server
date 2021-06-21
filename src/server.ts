@@ -28,6 +28,7 @@ import {
   AuthAdminResolver,
   BiolinkAdminResolver,
   CategoryAdminResolver,
+  LinkAdminResolver,
   PlanAdminResolver,
   UserAdminResolver,
 } from './resolvers/admin'
@@ -107,6 +108,7 @@ const main = async (): Promise<void> => {
         AuthAdminResolver,
         BiolinkAdminResolver,
         CategoryAdminResolver,
+        LinkAdminResolver,
         PlanAdminResolver,
         UserAdminResolver,
       ],

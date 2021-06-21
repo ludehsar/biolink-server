@@ -1,10 +1,46 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
-import { Biolink } from '../../entities'
+import { Biolink, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
+import { ErrorCode } from '../../types'
 
-export const getBiolinksPaginated = async (options: ConnectionArgs): Promise<BiolinkConnection> => {
+export const getBiolinksPaginated = async (
+  options: ConnectionArgs,
+  adminUser: User
+): Promise<BiolinkConnection> => {
+  if (!adminUser) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User is not authenticated',
+        },
+      ],
+    }
+  }
+
+  const adminRole = await adminUser.adminRole
+  const adminRoleSettings = adminRole.roleSettings || []
+
+  const userSettings = adminRoleSettings.find((role): boolean => {
+    return role.resource === 'biolink'
+  })
+
+  if (
+    (!adminRole || !userSettings || !userSettings.canShowList) &&
+    adminRole.roleName !== 'Administrator'
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User is not authorized',
+        },
+      ],
+    }
+  }
+
   // Getting before and after cursors from connection args
   let before = null
   if (options.before) before = Buffer.from(options.before, 'base64').toString()

@@ -1,12 +1,15 @@
 import { Field, ObjectType } from 'type-graphql'
 
-import { BiolinkEdge, PageInfo } from '../../object-types'
+import { BiolinkEdge, ErrorResponse, PageInfo } from '../../object-types'
 
 @ObjectType()
 export class BiolinkConnection {
-  @Field(() => PageInfo)
-  pageInfo!: PageInfo
+  @Field(() => [ErrorResponse], { nullable: true })
+  errors?: ErrorResponse[]
 
-  @Field(() => [BiolinkEdge])
-  edges!: BiolinkEdge[]
+  @Field(() => PageInfo, { nullable: true })
+  pageInfo?: PageInfo
+
+  @Field(() => [BiolinkEdge], { nullable: true })
+  edges?: BiolinkEdge[]
 }

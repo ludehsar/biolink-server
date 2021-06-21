@@ -20,6 +20,8 @@ import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
 // Links
+import { LinkConnection } from './links/LinkConnection'
+import { LinkEdge } from './links/LinkEdge'
 import { LinkListResponse } from './links/LinkListResponse'
 import { LinkResponse } from './links/LinkResponse'
 // Plans
@@ -49,6 +51,8 @@ export {
   DefaultResponse,
   ErrorResponse,
   LinkClicksResponse,
+  LinkConnection,
+  LinkEdge,
   LinkListResponse,
   LinkResponse,
   PageInfo,

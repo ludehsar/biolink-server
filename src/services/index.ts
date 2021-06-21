@@ -49,6 +49,7 @@ import { createNewLink } from './link/createNewLink'
 // Link
 import { getAllLinksOfBiolink } from './link/getAllLinksOfBiolink'
 import { getAllUserLinks } from './link/getAllUserLinks'
+import { getLinksPaginated } from './link/getLinksPaginated'
 import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
@@ -135,6 +136,7 @@ export {
   // Link
   getAllLinksOfBiolink,
   getAllUserLinks,
+  getLinksPaginated,
   createNewLink,
   updateLink,
   getLinkByShortenedUrl,
