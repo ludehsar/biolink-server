@@ -4,6 +4,7 @@ import { Link, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { LinkConnection } from '../../object-types'
 import { ErrorCode } from '../../types'
+import { LinkType } from '../../enums'
 
 export const getLinksPaginated = async (
   options: ConnectionArgs,
@@ -57,7 +58,8 @@ export const getLinksPaginated = async (
   const qb = getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(
+    .where(`link.linkType NOT IN ('${LinkType.Line}')`)
+    .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
@@ -110,7 +112,8 @@ export const getLinksPaginated = async (
   const previousLinks = await getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(
+    .where(`link.linkType NOT IN ('${LinkType.Line}')`)
+    .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
@@ -135,7 +138,8 @@ export const getLinksPaginated = async (
   const nextLinks = await getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(
+    .where(`link.linkType NOT IN ('${LinkType.Line}')`)
+    .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
