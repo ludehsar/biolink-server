@@ -6,7 +6,7 @@ import { LinkConnection } from '../../object-types'
 import { ErrorCode } from '../../types'
 import { LinkType } from '../../enums'
 
-export const getLinksPaginated = async (
+export const getEmbedsPaginated = async (
   options: ConnectionArgs,
   adminUser: User
 ): Promise<LinkConnection> => {
@@ -58,7 +58,7 @@ export const getLinksPaginated = async (
   const qb = getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(`link.linkType = '${LinkType.Link}'`)
+    .where(`link.linkType = '${LinkType.Embed}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {
@@ -112,7 +112,7 @@ export const getLinksPaginated = async (
   const previousLinks = await getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(`link.linkType = '${LinkType.Link}'`)
+    .where(`link.linkType = '${LinkType.Embed}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {
@@ -138,7 +138,7 @@ export const getLinksPaginated = async (
   const nextLinks = await getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.user', 'user')
-    .where(`link.linkType = '${LinkType.Link}'`)
+    .where(`link.linkType = '${LinkType.Embed}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(link.linkTitle) like :query`, {

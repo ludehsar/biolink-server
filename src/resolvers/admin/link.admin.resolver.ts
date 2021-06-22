@@ -4,7 +4,7 @@ import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { LinkConnection } from '../../object-types'
-import { getLinksPaginated } from '../../services'
+import { getEmbedsPaginated, getLinksPaginated } from '../../services'
 
 @Resolver()
 export class LinkAdminResolver {
@@ -14,5 +14,13 @@ export class LinkAdminResolver {
     @CurrentAdmin() adminUser: User
   ): Promise<LinkConnection> {
     return await getLinksPaginated(options, adminUser)
+  }
+
+  @Query(() => LinkConnection, { nullable: true })
+  async getAllEmbeds(
+    @Arg('options') options: ConnectionArgs,
+    @CurrentAdmin() adminUser: User
+  ): Promise<LinkConnection> {
+    return await getEmbedsPaginated(options, adminUser)
   }
 }
