@@ -9,6 +9,7 @@ import { getLinkClicksData } from './analytics/getLinkClicksData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
+import { getAccessToken } from './auth/getAccessToken'
 import { loginAdmin } from './auth/loginAdmin'
 import { loginUser } from './auth/loginUser'
 import { logoutUser } from './auth/logoutUser'
@@ -38,6 +39,10 @@ import { updateSocialAccountsSettings } from './biolink/updateSocialAccountsSett
 import { updateUTMParameterSettings } from './biolink/updateUTMParameterSettings'
 import { uploadBiolinkCoverPhoto } from './biolink/uploadBiolinkCoverPhoto'
 import { uploadBiolinkProfilePhoto } from './biolink/uploadBiolinkProfilePhoto'
+// Blacklist
+import { getBlackListedBadWordsPaginated } from './blackList/getBlackListedBadWordsPaginated'
+import { getBlackListedEmailsPaginated } from './blackList/getBlackListedEmailsPaginated'
+import { getBlackListedUsernamesPaginated } from './blackList/getBlackListedUsernamesPaginated'
 // Category
 import { addCategory } from './category/addCategory'
 import { editCategory } from './category/editCategory'
@@ -98,6 +103,7 @@ export {
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth
+  getAccessToken,
   loginAdmin,
   loginUser,
   registerUser,
@@ -127,6 +133,10 @@ export {
   getDirectoriesPaginated,
   removeBiolink,
   importFromLinktree,
+  // Black List
+  getBlackListedBadWordsPaginated,
+  getBlackListedEmailsPaginated,
+  getBlackListedUsernamesPaginated,
   // Categories
   addCategory,
   editCategory,

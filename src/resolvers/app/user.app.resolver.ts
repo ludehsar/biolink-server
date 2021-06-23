@@ -10,7 +10,7 @@ import {
   PasswordInput,
   BillingInput,
 } from '../../input-types'
-import { UserResponse, DefaultResponse } from '../../object-types'
+import { UserResponse, DefaultResponse, AccessTokenResponse } from '../../object-types'
 import {
   registerUser,
   sendVerificationEmail,
@@ -23,6 +23,7 @@ import {
   deleteAccount,
   logoutUser,
   updateBilling,
+  getAccessToken,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -31,6 +32,11 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   me(@CurrentUser() user: User): User | null {
     return user
+  }
+
+  @Query(() => AccessTokenResponse)
+  getAccessToken(@CurrentUser() user: User, @Ctx() context: MyContext): AccessTokenResponse {
+    return getAccessToken(user, context)
   }
 
   @Mutation(() => UserResponse)

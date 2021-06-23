@@ -8,6 +8,7 @@ import { PaymentMethod } from '../enums'
 const stripeRoutes = Router()
 
 stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response | void> => {
+  console.log('Cookies ', (req as any).access_token)
   const user = await getAuthUser(req, res)
 
   if (!user) {

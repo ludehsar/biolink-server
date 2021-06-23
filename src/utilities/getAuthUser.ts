@@ -30,7 +30,11 @@ const generateNewToken = async (user: User, res: Response): Promise<void> => {
 
 export const getAuthUser = async (req: Request, res: Response): Promise<User | null> => {
   const refreshToken = req.cookies.refresh_token
-  const accessToken = req.cookies.access_token
+  const accessToken =
+    req.cookies.access_token ||
+    req.body.access_token ||
+    req.query.access_token ||
+    req.headers['x-access-token']
 
   if (accessToken) {
     try {

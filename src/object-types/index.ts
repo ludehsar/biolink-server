@@ -6,11 +6,16 @@ import { ChartResponse } from './analytics/ChartResponse'
 import { ChartValue } from './analytics/ChartValue'
 import { LinkClicksResponse } from './analytics/LinkClicksResponse'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
+// Auth
+import { AccessTokenResponse } from './auth/AccessTokenResponse'
 // Biolink
 import { BiolinkConnection } from './biolink/BiolinkConnection'
 import { BiolinkEdge } from './biolink/BiolinkEdge'
 import { BiolinkListResponse } from './biolink/BiolinkListResponse'
 import { BiolinkResponse } from './biolink/BiolinkResponse'
+// Black List
+import { BlackListConnection } from './blackList/BlackListConnection'
+import { BlackListEdge } from './blackList/BlackListEdge'
 // Category
 import { CategoryConnection } from './category/CategoryConnection'
 import { CategoryEdge } from './category/CategoryEdge'
@@ -37,12 +42,15 @@ import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
 
 export {
+  AccessTokenResponse,
   AdminRoleListResponse,
   AdminRoleResponse,
   BiolinkConnection,
   BiolinkEdge,
   BiolinkListResponse,
   BiolinkResponse,
+  BlackListConnection,
+  BlackListEdge,
   CategoryConnection,
   CategoryEdge,
   CategoryResponse,
