@@ -33,8 +33,6 @@ const generateNewToken = async (user: User, res: Response): Promise<void> => {
 
 export default function CurrentAdmin(): ParameterDecorator {
   return createParamDecorator<MyContext>(async ({ context }): Promise<User | null> => {
-    context.userId = null
-
     const refreshToken = context.req.cookies.refresh_token
     const accessToken = context.req.cookies.access_token
 
@@ -56,7 +54,6 @@ export default function CurrentAdmin(): ParameterDecorator {
           return null
         }
 
-        context.userId = user.id
         return user
       } catch (err) {
         invalidateToken(context.res)
@@ -81,7 +78,6 @@ export default function CurrentAdmin(): ParameterDecorator {
         }
 
         await generateNewToken(user, context.res)
-        context.userId = user.id
         return user
       } catch (err) {
         invalidateToken(context.res)

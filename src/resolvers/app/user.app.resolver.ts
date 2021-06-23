@@ -35,8 +35,11 @@ export class UserResolver {
   }
 
   @Query(() => AccessTokenResponse)
-  getAccessToken(@CurrentUser() user: User, @Ctx() context: MyContext): AccessTokenResponse {
-    return getAccessToken(user, context)
+  async getAccessToken(
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
+  ): Promise<AccessTokenResponse> {
+    return await getAccessToken(user, context)
   }
 
   @Mutation(() => UserResponse)

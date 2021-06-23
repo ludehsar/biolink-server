@@ -1,8 +1,12 @@
 import { AccessTokenResponse } from '../../object-types'
 import { User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
+import { generateNewToken } from '../../utilities'
 
-export const getAccessToken = (user: User, context: MyContext): AccessTokenResponse => {
+export const getAccessToken = async (
+  user: User,
+  context: MyContext
+): Promise<AccessTokenResponse> => {
   if (!user) {
     return {
       errors: [
@@ -11,6 +15,13 @@ export const getAccessToken = (user: User, context: MyContext): AccessTokenRespo
           message: 'User not authenticated',
         },
       ],
+    }
+  }
+
+  if (!context.req.cookies.access_token) {
+    const { accessToken } = await generateNewToken(user, context.res)
+    return {
+      access_token: accessToken,
     }
   }
 

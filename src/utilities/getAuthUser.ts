@@ -9,23 +9,31 @@ import {
 } from '../config'
 import { createAuthTokens } from '../utilities'
 
-interface DataProps {
+export interface DataProps {
   userId: string
   token: string
   iat: number
   exp: number
 }
 
-const invalidateToken = (res: Response): void => {
+export const invalidateToken = (res: Response): void => {
   res.cookie('refresh_token', '', refreshTokenCookieOptions)
   res.cookie('access_token', '', accessTokenCookieOptions)
 }
 
-const generateNewToken = async (user: User, res: Response): Promise<void> => {
+export const generateNewToken = async (
+  user: User,
+  res: Response
+): Promise<{ accessToken: string; refreshToken: string }> => {
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
   res.cookie('access_token', accessToken, accessTokenCookieOptions)
   res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+
+  return {
+    accessToken,
+    refreshToken,
+  }
 }
 
 export const getAuthUser = async (req: Request, res: Response): Promise<User | null> => {
