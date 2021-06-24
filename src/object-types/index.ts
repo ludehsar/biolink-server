@@ -20,6 +20,9 @@ import { BlackListEdge } from './blackList/BlackListEdge'
 import { CategoryConnection } from './category/CategoryConnection'
 import { CategoryEdge } from './category/CategoryEdge'
 import { CategoryResponse } from './category/CategoryResponse'
+// Code
+import { CodeConnection } from './code/CodeConnection'
+import { CodeEdge } from './code/CodeEdge'
 // Common
 import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
@@ -56,6 +59,8 @@ export {
   CategoryResponse,
   ChartResponse,
   ChartValue,
+  CodeConnection,
+  CodeEdge,
   DefaultResponse,
   ErrorResponse,
   LinkClicksResponse,

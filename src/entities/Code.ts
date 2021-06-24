@@ -56,6 +56,7 @@ export class Code extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.codes, { nullable: true, lazy: true })
   @JoinColumn({ name: 'referrerId' })
   referrer!: Promise<User>

@@ -50,8 +50,10 @@ import { getCategory } from './category/getCategory'
 import { getCategoriesPaginated } from './category/getCategoriesPaginated'
 // Code
 import { createReferralCode } from './code/createReferralCode'
-import { createNewLink } from './link/createNewLink'
+import { getDiscountCodesPaginated } from './code/getDiscountCodesPaginated'
+import { getReferralCodesPaginated } from './code/getReferralCodesPaginated'
 // Link
+import { createNewLink } from './link/createNewLink'
 import { getAllLinksOfBiolink } from './link/getAllLinksOfBiolink'
 import { getAllUserLinks } from './link/getAllUserLinks'
 import { getLinksPaginated } from './link/getLinksPaginated'
@@ -144,6 +146,8 @@ export {
   getCategory,
   // Code
   createReferralCode,
+  getDiscountCodesPaginated,
+  getReferralCodesPaginated,
   // Link
   getAllLinksOfBiolink,
   getAllUserLinks,
