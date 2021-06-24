@@ -1,9 +1,11 @@
 import { Router, Response } from 'express'
 
 import { savePayment, saveStripeCustomerId } from '../services'
-import { FRONTEND_APP_URL, STRIPE_WEBHOOK_SECRET } from '../config'
+import { STRIPE_WEBHOOK_SECRET } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
+
+// TODO: change http://localhost:3000 to FRONTEND_APP_URL
 
 const stripeRoutes = Router()
 
@@ -41,8 +43,8 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
       // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
-      success_url: `${FRONTEND_APP_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${FRONTEND_APP_URL}/payment/canceled`,
+      success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3000/payment/canceled`,
     })
 
     res.send({
@@ -145,7 +147,7 @@ stripeRoutes.post('/customer-portal', async (req, res): Promise<Response | void>
 
   // This is the url to which the customer will be redirected when they are done
   // managing their billing with the portal.
-  const returnUrl = FRONTEND_APP_URL
+  const returnUrl = 'http://localhost:3000'
 
   const portalsession = await stripe.billingPortal.sessions.create({
     customer: user.stripeCustomerId,
