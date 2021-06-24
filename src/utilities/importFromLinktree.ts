@@ -6,6 +6,7 @@ import path from 'path'
 import randToken from 'rand-token'
 import { SocialMediaProps } from '../json-types'
 import { BACKEND_URL } from '../config'
+import getSupportedSocialIcons from './getSupportedSocialIcons'
 
 export interface LinktreeParsingProps {
   bio?: string
@@ -51,10 +52,15 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
         linkTitle: $(element).find('p').text().trim(),
       })) || [],
     socials:
-      Array.from($('div[class="sc-bqyKva fWWLBz"] > div > a')).map((element) => ({
-        platform: element.attribs['aria-label'].trim(),
-        link: element.attribs['href'].trim(),
-      })) || [],
+      Array.from($('div[class="sc-bqyKva fWWLBz"] > div > a'))
+        .filter((element) => {
+          return getSupportedSocialIcons.includes(element.attribs['aria-label'].trim())
+        })
+        .map((element) => ({
+          platform: element.attribs['aria-label'].trim(),
+          link: element.attribs['href'].trim(),
+          icon: BACKEND_URL + `/static/socialIcons/${element.attribs['aria-label'].trim()}.png`,
+        })) || [],
   }
 
   if (imageUrl) {
