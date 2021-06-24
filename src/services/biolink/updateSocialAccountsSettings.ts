@@ -1,4 +1,5 @@
 import { validate } from 'class-validator'
+import { SocialAccountStyleType } from '../../enums'
 import { BACKEND_URL } from '../../config'
 import { User, Biolink, Plan } from '../../entities'
 import { SingleSocialAccount, SocialAccountsInput } from '../../input-types'
@@ -102,6 +103,8 @@ export const updateSocialAccountsSettings = async (
         ],
       }
     }
+    biolinkSettings.socialAccountStyleType =
+      options.socialAccountStyleType || SocialAccountStyleType.Round
     biolinkSettings.socialAccounts =
       options.socialAccounts?.map((option) => ({
         link: option.link || '#',

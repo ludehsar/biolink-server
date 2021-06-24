@@ -1,4 +1,5 @@
 import { ObjectType, Field } from 'type-graphql'
+import { SocialAccountStyleType } from '../enums'
 
 @ObjectType()
 export class SocialMediaProps {
@@ -44,6 +45,9 @@ export class BiolinkSettings {
   // ----- Social Media Icons ----- //
   @Field(() => Boolean, { nullable: true })
   enableColoredSocialMediaIcons!: boolean
+
+  @Field(() => String, { nullable: true, defaultValue: SocialAccountStyleType.Round })
+  socialAccountStyleType!: SocialAccountStyleType
 
   @Field(() => [SocialMediaProps], { nullable: true })
   socialAccounts!: SocialMediaProps[]

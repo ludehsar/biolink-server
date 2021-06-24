@@ -1,6 +1,7 @@
 import { InputType, Field } from 'type-graphql'
-import { IsBoolean, IsOptional } from 'class-validator'
-import { SingleSocialAccount } from './SingleSocialAccount'
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator'
+import { SingleSocialAccount } from '../../input-types'
+import { SocialAccountStyleType } from '../../enums'
 
 @InputType()
 export class SocialAccountsInput {
@@ -8,6 +9,11 @@ export class SocialAccountsInput {
   @IsBoolean()
   @IsOptional()
   enableColoredSocialMediaIcons?: boolean
+
+  @Field({ nullable: true, defaultValue: SocialAccountStyleType.Round })
+  @IsEnum(SocialAccountStyleType)
+  @IsOptional()
+  socialAccountStyleType?: SocialAccountStyleType
 
   @Field(() => [SingleSocialAccount], { nullable: true, defaultValue: [] })
   @IsOptional()

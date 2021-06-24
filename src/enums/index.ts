@@ -8,6 +8,7 @@ import { LinkType } from './LinkType'
 import { PaymentMethod } from './PaymentMethod'
 import { PremiumUsernameType } from './PremiumUsernameType'
 import { ResolveStatus } from './ResolveStatus'
+import { SocialAccountStyleType } from './SocialAccountStyleType'
 import { TaxBillingForType } from './TaxBillingForType'
 import { TaxType } from './TaxType'
 import { TaxValueType } from './TaxValueType'
@@ -25,6 +26,7 @@ export {
   PaymentMethod,
   PremiumUsernameType,
   ResolveStatus,
+  SocialAccountStyleType,
   TaxBillingForType,
   TaxType,
   TaxValueType,
