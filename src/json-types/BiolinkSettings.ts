@@ -6,6 +6,9 @@ export class SocialMediaProps {
   platform!: string
 
   @Field(() => String, { nullable: true })
+  icon?: string
+
+  @Field(() => String, { nullable: true })
   link!: string
 }
 

@@ -1,7 +1,8 @@
 import { validate } from 'class-validator'
+import { BACKEND_URL } from '../../config'
 import { User, Biolink, Plan } from '../../entities'
-import { SocialAccountsInput } from '../../input-types'
-import { BiolinkResponse } from '../../object-types'
+import { SingleSocialAccount, SocialAccountsInput } from '../../input-types'
+import { BiolinkResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 
@@ -21,6 +22,28 @@ export const updateSocialAccountsSettings = async (
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
+    }
+  }
+
+  let errors: ErrorResponse[] = []
+
+  for (let i = 0; i < (options.socialAccounts || []).length; ++i) {
+    const socialAccountValidationError = await validate(
+      (options.socialAccounts as SingleSocialAccount[])[i]
+    )
+
+    if (socialAccountValidationError.length > 0) {
+      errors = socialAccountValidationError.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      }))
+    }
+  }
+
+  if (errors.length > 0) {
+    return {
+      errors,
     }
   }
 
@@ -66,9 +89,9 @@ export const updateSocialAccountsSettings = async (
   const biolinkSettings = biolink.settings || {}
 
   if (planSettings.socialEnabled) {
-    if (planSettings.coloredLinksEnabled)
+    if (planSettings.coloredLinksEnabled) {
       biolinkSettings.enableColoredSocialMediaIcons = options.enableColoredSocialMediaIcons || false
-    else if (options.enableColoredSocialMediaIcons) {
+    } else if (options.enableColoredSocialMediaIcons) {
       return {
         errors: [
           {
@@ -83,6 +106,7 @@ export const updateSocialAccountsSettings = async (
       options.socialAccounts?.map((option) => ({
         link: option.link || '#',
         platform: option.platform || 'Unknown',
+        icon: BACKEND_URL + `/static/socialIcons/${option.platform}.png`,
       })) || []
   } else {
     return {

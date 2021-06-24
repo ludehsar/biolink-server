@@ -2,6 +2,7 @@ import { doesPathExist } from './checkPathExists'
 import { createAuthTokens } from './createAuthTokens'
 import { DataProps, getAuthUser, generateNewToken, invalidateToken } from './getAuthUser'
 import { LinktreeParsingProps, linktreeImportHandler } from './importFromLinktree'
+import getSupportedSocialIcons from './getSupportedSocialIcons'
 import sgMail from './sendMail'
 import { stripe } from './stripe'
 
@@ -11,6 +12,7 @@ export {
   createAuthTokens,
   doesPathExist,
   getAuthUser,
+  getSupportedSocialIcons,
   generateNewToken,
   invalidateToken,
   linktreeImportHandler,

@@ -1,13 +1,15 @@
 import { InputType, Field } from 'type-graphql'
-import { IsNotEmpty, IsUrl } from 'class-validator'
+import { IsIn, IsNotEmpty, IsUrl } from 'class-validator'
+import { getSupportedSocialIcons } from '../../utilities'
 
 @InputType()
 export class SingleSocialAccount {
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
+  @IsIn(getSupportedSocialIcons)
   platform?: string
 
-  @Field()
+  @Field(() => String, { nullable: true })
   @IsNotEmpty()
   @IsUrl()
   link?: string
