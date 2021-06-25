@@ -13,6 +13,7 @@ import { BiolinkConnection } from './biolink/BiolinkConnection'
 import { BiolinkEdge } from './biolink/BiolinkEdge'
 import { BiolinkListResponse } from './biolink/BiolinkListResponse'
 import { BiolinkResponse } from './biolink/BiolinkResponse'
+import { DirectorySearchResponse } from './biolink/DirectorySearchResponse'
 // Black List
 import { BlackListConnection } from './blackList/BlackListConnection'
 import { BlackListEdge } from './blackList/BlackListEdge'
@@ -62,6 +63,7 @@ export {
   CodeConnection,
   CodeEdge,
   DefaultResponse,
+  DirectorySearchResponse,
   ErrorResponse,
   LinkClicksResponse,
   LinkConnection,

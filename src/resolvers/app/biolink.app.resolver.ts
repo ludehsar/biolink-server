@@ -23,6 +23,7 @@ import {
   BiolinkListResponse,
   BiolinkConnection,
   DefaultResponse,
+  DirectorySearchResponse,
 } from '../../object-types'
 import {
   createBiolink,
@@ -44,6 +45,7 @@ import {
   getDirectoriesPaginated,
   removeBiolink,
   importFromLinktree,
+  getSearchQueries,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -208,6 +210,13 @@ export class BiolinkResolver {
     @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
   ): Promise<BiolinkConnection> {
     return await getDirectoriesPaginated(categoryIds, options)
+  }
+
+  @Query(() => DirectorySearchResponse, { nullable: true })
+  async getSearchQueries(
+    @Arg('query', { defaultValue: '' }) query: string
+  ): Promise<DirectorySearchResponse> {
+    return await getSearchQueries(query)
   }
 
   @Mutation(() => DefaultResponse)
