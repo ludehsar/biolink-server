@@ -7,8 +7,5 @@ export class DirectorySearchResponse {
   errors?: ErrorResponse[]
 
   @Field(() => [String], { nullable: true })
-  directories?: string[]
-
-  @Field(() => [String], { nullable: true })
-  categories?: string[]
+  results?: string[]
 }

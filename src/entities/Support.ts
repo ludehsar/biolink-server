@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -60,6 +61,10 @@ export class Support extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @Field(() => String, { nullable: true })
+  @DeleteDateColumn()
+  deletedAt?: Date
 
   // Relationships
   @Field(() => User, { nullable: true })

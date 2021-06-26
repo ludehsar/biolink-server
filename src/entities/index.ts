@@ -7,7 +7,7 @@ import { Domain } from './Domain'
 import { Link } from './Link'
 import { Payment } from './Payment'
 import { Plan } from './Plan'
-import { PremiumUsername } from './PremiumUsername'
+import { Username } from './Username'
 import { Referral } from './Referral'
 import { Report } from './Report'
 import { Settings } from './Settings'
@@ -28,7 +28,7 @@ export {
   Link,
   Payment,
   Plan,
-  PremiumUsername,
+  Username,
   Referral,
   Report,
   Settings,

@@ -1,5 +1,5 @@
 import argon2 from 'argon2'
-import { Biolink, PremiumUsername } from '../../entities'
+import { Username } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { trackBiolinkClicks } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
@@ -9,10 +9,10 @@ export const getBiolinkFromUsername = async (
   context: MyContext,
   password?: string
 ): Promise<BiolinkResponse> => {
-  const biolink = await Biolink.findOne({ where: { username } })
-  const premiumUsername = await PremiumUsername.findOne({ where: { username } })
+  const availableUsername = await Username.findOne({ where: { username } })
+  const biolink = await availableUsername?.biolink
 
-  if (!biolink || (premiumUsername && premiumUsername.ownerId !== biolink.userId)) {
+  if (!biolink) {
     return {
       errors: [
         {

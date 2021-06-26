@@ -3,6 +3,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -44,6 +45,10 @@ export class Domain extends BaseEntity {
   @Field(() => String, { nullable: true })
   @UpdateDateColumn()
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
+  deletedAt?: Date
 
   // Relationships
   @ManyToOne(() => User, (user) => user.domains, { lazy: true })

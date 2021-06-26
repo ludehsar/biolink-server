@@ -1,7 +1,7 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 import path from 'path'
-import { User, Biolink, Plan, Category, Verification } from '../../entities'
+import { User, Plan, Category, Verification, Biolink } from '../../entities'
 import { VerificationInput } from '../../input-types'
 import { DefaultResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -11,7 +11,7 @@ import { VerificationStatus } from '../../enums'
 
 export const createVerification = async (
   options: VerificationInput,
-  biolinkUsername: string,
+  biolinkId: string,
   user: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
@@ -26,7 +26,7 @@ export const createVerification = async (
     }
   }
 
-  const biolink = await Biolink.findOne({ where: { username: biolinkUsername } })
+  const biolink = await Biolink.findOne(biolinkId)
 
   if (!biolink) {
     return {
@@ -76,7 +76,7 @@ export const createVerification = async (
     }
   }
 
-  const category = await Category.findOne({ where: { id: options.categoryId } })
+  const category = await Category.findOne(options.categoryId)
 
   if (!category) {
     return {

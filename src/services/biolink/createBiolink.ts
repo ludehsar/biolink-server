@@ -1,4 +1,4 @@
-import { User, Biolink } from '../../entities'
+import { User, Biolink, Username } from '../../entities'
 import { NewBiolinkInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -29,14 +29,26 @@ export const createBiolink = async (
     }
   }
 
+  // Create Username
+  let username = await Username.findOne({ where: { username: options.username } })
+
+  if (!username) {
+    username = await Username.create({ username: options.username }).save()
+  }
+
   // Creates biolink
-  const biolink = Biolink.create({
-    username: options.username,
-  })
+  const biolink = Biolink.create()
+  biolink.username = Promise.resolve(username)
 
   biolink.user = Promise.resolve(user)
 
   await biolink.save()
+
+  username.owner = Promise.resolve(user)
+  username.biolink = Promise.resolve(biolink)
+  username.expireDate = null
+
+  await username.save()
 
   // Capture user log
   await captureUserActivity(user, context, `Created new biolink ${biolink.username}`)

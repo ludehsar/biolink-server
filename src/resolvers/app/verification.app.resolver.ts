@@ -11,10 +11,10 @@ export class VerificationResolver {
   @Mutation(() => DefaultResponse)
   async verifyBiolinkByUsername(
     @Arg('options') options: VerificationInput,
-    @Arg('biolinkUsername') biolinkUsername: string,
+    @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<DefaultResponse> {
-    return await createVerification(options, biolinkUsername, user, context)
+    return await createVerification(options, biolinkId, user, context)
   }
 }

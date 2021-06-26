@@ -7,17 +7,19 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
-import { User } from '../entities'
+import { User } from '.'
 import { PremiumUsernameType } from '../enums'
+import { Biolink } from './Biolink'
 
 @ObjectType()
 @Entity()
-export class PremiumUsername extends BaseEntity {
+export class Username extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String, { nullable: true })
   id!: string
@@ -26,13 +28,13 @@ export class PremiumUsername extends BaseEntity {
   @Field(() => String, { nullable: true })
   username!: string
 
-  @Column()
+  @Column({ type: 'enum', enum: PremiumUsernameType, default: PremiumUsernameType.None })
   @Field(() => String, { nullable: true })
-  price!: number
+  premiumType!: PremiumUsernameType
 
-  @Column({ type: 'enum', enum: PremiumUsernameType, default: PremiumUsernameType.Premium })
   @Field(() => String, { nullable: true })
-  usernameType!: PremiumUsernameType
+  @Column({ type: 'date', nullable: true })
+  expireDate!: Date | null
 
   @CreateDateColumn()
   @Field(() => String, { nullable: true })
@@ -48,10 +50,22 @@ export class PremiumUsername extends BaseEntity {
 
   // Relationships
   @Field(() => String, { nullable: true })
-  @ManyToOne(() => User, (user) => user.premiumUsernames, { nullable: true, lazy: true })
+  @ManyToOne(() => User, (user) => user.usernames, { nullable: true, lazy: true })
   @JoinColumn({ name: 'ownerId' })
   owner!: Promise<User>
 
-  @RelationId((premiumUsername: PremiumUsername) => premiumUsername.owner)
+  @RelationId((username: Username) => username.owner)
   ownerId!: string
+
+  @Field(() => String, { nullable: true })
+  @OneToOne(() => Biolink, (biolink) => biolink.username, {
+    nullable: true,
+    lazy: true,
+    cascade: true,
+  })
+  @JoinColumn({ name: 'biolinkId' })
+  biolink?: Promise<Biolink> | Biolink | null
+
+  @RelationId((username: Username) => username.biolink)
+  biolinkId!: string
 }

@@ -23,6 +23,10 @@ export class Category extends BaseEntity {
   @Column({ unique: true })
   categoryName!: string
 
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  featured!: boolean
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
@@ -39,6 +43,6 @@ export class Category extends BaseEntity {
   @OneToMany(() => Biolink, (biolink) => biolink.category, { lazy: true })
   biolinks!: Promise<Biolink[]>
 
-  @OneToMany(() => Verification, (verification) => verification.category)
-  verifications!: Verification[]
+  @OneToMany(() => Verification, (verification) => verification.category, { lazy: true })
+  verifications!: Promise<Verification[]>
 }

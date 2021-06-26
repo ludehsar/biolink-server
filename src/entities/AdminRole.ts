@@ -4,6 +4,7 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -37,6 +38,10 @@ export class AdminRole extends BaseEntity {
   @UpdateDateColumn()
   @Field(() => String, { nullable: true })
   updatedAt!: Date
+
+  @DeleteDateColumn()
+  @Field(() => String, { nullable: true })
+  deletedAt?: Date
 
   // Relationships
   @OneToMany(() => User, (users) => users.adminRole, { lazy: true })

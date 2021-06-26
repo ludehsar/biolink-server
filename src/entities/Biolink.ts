@@ -19,6 +19,7 @@ import { BiolinkSettings } from '../json-types'
 import { User, Link, TrackLink, Category, Verification } from '../entities'
 import { VerificationStatus } from '../enums'
 import { BACKEND_URL } from '../config'
+import { Username } from './Username'
 
 @ObjectType()
 @Entity()
@@ -28,18 +29,14 @@ export class Biolink extends BaseEntity {
   @Field(() => String, { nullable: true })
   id!: string
 
-  @Column()
-  @Field(() => String, { nullable: true })
-  username!: string
-
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultProfilePhoto.png' })
   @Field(() => String, {
     nullable: true,
     defaultValue: BACKEND_URL + '/static/defaultProfilePhoto.png',
   })
   profilePhotoUrl!: string
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultCoverPhoto.png' })
   @Field(() => String, {
     nullable: true,
     defaultValue: BACKEND_URL + '/static/defaultCoverPhoto.png',
@@ -103,6 +100,14 @@ export class Biolink extends BaseEntity {
   @Column({ type: 'boolean', nullable: true, default: false })
   verifiedWorkEmail!: boolean
 
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  featured!: boolean
+
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  changedUsername!: boolean
+
   @CreateDateColumn()
   @Field(() => String, { nullable: true })
   createdAt!: Date
@@ -116,6 +121,17 @@ export class Biolink extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
+  @Field(() => Username, { nullable: true })
+  @OneToOne(() => Username, (username) => username.biolink, {
+    nullable: true,
+    lazy: true,
+  })
+  @JoinColumn({ name: 'usernameId' })
+  username?: Promise<Username>
+
+  @RelationId((biolink: Biolink) => biolink.username)
+  usernameId!: string
+
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.biolinks, { lazy: true })
   @JoinColumn({ name: 'userId' })
@@ -128,11 +144,14 @@ export class Biolink extends BaseEntity {
   @OneToMany(() => Link, (link) => link.biolink, { lazy: true })
   links!: Promise<Link[]>
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true })
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true, cascade: true })
   trackLinks!: Promise<TrackLink[]>
 
   @Field(() => Category, { nullable: true })
-  @ManyToOne(() => Category, (category) => category.biolinks, { nullable: true, lazy: true })
+  @ManyToOne(() => Category, (category) => category.biolinks, {
+    nullable: true,
+    lazy: true,
+  })
   @JoinColumn({ name: 'categoryId' })
   category?: Promise<Category>
 
@@ -142,6 +161,7 @@ export class Biolink extends BaseEntity {
   @OneToOne(() => Verification, (verification) => verification.biolink, {
     nullable: true,
     lazy: true,
+    cascade: true,
   })
   @JoinColumn({ name: 'verificationId' })
   verification!: Promise<Verification>

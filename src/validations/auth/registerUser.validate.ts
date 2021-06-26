@@ -1,6 +1,7 @@
 import { validate } from 'class-validator'
-import { BlackList, User, Code, Biolink, PremiumUsername } from '../../entities'
-import { BlacklistType } from '../../enums'
+import moment from 'moment'
+import { BlackList, User, Code, Username } from '../../entities'
+import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { RegisterInput } from '../../input-types'
 import { ErrorResponse } from '../../object-types'
 import { ErrorCode } from '../../types'
@@ -85,8 +86,9 @@ export const registerUserValidated = async (
     }
 
     // Checks if username already exists
-    const biolink = await Biolink.findOne({ where: { username: options.username } })
-    if (biolink) {
+    const username = await Username.findOne({ where: { username: options.username } })
+    const biolink = await username?.biolink
+    if (biolink || (username && moment(moment.now()).isBefore(moment(username.expireDate)))) {
       errors.push({
         errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
         field: 'username',
@@ -97,8 +99,11 @@ export const registerUserValidated = async (
     }
 
     // Checks premium username which has not yet purchased
-    const premiumUsername = await PremiumUsername.findOne({
-      where: { username: options.username },
+    const premiumUsername = await Username.findOne({
+      where: {
+        username: options.username,
+        premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
+      },
     })
 
     if (premiumUsername && premiumUsername.ownerId !== null) {

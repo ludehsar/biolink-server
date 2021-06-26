@@ -1,6 +1,7 @@
 import { validate } from 'class-validator'
-import { User, Biolink, BlackList, PremiumUsername } from '../../entities'
-import { BlacklistType } from '../../enums'
+import moment from 'moment'
+import { User, BlackList, Username } from '../../entities'
+import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { EmailAndUsernameInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
 import { sendVerificationEmail } from '../../services'
@@ -35,7 +36,8 @@ export const changeEmailAndUsername = async (
     }
   }
 
-  const biolink = await Biolink.findOne({ where: { username } })
+  const currentUsername = await Username.findOne({ where: { username } })
+  const biolink = await currentUsername?.biolink
 
   if (!biolink || biolink.userId !== user.id) {
     return {
@@ -71,6 +73,18 @@ export const changeEmailAndUsername = async (
   }
 
   if (options.username) {
+    if (biolink.changedUsername) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.USERNAME_ALREADY_CHANGED_ONCE,
+            message:
+              'Username already changed once, to change the username again, contact admin support',
+          },
+        ],
+      }
+    }
+
     if (options.username.startsWith('0')) {
       return {
         errors: [
@@ -82,9 +96,15 @@ export const changeEmailAndUsername = async (
       }
     }
 
-    const otherBiolik = await Biolink.findOne({ where: { username: options.username } })
+    const otherUsername = await Username.findOne({ where: { username: options.username } })
+    const otherBiolink = await otherUsername?.biolink
 
-    if (otherBiolik && otherBiolik.id !== biolink.id) {
+    if (
+      (otherBiolink && otherBiolink.id !== biolink.id) ||
+      (otherUsername &&
+        otherUsername.ownerId !== user.id &&
+        moment(moment.now()).isBefore(otherUsername.expireDate))
+    ) {
       return {
         errors: [
           {
@@ -112,25 +132,50 @@ export const changeEmailAndUsername = async (
     }
 
     // Checks premium username which has not yet purchased
-    const premiumUsername = await PremiumUsername.findOne({
-      where: { username: options.username },
+    const premiumUsername = await Username.findOne({
+      where: {
+        username: options.username,
+        premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
+      },
     })
 
-    if (premiumUsername && premiumUsername.ownerId !== null) {
+    if (premiumUsername && premiumUsername.ownerId !== user.id) {
       return {
         errors: [
           {
             errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
             field: 'username',
-            message: 'Username has already been taken.',
+            message: 'Contact admin support to get this username.',
           },
         ],
       }
     }
 
-    biolink.username = options.username
+    const oldUsername = await biolink.username
+
+    if (oldUsername) {
+      oldUsername.biolink = null
+      oldUsername.expireDate = new Date(Date.now() + 12096e5)
+
+      await oldUsername.save()
+    }
+
+    let username = await Username.findOne({ where: { username: options.username } })
+
+    if (!username) {
+      username = await Username.create({ username: options.username }).save()
+    }
+
+    biolink.changedUsername = true
+    biolink.username = Promise.resolve(username)
 
     await biolink.save()
+
+    username.biolink = Promise.resolve(biolink)
+    username.owner = Promise.resolve(user)
+    username.expireDate = null
+
+    await username.save()
   }
 
   return {}

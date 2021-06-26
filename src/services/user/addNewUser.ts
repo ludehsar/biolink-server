@@ -4,18 +4,10 @@ import { validate } from 'class-validator'
 import { MailDataRequired } from '@sendgrid/mail'
 
 import { ErrorCode, MyContext } from '../../types'
-import {
-  AdminRole,
-  Biolink,
-  BlackList,
-  Category,
-  Plan,
-  PremiumUsername,
-  User,
-} from '../../entities'
+import { AdminRole, Biolink, BlackList, Category, Plan, Username, User } from '../../entities'
 import { NewUserInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
-import { BlacklistType } from '../../enums'
+import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { captureUserActivity } from '../../services'
 import { sgMail } from '../../utilities'
 import moment from 'moment'
@@ -84,13 +76,24 @@ export const addNewUser = async (
     }
   }
 
-  const otherBiolink = await Biolink.findOne({ where: { username: options.username } })
-  const premiumUsername = await PremiumUsername.findOne({ where: { username: options.username } })
+  const availableUsername = await Username.findOne({ where: { username: options.username } })
+  const otherBiolink = availableUsername?.biolink
+  const premiumUsername = await Username.findOne({
+    where: {
+      username: options.username,
+      premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
+    },
+  })
   const blacklistedBiolink = await BlackList.findOne({
     where: { blacklistType: BlacklistType.Username, keyword: options.username },
   })
 
-  if (otherBiolink || blacklistedBiolink || (premiumUsername && premiumUsername.owner !== null)) {
+  if (
+    otherBiolink ||
+    (availableUsername && moment(moment.now()).isBefore(availableUsername.expireDate)) ||
+    blacklistedBiolink ||
+    (premiumUsername && premiumUsername.owner !== null)
+  ) {
     return {
       errors: [
         {
@@ -111,9 +114,16 @@ export const addNewUser = async (
       encryptedPassword,
     })
 
-    const biolink = Biolink.create({
-      username: options.username,
-    })
+    let username = await Username.findOne({ where: { username: options.username } })
+
+    if (!username) {
+      username = await Username.create({
+        username: options.username,
+      }).save()
+    }
+
+    const biolink = Biolink.create()
+    biolink.username = Promise.resolve(username)
 
     if (options.adminRoleId) {
       const adminRole = await AdminRole.findOne(options.adminRoleId)
@@ -157,11 +167,10 @@ export const addNewUser = async (
     biolink.user = Promise.resolve(user)
     await biolink.save()
 
-    if (premiumUsername) {
-      premiumUsername.owner = Promise.resolve(user)
-
-      await premiumUsername.save()
-    }
+    username.biolink = Promise.resolve(biolink)
+    username.owner = Promise.resolve(user)
+    username.expireDate = null
+    await username.save()
 
     const newAccountConfirmationEmail: MailDataRequired = {
       to: user.email,

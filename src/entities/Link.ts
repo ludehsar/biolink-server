@@ -92,13 +92,16 @@ export class Link extends BaseEntity {
   userId!: string
 
   @Field(() => Biolink, { nullable: true })
-  @ManyToOne(() => Biolink, (biolink) => biolink.links, { nullable: true, lazy: true })
+  @ManyToOne(() => Biolink, (biolink) => biolink.links, {
+    nullable: true,
+    lazy: true,
+  })
   @JoinColumn({ name: 'biolinkId' })
   biolink?: Promise<Biolink>
 
   @RelationId((link: Link) => link.biolink)
   biolinkId!: string
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.link, { lazy: true })
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.link, { lazy: true, cascade: true })
   trackLinks!: Promise<TrackLink[]>
 }

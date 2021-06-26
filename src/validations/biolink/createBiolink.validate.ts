@@ -1,7 +1,8 @@
 import { validate } from 'class-validator'
+import moment from 'moment'
 import { getRepository } from 'typeorm'
-import { User, BlackList, Biolink, PremiumUsername, Plan } from '../../entities'
-import { BlacklistType } from '../../enums'
+import { User, BlackList, Biolink, Username, Plan } from '../../entities'
+import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { NewBiolinkInput } from '../../input-types'
 import { ErrorResponse } from '../../object-types'
 import { ErrorCode } from '../../types'
@@ -26,6 +27,14 @@ export const createBiolinkValidated = async (
     return errors
   }
 
+  // Checks authentication
+  if (!user) {
+    errors.push({
+      errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+      message: 'User not authenticated',
+    })
+  }
+
   // Checks blacklisted username
   const blacklisted = await BlackList.findOne({
     where: { blacklistType: BlacklistType.Username, keyword: options.username },
@@ -40,24 +49,34 @@ export const createBiolinkValidated = async (
     return errors
   }
 
-  // Checks if username already exists
-  const biolink = await Biolink.findOne({ where: { username: options.username } })
-  if (biolink) {
-    errors.push({
-      errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-      field: 'username',
-      message: 'Username has already been taken.',
-    })
-
-    return errors
-  }
-
-  // Checks premium username which has not yet purchased
-  const premiumUsername = await PremiumUsername.findOne({
-    where: { username: options.username },
+  // Checks premium username
+  const premiumUsername = await Username.findOne({
+    where: {
+      username: options.username,
+      premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
+    },
   })
 
-  if (premiumUsername && premiumUsername.ownerId !== null) {
+  if (premiumUsername) {
+    errors.push({
+      errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
+      field: 'username',
+      message: 'Contact to the admin support for this username.',
+    })
+
+    return errors
+  }
+
+  // Checks if username already exists
+  const username = await Username.findOne({ where: { username: options.username } })
+  const biolink = await username?.biolink
+
+  if (
+    biolink ||
+    (username &&
+      username.ownerId !== user.id &&
+      moment(moment.now()).isBefore(moment(username.expireDate)))
+  ) {
     errors.push({
       errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
       field: 'username',
@@ -65,14 +84,6 @@ export const createBiolinkValidated = async (
     })
 
     return errors
-  }
-
-  // Checks authorization
-  if (!user) {
-    errors.push({
-      errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-      message: 'User not authenticated',
-    })
   }
 
   // Checks plan
