@@ -79,10 +79,16 @@ export const addNewUser = async (
   const availableUsername = await Username.findOne({ where: { username: options.username } })
   const otherBiolink = availableUsername?.biolink
   const premiumUsername = await Username.findOne({
-    where: {
-      username: options.username,
-      premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
-    },
+    where: [
+      {
+        username: options.username,
+        premiumType: PremiumUsernameType.Premium,
+      },
+      {
+        username: options.username,
+        premiumType: PremiumUsernameType.Trademark,
+      },
+    ],
   })
   const blacklistedBiolink = await BlackList.findOne({
     where: { blacklistType: BlacklistType.Username, keyword: options.username },

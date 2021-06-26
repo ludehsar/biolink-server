@@ -133,10 +133,16 @@ export const changeEmailAndUsername = async (
 
     // Checks premium username which has not yet purchased
     const premiumUsername = await Username.findOne({
-      where: {
-        username: options.username,
-        premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
-      },
+      where: [
+        {
+          username: options.username,
+          premiumType: PremiumUsernameType.Premium,
+        },
+        {
+          username: options.username,
+          premiumType: PremiumUsernameType.Trademark,
+        },
+      ],
     })
 
     if (premiumUsername && premiumUsername.ownerId !== user.id) {

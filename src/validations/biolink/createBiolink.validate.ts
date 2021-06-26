@@ -51,13 +51,19 @@ export const createBiolinkValidated = async (
 
   // Checks premium username
   const premiumUsername = await Username.findOne({
-    where: {
-      username: options.username,
-      premiumType: PremiumUsernameType.Premium || PremiumUsernameType.Trademark,
-    },
+    where: [
+      {
+        username: options.username,
+        premiumType: PremiumUsernameType.Premium,
+      },
+      {
+        username: options.username,
+        premiumType: PremiumUsernameType.Trademark,
+      },
+    ],
   })
 
-  if (premiumUsername) {
+  if (premiumUsername && premiumUsername.ownerId !== user.id) {
     errors.push({
       errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
       field: 'username',
