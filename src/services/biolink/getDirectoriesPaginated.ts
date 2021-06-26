@@ -25,10 +25,11 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
+    .leftJoinAndSelect('biolink.username', 'username')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
     .andWhere(
       new Brackets((qb) => {
-        qb.where(`LOWER(biolink.username) like :query`, {
+        qb.where(`LOWER(username.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
         })
           .orWhere(`LOWER(biolink.displayName) like :query`, {
@@ -96,10 +97,11 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
+    .leftJoinAndSelect('biolink.username', 'username')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
     .andWhere(
       new Brackets((qb) => {
-        qb.where(`LOWER(biolink.username) like :query`, {
+        qb.where(`LOWER(username.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
         })
           .orWhere(`LOWER(biolink.displayName) like :query`, {
@@ -135,10 +137,11 @@ export const getDirectoriesPaginated = async (
     .createQueryBuilder('biolink')
     .leftJoinAndSelect('biolink.category', 'category')
     .leftJoinAndSelect('biolink.user', 'user')
+    .leftJoinAndSelect('biolink.username', 'username')
     .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
     .andWhere(
       new Brackets((qb) => {
-        qb.where(`LOWER(biolink.username) like :query`, {
+        qb.where(`LOWER(username.username) like :query`, {
           query: `%${options.query.toLowerCase()}%`,
         })
           .orWhere(`LOWER(biolink.displayName) like :query`, {
