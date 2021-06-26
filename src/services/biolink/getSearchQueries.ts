@@ -13,7 +13,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('category.categoryName', 'ASC')
-      .limit(10)
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = (await categoryQueryBuilder.getMany()).map(
       (category) => category.categoryName
@@ -27,7 +27,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('username.username', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       await Promise.all(
@@ -44,7 +44,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('biolink.displayName', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkDisplayNameQueryBuilder.getMany()).map((biolink) => biolink.displayName)
@@ -57,7 +57,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy(`biolink.settings->>'directoryBio'`, 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkDirectoryBioQueryBuilder.getMany()).map(
@@ -72,7 +72,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('biolink.bio', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkBioQueryBuilder.getMany()).map((biolink) => biolink.bio)
@@ -85,7 +85,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('biolink.city', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkCityQueryBuilder.getMany()).map((biolink) => biolink.city)
@@ -98,7 +98,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('biolink.state', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkStateQueryBuilder.getMany()).map((biolink) => biolink.state)
@@ -111,7 +111,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
         query: `%${query.toLowerCase()}%`,
       })
       .orderBy('biolink.country', 'ASC')
-      .limit(Math.min(10 - response.results.length, 10))
+      .limit(Math.max(10 - (response.results || []).length, 0))
 
     response.results = response.results.concat(
       (await biolinkCountryQueryBuilder.getMany()).map((biolink) => biolink.country)

@@ -49,7 +49,7 @@ export class Username extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @Field(() => String, { nullable: true })
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.usernames, { nullable: true, lazy: true })
   @JoinColumn({ name: 'ownerId' })
   owner!: Promise<User>
@@ -57,7 +57,7 @@ export class Username extends BaseEntity {
   @RelationId((username: Username) => username.owner)
   ownerId!: string
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Biolink, { nullable: true })
   @OneToOne(() => Biolink, (biolink) => biolink.username, {
     nullable: true,
     lazy: true,
