@@ -127,7 +127,7 @@ export class Biolink extends BaseEntity {
     lazy: true,
   })
   @JoinColumn({ name: 'usernameId' })
-  username?: Promise<Username>
+  username?: Promise<Username> | Username | null
 
   @RelationId((biolink: Biolink) => biolink.username)
   usernameId!: string

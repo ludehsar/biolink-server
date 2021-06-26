@@ -75,6 +75,7 @@ export const createBiolinkValidated = async (
     biolink ||
     (username &&
       username.ownerId !== user.id &&
+      username.expireDate !== null &&
       moment(moment.now()).isBefore(moment(username.expireDate)))
   ) {
     errors.push({

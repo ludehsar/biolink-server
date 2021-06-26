@@ -88,7 +88,12 @@ export const registerUserValidated = async (
     // Checks if username already exists
     const username = await Username.findOne({ where: { username: options.username } })
     const biolink = await username?.biolink
-    if (biolink || (username && moment(moment.now()).isBefore(moment(username.expireDate)))) {
+    if (
+      biolink ||
+      (username &&
+        username.expireDate !== null &&
+        moment(moment.now()).isBefore(moment(username.expireDate)))
+    ) {
       errors.push({
         errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
         field: 'username',

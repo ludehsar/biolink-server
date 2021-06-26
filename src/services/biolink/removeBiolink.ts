@@ -43,6 +43,17 @@ export const removeBiolink = async (
     }
   }
 
+  const biolinkUsername = await biolink.username
+
+  biolink.username = null
+  await biolink.save()
+
+  if (biolinkUsername) {
+    biolinkUsername.biolink = null
+    biolinkUsername.expireDate = new Date(Date.now() + 12096e5)
+    await biolinkUsername.save()
+  }
+
   await biolink.softRemove()
 
   await captureUserActivity(user, context, `Removed biolink ${biolink.username}`)
