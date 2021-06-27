@@ -63,6 +63,7 @@ import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
 // Payment
+import { getStripePaymentsPaginated } from './payments/getStripePaymentsPaginated'
 import { savePayment } from './payments/savePayment'
 import { saveStripeCustomerId } from './payments/saveStripeCustomerId'
 // Plan
@@ -77,6 +78,9 @@ import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
 // Report
 import { addReport } from './report/addReport'
+import { getDismissedReportsPaginated } from './report/getDismissedReportsPaginated'
+import { getPendingReportsPaginated } from './report/getPendingReportsPaginated'
+import { getResolvedReportsPaginated } from './report/getResolvedReportsPaginated'
 // Support
 import { addSupport } from './support/addSupport'
 // User
@@ -166,6 +170,7 @@ export {
   // User Log
   captureUserActivity,
   // Payment
+  getStripePaymentsPaginated,
   savePayment,
   saveStripeCustomerId,
   // Plan
@@ -180,6 +185,9 @@ export {
   getUserReferrals,
   // Report
   addReport,
+  getDismissedReportsPaginated,
+  getPendingReportsPaginated,
+  getResolvedReportsPaginated,
   // Support
   addSupport,
   // User

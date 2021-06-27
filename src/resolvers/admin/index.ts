@@ -5,7 +5,9 @@ import { BlackListAdminResolver } from './blackList.admin.resolver'
 import { CategoryAdminResolver } from './category.admin.resolver'
 import { CodeAdminResolver } from './code.admin.resolver'
 import { LinkAdminResolver } from './link.admin.resolver'
+import { PaymentsAdminResolver } from './payments.admin.resolver'
 import { PlanAdminResolver } from './plan.admin.resolver'
+import { ReportAdminResolver } from './report.admin.resolver'
 import { UserAdminResolver } from './user.admin.resolver'
 import { UsernameAdminResolver } from './username.admin.resolver'
 
@@ -17,7 +19,9 @@ export {
   CategoryAdminResolver,
   CodeAdminResolver,
   LinkAdminResolver,
+  PaymentsAdminResolver,
   PlanAdminResolver,
+  ReportAdminResolver,
   UserAdminResolver,
   UsernameAdminResolver,
 }
