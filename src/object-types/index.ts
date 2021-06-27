@@ -44,6 +44,9 @@ import { SettingsResponse } from './settings/SettingsResponse'
 import { UserConnection } from './user/UserConnection'
 import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
+// Username
+import { UsernameConnection } from './username/UsernameConnection'
+import { UsernameEdge } from './username/UsernameEdge'
 
 export {
   AccessTokenResponse,
@@ -79,4 +82,6 @@ export {
   UserConnection,
   UserEdge,
   UserResponse,
+  UsernameConnection,
+  UsernameEdge,
 }

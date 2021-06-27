@@ -7,6 +7,7 @@ import { CodeAdminResolver } from './code.admin.resolver'
 import { LinkAdminResolver } from './link.admin.resolver'
 import { PlanAdminResolver } from './plan.admin.resolver'
 import { UserAdminResolver } from './user.admin.resolver'
+import { UsernameAdminResolver } from './username.admin.resolver'
 
 export {
   AdminRoleAdminResolver,
@@ -18,4 +19,5 @@ export {
   LinkAdminResolver,
   PlanAdminResolver,
   UserAdminResolver,
+  UsernameAdminResolver,
 }

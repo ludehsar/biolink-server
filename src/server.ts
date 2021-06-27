@@ -33,6 +33,7 @@ import {
   LinkAdminResolver,
   PlanAdminResolver,
   UserAdminResolver,
+  UsernameAdminResolver,
 } from './resolvers/admin'
 
 const main = async (): Promise<void> => {
@@ -115,6 +116,7 @@ const main = async (): Promise<void> => {
         LinkAdminResolver,
         PlanAdminResolver,
         UserAdminResolver,
+        UsernameAdminResolver,
       ],
       validate: false,
     }),

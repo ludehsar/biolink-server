@@ -91,6 +91,10 @@ import { getUsersPaginated } from './user/getUsersPaginated'
 import { getUser } from './user/getUser'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
+// Username
+import { getPremiumUsernamesPaginated } from './username/getPremiumUsernamesPaginated'
+import { getTrademarkUsernamesPaginated } from './username/getTrademarkUsernamesPaginated'
+import { getUsernamesPaginated } from './username/getUsernamesPaginated'
 // Verification
 import { createVerification } from './verification/createVerification'
 
@@ -188,6 +192,10 @@ export {
   getUsersPaginated,
   updateBilling,
   getUser,
+  // Username
+  getPremiumUsernamesPaginated,
+  getTrademarkUsernamesPaginated,
+  getUsernamesPaginated,
   // Verification
   createVerification,
 }
