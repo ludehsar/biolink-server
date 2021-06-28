@@ -109,6 +109,7 @@ export class Payment extends BaseEntity {
   createdAt!: Date
 
   // Relationships
+  @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.payments, { lazy: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>

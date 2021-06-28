@@ -8,7 +8,7 @@ import { CurrentAdmin } from '../../decorators'
 @Resolver()
 export class PaymentsAdminResolver {
   @Query(() => PaymentConnection, { nullable: true })
-  async getAllPayments(
+  async getAllStripePayments(
     @Arg('options') options: ConnectionArgs,
     @CurrentAdmin() adminUser: User
   ): Promise<PaymentConnection> {
