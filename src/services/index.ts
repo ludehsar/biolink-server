@@ -86,6 +86,8 @@ import { addSupport } from './support/addSupport'
 import { getDismissedSupportsPaginated } from './support/getDismissedSupportsPaginated'
 import { getPendingSupportsPaginated } from './support/getPendingSupportsPaginated'
 import { getResolvedSupportsPaginated } from './support/getResolvedSupportsPaginated'
+// Tax
+import { getTaxesPaginated } from './tax/getTaxesPaginated'
 // User
 import { addNewUser } from './user/addNewUser'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
@@ -103,7 +105,11 @@ import { getPremiumUsernamesPaginated } from './username/getPremiumUsernamesPagi
 import { getTrademarkUsernamesPaginated } from './username/getTrademarkUsernamesPaginated'
 import { getUsernamesPaginated } from './username/getUsernamesPaginated'
 // Verification
+import { changeVerificationStatus } from './verification/changeVerificationStatus'
 import { createVerification } from './verification/createVerification'
+import { getPendingVerificationsPaginated } from './verification/getPendingVerificationsPaginated'
+import { getRejectedVerificationsPaginated } from './verification/getRejectedVerificationsPaginated'
+import { getVerifiedVerificationsPaginated } from './verification/getVerifiedVerificationsPaginated'
 
 export {
   // Admin Role
@@ -196,6 +202,8 @@ export {
   getDismissedSupportsPaginated,
   getPendingSupportsPaginated,
   getResolvedSupportsPaginated,
+  // Tax
+  getTaxesPaginated,
   // User
   addNewUser,
   changeEmailAndUsername,
@@ -211,5 +219,9 @@ export {
   getTrademarkUsernamesPaginated,
   getUsernamesPaginated,
   // Verification
+  changeVerificationStatus,
   createVerification,
+  getPendingVerificationsPaginated,
+  getRejectedVerificationsPaginated,
+  getVerifiedVerificationsPaginated,
 }

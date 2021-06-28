@@ -9,8 +9,10 @@ import { PaymentsAdminResolver } from './payments.admin.resolver'
 import { PlanAdminResolver } from './plan.admin.resolver'
 import { ReportAdminResolver } from './report.admin.resolver'
 import { SupportAdminResolver } from './support.admin.resolver'
+import { TaxAdminResolver } from './tax.admin.resolver'
 import { UserAdminResolver } from './user.admin.resolver'
 import { UsernameAdminResolver } from './username.admin.resolver'
+import { VerificationAdminResolver } from './verification.admin.resolver'
 
 export {
   AdminRoleAdminResolver,
@@ -24,6 +26,8 @@ export {
   PlanAdminResolver,
   ReportAdminResolver,
   SupportAdminResolver,
+  TaxAdminResolver,
   UserAdminResolver,
   UsernameAdminResolver,
+  VerificationAdminResolver,
 }
