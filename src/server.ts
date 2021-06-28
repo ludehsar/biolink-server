@@ -34,6 +34,7 @@ import {
   PaymentsAdminResolver,
   PlanAdminResolver,
   ReportAdminResolver,
+  SupportAdminResolver,
   UserAdminResolver,
   UsernameAdminResolver,
 } from './resolvers/admin'
@@ -119,6 +120,7 @@ const main = async (): Promise<void> => {
         PaymentsAdminResolver,
         PlanAdminResolver,
         ReportAdminResolver,
+        SupportAdminResolver,
         UserAdminResolver,
         UsernameAdminResolver,
       ],

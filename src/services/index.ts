@@ -83,6 +83,9 @@ import { getPendingReportsPaginated } from './report/getPendingReportsPaginated'
 import { getResolvedReportsPaginated } from './report/getResolvedReportsPaginated'
 // Support
 import { addSupport } from './support/addSupport'
+import { getDismissedSupportsPaginated } from './support/getDismissedSupportsPaginated'
+import { getPendingSupportsPaginated } from './support/getPendingSupportsPaginated'
+import { getResolvedSupportsPaginated } from './support/getResolvedSupportsPaginated'
 // User
 import { addNewUser } from './user/addNewUser'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
@@ -190,6 +193,9 @@ export {
   getResolvedReportsPaginated,
   // Support
   addSupport,
+  getDismissedSupportsPaginated,
+  getPendingSupportsPaginated,
+  getResolvedSupportsPaginated,
   // User
   addNewUser,
   changeEmailAndUsername,
