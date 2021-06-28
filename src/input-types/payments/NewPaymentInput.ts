@@ -55,6 +55,9 @@ export class NewPaymentInput {
   stripeInvoicePdfUrl!: string
 
   @Field(() => String, { nullable: true })
+  stripeInvoiceUrl!: string
+
+  @Field(() => String, { nullable: true })
   stripePriceId!: string
 
   @Field(() => String, { nullable: true })

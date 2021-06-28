@@ -82,6 +82,10 @@ export class Payment extends BaseEntity {
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })
+  stripeInvoiceUrl!: string
+
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
   stripePriceId!: string
 
   @Column({ nullable: true })

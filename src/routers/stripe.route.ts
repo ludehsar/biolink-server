@@ -112,6 +112,7 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
           stripeInvoiceCreated: data.object.created,
           stripeInvoiceNumber: data.object.number,
           stripeInvoicePdfUrl: data.object.invoice_pdf,
+          stripeInvoiceUrl: data.object.hosted_invoice_url,
           stripePaymentCurrency: data.object.currency,
           stripePeriodEnd: data.object.lines.data[0].period.end,
           stripePeriodStart: data.object.lines.data[0].period.start,
