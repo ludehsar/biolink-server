@@ -29,7 +29,6 @@ import {
   Report,
   Support,
 } from '../entities'
-import { ActiveStatus } from '../enums'
 import { Billing } from '../json-types'
 
 @ObjectType()
@@ -71,8 +70,8 @@ export class User extends BaseEntity {
   facebookId!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'enum', enum: ActiveStatus, default: ActiveStatus.Active })
-  accountStatus!: ActiveStatus
+  @Column({ type: 'date', nullable: true })
+  lastActiveTill!: Date
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })

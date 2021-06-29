@@ -67,7 +67,7 @@ export const uploadBiolinkProfilePhoto = async (
   biolink.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
   await biolink.save()
 
-  await captureUserActivity(user, context, `Uploaded ${biolink.username} profile photo`)
+  await captureUserActivity(user, context, `Uploaded ${biolink.username} profile photo`, true)
 
   return { biolink }
 }

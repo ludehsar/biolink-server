@@ -60,7 +60,7 @@ export const sendForgotPasswordEmail = async (
   await sgMail.send(forgetPasswordMailData, false)
 
   // Capture user log
-  await captureUserActivity(user, context, 'Requested Forgot Password Verification Email')
+  await captureUserActivity(user, context, 'Requested Forgot Password Verification Email', true)
 
   return {}
 }

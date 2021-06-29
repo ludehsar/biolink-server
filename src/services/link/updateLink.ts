@@ -181,7 +181,7 @@ export const updateLink = async (
   await link.save()
 
   // Capture user log
-  await captureUserActivity(user, context, `Updated link ${link.url}`)
+  await captureUserActivity(user, context, `Updated link ${link.url}`, true)
 
   return { link }
 }

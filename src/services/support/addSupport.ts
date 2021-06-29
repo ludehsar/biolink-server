@@ -37,7 +37,7 @@ export const addSupport = async (
   await support.save()
 
   if (user) {
-    await captureUserActivity(user, context, `Added support`)
+    await captureUserActivity(user, context, `Added support`, true)
   }
 
   return {}

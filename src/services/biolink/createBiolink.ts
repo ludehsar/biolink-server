@@ -51,7 +51,7 @@ export const createBiolink = async (
   await username.save()
 
   // Capture user log
-  await captureUserActivity(user, context, `Created new biolink ${biolink.username}`)
+  await captureUserActivity(user, context, `Created new biolink ${biolink.username}`, true)
 
   return { biolink }
 }

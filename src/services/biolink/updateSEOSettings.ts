@@ -85,7 +85,12 @@ export const updateSEOSettings = async (
   biolink.settings = biolinkSettings
   await biolink.save()
 
-  await captureUserActivity(user, context, `Updated seo settings of biolink: ${biolink.username}`)
+  await captureUserActivity(
+    user,
+    context,
+    `Updated seo settings of biolink: ${biolink.username}`,
+    true
+  )
 
   return { biolink }
 }

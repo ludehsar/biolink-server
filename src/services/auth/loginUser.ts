@@ -29,7 +29,7 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
   await user.save()
 
   // Capture user log
-  await captureUserActivity(user, context, 'User logs in')
+  await captureUserActivity(user, context, 'User logs in', true)
 
   return { user }
 }

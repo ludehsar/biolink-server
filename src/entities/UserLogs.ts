@@ -51,6 +51,10 @@ export class UserLogs extends BaseEntity {
   @Column({ nullable: true })
   description!: string
 
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  showInActivity!: boolean
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date

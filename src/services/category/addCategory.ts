@@ -58,7 +58,7 @@ export const addCategory = async (
       categoryName: options.categoryName,
     }).save()
 
-    await captureUserActivity(adminUser, context, `Created category ${category.categoryName}`)
+    await captureUserActivity(adminUser, context, `Created category ${category.categoryName}`, true)
 
     return { category }
   } catch (err) {

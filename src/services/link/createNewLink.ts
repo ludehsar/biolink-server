@@ -168,7 +168,7 @@ export const createNewLink = async (
     await link.save()
 
     // Capture user log
-    await captureUserActivity(user, context, `Created new link ${link.url}`)
+    await captureUserActivity(user, context, `Created new link ${link.url}`, true)
 
     return { link }
   } catch (err) {

@@ -103,7 +103,12 @@ export const updateBrandingSettings = async (
   biolink.settings = biolinkSettings
   await biolink.save()
 
-  await captureUserActivity(user, context, `Updated brand settings of biolink: ${biolink.username}`)
+  await captureUserActivity(
+    user,
+    context,
+    `Updated brand settings of biolink: ${biolink.username}`,
+    true
+  )
 
   return { biolink }
 }

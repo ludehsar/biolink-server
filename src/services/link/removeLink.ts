@@ -35,7 +35,7 @@ export const removeLink = async (
   await link.softRemove()
 
   // Capture user log
-  await captureUserActivity(user, context, `Link ${link.url} removed`)
+  await captureUserActivity(user, context, `Link ${link.url} removed`, true)
 
   return { link }
 }

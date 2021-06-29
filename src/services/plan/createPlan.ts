@@ -90,7 +90,7 @@ export const createPlan = async (
       visibilityStatus: options.visibilityStatus,
     }).save()
 
-    await captureUserActivity(adminUser, context, `Created plan ${plan.name}`)
+    await captureUserActivity(adminUser, context, `Created plan ${plan.name}`, true)
 
     return { plan }
   } catch (err) {

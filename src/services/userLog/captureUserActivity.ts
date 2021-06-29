@@ -1,5 +1,6 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
+import moment from 'moment'
 import axios from 'axios'
 import { User, UserLogs } from '../../entities'
 import { CountryInfo } from '../../interfaces'
@@ -9,7 +10,8 @@ import { MyContext, ErrorCode } from '../../types'
 export const captureUserActivity = async (
   user: User,
   context: MyContext,
-  description: string
+  description: string,
+  showInActivity = false
 ): Promise<DefaultResponse> => {
   if (!user) {
     return {
@@ -41,6 +43,7 @@ export const captureUserActivity = async (
       ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
       : 'Unknown',
     osName: device.os?.name || 'Unknown',
+    showInActivity,
   })
 
   userLog.user = Promise.resolve(user)
@@ -51,6 +54,7 @@ export const captureUserActivity = async (
   user.lastIPAddress = ip
   user.lastUserAgent = context.req.headers['user-agent'] || ''
   user.timezone = new Date().getTimezoneOffset().toString()
+  user.lastActiveTill = moment(moment.now()).add(15, 'm').toDate()
   if (geo) {
     const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
 

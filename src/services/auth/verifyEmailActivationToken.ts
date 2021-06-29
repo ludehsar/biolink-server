@@ -35,7 +35,7 @@ export const verifyEmailActivationToken = async (
   await user.save()
 
   // Capture user log
-  await captureUserActivity(user, context, 'Email has been verified')
+  await captureUserActivity(user, context, 'Email has been verified', true)
 
   return {}
 }

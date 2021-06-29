@@ -70,7 +70,7 @@ export const registerUser = async (
   context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
 
   // Capture user log
-  await captureUserActivity(user, context, 'User Registered')
+  await captureUserActivity(user, context, 'User Registered', true)
 
   // send verification email
   await sendVerificationEmail(user, context)

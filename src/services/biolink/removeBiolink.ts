@@ -56,7 +56,7 @@ export const removeBiolink = async (
 
   await biolink.softRemove()
 
-  await captureUserActivity(user, context, `Removed biolink ${biolink.username}`)
+  await captureUserActivity(user, context, `Removed biolink ${biolink.username}`, true)
 
   return {}
 }

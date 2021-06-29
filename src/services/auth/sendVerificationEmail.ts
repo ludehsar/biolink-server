@@ -48,7 +48,7 @@ export const sendVerificationEmail = async (
   await sgMail.send(emailActivationMailData, false)
 
   // Capture user log
-  await captureUserActivity(user, context, 'Requested User Email Verification')
+  await captureUserActivity(user, context, 'Requested User Email Verification', true)
 
   return {}
 }

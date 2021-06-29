@@ -117,7 +117,7 @@ export const editPlan = async (
 
   await plan.save()
 
-  await captureUserActivity(adminUser, context, `Edited plan ${plan.name}`)
+  await captureUserActivity(adminUser, context, `Edited plan ${plan.name}`, true)
 
   return { plan }
 }

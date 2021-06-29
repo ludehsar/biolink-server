@@ -36,7 +36,7 @@ export const addReport = async (
   await report.save()
 
   if (user) {
-    await captureUserActivity(user, context, `Reported ${options.reportedUrl}`)
+    await captureUserActivity(user, context, `Reported ${options.reportedUrl}`, true)
   }
 
   return {}

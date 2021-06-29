@@ -63,7 +63,7 @@ export const updateBiolink = async (
 
   await biolink.save()
 
-  await captureUserActivity(user, context, `Updated ${biolink.username} biolink details`)
+  await captureUserActivity(user, context, `Updated ${biolink.username} biolink details`, true)
 
   return { biolink }
 }

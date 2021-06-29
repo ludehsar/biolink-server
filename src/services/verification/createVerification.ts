@@ -186,7 +186,7 @@ export const createVerification = async (
   await verification.save()
 
   // Capture user log
-  await captureUserActivity(user, context, 'Successfully applied for verification')
+  await captureUserActivity(user, context, 'Successfully applied for verification', true)
 
   return {}
 }

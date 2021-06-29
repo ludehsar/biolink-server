@@ -32,7 +32,7 @@ export const loginAdmin = async (
   await user.save()
 
   // Capture user log
-  await captureUserActivity(user, context, 'User logs in')
+  await captureUserActivity(user, context, 'User logs in', true)
 
   return { user }
 }

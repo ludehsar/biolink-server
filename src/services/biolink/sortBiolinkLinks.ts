@@ -79,7 +79,7 @@ export const sortBiolinkLinks = async (
     }
   })
 
-  await captureUserActivity(user, context, `Sorted links of biolink: ${biolink.username}`)
+  await captureUserActivity(user, context, `Sorted links of biolink: ${biolink.username}`, true)
 
   return { biolink }
 }

@@ -70,7 +70,7 @@ export const verifyForgotPasswordToken = async (
   await user.save()
 
   // Capture user log
-  await captureUserActivity(user, context, 'Password has been reset successfully')
+  await captureUserActivity(user, context, 'Password has been reset successfully', true)
 
   return {}
 }

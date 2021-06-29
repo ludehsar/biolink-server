@@ -110,7 +110,7 @@ export const editUser = async (
 
     await user.save()
 
-    await captureUserActivity(adminUser, context, `Edited user with email: ${user.email}`)
+    await captureUserActivity(adminUser, context, `Edited user with email: ${user.email}`, true)
 
     return {}
   } catch (err) {

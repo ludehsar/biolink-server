@@ -50,7 +50,7 @@ export const updateBilling = async (
 
   await user.save()
 
-  await captureUserActivity(user, context, 'Updated user billing')
+  await captureUserActivity(user, context, 'Updated user billing', true)
 
   return {
     user,

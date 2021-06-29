@@ -60,7 +60,12 @@ export const createAdminRole = async (
       roleSettings: options.roleSettings,
     }).save()
 
-    await captureUserActivity(adminUser, context, `Created new admin role ${newAdminRole.roleName}`)
+    await captureUserActivity(
+      adminUser,
+      context,
+      `Created new admin role ${newAdminRole.roleName}`,
+      true
+    )
 
     return { adminRole: newAdminRole }
   } catch (err) {
