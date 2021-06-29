@@ -38,6 +38,7 @@ export const savePayment = async (
     stripeInvoiceCreated: options.stripeInvoiceCreated,
     stripeInvoiceNumber: options.stripeInvoiceNumber,
     stripeInvoicePdfUrl: options.stripeInvoicePdfUrl,
+    stripeInvoiceUrl: options.stripeInvoiceUrl,
     stripePaymentCurrency: options.stripePaymentCurrency,
     stripePeriodEnd: moment.unix(options.stripePeriodEnd).toDate(),
     stripePeriodStart: moment.unix(options.stripePeriodStart).toDate(),
