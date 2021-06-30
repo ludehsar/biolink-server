@@ -70,7 +70,7 @@ export class User extends BaseEntity {
   facebookId!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   lastActiveTill!: Date
 
   @Field(() => String, { nullable: true })

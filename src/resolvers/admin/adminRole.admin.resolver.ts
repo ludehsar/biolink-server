@@ -9,16 +9,20 @@ import { MyContext } from '../../types'
 @Resolver()
 export class AdminRoleAdminResolver {
   @Query(() => AdminRoleListResponse)
-  async getAllAdminRoles(@CurrentAdmin() adminUser: User): Promise<AdminRoleListResponse> {
-    return await getAdminRoles(adminUser)
+  async getAllAdminRoles(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<AdminRoleListResponse> {
+    return await getAdminRoles(adminUser, context)
   }
 
   @Query(() => AdminRoleResponse)
   async getAdminRole(
     @Arg('id', () => Int) id: number,
-    @CurrentAdmin() adminUser: User
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
   ): Promise<AdminRoleResponse> {
-    return await getAdminRole(id, adminUser)
+    return await getAdminRole(id, adminUser, context)
   }
 
   @Mutation(() => AdminRoleResponse)

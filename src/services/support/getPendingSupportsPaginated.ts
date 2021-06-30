@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Support, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { SupportConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { ResolveStatus } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getPendingSupportsPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<SupportConnection> => {
   if (!adminUser) {
     return {
@@ -189,6 +191,8 @@ export const getPendingSupportsPaginated = async (
     hasNextPage: !!nextSupports.length,
     hasPreviousPage: !!previousSupports.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested pending supports`, false)
 
   return connection
 }

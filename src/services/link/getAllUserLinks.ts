@@ -1,8 +1,12 @@
+import { captureUserActivity } from '../../services'
 import { User, Link } from '../../entities'
 import { LinkListResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
-export const getAllUserLinks = async (user: User): Promise<LinkListResponse> => {
+export const getAllUserLinks = async (
+  user: User,
+  context: MyContext
+): Promise<LinkListResponse> => {
   if (!user) {
     return {
       errors: [
@@ -22,6 +26,8 @@ export const getAllUserLinks = async (user: User): Promise<LinkListResponse> => 
       createdAt: 'DESC',
     },
   })
+
+  await captureUserActivity(user, context, `Requested all user links`, false)
 
   return { links }
 }

@@ -74,7 +74,12 @@ export const editAdminRole = async (
 
     await editedAdminRole.save()
 
-    await captureUserActivity(adminUser, context, `Edited admin role ${editedAdminRole.roleName}`, true)
+    await captureUserActivity(
+      adminUser,
+      context,
+      `Edited admin role ${editedAdminRole.roleName}`,
+      true
+    )
     return { adminRole: editedAdminRole }
   } catch (err) {
     return {

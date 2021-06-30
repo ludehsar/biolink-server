@@ -82,7 +82,8 @@ export const importFromLinktree = async (
     await captureUserActivity(
       user,
       context,
-      `Imported biolink from ${linktreeUsername} Linktree profile to ${biolink.username}`
+      `Imported biolink from ${linktreeUsername} Linktree profile to ${biolink.username}`,
+      true
     )
 
     return { biolink }

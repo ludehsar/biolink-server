@@ -1,8 +1,13 @@
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { AdminRole, User } from '../../entities'
 import { AdminRoleResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
 
-export const getAdminRole = async (id: number, adminUser: User): Promise<AdminRoleResponse> => {
+export const getAdminRole = async (
+  id: number,
+  adminUser: User,
+  context: MyContext
+): Promise<AdminRoleResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -47,6 +52,13 @@ export const getAdminRole = async (id: number, adminUser: User): Promise<AdminRo
       ],
     }
   }
+
+  await captureUserActivity(
+    adminUser,
+    context,
+    `Requested admin role ${requiredAdminRole.roleName}`,
+    false
+  )
 
   return { adminRole: requiredAdminRole }
 }

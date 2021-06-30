@@ -88,7 +88,8 @@ export const updateUTMParameterSettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated utm parameter settings of biolink: ${biolink.username}`
+    `Updated utm parameter settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

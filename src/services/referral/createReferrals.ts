@@ -76,5 +76,5 @@ export const createReferrals = async (
   // Capture user log
   await captureUserActivity(user, context, 'Sent referrals to other users', true)
 
-  return await getUserReferrals(user)
+  return await getUserReferrals(user, context)
 }

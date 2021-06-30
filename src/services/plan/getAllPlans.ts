@@ -1,8 +1,12 @@
+import { captureUserActivity } from '../../services'
 import { Plan, User } from '../../entities'
 import { PlanListResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
-export const getAllPlans = async (adminUser: User): Promise<PlanListResponse> => {
+export const getAllPlans = async (
+  adminUser: User,
+  context: MyContext
+): Promise<PlanListResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -47,6 +51,8 @@ export const getAllPlans = async (adminUser: User): Promise<PlanListResponse> =>
       ],
     }
   }
+
+  await captureUserActivity(adminUser, context, `Requested all plans`, false)
 
   return {
     plans,

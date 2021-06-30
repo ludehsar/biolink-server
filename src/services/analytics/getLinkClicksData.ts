@@ -1,9 +1,13 @@
-import { ErrorCode } from '../../types'
+import { getRepository } from 'typeorm'
+import { ErrorCode, MyContext } from '../../types'
 import { TrackLink, User } from '../../entities'
 import { LinkClicksResponse, SingleLinkClickCount } from '../../object-types'
-import { getRepository } from 'typeorm'
+import { captureUserActivity } from '../../services'
 
-export const getLinkClicksData = async (user: User): Promise<LinkClicksResponse> => {
+export const getLinkClicksData = async (
+  user: User,
+  context: MyContext
+): Promise<LinkClicksResponse> => {
   if (!user) {
     return {
       errors: [
@@ -33,6 +37,8 @@ export const getLinkClicksData = async (user: User): Promise<LinkClicksResponse>
       })
     )
   )
+
+  await captureUserActivity(user, context, `Requested link clicks data`, false)
 
   return {
     result,

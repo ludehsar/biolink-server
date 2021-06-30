@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Report, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { ReportConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { ResolveStatus } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getResolvedReportsPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<ReportConnection> => {
   if (!adminUser) {
     return {
@@ -171,6 +173,8 @@ export const getResolvedReportsPaginated = async (
     hasNextPage: !!nextReports.length,
     hasPreviousPage: !!previousReports.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested resolved reports`, false)
 
   return connection
 }

@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Verification, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { VerificationConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { VerificationStatus } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getVerifiedVerificationsPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<VerificationConnection> => {
   if (!adminUser) {
     return {
@@ -245,6 +247,8 @@ export const getVerifiedVerificationsPaginated = async (
     hasNextPage: !!nextVerifications.length,
     hasPreviousPage: !!previousVerifications.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested verified verifications`, false)
 
   return connection
 }

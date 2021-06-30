@@ -1,8 +1,12 @@
+import { captureUserActivity } from '../../services'
 import { AdminRole, User } from '../../entities'
 import { AdminRoleListResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
-export const getAdminRoles = async (adminUser: User): Promise<AdminRoleListResponse> => {
+export const getAdminRoles = async (
+  adminUser: User,
+  context: MyContext
+): Promise<AdminRoleListResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -47,6 +51,8 @@ export const getAdminRoles = async (adminUser: User): Promise<AdminRoleListRespo
       ],
     }
   }
+
+  await captureUserActivity(adminUser, context, `Requested all admin roles`, false)
 
   return {
     adminRoles,

@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Link, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { LinkConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { LinkType } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getLinksPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<LinkConnection> => {
   if (!adminUser) {
     return {
@@ -171,6 +173,8 @@ export const getLinksPaginated = async (
     hasNextPage: !!nextLinks.length,
     hasPreviousPage: !!previousLinks.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested referral codes`, false)
 
   return connection
 }

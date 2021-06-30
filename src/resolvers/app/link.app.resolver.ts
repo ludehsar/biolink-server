@@ -19,14 +19,18 @@ export class LinkResolver {
   async getAllLinksOfBiolink(
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Arg('showOnPage') showOnPage: boolean,
-    @CurrentUser() currentUser: User
+    @CurrentUser() currentUser: User,
+    @Ctx() context: MyContext
   ): Promise<LinkListResponse> {
-    return await getAllLinksOfBiolink(biolinkId, showOnPage, currentUser)
+    return await getAllLinksOfBiolink(biolinkId, showOnPage, currentUser, context)
   }
 
   @Query(() => LinkListResponse)
-  async getAllUserLinks(@CurrentUser() currentUser: User): Promise<LinkListResponse> {
-    return await getAllUserLinks(currentUser)
+  async getAllUserLinks(
+    @CurrentUser() currentUser: User,
+    @Ctx() context: MyContext
+  ): Promise<LinkListResponse> {
+    return await getAllUserLinks(currentUser, context)
   }
 
   @Mutation(() => LinkResponse)

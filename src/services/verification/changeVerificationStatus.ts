@@ -72,7 +72,8 @@ export const changeVerificationStatus = async (
   await captureUserActivity(
     adminUser,
     context,
-    `Changed verification status of biolink: ${biolink.username}`
+    `Changed verification status of biolink: ${biolink.username}`,
+    true
   )
 
   return {}

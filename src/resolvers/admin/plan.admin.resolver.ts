@@ -9,16 +9,20 @@ import { MyContext } from 'types'
 @Resolver()
 export class PlanAdminResolver {
   @Query(() => PlanListResponse)
-  async getAllPlans(@CurrentAdmin() adminUser: User): Promise<PlanListResponse> {
-    return await getAllPlans(adminUser)
+  async getAllPlans(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<PlanListResponse> {
+    return await getAllPlans(adminUser, context)
   }
 
   @Query(() => PlanResponse)
   async getPlan(
     @Arg('id', () => Int) id: number,
-    @CurrentAdmin() adminUser: User
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
   ): Promise<PlanResponse> {
-    return await getPlan(id, adminUser)
+    return await getPlan(id, adminUser, context)
   }
 
   @Mutation(() => PlanResponse)

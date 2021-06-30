@@ -11,7 +11,7 @@ export const captureUserActivity = async (
   user: User,
   context: MyContext,
   description: string,
-  showInActivity = false
+  showInActivity: boolean
 ): Promise<DefaultResponse> => {
   if (!user) {
     return {
@@ -54,7 +54,7 @@ export const captureUserActivity = async (
   user.lastIPAddress = ip
   user.lastUserAgent = context.req.headers['user-agent'] || ''
   user.timezone = new Date().getTimezoneOffset().toString()
-  user.lastActiveTill = moment(moment.now()).add(15, 'm').toDate()
+  user.lastActiveTill = moment(moment.now()).add(5, 'm').toDate()
   if (geo) {
     const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
 

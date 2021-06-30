@@ -1,8 +1,13 @@
+import { captureUserActivity } from '../../services'
 import { Plan, User } from '../../entities'
 import { PlanResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
-export const getPlan = async (id: number, adminUser: User): Promise<PlanResponse> => {
+export const getPlan = async (
+  id: number,
+  adminUser: User,
+  context: MyContext
+): Promise<PlanResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -47,6 +52,8 @@ export const getPlan = async (id: number, adminUser: User): Promise<PlanResponse
       ],
     }
   }
+
+  await captureUserActivity(adminUser, context, `Requested ${plan.name} plan`, false)
 
   return {
     plan,

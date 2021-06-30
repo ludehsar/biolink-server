@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Username, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { UsernameConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { PremiumUsernameType } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getTrademarkUsernamesPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<UsernameConnection> => {
   if (!adminUser) {
     return {
@@ -143,6 +145,8 @@ export const getTrademarkUsernamesPaginated = async (
     hasNextPage: !!nextUsernames.length,
     hasPreviousPage: !!previousUsernames.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested trademark usernames`, false)
 
   return connection
 }

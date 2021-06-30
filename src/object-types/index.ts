@@ -4,6 +4,8 @@ import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { ChartResponse } from './analytics/ChartResponse'
 import { ChartValue } from './analytics/ChartValue'
+import { BiolinkClicksResponse } from './analytics/BiolinkClicksResponse'
+import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
 import { LinkClicksResponse } from './analytics/LinkClicksResponse'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
 // Auth
@@ -68,6 +70,7 @@ export {
   AdminRoleListResponse,
   AdminRoleResponse,
   BiolinkConnection,
+  BiolinkClicksResponse,
   BiolinkEdge,
   BiolinkListResponse,
   BiolinkResponse,
@@ -97,6 +100,7 @@ export {
   ReportConnection,
   ReportEdge,
   SettingsResponse,
+  SingleBiolinkClickCount,
   SingleLinkClickCount,
   SupportConnection,
   SupportEdge,

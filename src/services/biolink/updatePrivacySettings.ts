@@ -104,7 +104,8 @@ export const updatePrivacySettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated privacy settings of biolink: ${biolink.username}`
+    `Updated privacy settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

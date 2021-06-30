@@ -18,22 +18,28 @@ export class UserAdminResolver {
   @Query(() => UserConnection, { nullable: true })
   async getAllUsers(
     @Arg('options') options: ConnectionArgs,
-    @CurrentAdmin() admin: User
+    @CurrentAdmin() admin: User,
+    @Ctx() context: MyContext
   ): Promise<UserConnection> {
-    return await getUsersPaginated(options, admin)
+    return await getUsersPaginated(options, admin, context)
   }
 
   @Query(() => UserConnection, { nullable: true })
   async getAllAdmins(
     @Arg('options') options: ConnectionArgs,
-    @CurrentAdmin() admin: User
+    @CurrentAdmin() admin: User,
+    @Ctx() context: MyContext
   ): Promise<UserConnection> {
-    return await getAdminsPaginated(options, admin)
+    return await getAdminsPaginated(options, admin, context)
   }
 
   @Query(() => UserResponse, { nullable: true })
-  async getUser(@Arg('id') id: string, @CurrentAdmin() admin: User): Promise<UserConnection> {
-    return await getUser(id, admin)
+  async getUser(
+    @Arg('id') id: string,
+    @CurrentAdmin() admin: User,
+    @Ctx() context: MyContext
+  ): Promise<UserConnection> {
+    return await getUser(id, admin, context)
   }
 
   @Mutation(() => DefaultResponse, { nullable: true })

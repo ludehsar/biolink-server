@@ -1,11 +1,13 @@
+import { captureUserActivity } from '../../services'
 import { Plan, User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
 export const subscribePlan = async (
   stripePriceId: string,
   expirationDate: Date,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<DefaultResponse> => {
   if (!user) {
     return {
@@ -37,6 +39,8 @@ export const subscribePlan = async (
   user.planExpirationDate = expirationDate
 
   await user.save()
+
+  await captureUserActivity(user, context, `Subscribed to plan ${plan.name}`, false)
 
   return {}
 }

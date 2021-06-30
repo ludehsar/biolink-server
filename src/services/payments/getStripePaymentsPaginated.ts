@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Payment, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { PaymentConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { PaymentMethod } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getStripePaymentsPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<PaymentConnection> => {
   if (!adminUser) {
     return {
@@ -231,6 +233,8 @@ export const getStripePaymentsPaginated = async (
     hasNextPage: !!nextPayments.length,
     hasPreviousPage: !!previousPayments.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested stripe payments`, false)
 
   return connection
 }

@@ -53,12 +53,13 @@ export const savePayment = async (
   await user.save()
 
   await payment.save()
-  await subscribePlan(payment.stripePriceId, payment.stripePeriodEnd, user)
+  await subscribePlan(payment.stripePriceId, payment.stripePeriodEnd, user, context)
 
   await captureUserActivity(
     user,
     context,
-    `User paid ${payment.stripeAmountPaid}$ for subscription`
+    `User paid ${payment.stripeAmountPaid}$ for subscription`,
+    true
   )
   return {}
 }

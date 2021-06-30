@@ -70,8 +70,11 @@ export class BiolinkResolver {
   }
 
   @Query(() => BiolinkListResponse)
-  async getAllUserBiolinks(@CurrentUser() user: User): Promise<BiolinkListResponse> {
-    return await getUserBiolinks(user)
+  async getAllUserBiolinks(
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
+  ): Promise<BiolinkListResponse> {
+    return await getUserBiolinks(user, context)
   }
 
   @Mutation(() => BiolinkResponse)

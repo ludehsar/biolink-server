@@ -105,9 +105,10 @@ export class UserResolver {
   @Mutation(() => DefaultResponse)
   async changeUserPassword(
     @Arg('options') options: ChangePasswordInput,
-    @CurrentUser() user: User
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
   ): Promise<DefaultResponse> {
-    return await changePassword(options, user)
+    return await changePassword(options, user, context)
   }
 
   @Mutation(() => DefaultResponse)

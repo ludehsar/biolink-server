@@ -3,12 +3,14 @@ import moment from 'moment'
 import { Code, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { CodeConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { CodeType } from '../../enums'
+import { captureUserActivity } from '../../services'
 
 export const getReferralCodesPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<CodeConnection> => {
   if (!adminUser) {
     return {
@@ -171,6 +173,8 @@ export const getReferralCodesPaginated = async (
     hasNextPage: !!nextCodes.length,
     hasPreviousPage: !!previousCodes.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested referral codes`, false)
 
   return connection
 }

@@ -3,11 +3,13 @@ import moment from 'moment'
 import { Tax, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { TaxConnection } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
+import { captureUserActivity } from '../../services'
 
 export const getTaxesPaginated = async (
   options: ConnectionArgs,
-  adminUser: User
+  adminUser: User,
+  context: MyContext
 ): Promise<TaxConnection> => {
   if (!adminUser) {
     return {
@@ -164,6 +166,8 @@ export const getTaxesPaginated = async (
     hasNextPage: !!nextTaxs.length,
     hasPreviousPage: !!previousTaxs.length,
   }
+
+  await captureUserActivity(adminUser, context, `Requested taxes list`, false)
 
   return connection
 }

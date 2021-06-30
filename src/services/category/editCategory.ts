@@ -71,7 +71,12 @@ export const editCategory = async (
     category.categoryName = options.categoryName as string
     await category.save()
 
-    await captureUserActivity(adminUser, context, `Edited category to ${category.categoryName}`, true)
+    await captureUserActivity(
+      adminUser,
+      context,
+      `Edited category to ${category.categoryName}`,
+      true
+    )
 
     return { category }
   } catch (err) {

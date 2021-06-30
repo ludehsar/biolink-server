@@ -85,7 +85,8 @@ export const updateDarkModeSettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated dark mode settings of biolink: ${biolink.username}`
+    `Updated dark mode settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

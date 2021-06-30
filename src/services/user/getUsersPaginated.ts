@@ -1,13 +1,15 @@
 import { UserConnection } from '../../object-types'
 import { ConnectionArgs } from '../../input-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { User } from '../../entities'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
+import { captureUserActivity } from '../../services'
 
 export const getUsersPaginated = async (
   options: ConnectionArgs,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<UserConnection> => {
   if (!user) {
     return {
@@ -219,6 +221,8 @@ export const getUsersPaginated = async (
     hasNextPage: !!nextBiolinks.length,
     hasPreviousPage: !!previousBiolinks.length,
   }
+
+  await captureUserActivity(user, context, `Requested all users`, false)
 
   return connection
 }

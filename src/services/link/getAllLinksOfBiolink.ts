@@ -1,13 +1,15 @@
 import moment from 'moment'
 import { getRepository } from 'typeorm'
+import { captureUserActivity } from '../../services'
 import { User, Biolink, Link } from '../../entities'
 import { LinkListResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
 export const getAllLinksOfBiolink = async (
   biolinkId: string,
   showOnPage: boolean,
-  currentUser: User
+  currentUser: User,
+  context: MyContext
 ): Promise<LinkListResponse> => {
   const biolink = await Biolink.findOne(biolinkId)
 
@@ -49,6 +51,8 @@ export const getAllLinksOfBiolink = async (
   qb.orderBy('link.order', 'ASC')
 
   const links = await qb.getMany()
+
+  if (currentUser) await captureUserActivity(currentUser, context, `Requested biolink links`, false)
 
   return { links }
 }

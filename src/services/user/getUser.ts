@@ -1,8 +1,13 @@
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 import { User } from '../../entities'
 import { UserResponse } from '../../object-types'
+import { captureUserActivity } from '../../services'
 
-export const getUser = async (id: string, adminUser: User): Promise<UserResponse> => {
+export const getUser = async (
+  id: string,
+  adminUser: User,
+  context: MyContext
+): Promise<UserResponse> => {
   const user = await User.findOne(id)
 
   if (!user) {
@@ -37,6 +42,8 @@ export const getUser = async (id: string, adminUser: User): Promise<UserResponse
       ],
     }
   }
+
+  await captureUserActivity(user, context, `Requested user ${user.email}`, false)
 
   return { user }
 }

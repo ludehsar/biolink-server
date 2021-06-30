@@ -1,8 +1,12 @@
+import { captureUserActivity } from '../../services'
 import { User, Biolink } from '../../entities'
 import { BiolinkListResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
 
-export const getUserBiolinks = async (user: User): Promise<BiolinkListResponse> => {
+export const getUserBiolinks = async (
+  user: User,
+  context: MyContext
+): Promise<BiolinkListResponse> => {
   if (!user) {
     return {
       errors: [
@@ -15,6 +19,8 @@ export const getUserBiolinks = async (user: User): Promise<BiolinkListResponse> 
   }
 
   const biolinks = await Biolink.find({ where: { user } })
+
+  await captureUserActivity(user, context, `Requested all user biolinks`, false)
 
   return { biolinks }
 }

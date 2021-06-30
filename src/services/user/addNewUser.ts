@@ -194,7 +194,8 @@ export const addNewUser = async (
     await captureUserActivity(
       adminUser,
       context,
-      `Created user ${user.email} with username ${biolink.username}`
+      `Created user ${user.email} with username ${biolink.username}`,
+      true
     )
 
     return {}

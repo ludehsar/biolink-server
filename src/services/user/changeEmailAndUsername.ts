@@ -4,7 +4,7 @@ import { User, BlackList, Username } from '../../entities'
 import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { EmailAndUsernameInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
-import { sendVerificationEmail } from '../../services'
+import { captureUserActivity, sendVerificationEmail } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 
 export const changeEmailAndUsername = async (
@@ -183,6 +183,8 @@ export const changeEmailAndUsername = async (
 
     await username.save()
   }
+
+  await captureUserActivity(user, context, `Changed emails or usernames or both`, true)
 
   return {}
 }

@@ -123,7 +123,8 @@ export const updateIntegrationSettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated integration settings of biolink: ${biolink.username}`
+    `Updated integration settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

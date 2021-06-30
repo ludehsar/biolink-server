@@ -93,7 +93,8 @@ export const updateContactButtonSettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated contact button settings of biolink: ${biolink.username}`
+    `Updated contact button settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

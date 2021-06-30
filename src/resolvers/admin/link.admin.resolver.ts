@@ -1,5 +1,6 @@
-import { Arg, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 
+import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
@@ -11,16 +12,18 @@ export class LinkAdminResolver {
   @Query(() => LinkConnection, { nullable: true })
   async getAllLinks(
     @Arg('options') options: ConnectionArgs,
-    @CurrentAdmin() adminUser: User
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
   ): Promise<LinkConnection> {
-    return await getLinksPaginated(options, adminUser)
+    return await getLinksPaginated(options, adminUser, context)
   }
 
   @Query(() => LinkConnection, { nullable: true })
   async getAllEmbeds(
     @Arg('options') options: ConnectionArgs,
-    @CurrentAdmin() adminUser: User
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
   ): Promise<LinkConnection> {
-    return await getEmbedsPaginated(options, adminUser)
+    return await getEmbedsPaginated(options, adminUser, context)
   }
 }

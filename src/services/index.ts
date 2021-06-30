@@ -5,6 +5,7 @@ import { getAdminRole } from './adminRole/getAdminRole'
 import { getAdminRoles } from './adminRole/getAdminRoles'
 // Analytics
 import { getBiolinkChartData } from './analytics/getBiolinkChartData'
+import { getBiolinkClicksData } from './analytics/getBiolinkClicksData'
 import { getLinkClicksData } from './analytics/getLinkClicksData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
@@ -119,6 +120,7 @@ export {
   getAdminRoles,
   // Analytics
   getBiolinkChartData,
+  getBiolinkClicksData,
   getLinkClicksData,
   trackBiolinkClicks,
   trackLinkClicks,

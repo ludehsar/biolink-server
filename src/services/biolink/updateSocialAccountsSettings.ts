@@ -129,7 +129,8 @@ export const updateSocialAccountsSettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated social buttons settings of biolink: ${biolink.username}`
+    `Updated social buttons settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

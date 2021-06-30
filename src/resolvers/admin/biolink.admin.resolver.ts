@@ -1,5 +1,6 @@
-import { Arg, Int, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Int, Query, Resolver } from 'type-graphql'
 
+import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
@@ -11,9 +12,10 @@ export class BiolinkAdminResolver {
   @Query(() => BiolinkConnection, { nullable: true })
   async getAllBiolinks(
     @Arg('options') options: ConnectionArgs,
-    @CurrentAdmin() adminUser: User
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
   ): Promise<BiolinkConnection> {
-    return await getBiolinksPaginated(options, adminUser)
+    return await getBiolinksPaginated(options, adminUser, context)
   }
 
   @Query(() => BiolinkConnection, { nullable: true })

@@ -2,9 +2,14 @@ import { getConnection } from 'typeorm'
 
 import { ChartResponse } from '../../object-types'
 import { Biolink, User } from '../../entities'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
+import { captureUserActivity } from '../../services'
 
-export const getBiolinkChartData = async (id: string, user: User): Promise<ChartResponse> => {
+export const getBiolinkChartData = async (
+  id: string,
+  user: User,
+  context: MyContext
+): Promise<ChartResponse> => {
   const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
@@ -49,6 +54,8 @@ export const getBiolinkChartData = async (id: string, user: User): Promise<Chart
     ORDER  BY date;
   `
   )
+
+  await captureUserActivity(user, context, `Requested chart data`, false)
 
   return {
     result,

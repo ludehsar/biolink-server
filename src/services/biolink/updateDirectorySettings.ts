@@ -89,7 +89,8 @@ export const updateDirectorySettings = async (
   await captureUserActivity(
     user,
     context,
-    `Updated directory settings of biolink: ${biolink.username}`
+    `Updated directory settings of biolink: ${biolink.username}`,
+    true
   )
 
   return { biolink }

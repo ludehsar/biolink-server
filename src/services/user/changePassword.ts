@@ -3,11 +3,13 @@ import argon2 from 'argon2'
 import { User } from '../../entities'
 import { ChangePasswordInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
-import { ErrorCode } from '../../types'
+import { ErrorCode, MyContext } from '../../types'
+import { captureUserActivity } from '../../services'
 
 export const changePassword = async (
   options: ChangePasswordInput,
-  user: User
+  user: User,
+  context: MyContext
 ): Promise<DefaultResponse> => {
   // Validate input
   const validationErrors = await validate(options)
@@ -51,6 +53,8 @@ export const changePassword = async (
   user.encryptedPassword = encryptedPassword
 
   await user.save()
+
+  await captureUserActivity(user, context, `Changed user password`, true)
 
   return {}
 }
