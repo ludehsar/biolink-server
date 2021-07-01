@@ -44,7 +44,7 @@ export class User extends BaseEntity {
   email!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   emailVerifiedAt!: Date | null
 
   @Column({ nullable: true })

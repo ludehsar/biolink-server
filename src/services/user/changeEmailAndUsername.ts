@@ -1,6 +1,6 @@
 import { validate } from 'class-validator'
 import moment from 'moment'
-import { User, BlackList, Username } from '../../entities'
+import { User, BlackList, Username, Biolink } from '../../entities'
 import { BlacklistType, PremiumUsernameType } from '../../enums'
 import { EmailAndUsernameInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
@@ -9,7 +9,7 @@ import { MyContext, ErrorCode } from '../../types'
 
 export const changeEmailAndUsername = async (
   options: EmailAndUsernameInput,
-  username: string,
+  biolinkId: string,
   user: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
@@ -36,8 +36,7 @@ export const changeEmailAndUsername = async (
     }
   }
 
-  const currentUsername = await Username.findOne({ where: { username } })
-  const biolink = await currentUsername?.biolink
+  const biolink = await Biolink.findOne(biolinkId)
 
   if (!biolink || biolink.userId !== user.id) {
     return {
@@ -50,7 +49,7 @@ export const changeEmailAndUsername = async (
     }
   }
 
-  if (options.email) {
+  if (options.email && options.email !== user.email) {
     const otherUser = await User.findOne({ where: { email: options.email } })
 
     if (otherUser && otherUser.id !== user.id) {
@@ -73,6 +72,12 @@ export const changeEmailAndUsername = async (
   }
 
   if (options.username) {
+    const currentUsername = await biolink.username
+
+    if (options.username === currentUsername?.username) {
+      return {}
+    }
+
     if (biolink.changedUsername) {
       return {
         errors: [

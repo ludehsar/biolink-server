@@ -43,7 +43,7 @@ export const getUser = async (
     }
   }
 
-  await captureUserActivity(user, context, `Requested user ${user.email}`, false)
+  await captureUserActivity(adminUser, context, `Requested user ${user.email}`, false)
 
   return { user }
 }
