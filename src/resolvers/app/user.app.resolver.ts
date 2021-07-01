@@ -93,13 +93,13 @@ export class UserResolver {
   }
 
   @Mutation(() => DefaultResponse)
-  async changeUserAccountInfoByUsername(
+  async changeUserAccountInfo(
     @Arg('options') options: EmailAndUsernameInput,
-    @Arg('username') username: string,
+    @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<DefaultResponse> {
-    return await changeEmailAndUsername(options, username, user, context)
+    return await changeEmailAndUsername(options, biolinkId, user, context)
   }
 
   @Mutation(() => DefaultResponse)
