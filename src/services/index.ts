@@ -23,6 +23,7 @@ import { verifyForgotPasswordToken } from './auth/verifyForgotPasswordToken'
 import { createBiolink } from './biolink/createBiolink'
 import { getBiolinksPaginated } from './biolink/getBiolinksPaginated'
 import { getDirectoriesPaginated } from './biolink/getDirectoriesPaginated'
+import { getBiolink } from './biolink/getBiolink'
 import { getBiolinkFromUsername } from './biolink/getBiolinkFromUsername'
 import { getUserBiolinks } from './biolink/getUserBiolinks'
 import { getSearchQueries } from './biolink/getSearchQueries'
@@ -136,6 +137,7 @@ export {
   logoutUser,
   // Biolink
   createBiolink,
+  getBiolink,
   getBiolinksPaginated,
   getBiolinkFromUsername,
   getUserBiolinks,

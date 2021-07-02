@@ -36,10 +36,10 @@ export class Biolink extends BaseEntity {
   })
   profilePhotoUrl!: string
 
-  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultCoverPhoto.png' })
+  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultCoverPhoto.jpg' })
   @Field(() => String, {
     nullable: true,
-    defaultValue: BACKEND_URL + '/static/defaultCoverPhoto.png',
+    defaultValue: BACKEND_URL + '/static/defaultCoverPhoto.jpg',
   })
   coverPhotoUrl!: string
 

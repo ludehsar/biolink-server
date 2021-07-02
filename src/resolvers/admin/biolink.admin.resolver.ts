@@ -4,8 +4,8 @@ import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
-import { BiolinkConnection } from '../../object-types'
-import { getBiolinksPaginated, getDirectoriesPaginated } from '../../services'
+import { BiolinkConnection, BiolinkResponse } from '../../object-types'
+import { getBiolink, getBiolinksPaginated, getDirectoriesPaginated } from '../../services'
 
 @Resolver()
 export class BiolinkAdminResolver {
@@ -24,5 +24,14 @@ export class BiolinkAdminResolver {
     @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
   ): Promise<BiolinkConnection> {
     return await getDirectoriesPaginated(categoryIds, options)
+  }
+
+  @Query(() => BiolinkResponse, { nullable: true })
+  async getBiolink(
+    @Arg('id') id: string,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<BiolinkResponse> {
+    return await getBiolink(id, adminUser, context)
   }
 }
