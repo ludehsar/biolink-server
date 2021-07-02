@@ -84,6 +84,7 @@ export const updateLink = async (
   link.note = options.note
   link.linkType = options.linkType as LinkType
   link.url = options.url || ''
+  link.linkColor = options.linkColor || '#000'
 
   if (planSettings.linksSchedulingEnabled) {
     link.startDate = options.startDate

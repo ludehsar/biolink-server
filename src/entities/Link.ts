@@ -32,7 +32,11 @@ export class Link extends BaseEntity {
   @Column({ nullable: true })
   linkTitle?: string
 
+  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  linkColor?: string
+
+  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultLinkImage.jpg' })
   @Field(() => String, {
     nullable: true,
     defaultValue: BACKEND_URL + '/static/defaultLinkImage.jpg',

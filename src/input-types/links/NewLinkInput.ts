@@ -15,6 +15,9 @@ export class NewLinkInput {
   @Field(() => String, { nullable: true })
   linkTitle?: string
 
+  @Field(() => String, { nullable: true })
+  linkColor?: string
+
   @Field(() => GraphQLUpload, { nullable: true })
   linkImage?: FileUpload
 

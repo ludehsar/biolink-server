@@ -87,6 +87,7 @@ export const createNewLink = async (
     const link = Link.create({
       linkTitle: options.linkTitle,
       linkType: options.linkType as LinkType,
+      linkColor: options.linkColor || '#000',
       url: options.url,
       shortenedUrl,
       startDate: options.startDate,
