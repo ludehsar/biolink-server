@@ -6,6 +6,7 @@ import { SingleSocialAccount, SocialAccountsInput } from '../../input-types'
 import { BiolinkResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
+import { isMalicious } from '../../utilities'
 
 export const updateSocialAccountsSettings = async (
   id: string,
@@ -80,6 +81,20 @@ export const updateSocialAccountsSettings = async (
         {
           errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
           message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  if (
+    options.socialAccounts &&
+    isMalicious(options.socialAccounts.map((link) => link.link || '#'))
+  ) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious links detected',
         },
       ],
     }

@@ -12,6 +12,7 @@ import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
+import { isMalicious } from '../../utilities'
 
 export const createNewLink = async (
   options: NewLinkInput,
@@ -71,6 +72,17 @@ export const createNewLink = async (
         {
           errorCode: ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST,
           message: 'Maximum link limit reached. Please upgrade your account.',
+        },
+      ],
+    }
+  }
+
+  if (options.url && isMalicious([options.url])) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious links detected',
         },
       ],
     }

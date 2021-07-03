@@ -4,6 +4,7 @@ import { NewReportInput } from '../../input-types'
 import { DefaultResponse } from 'object-types'
 import { Report, User } from '../../entities'
 import { captureUserActivity } from '../../services'
+import { isMalicious } from '../../utilities'
 
 export const addReport = async (
   options: NewReportInput,
@@ -18,6 +19,17 @@ export const addReport = async (
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
+    }
+  }
+
+  if (options.reportedUrl && isMalicious([options.reportedUrl])) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious links detected',
+        },
+      ],
     }
   }
 

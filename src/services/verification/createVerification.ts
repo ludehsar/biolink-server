@@ -1,6 +1,7 @@
 import { createWriteStream } from 'fs'
 import randToken from 'rand-token'
 import path from 'path'
+import { validate } from 'class-validator'
 import { User, Plan, Category, Verification, Biolink } from '../../entities'
 import { VerificationInput } from '../../input-types'
 import { DefaultResponse, ErrorResponse } from '../../object-types'
@@ -8,6 +9,7 @@ import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
 import { VerificationStatus } from '../../enums'
+import { isMalicious } from '../../utilities'
 
 export const createVerification = async (
   options: VerificationInput,
@@ -15,6 +17,17 @@ export const createVerification = async (
   user: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
+  const validationErrors = await validate(options)
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   if (!user) {
     return {
       errors: [
@@ -63,6 +76,23 @@ export const createVerification = async (
     }
   }
 
+  const availableLinks = []
+  if (options.instagramAccount) availableLinks.push(options.instagramAccount)
+  if (options.linkedinAccount) availableLinks.push(options.linkedinAccount)
+  if (options.twitterAccount) availableLinks.push(options.twitterAccount)
+  if (options.websiteLink) availableLinks.push(options.websiteLink)
+
+  if (isMalicious(availableLinks)) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious link detected',
+        },
+      ],
+    }
+  }
+
   const userPlanSettings = userPlan.settings
 
   if (!userPlanSettings.verifiedCheckmarkEnabled) {
@@ -91,68 +121,77 @@ export const createVerification = async (
 
   const errors: ErrorResponse[] = []
 
-  const { createReadStream: photoIdCreateReadStream, filename: photoIdFilename } = options.photoId
+  let photoIdName = ''
+  let businessDocumentName = ''
+  let otherDocumentsName = ''
+  if (options.photoId) {
+    const { createReadStream: photoIdCreateReadStream, filename: photoIdFilename } = options.photoId
 
-  const photoIdExt = photoIdFilename.split('.').pop()
+    const photoIdExt = photoIdFilename.split('.').pop()
 
-  const photoIdName = `${randToken.generate(20)}-${Date.now().toString()}.${photoIdExt}`
+    photoIdName = `${randToken.generate(20)}-${Date.now().toString()}.${photoIdExt}`
 
-  const photoIdDir = path.join(__dirname, `../../../assets/photoIds/${photoIdName}`)
+    const photoIdDir = path.join(__dirname, `../../../assets/photoIds/${photoIdName}`)
 
-  photoIdCreateReadStream()
-    .pipe(createWriteStream(photoIdDir))
-    .on('error', () => {
-      errors.push({
-        errorCode: ErrorCode.UPLOAD_ERROR,
-        message: 'Unable to upload PhotoId',
+    photoIdCreateReadStream()
+      .pipe(createWriteStream(photoIdDir))
+      .on('error', () => {
+        errors.push({
+          errorCode: ErrorCode.UPLOAD_ERROR,
+          message: 'Unable to upload PhotoId',
+        })
       })
-    })
+  }
 
-  const { createReadStream: businessDocumentCreateReadStream, filename: businessDocumentFilename } =
-    options.businessDocument
+  if (options.businessDocument) {
+    const {
+      createReadStream: businessDocumentCreateReadStream,
+      filename: businessDocumentFilename,
+    } = options.businessDocument
 
-  const businessDocumentExt = businessDocumentFilename.split('.').pop()
+    const businessDocumentExt = businessDocumentFilename.split('.').pop()
 
-  const businessDocumentName = `${randToken.generate(
-    20
-  )}-${Date.now().toString()}.${businessDocumentExt}`
+    businessDocumentName = `${randToken.generate(
+      20
+    )}-${Date.now().toString()}.${businessDocumentExt}`
 
-  const businessDocumentDir = path.join(
-    __dirname,
-    `../../../assets/businessDocuments/${businessDocumentName}`
-  )
+    const businessDocumentDir = path.join(
+      __dirname,
+      `../../../assets/businessDocuments/${businessDocumentName}`
+    )
 
-  businessDocumentCreateReadStream()
-    .pipe(createWriteStream(businessDocumentDir))
-    .on('error', () => {
-      errors.push({
-        errorCode: ErrorCode.UPLOAD_ERROR,
-        message: 'Unable to upload business documents',
+    businessDocumentCreateReadStream()
+      .pipe(createWriteStream(businessDocumentDir))
+      .on('error', () => {
+        errors.push({
+          errorCode: ErrorCode.UPLOAD_ERROR,
+          message: 'Unable to upload business documents',
+        })
       })
-    })
+  }
 
-  const { createReadStream: otherDocumentsCreateReadStream, filename: otherDocumentsFilename } =
-    options.otherDocuments
+  if (options.otherDocuments) {
+    const { createReadStream: otherDocumentsCreateReadStream, filename: otherDocumentsFilename } =
+      options.otherDocuments
 
-  const otherDocumentsExt = otherDocumentsFilename.split('.').pop()
+    const otherDocumentsExt = otherDocumentsFilename.split('.').pop()
 
-  const otherDocumentsName = `${randToken.generate(
-    20
-  )}-${Date.now().toString()}.${otherDocumentsExt}`
+    otherDocumentsName = `${randToken.generate(20)}-${Date.now().toString()}.${otherDocumentsExt}`
 
-  const otherDocumentsDir = path.join(
-    __dirname,
-    `../../../assets/otherDocuments/${otherDocumentsName}`
-  )
+    const otherDocumentsDir = path.join(
+      __dirname,
+      `../../../assets/otherDocuments/${otherDocumentsName}`
+    )
 
-  otherDocumentsCreateReadStream()
-    .pipe(createWriteStream(otherDocumentsDir))
-    .on('error', () => {
-      errors.push({
-        errorCode: ErrorCode.UPLOAD_ERROR,
-        message: 'Unable to upload other documents',
+    otherDocumentsCreateReadStream()
+      .pipe(createWriteStream(otherDocumentsDir))
+      .on('error', () => {
+        errors.push({
+          errorCode: ErrorCode.UPLOAD_ERROR,
+          message: 'Unable to upload other documents',
+        })
       })
-    })
+  }
 
   if (errors.length > 0) {
     return {

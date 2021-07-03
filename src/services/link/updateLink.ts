@@ -11,6 +11,7 @@ import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
+import { isMalicious } from '../../utilities'
 
 export const updateLink = async (
   id: string,
@@ -73,6 +74,17 @@ export const updateLink = async (
         {
           errorCode: ErrorCode.PLAN_COULD_NOT_BE_FOUND,
           message: 'Plan not defined',
+        },
+      ],
+    }
+  }
+
+  if (options.url && isMalicious([options.url])) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious links detected',
         },
       ],
     }

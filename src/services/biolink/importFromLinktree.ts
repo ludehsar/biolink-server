@@ -2,7 +2,7 @@ import { User, Biolink, Plan } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { createNewLink, captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { linktreeImportHandler } from '../../utilities'
+import { isMalicious, linktreeImportHandler } from '../../utilities'
 
 export const importFromLinktree = async (
   id: string,
@@ -72,9 +72,10 @@ export const importFromLinktree = async (
     if (planSettings.socialEnabled && res.socials) {
       const biolinkSettings = biolink.settings || {}
 
-      biolinkSettings.socialAccounts = res.socials
-
-      biolink.settings = biolinkSettings
+      if (!isMalicious(res.socials.map((link) => link.link))) {
+        biolinkSettings.socialAccounts = res.socials
+        biolink.settings = biolinkSettings
+      }
     }
 
     await biolink.save()

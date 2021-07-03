@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsPhoneNumber, IsUrl } from 'class-validator'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
 
@@ -6,57 +6,64 @@ import { InputType, Field } from 'type-graphql'
 export class VerificationInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  username!: string
+  username?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  firstName!: string
+  firstName?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  lastName!: string
+  lastName?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  mobileNumber!: string
+  @IsPhoneNumber()
+  mobileNumber?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  workNumber!: string
+  @IsPhoneNumber()
+  workNumber?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  email!: string
+  @IsEmail()
+  email?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  websiteLink!: string
+  @IsUrl()
+  websiteLink?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  instagramAccount!: string
+  @IsUrl()
+  instagramAccount?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  twitterAccount!: string
+  @IsUrl()
+  twitterAccount?: string
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  linkedinAccount!: string
+  @IsUrl()
+  linkedinAccount?: string
 
   @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  photoId!: FileUpload
+  photoId?: FileUpload
 
   @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  businessDocument!: FileUpload
+  businessDocument?: FileUpload
 
   @Field(() => GraphQLUpload, { nullable: true })
   @IsNotEmpty()
-  otherDocuments!: FileUpload
+  otherDocuments?: FileUpload
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  categoryId!: string
+  categoryId?: string
 }
