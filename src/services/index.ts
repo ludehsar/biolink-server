@@ -82,12 +82,14 @@ import { getUserReferrals } from './referral/getUserReferrals'
 import { addReport } from './report/addReport'
 import { getDismissedReportsPaginated } from './report/getDismissedReportsPaginated'
 import { getPendingReportsPaginated } from './report/getPendingReportsPaginated'
+import { getReport } from './report/getReport'
 import { getResolvedReportsPaginated } from './report/getResolvedReportsPaginated'
 // Support
 import { addSupport } from './support/addSupport'
 import { getDismissedSupportsPaginated } from './support/getDismissedSupportsPaginated'
 import { getPendingSupportsPaginated } from './support/getPendingSupportsPaginated'
 import { getResolvedSupportsPaginated } from './support/getResolvedSupportsPaginated'
+import { getSupport } from './support/getSupport'
 // Tax
 import { getTaxesPaginated } from './tax/getTaxesPaginated'
 // User
@@ -200,12 +202,14 @@ export {
   addReport,
   getDismissedReportsPaginated,
   getPendingReportsPaginated,
+  getReport,
   getResolvedReportsPaginated,
   // Support
   addSupport,
   getDismissedSupportsPaginated,
   getPendingSupportsPaginated,
   getResolvedSupportsPaginated,
+  getSupport,
   // Tax
   getTaxesPaginated,
   // User

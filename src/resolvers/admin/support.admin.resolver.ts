@@ -1,10 +1,11 @@
 import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 import { ConnectionArgs } from '../../input-types'
-import { SupportConnection } from '../../object-types'
+import { SupportConnection, SupportResponse } from '../../object-types'
 import {
   getDismissedSupportsPaginated,
   getPendingSupportsPaginated,
   getResolvedSupportsPaginated,
+  getSupport,
 } from '../../services'
 import { User } from '../../entities'
 import { CurrentAdmin } from '../../decorators'
@@ -37,5 +38,14 @@ export class SupportAdminResolver {
     @Ctx() context: MyContext
   ): Promise<SupportConnection> {
     return await getDismissedSupportsPaginated(options, adminUser, context)
+  }
+
+  @Query(() => SupportResponse, { nullable: true })
+  async getSupport(
+    @Arg('supportId', () => String) supportId: string,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<SupportResponse> {
+    return await getSupport(supportId, adminUser, context)
   }
 }

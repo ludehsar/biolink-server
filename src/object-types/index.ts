@@ -46,11 +46,13 @@ import { ReferralResponse } from './referrals/ReferralResponse'
 // Report
 import { ReportConnection } from './report/ReportConnection'
 import { ReportEdge } from './report/ReportEdge'
+import { ReportResponse } from './report/ReportResponse'
 // Settings
 import { SettingsResponse } from './settings/SettingsResponse'
 // Support
 import { SupportConnection } from './support/SupportConnection'
 import { SupportEdge } from './support/SupportEdge'
+import { SupportResponse } from './support/SupportResponse'
 // Tax
 import { TaxConnection } from './tax/TaxConnection'
 import { TaxEdge } from './tax/TaxEdge'
@@ -99,11 +101,13 @@ export {
   ReferralResponse,
   ReportConnection,
   ReportEdge,
+  ReportResponse,
   SettingsResponse,
   SingleBiolinkClickCount,
   SingleLinkClickCount,
   SupportConnection,
   SupportEdge,
+  SupportResponse,
   TaxConnection,
   TaxEdge,
   UserConnection,

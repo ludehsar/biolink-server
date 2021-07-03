@@ -1,14 +1,14 @@
+import { SupportResponse } from '../../object-types'
+import { Support, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
-import { Biolink, User } from '../../entities'
-import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 
-export const getBiolink = async (
-  id: string,
-  user: User,
+export const getSupport = async (
+  supportId: string,
+  adminUser: User,
   context: MyContext
-): Promise<BiolinkResponse> => {
-  if (!user) {
+): Promise<SupportResponse> => {
+  if (!adminUser) {
     return {
       errors: [
         {
@@ -19,31 +19,31 @@ export const getBiolink = async (
     }
   }
 
-  const biolink = await Biolink.findOne(id)
+  const support = await Support.findOne(supportId)
 
-  if (!biolink) {
+  if (!support) {
     return {
       errors: [
         {
           errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
-          message: 'Biolink not found',
+          message: 'Support not found',
         },
       ],
     }
   }
 
-  const adminRole = await user.adminRole
+  const adminRole = await adminUser.adminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {
-    return role.resource === 'biolink'
+    return role.resource === 'support'
   })
 
   if (
-    biolink.userId !== user.id &&
-    (!adminRole || !userSettings || !userSettings.canShow) &&
-    adminRole.roleName !== 'Administrator'
+    support.userId !== adminUser.id ||
+    ((!adminRole || !userSettings || !userSettings.canShow) &&
+      adminRole.roleName !== 'Administrator')
   ) {
     return {
       errors: [
@@ -55,7 +55,7 @@ export const getBiolink = async (
     }
   }
 
-  await captureUserActivity(user, context, `Requested biolink ${biolink.id}`, false)
+  await captureUserActivity(adminUser, context, `Requested support ${support.id}`, false)
 
-  return { biolink }
+  return { support }
 }

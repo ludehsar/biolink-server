@@ -1,9 +1,10 @@
 import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 import { ConnectionArgs } from '../../input-types'
-import { ReportConnection } from '../../object-types'
+import { ReportConnection, ReportResponse } from '../../object-types'
 import {
   getDismissedReportsPaginated,
   getPendingReportsPaginated,
+  getReport,
   getResolvedReportsPaginated,
 } from '../../services'
 import { User } from '../../entities'
@@ -37,5 +38,14 @@ export class ReportAdminResolver {
     @Ctx() context: MyContext
   ): Promise<ReportConnection> {
     return await getDismissedReportsPaginated(options, adminUser, context)
+  }
+
+  @Query(() => ReportResponse, { nullable: true })
+  async getReport(
+    @Arg('reportId', () => String) reportId: string,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<ReportResponse> {
+    return await getReport(reportId, adminUser, context)
   }
 }

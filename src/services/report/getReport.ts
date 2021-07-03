@@ -1,14 +1,14 @@
+import { ReportResponse } from '../../object-types'
+import { Report, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
-import { Biolink, User } from '../../entities'
-import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 
-export const getBiolink = async (
-  id: string,
-  user: User,
+export const getReport = async (
+  reportId: string,
+  adminUser: User,
   context: MyContext
-): Promise<BiolinkResponse> => {
-  if (!user) {
+): Promise<ReportResponse> => {
+  if (!adminUser) {
     return {
       errors: [
         {
@@ -19,31 +19,31 @@ export const getBiolink = async (
     }
   }
 
-  const biolink = await Biolink.findOne(id)
+  const report = await Report.findOne(reportId)
 
-  if (!biolink) {
+  if (!report) {
     return {
       errors: [
         {
           errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
-          message: 'Biolink not found',
+          message: 'Report not found',
         },
       ],
     }
   }
 
-  const adminRole = await user.adminRole
+  const adminRole = await adminUser.adminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {
-    return role.resource === 'biolink'
+    return role.resource === 'report'
   })
 
   if (
-    biolink.userId !== user.id &&
-    (!adminRole || !userSettings || !userSettings.canShow) &&
-    adminRole.roleName !== 'Administrator'
+    report.reporterId !== adminUser.id ||
+    ((!adminRole || !userSettings || !userSettings.canShow) &&
+      adminRole.roleName !== 'Administrator')
   ) {
     return {
       errors: [
@@ -55,7 +55,7 @@ export const getBiolink = async (
     }
   }
 
-  await captureUserActivity(user, context, `Requested biolink ${biolink.id}`, false)
+  await captureUserActivity(adminUser, context, `Requested report ${report.id}`, false)
 
-  return { biolink }
+  return { report }
 }
