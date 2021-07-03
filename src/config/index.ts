@@ -14,6 +14,7 @@ import {
   port,
   refreshTokenSecret,
   STRIPE_WEBHOOK_SECRET,
+  GOOGLE_API_KEY,
 } from './app.config'
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from './cookie.config'
 import corsOptions from './cors.config'
@@ -26,6 +27,7 @@ export {
   COOKIE_SAMESITE,
   COOKIE_SECURE,
   FRONTEND_APP_URL,
+  GOOGLE_API_KEY,
   SENDGRID_API_KEY,
   STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET,

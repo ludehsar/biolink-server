@@ -1,3 +1,4 @@
+import { isMalicious } from './checkMaliciousLinks'
 import { doesPathExist } from './checkPathExists'
 import { createAuthTokens } from './createAuthTokens'
 import { DataProps, getAuthUser, generateNewToken, invalidateToken } from './getAuthUser'
@@ -15,6 +16,7 @@ export {
   getSupportedSocialIcons,
   generateNewToken,
   invalidateToken,
+  isMalicious,
   linktreeImportHandler,
   sgMail,
   stripe,
