@@ -1,7 +1,8 @@
-import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs } from '../../input-types'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { ConnectionArgs, SupportAdminInput } from '../../input-types'
 import { SupportConnection, SupportResponse } from '../../object-types'
 import {
+  editSupport,
   getDismissedSupportsPaginated,
   getPendingSupportsPaginated,
   getResolvedSupportsPaginated,
@@ -47,5 +48,15 @@ export class SupportAdminResolver {
     @Ctx() context: MyContext
   ): Promise<SupportResponse> {
     return await getSupport(supportId, adminUser, context)
+  }
+
+  @Mutation(() => SupportResponse, { nullable: true })
+  async editSupport(
+    @Arg('supportId', () => String) supportId: string,
+    @Arg('options', () => SupportAdminInput) options: SupportAdminInput,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<SupportResponse> {
+    return await editSupport(supportId, options, adminUser, context)
   }
 }

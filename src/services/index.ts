@@ -80,12 +80,14 @@ import { createReferrals } from './referral/createReferrals'
 import { getUserReferrals } from './referral/getUserReferrals'
 // Report
 import { addReport } from './report/addReport'
+import { changeReportStatus } from './report/changeReportStatus'
 import { getDismissedReportsPaginated } from './report/getDismissedReportsPaginated'
 import { getPendingReportsPaginated } from './report/getPendingReportsPaginated'
 import { getReport } from './report/getReport'
 import { getResolvedReportsPaginated } from './report/getResolvedReportsPaginated'
 // Support
 import { addSupport } from './support/addSupport'
+import { editSupport } from './support/editSupport'
 import { getDismissedSupportsPaginated } from './support/getDismissedSupportsPaginated'
 import { getPendingSupportsPaginated } from './support/getPendingSupportsPaginated'
 import { getResolvedSupportsPaginated } from './support/getResolvedSupportsPaginated'
@@ -200,12 +202,14 @@ export {
   getUserReferrals,
   // Report
   addReport,
+  changeReportStatus,
   getDismissedReportsPaginated,
   getPendingReportsPaginated,
   getReport,
   getResolvedReportsPaginated,
   // Support
   addSupport,
+  editSupport,
   getDismissedSupportsPaginated,
   getPendingSupportsPaginated,
   getResolvedSupportsPaginated,

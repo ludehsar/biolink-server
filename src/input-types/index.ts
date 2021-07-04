@@ -33,8 +33,10 @@ import { ReferralInput } from './referrals/ReferralInput'
 import { ReferredUserInfo } from './referrals/ReferredUserInfo'
 //Report
 import { NewReportInput } from './report/NewReportInput'
+import { ReportStatusInput } from './report/ReportStatusInput'
 // Support
 import { NewSupportInput } from './support/NewSupportInput'
+import { SupportAdminInput } from './support/SupportAdminInput'
 // Users
 import { BillingInput } from './user/BillingInput'
 import { ChangePasswordInput } from './user/ChangePasswordInput'
@@ -85,8 +87,10 @@ export {
   ReferredUserInfo,
   // Report
   NewReportInput,
+  ReportStatusInput,
   // Support
   NewSupportInput,
+  SupportAdminInput,
   // User
   BillingInput,
   ChangePasswordInput,

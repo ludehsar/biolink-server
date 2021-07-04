@@ -1,7 +1,8 @@
-import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs } from '../../input-types'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { ConnectionArgs, ReportStatusInput } from '../../input-types'
 import { ReportConnection, ReportResponse } from '../../object-types'
 import {
+  changeReportStatus,
   getDismissedReportsPaginated,
   getPendingReportsPaginated,
   getReport,
@@ -47,5 +48,15 @@ export class ReportAdminResolver {
     @Ctx() context: MyContext
   ): Promise<ReportResponse> {
     return await getReport(reportId, adminUser, context)
+  }
+
+  @Mutation(() => ReportResponse, { nullable: true })
+  async changeReportStatus(
+    @Arg('reportId', () => String) reportId: string,
+    @Arg('options', () => ReportStatusInput) options: ReportStatusInput,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<ReportResponse> {
+    return await changeReportStatus(reportId, options, adminUser, context)
   }
 }
