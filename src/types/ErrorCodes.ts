@@ -23,6 +23,8 @@ export class ErrorCode {
   public static PLAN_ALREADY_EXISTS = 21
   public static USERNAME_ALREADY_CHANGED_ONCE = 22
   public static LINK_IS_MALICIOUS = 23
+  public static REPORT_NOT_FOUND = 24
+  public static SUPPORT_NOT_FOUND = 25
 
   public static DATABASE_ERROR = 9999
   public static CLIENT_SIDE_ERROR = 10000

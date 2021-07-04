@@ -25,7 +25,7 @@ export const getSupport = async (
     return {
       errors: [
         {
-          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          errorCode: ErrorCode.SUPPORT_NOT_FOUND,
           message: 'Support not found',
         },
       ],
@@ -41,9 +41,8 @@ export const getSupport = async (
   })
 
   if (
-    support.userId !== adminUser.id ||
-    ((!adminRole || !userSettings || !userSettings.canShow) &&
-      adminRole.roleName !== 'Administrator')
+    (!adminRole || !userSettings || !userSettings.canShow) &&
+    adminRole.roleName !== 'Administrator'
   ) {
     return {
       errors: [

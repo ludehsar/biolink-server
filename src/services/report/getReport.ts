@@ -25,7 +25,7 @@ export const getReport = async (
     return {
       errors: [
         {
-          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          errorCode: ErrorCode.REPORT_NOT_FOUND,
           message: 'Report not found',
         },
       ],
@@ -41,9 +41,8 @@ export const getReport = async (
   })
 
   if (
-    report.reporterId !== adminUser.id ||
-    ((!adminRole || !userSettings || !userSettings.canShow) &&
-      adminRole.roleName !== 'Administrator')
+    (!adminRole || !userSettings || !userSettings.canShow) &&
+    adminRole.roleName !== 'Administrator'
   ) {
     return {
       errors: [
