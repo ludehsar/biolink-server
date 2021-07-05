@@ -65,6 +65,7 @@ import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
 // Payment
+import { getPayment } from './payments/getPayment'
 import { getStripePaymentsPaginated } from './payments/getStripePaymentsPaginated'
 import { savePayment } from './payments/savePayment'
 import { saveStripeCustomerId } from './payments/saveStripeCustomerId'
@@ -93,6 +94,9 @@ import { getPendingSupportsPaginated } from './support/getPendingSupportsPaginat
 import { getResolvedSupportsPaginated } from './support/getResolvedSupportsPaginated'
 import { getSupport } from './support/getSupport'
 // Tax
+import { addTax } from './tax/addTax'
+import { editTax } from './tax/editTax'
+import { getTax } from './tax/getTax'
 import { getTaxesPaginated } from './tax/getTaxesPaginated'
 // User
 import { addNewUser } from './user/addNewUser'
@@ -187,6 +191,7 @@ export {
   // User Log
   captureUserActivity,
   // Payment
+  getPayment,
   getStripePaymentsPaginated,
   savePayment,
   saveStripeCustomerId,
@@ -215,6 +220,9 @@ export {
   getResolvedSupportsPaginated,
   getSupport,
   // Tax
+  addTax,
+  editTax,
+  getTax,
   getTaxesPaginated,
   // User
   addNewUser,

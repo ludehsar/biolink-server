@@ -38,6 +38,7 @@ import { LinkResponse } from './links/LinkResponse'
 // Payments
 import { PaymentConnection } from './payment/PaymentConnection'
 import { PaymentEdge } from './payment/PaymentEdge'
+import { PaymentResponse } from './payment/PaymentResponse'
 // Plans
 import { PlanListResponse } from './plans/PlanListResponse'
 import { PlanResponse } from './plans/PlanResponse'
@@ -97,6 +98,7 @@ export {
   PageInfo,
   PaymentConnection,
   PaymentEdge,
+  PaymentResponse,
   PlanListResponse,
   PlanResponse,
   ReferralResponse,
