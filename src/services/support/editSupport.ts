@@ -1,9 +1,11 @@
+import { MailDataRequired } from '@sendgrid/mail'
 import { SupportResponse } from '../../object-types'
 import { Support, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { SupportAdminInput } from '../../input-types'
 import { ResolveStatus } from '../../enums'
+import { sgMail } from '../../utilities'
 
 export const editSupport = async (
   supportId: string,
@@ -60,6 +62,20 @@ export const editSupport = async (
   support.status = options.status || ResolveStatus.Pending
   support.supportReply = options.supportReply || ''
   await support.save()
+
+  const supportReplyMailData: MailDataRequired = {
+    to: {
+      email: support.email,
+    },
+    from: {
+      name: 'Stashee Support',
+      email: 'info@stash.ee',
+    },
+    subject: `Thanks for Being with Us`,
+    text: support.supportReply,
+  }
+
+  await sgMail.send(supportReplyMailData, false)
 
   await captureUserActivity(
     adminUser,

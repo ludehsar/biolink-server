@@ -1,9 +1,11 @@
+import { MailDataRequired } from '@sendgrid/mail'
 import { ReportResponse } from '../../object-types'
 import { Report, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { ReportStatusInput } from '../../input-types'
 import { ResolveStatus } from '../../enums'
+import { sgMail } from '../../utilities'
 
 export const changeReportStatus = async (
   reportId: string,
@@ -59,6 +61,20 @@ export const changeReportStatus = async (
 
   report.status = options.status || ResolveStatus.Pending
   await report.save()
+
+  const reportReplyMailData: MailDataRequired = {
+    to: {
+      email: report.email,
+    },
+    from: {
+      name: 'Stashee Support',
+      email: 'info@stash.ee',
+    },
+    subject: `Thanks for Reporting`,
+    html: `We have reviewed your report.`,
+  }
+
+  await sgMail.send(reportReplyMailData, false)
 
   await captureUserActivity(
     adminUser,
