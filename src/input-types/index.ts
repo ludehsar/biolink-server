@@ -19,6 +19,8 @@ import { UTMParameterInput } from './biolink/UTMParameterInput'
 import { UpdateBiolinkProfileInput } from './biolink/UpdateBiolinkProfileInput'
 // Category
 import { NewCategoryInput } from './category/NewCategoryInput'
+// Code
+import { NewCodeInput } from './code/NewCodeInput'
 // Common
 import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
@@ -37,6 +39,8 @@ import { ReportStatusInput } from './report/ReportStatusInput'
 // Support
 import { NewSupportInput } from './support/NewSupportInput'
 import { SupportAdminInput } from './support/SupportAdminInput'
+// Tax
+import { NewTaxInput } from './tax/NewTaxInput'
 // Users
 import { BillingInput } from './user/BillingInput'
 import { ChangePasswordInput } from './user/ChangePasswordInput'
@@ -73,6 +77,8 @@ export {
   UpdateBiolinkProfileInput,
   // Category
   NewCategoryInput,
+  // Code
+  NewCodeInput,
   // Common
   ConnectionArgs,
   FileType,
@@ -91,6 +97,8 @@ export {
   // Support
   NewSupportInput,
   SupportAdminInput,
+  // Tax
+  NewTaxInput,
   // User
   BillingInput,
   ChangePasswordInput,

@@ -1,4 +1,5 @@
 import { validate } from 'class-validator'
+import { isMalicious } from '../../utilities'
 import { User, Biolink, Plan } from '../../entities'
 import { BrandingInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
@@ -21,6 +22,17 @@ export const updateBrandingSettings = async (
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
+    }
+  }
+
+  if (options.customBrandingUrl && isMalicious([options.customBrandingUrl])) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.LINK_IS_MALICIOUS,
+          message: 'Malicious link detected',
+        },
+      ],
     }
   }
 
@@ -65,7 +77,6 @@ export const updateBrandingSettings = async (
 
   const biolinkSettings = biolink.settings || {}
 
-  // TODO: change according to plan
   if (planSettings.removableBrandingEnabled)
     biolinkSettings.removeDefaultBranding = options.removeDefaultBranding || false
   else if (options.removeDefaultBranding === true) {

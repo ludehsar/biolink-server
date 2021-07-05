@@ -56,6 +56,7 @@ import { SupportResponse } from './support/SupportResponse'
 // Tax
 import { TaxConnection } from './tax/TaxConnection'
 import { TaxEdge } from './tax/TaxEdge'
+import { TaxResponse } from './tax/TaxResponse'
 // User
 import { UserConnection } from './user/UserConnection'
 import { UserEdge } from './user/UserEdge'
@@ -110,6 +111,7 @@ export {
   SupportResponse,
   TaxConnection,
   TaxEdge,
+  TaxResponse,
   UserConnection,
   UserEdge,
   UserResponse,

@@ -25,6 +25,7 @@ export class ErrorCode {
   public static LINK_IS_MALICIOUS = 23
   public static REPORT_NOT_FOUND = 24
   public static SUPPORT_NOT_FOUND = 25
+  public static TAX_NOT_FOUND = 26
 
   public static DATABASE_ERROR = 9999
   public static CLIENT_SIDE_ERROR = 10000
