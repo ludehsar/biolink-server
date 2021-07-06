@@ -27,6 +27,9 @@ export class ErrorCode {
   public static SUPPORT_NOT_FOUND = 25
   public static TAX_NOT_FOUND = 26
   public static PAYMENT_NOT_FOUND = 27
+  public static CODE_NOT_FOUND = 28
+  public static BLACKLIST_NOT_FOUND = 29
+  public static USERNAME_NOT_FOUND = 30
 
   public static DATABASE_ERROR = 9999
   public static CLIENT_SIDE_ERROR = 10000

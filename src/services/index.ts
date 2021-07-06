@@ -52,7 +52,10 @@ import { editCategory } from './category/editCategory'
 import { getCategory } from './category/getCategory'
 import { getCategoriesPaginated } from './category/getCategoriesPaginated'
 // Code
+import { addCode } from './code/addCode'
 import { createReferralCode } from './code/createReferralCode'
+import { editCode } from './code/editCode'
+import { getCode } from './code/getCode'
 import { getDiscountCodesPaginated } from './code/getDiscountCodesPaginated'
 import { getReferralCodesPaginated } from './code/getReferralCodesPaginated'
 // Link
@@ -176,7 +179,10 @@ export {
   getCategoriesPaginated,
   getCategory,
   // Code
+  addCode,
   createReferralCode,
+  editCode,
+  getCode,
   getDiscountCodesPaginated,
   getReferralCodesPaginated,
   // Link

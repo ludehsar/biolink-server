@@ -27,4 +27,8 @@ export class NewCodeInput {
   @IsOptional()
   @IsDate()
   expireDate?: Date
+
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  referrerId?: string
 }

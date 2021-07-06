@@ -26,6 +26,7 @@ import { CategoryResponse } from './category/CategoryResponse'
 // Code
 import { CodeConnection } from './code/CodeConnection'
 import { CodeEdge } from './code/CodeEdge'
+import { CodeResponse } from './code/CodeResponse'
 // Common
 import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
@@ -87,6 +88,7 @@ export {
   ChartValue,
   CodeConnection,
   CodeEdge,
+  CodeResponse,
   DefaultResponse,
   DirectorySearchResponse,
   ErrorResponse,
