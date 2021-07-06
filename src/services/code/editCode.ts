@@ -3,7 +3,7 @@ import { Code, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewCodeInput } from '../../input-types'
-import { CodeType } from 'enums'
+import { CodeType } from '../../enums'
 
 export const editCode = async (
   codeId: string,

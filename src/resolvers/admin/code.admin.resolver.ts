@@ -10,7 +10,7 @@ import {
 } from '../../services'
 import { User } from '../../entities'
 import { CurrentAdmin } from '../../decorators'
-import { MyContext } from 'types'
+import { MyContext } from '../../types'
 
 @Resolver()
 export class CodeAdminResolver {
