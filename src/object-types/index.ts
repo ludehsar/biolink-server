@@ -67,6 +67,7 @@ import { UserResponse } from './user/UserResponse'
 // Username
 import { UsernameConnection } from './username/UsernameConnection'
 import { UsernameEdge } from './username/UsernameEdge'
+import { UsernameResponse } from './username/UsernameResponse'
 // Verification
 import { VerificationConnection } from './verification/VerificationConnection'
 import { VerificationEdge } from './verification/VerificationEdge'
@@ -123,6 +124,7 @@ export {
   UserResponse,
   UsernameConnection,
   UsernameEdge,
+  UsernameResponse,
   VerificationConnection,
   VerificationEdge,
 }

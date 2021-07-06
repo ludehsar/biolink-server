@@ -53,6 +53,8 @@ import { LoginInput } from './user/LoginInput'
 import { NewUserInput } from './user/NewUserInput'
 import { PasswordInput } from './user/PasswordInput'
 import { RegisterInput } from './user/RegisterInput'
+// Username
+import { NewUsernameInput } from './username/NewUsernameInput'
 // Verification
 import { VerificationInput } from './verification/VerificationInput'
 import { VerificationStatusInput } from './verification/VerificationStatusInput'
@@ -113,6 +115,8 @@ export {
   NewUserInput,
   PasswordInput,
   RegisterInput,
+  // Username
+  NewUsernameInput,
   // Verification
   VerificationInput,
   VerificationStatusInput,

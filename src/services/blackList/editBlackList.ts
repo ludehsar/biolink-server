@@ -27,7 +27,7 @@ export const editBlackList = async (
     return {
       errors: [
         {
-          errorCode: ErrorCode.CODE_NOT_FOUND,
+          errorCode: ErrorCode.BLACKLIST_NOT_FOUND,
           message: 'BlackList not found',
         },
       ],

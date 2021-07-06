@@ -117,8 +117,11 @@ import { getUser } from './user/getUser'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
 // Username
+import { addUsername } from './username/addUsername'
+import { editUsername } from './username/editUsername'
 import { getPremiumUsernamesPaginated } from './username/getPremiumUsernamesPaginated'
 import { getTrademarkUsernamesPaginated } from './username/getTrademarkUsernamesPaginated'
+import { getUsername } from './username/getUsername'
 import { getUsernamesPaginated } from './username/getUsernamesPaginated'
 // Verification
 import { changeVerificationStatus } from './verification/changeVerificationStatus'
@@ -247,8 +250,11 @@ export {
   updateBilling,
   getUser,
   // Username
+  addUsername,
+  editUsername,
   getPremiumUsernamesPaginated,
   getTrademarkUsernamesPaginated,
+  getUsername,
   getUsernamesPaginated,
   // Verification
   changeVerificationStatus,
