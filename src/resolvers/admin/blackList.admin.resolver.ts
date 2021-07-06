@@ -1,7 +1,10 @@
-import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs } from '../../input-types'
-import { BlackListConnection } from '../../object-types'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { ConnectionArgs, NewBlackListInput } from '../../input-types'
+import { BlackListConnection, BlackListResponse } from '../../object-types'
 import {
+  addBlackList,
+  editBlackList,
+  getBlackList,
   getBlackListedBadWordsPaginated,
   getBlackListedEmailsPaginated,
   getBlackListedUsernamesPaginated,
@@ -37,5 +40,33 @@ export class BlackListAdminResolver {
     @Ctx() context: MyContext
   ): Promise<BlackListConnection> {
     return await getBlackListedUsernamesPaginated(options, adminUser, context)
+  }
+
+  @Query(() => BlackListResponse, { nullable: true })
+  async getBlackList(
+    @Arg('blackListId', () => String) blackListId: string,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<BlackListResponse> {
+    return await getBlackList(blackListId, adminUser, context)
+  }
+
+  @Mutation(() => BlackListResponse, { nullable: true })
+  async addBlackList(
+    @Arg('options') options: NewBlackListInput,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<BlackListResponse> {
+    return await addBlackList(options, adminUser, context)
+  }
+
+  @Mutation(() => BlackListResponse, { nullable: true })
+  async editBlackList(
+    @Arg('blackListId', () => String) blackListId: string,
+    @Arg('options') options: NewBlackListInput,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<BlackListResponse> {
+    return await editBlackList(blackListId, options, adminUser, context)
   }
 }

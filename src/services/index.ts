@@ -43,6 +43,9 @@ import { updateUTMParameterSettings } from './biolink/updateUTMParameterSettings
 import { uploadBiolinkCoverPhoto } from './biolink/uploadBiolinkCoverPhoto'
 import { uploadBiolinkProfilePhoto } from './biolink/uploadBiolinkProfilePhoto'
 // Blacklist
+import { addBlackList } from './blackList/addBlackList'
+import { editBlackList } from './blackList/editBlackList'
+import { getBlackList } from './blackList/getBlackList'
 import { getBlackListedBadWordsPaginated } from './blackList/getBlackListedBadWordsPaginated'
 import { getBlackListedEmailsPaginated } from './blackList/getBlackListedEmailsPaginated'
 import { getBlackListedUsernamesPaginated } from './blackList/getBlackListedUsernamesPaginated'
@@ -170,6 +173,9 @@ export {
   removeBiolink,
   importFromLinktree,
   // Black List
+  addBlackList,
+  editBlackList,
+  getBlackList,
   getBlackListedBadWordsPaginated,
   getBlackListedEmailsPaginated,
   getBlackListedUsernamesPaginated,

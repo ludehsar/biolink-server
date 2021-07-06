@@ -19,6 +19,7 @@ import { DirectorySearchResponse } from './biolink/DirectorySearchResponse'
 // Black List
 import { BlackListConnection } from './blackList/BlackListConnection'
 import { BlackListEdge } from './blackList/BlackListEdge'
+import { BlackListResponse } from './blackList/BlackListResponse'
 // Category
 import { CategoryConnection } from './category/CategoryConnection'
 import { CategoryEdge } from './category/CategoryEdge'
@@ -81,6 +82,7 @@ export {
   BiolinkResponse,
   BlackListConnection,
   BlackListEdge,
+  BlackListResponse,
   CategoryConnection,
   CategoryEdge,
   CategoryResponse,

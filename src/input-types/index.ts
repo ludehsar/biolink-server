@@ -17,6 +17,8 @@ import { SocialAccountsInput } from './biolink/SocialAccountsInput'
 import { SortedLinksInput } from './biolink/SortedLinksInput'
 import { UTMParameterInput } from './biolink/UTMParameterInput'
 import { UpdateBiolinkProfileInput } from './biolink/UpdateBiolinkProfileInput'
+// Black List
+import { NewBlackListInput } from './blackList/NewBlackListInput'
 // Category
 import { NewCategoryInput } from './category/NewCategoryInput'
 // Code
@@ -75,6 +77,8 @@ export {
   SortedLinksInput,
   UTMParameterInput,
   UpdateBiolinkProfileInput,
+  // Black List
+  NewBlackListInput,
   // Category
   NewCategoryInput,
   // Code
