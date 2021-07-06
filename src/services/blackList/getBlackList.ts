@@ -4,7 +4,7 @@ import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
 export const getBlackList = async (
-  blackListId: string,
+  blackListId: number,
   adminUser: User,
   context: MyContext
 ): Promise<BlackListResponse> => {

@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { ConnectionArgs, NewBlackListInput } from '../../input-types'
 import { BlackListConnection, BlackListResponse } from '../../object-types'
 import {
@@ -44,7 +44,7 @@ export class BlackListAdminResolver {
 
   @Query(() => BlackListResponse, { nullable: true })
   async getBlackList(
-    @Arg('blackListId', () => String) blackListId: string,
+    @Arg('blackListId', () => Int) blackListId: number,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BlackListResponse> {
@@ -62,7 +62,7 @@ export class BlackListAdminResolver {
 
   @Mutation(() => BlackListResponse, { nullable: true })
   async editBlackList(
-    @Arg('blackListId', () => String) blackListId: string,
+    @Arg('blackListId', () => Int) blackListId: number,
     @Arg('options') options: NewBlackListInput,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext

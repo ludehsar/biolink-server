@@ -5,7 +5,7 @@ import { captureUserActivity } from '../../services'
 import { NewBlackListInput } from '../../input-types'
 
 export const editBlackList = async (
-  blackListId: string,
+  blackListId: number,
   options: NewBlackListInput,
   adminUser: User,
   context: MyContext
