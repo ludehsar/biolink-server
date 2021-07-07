@@ -1,6 +1,6 @@
 import { ErrorCode, MyContext } from '../../types'
 import { User, Verification } from '../../entities'
-import { DefaultResponse } from '../../object-types'
+import { VerificationResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { VerificationStatusInput } from '../../input-types'
 
@@ -9,7 +9,7 @@ export const changeVerificationStatus = async (
   options: VerificationStatusInput,
   adminUser: User,
   context: MyContext
-): Promise<DefaultResponse> => {
+): Promise<VerificationResponse> => {
   if (!adminUser) {
     return {
       errors: [
@@ -76,5 +76,5 @@ export const changeVerificationStatus = async (
     true
   )
 
-  return {}
+  return { verification }
 }

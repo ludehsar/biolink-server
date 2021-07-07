@@ -1,10 +1,11 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { ConnectionArgs, VerificationStatusInput } from '../../input-types'
-import { DefaultResponse, VerificationConnection } from '../../object-types'
+import { VerificationConnection, VerificationResponse } from '../../object-types'
 import {
   changeVerificationStatus,
   getPendingVerificationsPaginated,
   getRejectedVerificationsPaginated,
+  getVerification,
   getVerifiedVerificationsPaginated,
 } from '../../services'
 import { User } from '../../entities'
@@ -40,13 +41,22 @@ export class VerificationAdminResolver {
     return await getRejectedVerificationsPaginated(options, adminUser, context)
   }
 
-  @Mutation(() => DefaultResponse, { nullable: true })
+  @Query(() => VerificationResponse, { nullable: true })
+  async getVerification(
+    @Arg('verificationId', () => String) verificationId: string,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<VerificationConnection> {
+    return await getVerification(verificationId, adminUser, context)
+  }
+
+  @Mutation(() => VerificationResponse, { nullable: true })
   async changeVerificationStatus(
     @Arg('verificationId', () => String) verificationId: string,
     @Arg('options', () => VerificationStatusInput) options: VerificationStatusInput,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
+  ): Promise<VerificationResponse> {
     return await changeVerificationStatus(verificationId, options, adminUser, context)
   }
 }

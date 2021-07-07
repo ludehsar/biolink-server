@@ -128,6 +128,7 @@ import { changeVerificationStatus } from './verification/changeVerificationStatu
 import { createVerification } from './verification/createVerification'
 import { getPendingVerificationsPaginated } from './verification/getPendingVerificationsPaginated'
 import { getRejectedVerificationsPaginated } from './verification/getRejectedVerificationsPaginated'
+import { getVerification } from './verification/getVerification'
 import { getVerifiedVerificationsPaginated } from './verification/getVerifiedVerificationsPaginated'
 
 export {
@@ -261,5 +262,6 @@ export {
   createVerification,
   getPendingVerificationsPaginated,
   getRejectedVerificationsPaginated,
+  getVerification,
   getVerifiedVerificationsPaginated,
 }

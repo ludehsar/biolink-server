@@ -71,6 +71,7 @@ import { UsernameResponse } from './username/UsernameResponse'
 // Verification
 import { VerificationConnection } from './verification/VerificationConnection'
 import { VerificationEdge } from './verification/VerificationEdge'
+import { VerificationResponse } from './verification/VerificationResponse'
 
 export {
   AccessTokenResponse,
@@ -127,4 +128,5 @@ export {
   UsernameResponse,
   VerificationConnection,
   VerificationEdge,
+  VerificationResponse,
 }
