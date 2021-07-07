@@ -63,7 +63,7 @@ export const getVerifiedVerificationsPaginated = async (
     .leftJoinAndSelect('verification.biolink', 'biolink')
     .leftJoinAndSelect('biolink.username', 'username')
     .leftJoinAndSelect('verification.category', 'category')
-    .where(`verification.status = '${VerificationStatus.Verified}'`)
+    .where(`verification.verificationStatus = '${VerificationStatus.Verified}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(verification.username) like :query`, {
@@ -143,7 +143,7 @@ export const getVerifiedVerificationsPaginated = async (
     .leftJoinAndSelect('verification.biolink', 'biolink')
     .leftJoinAndSelect('biolink.username', 'username')
     .leftJoinAndSelect('verification.category', 'category')
-    .where(`verification.status = '${VerificationStatus.Verified}'`)
+    .where(`verification.verificationStatus = '${VerificationStatus.Verified}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(verification.username) like :query`, {
@@ -193,7 +193,7 @@ export const getVerifiedVerificationsPaginated = async (
     .leftJoinAndSelect('verification.biolink', 'biolink')
     .leftJoinAndSelect('biolink.username', 'username')
     .leftJoinAndSelect('verification.category', 'category')
-    .where(`verification.status = '${VerificationStatus.Verified}'`)
+    .where(`verification.verificationStatus = '${VerificationStatus.Verified}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER(verification.username) like :query`, {
