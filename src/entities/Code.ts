@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -31,17 +31,17 @@ export class Code extends BaseEntity {
   @Column({ unique: true })
   code!: string
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Float, { nullable: true })
   @Column({ nullable: true, default: 0 })
   discount!: number
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Float, { nullable: true })
   @Column({ nullable: true, default: 0 })
   quantity!: number
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  expireDate!: Date
+  expireDate!: Date | null
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()

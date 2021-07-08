@@ -60,7 +60,7 @@ export const editCode = async (
   try {
     if (options.code) code.code = options.code
     code.discount = options.discount || 0.0
-    code.expireDate = options.expireDate || new Date()
+    code.expireDate = options.expireDate || null
     code.quantity = options.quantity || 0
     code.type = options.type || CodeType.Discount
 
