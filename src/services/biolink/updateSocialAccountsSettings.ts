@@ -86,17 +86,18 @@ export const updateSocialAccountsSettings = async (
     }
   }
 
-  if (
-    options.socialAccounts &&
-    isMalicious(options.socialAccounts.map((link) => link.link || '#'))
-  ) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.LINK_IS_MALICIOUS,
-          message: 'Malicious links detected',
-        },
-      ],
+  if (options.socialAccounts) {
+    const malicious = await isMalicious(options.socialAccounts.map((link) => link.link || '#'))
+
+    if (malicious) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.LINK_IS_MALICIOUS,
+            message: 'Malicious links detected',
+          },
+        ],
+      }
     }
   }
 

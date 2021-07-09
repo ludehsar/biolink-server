@@ -22,14 +22,18 @@ export const addReport = async (
     }
   }
 
-  if (options.reportedUrl && isMalicious([options.reportedUrl])) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.LINK_IS_MALICIOUS,
-          message: 'Malicious links detected',
-        },
-      ],
+  if (options.reportedUrl) {
+    const malicious = await isMalicious([options.reportedUrl])
+
+    if (malicious) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.LINK_IS_MALICIOUS,
+            message: 'Malicious links detected',
+          },
+        ],
+      }
     }
   }
 

@@ -72,7 +72,9 @@ export const importFromLinktree = async (
     if (planSettings.socialEnabled && res.socials) {
       const biolinkSettings = biolink.settings || {}
 
-      if (!isMalicious(res.socials.map((link) => link.link))) {
+      const malicious = await isMalicious(res.socials.map((link) => link.link))
+
+      if (!malicious) {
         biolinkSettings.socialAccounts = res.socials
         biolink.settings = biolinkSettings
       }

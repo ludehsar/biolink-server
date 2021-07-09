@@ -25,14 +25,18 @@ export const updateBrandingSettings = async (
     }
   }
 
-  if (options.customBrandingUrl && isMalicious([options.customBrandingUrl])) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.LINK_IS_MALICIOUS,
-          message: 'Malicious link detected',
-        },
-      ],
+  if (options.customBrandingUrl) {
+    const malicious = await isMalicious([options.customBrandingUrl])
+
+    if (malicious) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.LINK_IS_MALICIOUS,
+            message: 'Malicious link detected',
+          },
+        ],
+      }
     }
   }
 

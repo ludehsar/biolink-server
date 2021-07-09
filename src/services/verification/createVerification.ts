@@ -82,7 +82,8 @@ export const createVerification = async (
   if (options.twitterAccount) availableLinks.push(options.twitterAccount)
   if (options.websiteLink) availableLinks.push(options.websiteLink)
 
-  if (isMalicious(availableLinks)) {
+  const malicious = await isMalicious(availableLinks)
+  if (malicious) {
     return {
       errors: [
         {

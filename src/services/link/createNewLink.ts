@@ -77,14 +77,18 @@ export const createNewLink = async (
     }
   }
 
-  if (options.url && isMalicious([options.url])) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.LINK_IS_MALICIOUS,
-          message: 'Malicious links detected',
-        },
-      ],
+  if (options.url) {
+    const malicious = await isMalicious([options.url])
+
+    if (malicious) {
+      return {
+        errors: [
+          {
+            errorCode: ErrorCode.LINK_IS_MALICIOUS,
+            message: 'Malicious links detected',
+          },
+        ],
+      }
     }
   }
 
