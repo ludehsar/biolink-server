@@ -75,6 +75,8 @@ export const editUsername = async (
       }
 
       username.owner = Promise.resolve(user)
+    } else {
+      username.owner = null
     }
 
     await username.save()

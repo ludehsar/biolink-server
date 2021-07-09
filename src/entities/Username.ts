@@ -52,7 +52,7 @@ export class Username extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.usernames, { nullable: true, lazy: true })
   @JoinColumn({ name: 'ownerId' })
-  owner!: Promise<User>
+  owner!: Promise<User> | null
 
   @RelationId((username: Username) => username.owner)
   ownerId!: string
