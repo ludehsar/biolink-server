@@ -30,7 +30,7 @@ export const checkGoogleSafeBrowsing = async (urls: string[]): Promise<boolean> 
 
     return false
   } catch (err) {
-    console.log('Safe Browsing Error', err)
-    return true
+    // TODO: fix the issue
+    return false
   }
 }
