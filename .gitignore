@@ -134,3 +134,6 @@ build
 # Assets
 assets/profilePhotos
 assets/coverPhotos
+
+# Google client secret
+client_secret_92076044399-5rh184a7ijmphl21814d2c3n7cat671q.apps.googleusercontent.com.json
