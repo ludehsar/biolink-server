@@ -48,8 +48,7 @@ export const deleteAccount = async (
     }
   }
 
-  logoutUser(context, user)
-
+  await logoutUser(context, user)
   await user.softRemove()
 
   return {}
