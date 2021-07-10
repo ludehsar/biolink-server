@@ -126,6 +126,7 @@ export const updateSocialAccountsSettings = async (
         link: option.link || '#',
         platform: option.platform || 'Unknown',
         icon: BACKEND_URL + `/static/socialIcons/${option.platform}.png`,
+        featured: option.featured || false,
       })) || []
   } else {
     return {

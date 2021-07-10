@@ -11,6 +11,9 @@ export class SocialMediaProps {
 
   @Field(() => String, { nullable: true })
   link!: string
+
+  @Field(() => Boolean, { defaultValue: false, nullable: true })
+  featured!: boolean
 }
 
 @ObjectType()

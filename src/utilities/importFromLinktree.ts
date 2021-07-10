@@ -60,6 +60,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
           platform: element.attribs['aria-label'].trim(),
           link: element.attribs['href'].trim(),
           icon: BACKEND_URL + `/static/socialIcons/${element.attribs['aria-label'].trim()}.png`,
+          featured: false,
         })) || [],
   }
 
