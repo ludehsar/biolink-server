@@ -17,6 +17,7 @@ import {
   DirectoryInput,
   SortedLinksInput,
   ConnectionArgs,
+  DonationInput,
 } from '../../input-types'
 import {
   BiolinkResponse,
@@ -46,6 +47,7 @@ import {
   removeBiolink,
   importFromLinktree,
   getSearchQueries,
+  updateDonationSettings,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -95,6 +97,16 @@ export class BiolinkResolver {
     @CurrentUser() user: User
   ): Promise<BiolinkResponse> {
     return await updateDarkModeSettings(id, options, context, user)
+  }
+
+  @Mutation(() => BiolinkResponse)
+  async updateDonationSettings(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
+    @Arg('options') options: DonationInput,
+    @Ctx() context: MyContext,
+    @CurrentUser() user: User
+  ): Promise<BiolinkResponse> {
+    return await updateDonationSettings(id, options, context, user)
   }
 
   @Mutation(() => BiolinkResponse)

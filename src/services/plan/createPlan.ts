@@ -78,6 +78,7 @@ export const createPlan = async (
       totalLinksLimit: options.totalLinksLimit || 0,
       utmParametersEnabled: options.utmParametersEnabled || false,
       verifiedCheckmarkEnabled: options.verifiedCheckmarkEnabled || false,
+      enableDonationLink: options.enableDonationLink || false,
     }
     const plan = await Plan.create({
       annualPrice: options.annualPrice,

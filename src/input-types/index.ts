@@ -7,6 +7,7 @@ import { AnalyticsInput } from './analytics/AnalyticsInput'
 import { BrandingInput } from './biolink/BrandingInput'
 import { ContactButtonInput } from './biolink/ContactButtonInput'
 import { DarkModeInput } from './biolink/DarkModeInput'
+import { DonationInput } from './biolink/DonationInput'
 import { DirectoryInput } from './biolink/DirectoryInput'
 import { IntegrationInput } from './biolink/IntegrationInput'
 import { NewBiolinkInput } from './biolink/NewBiolinkInput'
@@ -70,6 +71,7 @@ export {
   ContactButtonInput,
   DarkModeInput,
   DirectoryInput,
+  DonationInput,
   IntegrationInput,
   NewBiolinkInput,
   PrivacyInput,

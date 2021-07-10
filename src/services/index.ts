@@ -35,6 +35,7 @@ import { updateBrandingSettings } from './biolink/updateBrandSettings'
 import { updateContactButtonSettings } from './biolink/updateContactButtonSettings'
 import { updateDarkModeSettings } from './biolink/updateDarkModeSettings'
 import { updateDirectorySettings } from './biolink/updateDirectorySettings'
+import { updateDonationSettings } from './biolink/updateDonationSettings'
 import { updateIntegrationSettings } from './biolink/updateIntegrationSettings'
 import { updatePrivacySettings } from './biolink/updatePrivacySettings'
 import { updateSEOSettings } from './biolink/updateSEOSettings'
@@ -163,6 +164,7 @@ export {
   uploadBiolinkCoverPhoto,
   uploadBiolinkProfilePhoto,
   updateDarkModeSettings,
+  updateDonationSettings,
   updateContactButtonSettings,
   updateSocialAccountsSettings,
   updateIntegrationSettings,

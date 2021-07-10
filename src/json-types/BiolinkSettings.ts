@@ -121,4 +121,14 @@ export class BiolinkSettings {
 
   @Field(() => Boolean, { nullable: true })
   enableSensitiveContentWarning!: boolean
+
+  // ----- Donation ----- //
+  @Field(() => String, { nullable: true })
+  paypalLink!: string
+
+  @Field(() => String, { nullable: true })
+  venmoLink!: string
+
+  @Field(() => String, { nullable: true })
+  payoneerLink!: string
 }

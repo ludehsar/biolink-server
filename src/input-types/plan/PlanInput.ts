@@ -83,4 +83,7 @@ export class PlanInput {
 
   @Field(() => Boolean, { nullable: true })
   leapLinkEnabled?: boolean
+
+  @Field(() => Boolean, { nullable: true })
+  enableDonationLink?: boolean
 }
