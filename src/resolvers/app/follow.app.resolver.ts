@@ -32,7 +32,7 @@ export class FollowResolver {
   }
 
   @Query(() => UserConnection)
-  async getFollowersPaginated(
+  async getAllFollowers(
     @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
@@ -41,7 +41,7 @@ export class FollowResolver {
   }
 
   @Query(() => UserConnection)
-  async getFolloweesPaginated(
+  async getAllFollowees(
     @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
