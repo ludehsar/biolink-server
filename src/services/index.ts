@@ -62,6 +62,11 @@ import { editCode } from './code/editCode'
 import { getCode } from './code/getCode'
 import { getDiscountCodesPaginated } from './code/getDiscountCodesPaginated'
 import { getReferralCodesPaginated } from './code/getReferralCodesPaginated'
+// Follow
+import { followUser } from './follow/followUser'
+import { getFolloweesPaginated } from './follow/getFolloweesPaginated'
+import { getFollowersPaginated } from './follow/getFollowersPaginated'
+import { unfollowUser } from './follow/unfollowUser'
 // Link
 import { createNewLink } from './link/createNewLink'
 import { getAllLinksOfBiolink } from './link/getAllLinksOfBiolink'
@@ -197,6 +202,11 @@ export {
   getCode,
   getDiscountCodesPaginated,
   getReferralCodesPaginated,
+  // Follow
+  followUser,
+  getFolloweesPaginated,
+  getFollowersPaginated,
+  unfollowUser,
   // Link
   getAllLinksOfBiolink,
   getAllUserLinks,

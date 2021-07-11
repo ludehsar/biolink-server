@@ -22,6 +22,7 @@ import {
   AnalyticsResolver,
   ReportResolver,
   SupportResolver,
+  FollowResolver,
 } from './resolvers/app'
 import {
   AdminRoleAdminResolver,
@@ -86,6 +87,7 @@ const main = async (): Promise<void> => {
         SettingsResolver,
         UserResolver,
         CategoryResolver,
+        FollowResolver,
         BiolinkResolver,
         LinkResolver,
         PlanResolver,

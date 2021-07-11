@@ -18,6 +18,7 @@ import {
   Biolink,
   Domain,
   Code,
+  Follow,
   UserLogs,
   Link,
   Plan,
@@ -192,4 +193,10 @@ export class User extends BaseEntity {
 
   @RelationId((user: User) => user.registeredByCode)
   registeredByCodeId!: string
+
+  @OneToMany(() => Follow, (follow) => follow.follower, { lazy: true, cascade: true })
+  followers!: Promise<Follow[]>
+
+  @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true, cascade: true })
+  followees!: Promise<Follow[]>
 }

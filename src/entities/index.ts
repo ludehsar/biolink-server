@@ -4,6 +4,7 @@ import { BlackList } from './BlackList'
 import { Category } from './Category'
 import { Code } from './Code'
 import { Domain } from './Domain'
+import { Follow } from './Follow'
 import { Link } from './Link'
 import { Payment } from './Payment'
 import { Plan } from './Plan'
@@ -25,6 +26,7 @@ export {
   Category,
   Code,
   Domain,
+  Follow,
   Link,
   Payment,
   Plan,
