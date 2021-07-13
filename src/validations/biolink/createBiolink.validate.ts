@@ -29,10 +29,12 @@ export const createBiolinkValidated = async (
 
   // Checks authentication
   if (!user) {
-    errors.push({
-      errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-      message: 'User not authenticated',
-    })
+    return [
+      {
+        errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+        message: 'User not authenticated',
+      },
+    ]
   }
 
   // Checks blacklisted username
