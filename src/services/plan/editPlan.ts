@@ -104,7 +104,7 @@ export const editPlan = async (
     totalLinksLimit: options.totalLinksLimit || 0,
     utmParametersEnabled: options.utmParametersEnabled || false,
     verifiedCheckmarkEnabled: options.verifiedCheckmarkEnabled || false,
-    enableDonationLink: options.enableDonationLink || false,
+    donationLinkEnabled: options.donationLinkEnabled || false,
   }
 
   plan.annualPrice = options.annualPrice as number

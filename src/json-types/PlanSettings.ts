@@ -66,5 +66,5 @@ export class PlanSettings {
   leapLinkEnabled!: boolean
 
   @Field(() => Boolean, { nullable: true })
-  enableDonationLink!: boolean
+  donationLinkEnabled!: boolean
 }

@@ -6,11 +6,13 @@ import { Code } from './Code'
 import { Domain } from './Domain'
 import { Follow } from './Follow'
 import { Link } from './Link'
+import { Message } from './Message'
 import { Payment } from './Payment'
 import { Plan } from './Plan'
 import { Username } from './Username'
 import { Referral } from './Referral'
 import { Report } from './Report'
+import { Room } from './Room'
 import { Settings } from './Settings'
 import { Support } from './Support'
 import { Tax } from './Tax'
@@ -28,11 +30,13 @@ export {
   Domain,
   Follow,
   Link,
+  Message,
   Payment,
   Plan,
   Username,
   Referral,
   Report,
+  Room,
   Settings,
   Support,
   Tax,

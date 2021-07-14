@@ -65,7 +65,7 @@ export const updateDonationSettings = async (
 
   const biolinkSettings = biolink.settings || {}
 
-  if (planSettings.enableDonationLink) {
+  if (planSettings.donationLinkEnabled) {
     biolinkSettings.payoneerLink = options.payoneerLink || ''
     biolinkSettings.paypalLink = options.paypalLink || ''
     biolinkSettings.venmoLink = options.venmoLink || ''
