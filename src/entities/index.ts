@@ -12,7 +12,6 @@ import { Plan } from './Plan'
 import { Username } from './Username'
 import { Referral } from './Referral'
 import { Report } from './Report'
-import { Room } from './Room'
 import { Settings } from './Settings'
 import { Support } from './Support'
 import { Tax } from './Tax'
@@ -36,7 +35,6 @@ export {
   Username,
   Referral,
   Report,
-  Room,
   Settings,
   Support,
   Tax,

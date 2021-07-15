@@ -12,7 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-import { Room, User } from '../entities'
+import { User } from '../entities'
 
 @ObjectType()
 @Entity()
@@ -42,7 +42,7 @@ export class Message extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.messages, {
+  @ManyToOne(() => User, (user) => user.sentMessages, {
     nullable: true,
     lazy: true,
   })
@@ -52,13 +52,13 @@ export class Message extends BaseEntity {
   @RelationId((message: Message) => message.sender)
   senderId!: string
 
-  @ManyToOne(() => Room, (room) => room.messages, {
+  @ManyToOne(() => User, (user) => user.receivedMessages, {
     nullable: true,
     lazy: true,
   })
-  @JoinColumn({ name: 'roomId' })
-  room!: Promise<Room>
+  @JoinColumn({ name: 'receiverId' })
+  receiver!: Promise<User>
 
-  @RelationId((message: Message) => message.room)
-  roomId!: string
+  @RelationId((message: Message) => message.receiver)
+  receiverId!: string
 }

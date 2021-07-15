@@ -6,7 +6,6 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -31,7 +30,6 @@ import {
   Report,
   Support,
   Message,
-  Room,
 } from '../entities'
 import { Billing } from '../json-types'
 
@@ -203,9 +201,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true, cascade: true })
   followees!: Promise<Follow[]>
 
-  @ManyToMany(() => Room, (room) => room.users, { lazy: true, cascade: true })
-  rooms!: Promise<Room[]>
-
   @OneToMany(() => Message, (message) => message.sender, { lazy: true, cascade: true })
-  messages!: Promise<Message[]>
+  sentMessages!: Promise<Message[]>
+
+  @OneToMany(() => Message, (message) => message.receiver, { lazy: true, cascade: true })
+  receivedMessages!: Promise<Message[]>
 }

@@ -37,6 +37,10 @@ import { LinkConnection } from './links/LinkConnection'
 import { LinkEdge } from './links/LinkEdge'
 import { LinkListResponse } from './links/LinkListResponse'
 import { LinkResponse } from './links/LinkResponse'
+// Messages
+import { MessageConnection } from './messages/MessageConnection'
+import { MessageEdge } from './messages/MessageEdge'
+import { MessageResponse } from './messages/MessageResponse'
 // Payments
 import { PaymentConnection } from './payment/PaymentConnection'
 import { PaymentEdge } from './payment/PaymentEdge'
@@ -101,6 +105,9 @@ export {
   LinkEdge,
   LinkListResponse,
   LinkResponse,
+  MessageConnection,
+  MessageEdge,
+  MessageResponse,
   PageInfo,
   PaymentConnection,
   PaymentEdge,
