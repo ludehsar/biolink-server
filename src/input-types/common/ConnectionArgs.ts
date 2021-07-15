@@ -17,6 +17,12 @@ export class ConnectionArgs {
   @Field(() => String, { defaultValue: '', description: 'Search query' })
   query!: string
 
-  @Field(() => Number, { defaultValue: 10, description: 'Paginate first' })
+  @Field(() => Number, {
+    defaultValue: 10,
+    description: 'Paginate first. Do not work for messages.',
+  })
   first?: number
+
+  @Field(() => Number, { defaultValue: 10, description: 'Paginate last. Works only for messages.' })
+  last?: number
 }

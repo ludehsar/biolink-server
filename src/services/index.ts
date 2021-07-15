@@ -76,6 +76,9 @@ import { getEmbedsPaginated } from './link/getEmbedsPaginated'
 import { getLinkByShortenedUrl } from './link/getLinkByShortenedUrl'
 import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
+// Message
+import { createNewMessage } from './messages/createNewMessage'
+import { getMessagesPaginated } from './messages/getMessagesPaginated'
 // Payment
 import { getPayment } from './payments/getPayment'
 import { getStripePaymentsPaginated } from './payments/getStripePaymentsPaginated'
@@ -216,6 +219,9 @@ export {
   updateLink,
   getLinkByShortenedUrl,
   removeLink,
+  // Message
+  createNewMessage,
+  getMessagesPaginated,
   // User Log
   captureUserActivity,
   // Payment

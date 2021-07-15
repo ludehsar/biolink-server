@@ -8,13 +8,13 @@ import { NewMessageInput } from '../../input-types'
 import { ErrorResponse, MessageResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
-import { captureUserActivity } from 'services/userLog/captureUserActivity'
+import { captureUserActivity } from '../../services'
 
 export const createNewMessage = async (
+  receiverId: string,
   options: NewMessageInput,
-  context: MyContext,
   sender: User,
-  receiverId: string
+  context: MyContext
 ): Promise<MessageResponse> => {
   const validationErrors = await validate(options)
   if (validationErrors.length > 0) {

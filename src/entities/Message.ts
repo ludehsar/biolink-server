@@ -42,6 +42,7 @@ export class Message extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
+  @Field(() => User, { nullable: false })
   @ManyToOne(() => User, (user) => user.sentMessages, {
     nullable: true,
     lazy: true,
@@ -52,6 +53,7 @@ export class Message extends BaseEntity {
   @RelationId((message: Message) => message.sender)
   senderId!: string
 
+  @Field(() => User, { nullable: false })
   @ManyToOne(() => User, (user) => user.receivedMessages, {
     nullable: true,
     lazy: true,
