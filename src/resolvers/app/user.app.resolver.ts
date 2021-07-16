@@ -24,6 +24,7 @@ import {
   logoutUser,
   updateBilling,
   getAccessToken,
+  changeCurrentBiolinkId,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -127,6 +128,15 @@ export class UserResolver {
     @CurrentUser() user: User
   ): Promise<UserResponse> {
     return await updateBilling(options, user, context)
+  }
+
+  @Mutation(() => UserResponse)
+  async changeCurrentBiolinkId(
+    @Arg('biolinkId', () => String) biolinkId: string,
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
+  ): Promise<UserResponse> {
+    return await changeCurrentBiolinkId(biolinkId, user, context)
   }
 
   @Mutation(() => DefaultResponse)

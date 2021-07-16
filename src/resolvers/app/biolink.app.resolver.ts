@@ -48,6 +48,7 @@ import {
   importFromLinktree,
   getSearchQueries,
   updateDonationSettings,
+  getBiolink,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -69,6 +70,15 @@ export class BiolinkResolver {
     @Ctx() context: MyContext
   ): Promise<BiolinkResponse> {
     return await getBiolinkFromUsername(username, context, password)
+  }
+
+  @Query(() => BiolinkResponse, { nullable: true })
+  async getBiolink(
+    @Arg('id') id: string,
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
+  ): Promise<BiolinkResponse> {
+    return await getBiolink(id, user, context)
   }
 
   @Query(() => BiolinkListResponse)

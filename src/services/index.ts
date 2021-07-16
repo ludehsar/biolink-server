@@ -116,6 +116,7 @@ import { getTax } from './tax/getTax'
 import { getTaxesPaginated } from './tax/getTaxesPaginated'
 // User
 import { addNewUser } from './user/addNewUser'
+import { changeCurrentBiolinkId } from './user/changeCurrentBiolinkId'
 import { changeEmailAndUsername } from './user/changeEmailAndUsername'
 import { changePassword } from './user/changePassword'
 import { deleteAccount } from './user/deleteAccount'
@@ -262,6 +263,7 @@ export {
   getTaxesPaginated,
   // User
   addNewUser,
+  changeCurrentBiolinkId,
   changeEmailAndUsername,
   changePassword,
   deleteAccount,

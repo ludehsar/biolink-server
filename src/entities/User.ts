@@ -111,6 +111,10 @@ export class User extends BaseEntity {
   totalLogin!: number
 
   @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  currentBiolinkId!: string
+
+  @Field(() => String, { nullable: true })
   @CreateDateColumn()
   createdAt!: Date
 
