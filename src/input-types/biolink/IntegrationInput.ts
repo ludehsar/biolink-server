@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsBoolean, IsOptional } from 'class-validator'
+import { IsBoolean, IsOptional, ValidateIf } from 'class-validator'
 
 @InputType()
 export class IntegrationInput {
@@ -10,6 +10,7 @@ export class IntegrationInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.facebookPixelId !== '')
   facebookPixelId?: string
 
   @Field({ nullable: true, defaultValue: false })
@@ -19,6 +20,7 @@ export class IntegrationInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.googleAnalyticsCode !== '')
   googleAnalyticsCode?: string
 
   @Field({ nullable: true, defaultValue: false })
@@ -28,5 +30,6 @@ export class IntegrationInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.emailCaptureId !== '')
   emailCaptureId?: string
 }

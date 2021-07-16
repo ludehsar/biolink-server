@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsUrl, IsBoolean, IsOptional } from 'class-validator'
+import { IsUrl, IsBoolean, IsOptional, ValidateIf } from 'class-validator'
 
 @InputType()
 export class BrandingInput {
@@ -15,10 +15,12 @@ export class BrandingInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.customBrandingName !== '')
   customBrandingName?: string
 
   @Field({ nullable: true })
   @IsUrl()
   @IsOptional()
+  @ValidateIf((e) => e.customBrandingUrl !== '')
   customBrandingUrl?: string
 }

@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsBoolean, IsOptional } from 'class-validator'
+import { IsBoolean, IsOptional, ValidateIf } from 'class-validator'
 
 @InputType()
 export class DirectoryInput {
@@ -10,5 +10,6 @@ export class DirectoryInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.directoryBio !== '')
   directoryBio?: string
 }

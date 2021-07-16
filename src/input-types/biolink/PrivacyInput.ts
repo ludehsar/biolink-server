@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsBoolean, IsOptional } from 'class-validator'
+import { IsBoolean, IsOptional, ValidateIf } from 'class-validator'
 
 @InputType()
 export class PrivacyInput {
@@ -10,6 +10,7 @@ export class PrivacyInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @ValidateIf((e) => e.password !== '')
   password?: string
 
   @Field({ nullable: true, defaultValue: false })
