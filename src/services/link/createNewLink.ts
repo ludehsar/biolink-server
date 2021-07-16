@@ -152,7 +152,14 @@ export const createNewLink = async (
         }
       }
 
+      const linkCount = await Link.count({
+        where: {
+          biolink: biolink,
+        },
+      })
+
       link.biolink = Promise.resolve(biolink)
+      link.order = linkCount
     }
 
     if (options.linkImage) {
@@ -201,6 +208,7 @@ export const createNewLink = async (
         }
       }
       default: {
+        console.log(err.message)
         return {
           errors: [
             {
