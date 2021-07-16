@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { MyContext } from '../../types'
 import { ConnectionArgs, NewMessageInput } from '../../input-types'
 import { MessageConnection, MessageResponse } from '../../object-types'
-import { createNewMessage, getMessagesPaginated } from '../../services'
+import { createNewMessage, getLastMessagesPaginated, getMessagesPaginated } from '../../services'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 
@@ -26,5 +26,13 @@ export class MessageResolver {
     @Ctx() context: MyContext
   ): Promise<MessageConnection> {
     return await getMessagesPaginated(otherUserId, options, user, context)
+  }
+
+  @Query(() => MessageConnection)
+  async getLastMessages(
+    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
+    @CurrentUser() user: User
+  ): Promise<MessageConnection> {
+    return await getLastMessagesPaginated(options, user)
   }
 }

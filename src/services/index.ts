@@ -78,6 +78,7 @@ import { removeLink } from './link/removeLink'
 import { updateLink } from './link/updateLink'
 // Message
 import { createNewMessage } from './messages/createNewMessage'
+import { getLastMessagesPaginated } from './messages/getLastMessagesPaginated'
 import { getMessagesPaginated } from './messages/getMessagesPaginated'
 // Payment
 import { getPayment } from './payments/getPayment'
@@ -221,6 +222,7 @@ export {
   removeLink,
   // Message
   createNewMessage,
+  getLastMessagesPaginated,
   getMessagesPaginated,
   // User Log
   captureUserActivity,
