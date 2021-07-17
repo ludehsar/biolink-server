@@ -33,17 +33,20 @@ export const getBiolink = async (
   }
 
   const adminRole = await user.adminRole
+  let userSettings = null
 
-  const adminRoleSettings = adminRole.roleSettings || []
+  if (adminRole) {
+    const adminRoleSettings = adminRole.roleSettings || []
 
-  const userSettings = adminRoleSettings.find((role): boolean => {
-    return role.resource === 'biolink'
-  })
+    userSettings = adminRoleSettings.find((role): boolean => {
+      return role.resource === 'biolink'
+    })
+  }
 
   if (
     biolink.userId !== user.id &&
     (!adminRole || !userSettings || !userSettings.canShow) &&
-    adminRole.roleName !== 'Administrator'
+    (!adminRole || adminRole.roleName !== 'Administrator')
   ) {
     return {
       errors: [
