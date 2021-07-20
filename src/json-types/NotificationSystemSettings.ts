@@ -10,7 +10,4 @@ export class NotificationSystemSettings {
 
   @Field(() => Boolean, { nullable: true })
   emailOnNewPayment!: boolean
-
-  @Field(() => Boolean, { nullable: true })
-  emailOnNewCustomDomain!: boolean
 }

@@ -6,6 +6,7 @@ import { DomainScheme } from './DomainScheme'
 import { EnabledStatus } from './EnabledStatus'
 import { LinkType } from './LinkType'
 import { PaymentMethod } from './PaymentMethod'
+import { PaymentType } from './PaymentType'
 import { PremiumUsernameType } from './PremiumUsernameType'
 import { ResolveStatus } from './ResolveStatus'
 import { SocialAccountStyleType } from './SocialAccountStyleType'
@@ -24,6 +25,7 @@ export {
   EnabledStatus,
   LinkType,
   PaymentMethod,
+  PaymentType,
   PremiumUsernameType,
   ResolveStatus,
   SocialAccountStyleType,
