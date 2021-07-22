@@ -4,7 +4,7 @@ import { PaymentType } from '../../enums'
 
 @InputType()
 export class PaymentSettingsInput {
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()
   @IsOptional()
   enablePaymentSystem!: boolean
@@ -21,22 +21,22 @@ export class PaymentSettingsInput {
   @Field(() => String, { nullable: true })
   currency!: string
 
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()
   @IsOptional()
   enableDiscountOrRedeemableCode!: boolean
 
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()
   @IsOptional()
   enableTaxesAndBilling!: boolean
 
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()
   @IsOptional()
   enablePaypal!: boolean
 
-  @Field(() => Boolean, { nullable: true, defaultValue: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()
   @IsOptional()
   enableStripe!: boolean

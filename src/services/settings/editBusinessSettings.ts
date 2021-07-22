@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { BusinessSettingsInput } from '../../input-types'
-import { BusinessSystemSettings } from 'json-types'
+import { BusinessSystemSettings } from '../../json-types'
 
 export const editBusinessSettings = async (
   options: BusinessSettingsInput,

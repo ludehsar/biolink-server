@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { LinkSettingsInput } from '../../input-types'
-import { LinkSystemSettings } from 'json-types'
+import { LinkSystemSettings } from '../../json-types'
 
 export const editLinkSettings = async (
   options: LinkSettingsInput,

@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { FacebookSettingsInput } from '../../input-types'
-import { FacebookSystemSettings } from 'json-types'
+import { FacebookSystemSettings } from '../../json-types'
 
 export const editFacebookSettings = async (
   options: FacebookSettingsInput,

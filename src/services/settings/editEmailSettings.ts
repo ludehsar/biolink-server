@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { EmailSettingsInput } from '../../input-types'
-import { EmailSystemSettings } from 'json-types'
+import { EmailSystemSettings } from '../../json-types'
 
 export const editEmailSettings = async (
   options: EmailSettingsInput,

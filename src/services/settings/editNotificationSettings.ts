@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NotificationSettingsInput } from '../../input-types'
-import { NotificationSystemSettings } from 'json-types'
+import { NotificationSystemSettings } from '../../json-types'
 
 export const editNotificationSettings = async (
   options: NotificationSettingsInput,

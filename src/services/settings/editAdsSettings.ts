@@ -3,7 +3,7 @@ import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { AdsSettingsInput } from '../../input-types'
-import { AdsSystemSettings } from 'json-types'
+import { AdsSystemSettings } from '../../json-types'
 
 export const editAdsSettings = async (
   options: AdsSettingsInput,
