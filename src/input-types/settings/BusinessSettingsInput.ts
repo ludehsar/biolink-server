@@ -1,9 +1,11 @@
-import { IsEmail, IsOptional, IsPhoneNumber, ValidateIf } from 'class-validator'
+import { IsBoolean, IsEmail, IsOptional, IsPhoneNumber, ValidateIf } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
 
 @InputType()
 export class BusinessSettingsInput {
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => Boolean, { nullable: true, defaultValue: false })
+  @IsBoolean()
+  @IsOptional()
   enableInvoice!: boolean
 
   @Field(() => String, { nullable: true })
