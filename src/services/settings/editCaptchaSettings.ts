@@ -4,7 +4,7 @@ import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { CaptchaSettingsInput } from '../../input-types'
 import { CaptchaSystemSettings } from 'json-types'
-import { CaptchaType } from 'enums'
+import { CaptchaType } from '../../enums'
 
 export const editCaptchaSettings = async (
   options: CaptchaSettingsInput,
