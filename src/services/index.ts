@@ -102,6 +102,17 @@ import { getDismissedReportsPaginated } from './report/getDismissedReportsPagina
 import { getPendingReportsPaginated } from './report/getPendingReportsPaginated'
 import { getReport } from './report/getReport'
 import { getResolvedReportsPaginated } from './report/getResolvedReportsPaginated'
+// Settings
+import { editAdsSettings } from './settings/editAdsSettings'
+import { editBusinessSettings } from './settings/editBusinessSettings'
+import { editCaptchaSettings } from './settings/editCaptchaSettings'
+import { editEmailSettings } from './settings/editEmailSettings'
+import { editFacebookSettings } from './settings/editFacebookSettings'
+import { editLinkSettings } from './settings/editLinkSettings'
+import { editMainSettings } from './settings/editMainSettings'
+import { editNotificationSettings } from './settings/editNotificationSettings'
+import { editPaymentSettings } from './settings/editPaymentSettingsInput'
+import { editSocialSettings } from './settings/editSocialSettings'
 // Support
 import { addSupport } from './support/addSupport'
 import { editSupport } from './support/editSupport'
@@ -249,6 +260,17 @@ export {
   getPendingReportsPaginated,
   getReport,
   getResolvedReportsPaginated,
+  // Settings
+  editAdsSettings,
+  editBusinessSettings,
+  editCaptchaSettings,
+  editEmailSettings,
+  editFacebookSettings,
+  editLinkSettings,
+  editMainSettings,
+  editNotificationSettings,
+  editPaymentSettings,
+  editSocialSettings,
   // Support
   addSupport,
   editSupport,
