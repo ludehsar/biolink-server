@@ -1,6 +1,7 @@
 import { ActiveStatus } from './ActiveStatus'
 import { BillingType } from './BillingType'
 import { BlacklistType } from './BlacklistType'
+import { CaptchaType } from './CaptchaType'
 import { CodeType } from './CodeType'
 import { DomainScheme } from './DomainScheme'
 import { EnabledStatus } from './EnabledStatus'
@@ -20,6 +21,7 @@ export {
   ActiveStatus,
   BillingType,
   BlacklistType,
+  CaptchaType,
   CodeType,
   DomainScheme,
   EnabledStatus,

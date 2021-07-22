@@ -1,10 +1,11 @@
 import { IsBoolean, IsOptional } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
+import { CaptchaType } from '../../enums'
 
 @InputType()
 export class CaptchaSettingsInput {
-  @Field(() => String, { nullable: true })
-  captchaType!: string
+  @Field(() => String, { nullable: true, defaultValue: CaptchaType.Basic })
+  captchaType!: CaptchaType
 
   @Field(() => Boolean, { nullable: true, defaultValue: false })
   @IsBoolean()

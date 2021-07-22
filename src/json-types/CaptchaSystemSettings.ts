@@ -1,9 +1,10 @@
 import { Field, ObjectType } from 'type-graphql'
+import { CaptchaType } from '../enums'
 
 @ObjectType()
 export class CaptchaSystemSettings {
   @Field(() => String, { nullable: true })
-  captchaType!: string
+  captchaType!: CaptchaType
 
   @Field(() => Boolean, { nullable: true })
   enableCaptchaOnLoginPage!: boolean
