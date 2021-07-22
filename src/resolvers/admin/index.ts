@@ -8,6 +8,7 @@ import { LinkAdminResolver } from './link.admin.resolver'
 import { PaymentsAdminResolver } from './payments.admin.resolver'
 import { PlanAdminResolver } from './plan.admin.resolver'
 import { ReportAdminResolver } from './report.admin.resolver'
+import { SettingsAdminResolver } from './settings.admin.resolver'
 import { SupportAdminResolver } from './support.admin.resolver'
 import { TaxAdminResolver } from './tax.admin.resolver'
 import { UserAdminResolver } from './user.admin.resolver'
@@ -25,6 +26,7 @@ export {
   PaymentsAdminResolver,
   PlanAdminResolver,
   ReportAdminResolver,
+  SettingsAdminResolver,
   SupportAdminResolver,
   TaxAdminResolver,
   UserAdminResolver,
