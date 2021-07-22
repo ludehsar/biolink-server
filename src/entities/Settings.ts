@@ -14,5 +14,5 @@ export class Settings extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'json', nullable: true })
-  value!: string
+  value!: any
 }

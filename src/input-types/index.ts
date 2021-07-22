@@ -41,6 +41,17 @@ import { ReferredUserInfo } from './referrals/ReferredUserInfo'
 //Report
 import { NewReportInput } from './report/NewReportInput'
 import { ReportStatusInput } from './report/ReportStatusInput'
+// Settings
+import { AdsSettingsInput } from './settings/AdsSettingsInput'
+import { BusinessSettingsInput } from './settings/BusinessSettingsInput'
+import { CaptchaSettingsInput } from './settings/CaptchaSettingsInput'
+import { EmailSettingsInput } from './settings/EmailSettingsInput'
+import { FacebookSettingsInput } from './settings/FacebookSettingsInput'
+import { LinkSettingsInput } from './settings/LinkSettingsInput'
+import { MainSettingsInput } from './settings/MainSettingsInput'
+import { NotificationSettingsInput } from './settings/NotificationSettingsInput'
+import { PaymentSettingsInput } from './settings/PaymentSettingsInput'
+import { SocialSettingsInput } from './settings/SocialSettingsInput'
 // Support
 import { NewSupportInput } from './support/NewSupportInput'
 import { SupportAdminInput } from './support/SupportAdminInput'
@@ -106,6 +117,17 @@ export {
   // Report
   NewReportInput,
   ReportStatusInput,
+  // Settings
+  AdsSettingsInput,
+  BusinessSettingsInput,
+  CaptchaSettingsInput,
+  EmailSettingsInput,
+  FacebookSettingsInput,
+  LinkSettingsInput,
+  MainSettingsInput,
+  NotificationSettingsInput,
+  PaymentSettingsInput,
+  SocialSettingsInput,
   // Support
   NewSupportInput,
   SupportAdminInput,

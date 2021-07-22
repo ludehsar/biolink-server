@@ -55,7 +55,17 @@ import { ReportConnection } from './report/ReportConnection'
 import { ReportEdge } from './report/ReportEdge'
 import { ReportResponse } from './report/ReportResponse'
 // Settings
+import { AdsSettingsResponse } from './settings/AdsSettingsResponse'
+import { BusinessSettingsResponse } from './settings/BusinessSettingsResponse'
+import { CaptchaSettingsResponse } from './settings/CaptchaSettingsResponse'
+import { EmailSettingsResponse } from './settings/EmailSettingsResponse'
+import { FacebookSettingsResponse } from './settings/FacebookSettingsResponse'
+import { LinkSettingsResponse } from './settings/LinkSettingsResponse'
+import { MainSettingsResponse } from './settings/MainSettingsResponse'
+import { NotificationSettingsResponse } from './settings/NotificationSettingsResponse'
+import { PaymentSettingsResponse } from './settings/PaymentSettingsResponse'
 import { SettingsResponse } from './settings/SettingsResponse'
+import { SocialSettingsResponse } from './settings/SocialSettingsResponse'
 // Support
 import { SupportConnection } from './support/SupportConnection'
 import { SupportEdge } from './support/SupportEdge'
@@ -118,6 +128,16 @@ export {
   ReportConnection,
   ReportEdge,
   ReportResponse,
+  AdsSettingsResponse,
+  BusinessSettingsResponse,
+  CaptchaSettingsResponse,
+  EmailSettingsResponse,
+  FacebookSettingsResponse,
+  LinkSettingsResponse,
+  MainSettingsResponse,
+  NotificationSettingsResponse,
+  PaymentSettingsResponse,
+  SocialSettingsResponse,
   SettingsResponse,
   SingleBiolinkClickCount,
   SingleLinkClickCount,
