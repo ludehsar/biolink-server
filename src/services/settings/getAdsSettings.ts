@@ -2,11 +2,9 @@ import { AdsSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { AdsSettingsInput } from '../../input-types'
 import { AdsSystemSettings } from '../../json-types'
 
-export const editAdsSettings = async (
-  options: AdsSettingsInput,
+export const getAdsSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<AdsSettingsResponse> => {
@@ -44,15 +42,7 @@ export const editAdsSettings = async (
 
   const adsSettings = ads.value as AdsSystemSettings
 
-  adsSettings.biolinkPageFooter = options.biolinkPageFooter || ''
-  adsSettings.biolinkPageHeader = options.biolinkPageHeader || ''
-  adsSettings.footer = options.footer || ''
-  adsSettings.header = options.header || ''
-
-  ads.value = adsSettings
-  await ads.save()
-
-  await captureUserActivity(adminUser, context, `Changed ads settings`, true)
+  await captureUserActivity(adminUser, context, `Requested ads settings`, false)
 
   return { settings: adsSettings }
 }

@@ -2,12 +2,9 @@ import { CaptchaSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { CaptchaSettingsInput } from '../../input-types'
 import { CaptchaSystemSettings } from '../../json-types'
-import { CaptchaType } from '../../enums'
 
-export const editCaptchaSettings = async (
-  options: CaptchaSettingsInput,
+export const getCaptchaSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<CaptchaSettingsResponse> => {
@@ -45,17 +42,7 @@ export const editCaptchaSettings = async (
 
   const captchaSettings = captcha.value as CaptchaSystemSettings
 
-  captchaSettings.captchaType = options.captchaType || CaptchaType.Basic
-  captchaSettings.enableCaptchaOnLoginPage = options.enableCaptchaOnLoginPage || false
-  captchaSettings.enableCaptchaOnLostPasswordPage = options.enableCaptchaOnLostPasswordPage || false
-  captchaSettings.enableCaptchaOnRegisterPage = options.enableCaptchaOnRegisterPage || false
-  captchaSettings.enableCaptchaOnResendActivationPage =
-    options.enableCaptchaOnResendActivationPage || false
-
-  captcha.value = captchaSettings
-  await captcha.save()
-
-  await captureUserActivity(adminUser, context, `Changed captcha settings`, true)
+  await captureUserActivity(adminUser, context, `Requested captcha settings`, false)
 
   return { settings: captchaSettings }
 }

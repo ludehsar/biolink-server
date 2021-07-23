@@ -2,12 +2,9 @@ import { PaymentSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { PaymentSettingsInput } from '../../input-types'
 import { PaymentSystemSettings } from '../../json-types'
-import { PaymentType } from '../../enums'
 
-export const editPaymentSettings = async (
-  options: PaymentSettingsInput,
+export const getPaymentSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<PaymentSettingsResponse> => {
@@ -45,19 +42,7 @@ export const editPaymentSettings = async (
 
   const paymentSettings = payment.value as PaymentSystemSettings
 
-  paymentSettings.brandName = options.brandName || ''
-  paymentSettings.currency = options.currency || ''
-  paymentSettings.enableDiscountOrRedeemableCode = options.enableDiscountOrRedeemableCode || false
-  paymentSettings.enablePaymentSystem = options.enablePaymentSystem || false
-  paymentSettings.enablePaypal = options.enablePaypal || false
-  paymentSettings.enableStripe = options.enableStripe || false
-  paymentSettings.enableTaxesAndBilling = options.enableTaxesAndBilling || false
-  paymentSettings.enabledPaymentType = options.enabledPaymentType || PaymentType.Both
-
-  payment.value = paymentSettings
-  await payment.save()
-
-  await captureUserActivity(adminUser, context, `Changed payment settings`, true)
+  await captureUserActivity(adminUser, context, `Requested payment settings`, false)
 
   return { settings: paymentSettings }
 }

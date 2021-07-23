@@ -113,6 +113,16 @@ import { editMainSettings } from './settings/editMainSettings'
 import { editNotificationSettings } from './settings/editNotificationSettings'
 import { editPaymentSettings } from './settings/editPaymentSettingsInput'
 import { editSocialSettings } from './settings/editSocialSettings'
+import { getAdsSettings } from './settings/getAdsSettings'
+import { getBusinessSettings } from './settings/getBusinessSettings'
+import { getCaptchaSettings } from './settings/getCaptchaSettings'
+import { getEmailSettings } from './settings/getEmailSettings'
+import { getFacebookSettings } from './settings/getFacebookSettings'
+import { getLinkSettings } from './settings/getLinkSettings'
+import { getMainSettings } from './settings/getMainSettings'
+import { getNotificationSettings } from './settings/getNotificationSettings'
+import { getPaymentSettings } from './settings/getPaymentSettings'
+import { getSocialSettings } from './settings/getSocialSettings'
 // Support
 import { addSupport } from './support/addSupport'
 import { editSupport } from './support/editSupport'
@@ -271,6 +281,16 @@ export {
   editNotificationSettings,
   editPaymentSettings,
   editSocialSettings,
+  getAdsSettings,
+  getBusinessSettings,
+  getCaptchaSettings,
+  getEmailSettings,
+  getFacebookSettings,
+  getLinkSettings,
+  getMainSettings,
+  getNotificationSettings,
+  getPaymentSettings,
+  getSocialSettings,
   // Support
   addSupport,
   editSupport,

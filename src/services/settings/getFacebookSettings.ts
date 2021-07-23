@@ -2,11 +2,9 @@ import { FacebookSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { FacebookSettingsInput } from '../../input-types'
 import { FacebookSystemSettings } from '../../json-types'
 
-export const editFacebookSettings = async (
-  options: FacebookSettingsInput,
+export const getFacebookSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<FacebookSettingsResponse> => {
@@ -44,12 +42,7 @@ export const editFacebookSettings = async (
 
   const facebookSettings = facebook.value as FacebookSystemSettings
 
-  facebookSettings.enableFacebookLogin = options.enableFacebookLogin || false
-
-  facebook.value = facebookSettings
-  await facebook.save()
-
-  await captureUserActivity(adminUser, context, `Changed facebook settings`, true)
+  await captureUserActivity(adminUser, context, `Requested facebook settings`, false)
 
   return { settings: facebookSettings }
 }

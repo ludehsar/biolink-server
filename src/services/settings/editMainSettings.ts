@@ -103,7 +103,7 @@ export const editMainSettings = async (
   main.value = mainSettings
   await main.save()
 
-  await captureUserActivity(adminUser, context, `Changed main settings`, false)
+  await captureUserActivity(adminUser, context, `Changed main settings`, true)
 
   return { settings: mainSettings }
 }

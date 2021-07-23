@@ -2,11 +2,9 @@ import { LinkSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { LinkSettingsInput } from '../../input-types'
 import { LinkSystemSettings } from '../../json-types'
 
-export const editLinkSettings = async (
-  options: LinkSettingsInput,
+export const getLinkSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<LinkSettingsResponse> => {
@@ -44,15 +42,7 @@ export const editLinkSettings = async (
 
   const linkSettings = link.value as LinkSystemSettings
 
-  linkSettings.branding = options.branding || ''
-  linkSettings.enableGoogleSafeBrowsing = options.enableGoogleSafeBrowsing || false
-  linkSettings.enableLinkShortenerSystem = options.enableLinkShortenerSystem || false
-  linkSettings.enablePhishtank = options.enablePhishtank || false
-
-  link.value = linkSettings
-  await link.save()
-
-  await captureUserActivity(adminUser, context, `Changed link settings`, true)
+  await captureUserActivity(adminUser, context, `Requested link settings`, false)
 
   return { settings: linkSettings }
 }

@@ -2,11 +2,9 @@ import { NotificationSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { NotificationSettingsInput } from '../../input-types'
 import { NotificationSystemSettings } from '../../json-types'
 
-export const editNotificationSettings = async (
-  options: NotificationSettingsInput,
+export const getNotificationSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<NotificationSettingsResponse> => {
@@ -44,14 +42,7 @@ export const editNotificationSettings = async (
 
   const notificationSettings = notification.value as NotificationSystemSettings
 
-  notificationSettings.emailOnNewPayment = options.emailOnNewPayment || false
-  notificationSettings.emailOnNewUser = options.emailOnNewUser || false
-  notificationSettings.emailsToBeNotified = options.emailsToBeNotified || []
-
-  notification.value = notificationSettings
-  await notification.save()
-
-  await captureUserActivity(adminUser, context, `Changed notification settings`, true)
+  await captureUserActivity(adminUser, context, `Requested notification settings`, false)
 
   return { settings: notificationSettings }
 }

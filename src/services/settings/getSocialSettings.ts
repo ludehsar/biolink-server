@@ -2,11 +2,9 @@ import { SocialSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { SocialSettingsInput } from '../../input-types'
 import { SocialSystemSettings } from '../../json-types'
 
-export const editSocialSettings = async (
-  options: SocialSettingsInput,
+export const getSocialSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<SocialSettingsResponse> => {
@@ -44,15 +42,7 @@ export const editSocialSettings = async (
 
   const socialSettings = social.value as SocialSystemSettings
 
-  socialSettings.facebook = options.facebook || ''
-  socialSettings.instagram = options.instagram || ''
-  socialSettings.twitter = options.twitter || ''
-  socialSettings.youtube = options.youtube || ''
-
-  social.value = socialSettings
-  await social.save()
-
-  await captureUserActivity(adminUser, context, `Changed social settings`, true)
+  await captureUserActivity(adminUser, context, `Requested social settings`, false)
 
   return { settings: socialSettings }
 }

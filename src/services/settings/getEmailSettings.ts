@@ -2,11 +2,9 @@ import { EmailSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
-import { EmailSettingsInput } from '../../input-types'
 import { EmailSystemSettings } from '../../json-types'
 
-export const editEmailSettings = async (
-  options: EmailSettingsInput,
+export const getEmailSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<EmailSettingsResponse> => {
@@ -44,13 +42,7 @@ export const editEmailSettings = async (
 
   const emailSettings = email.value as EmailSystemSettings
 
-  emailSettings.fromEmail = options.fromEmail || ''
-  emailSettings.fromName = options.fromName || ''
-
-  email.value = emailSettings
-  await email.save()
-
-  await captureUserActivity(adminUser, context, `Changed email settings`, true)
+  await captureUserActivity(adminUser, context, `Requested email settings`, false)
 
   return { settings: emailSettings }
 }
