@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import {
   AdsSettingsResponse,
   BusinessSettingsResponse,
@@ -22,6 +22,16 @@ import {
   editNotificationSettings,
   editPaymentSettings,
   editSocialSettings,
+  getAdsSettings,
+  getBusinessSettings,
+  getCaptchaSettings,
+  getEmailSettings,
+  getFacebookSettings,
+  getLinkSettings,
+  getMainSettings,
+  getNotificationSettings,
+  getPaymentSettings,
+  getSocialSettings,
 } from '../../services'
 import {
   AdsSettingsInput,
@@ -129,5 +139,85 @@ export class SettingsAdminResolver {
     @Ctx() context: MyContext
   ): Promise<SocialSettingsResponse> {
     return await editSocialSettings(options, adminUser, context)
+  }
+
+  @Query(() => AdsSettingsResponse)
+  async getAdsSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<AdsSettingsResponse> {
+    return await getAdsSettings(adminUser, context)
+  }
+
+  @Query(() => BusinessSettingsResponse)
+  async getBusinessSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<BusinessSettingsResponse> {
+    return await getBusinessSettings(adminUser, context)
+  }
+
+  @Query(() => CaptchaSettingsResponse)
+  async getCaptchaSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<CaptchaSettingsResponse> {
+    return await getCaptchaSettings(adminUser, context)
+  }
+
+  @Query(() => EmailSettingsResponse)
+  async getEmailSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<EmailSettingsResponse> {
+    return await getEmailSettings(adminUser, context)
+  }
+
+  @Query(() => FacebookSettingsResponse)
+  async getFacebookSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<FacebookSettingsResponse> {
+    return await getFacebookSettings(adminUser, context)
+  }
+
+  @Query(() => LinkSettingsResponse)
+  async getLinkSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<LinkSettingsResponse> {
+    return await getLinkSettings(adminUser, context)
+  }
+
+  @Query(() => MainSettingsResponse)
+  async getMainSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<MainSettingsResponse> {
+    return await getMainSettings(adminUser, context)
+  }
+
+  @Query(() => NotificationSettingsResponse)
+  async getNotificationSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<NotificationSettingsResponse> {
+    return await getNotificationSettings(adminUser, context)
+  }
+
+  @Query(() => PaymentSettingsResponse)
+  async getPaymentSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<PaymentSettingsResponse> {
+    return await getPaymentSettings(adminUser, context)
+  }
+
+  @Query(() => SocialSettingsResponse)
+  async getSocialSettings(
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<SocialSettingsResponse> {
+    return await getSocialSettings(adminUser, context)
   }
 }
