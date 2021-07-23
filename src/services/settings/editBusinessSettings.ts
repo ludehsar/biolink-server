@@ -42,7 +42,7 @@ export const editBusinessSettings = async (
     }).save()
   }
 
-  const businessSettings = business.value as BusinessSystemSettings
+  const businessSettings = (business.value || {}) as BusinessSystemSettings
 
   businessSettings.address = options.address || ''
   businessSettings.city = options.city || ''

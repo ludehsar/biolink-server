@@ -43,7 +43,7 @@ export const editPaymentSettings = async (
     }).save()
   }
 
-  const paymentSettings = payment.value as PaymentSystemSettings
+  const paymentSettings = (payment.value || {}) as PaymentSystemSettings
 
   paymentSettings.brandName = options.brandName || ''
   paymentSettings.currency = options.currency || ''

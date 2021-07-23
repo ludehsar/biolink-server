@@ -46,7 +46,7 @@ export const editMainSettings = async (
     }).save()
   }
 
-  const mainSettings = main.value as MainSystemSettings
+  const mainSettings = (main.value || {}) as MainSystemSettings
 
   mainSettings.defaultLanguage = options.defaultLanguage || ''
   mainSettings.defaultTimezone = options.defaultTimezone || ''

@@ -42,7 +42,7 @@ export const editFacebookSettings = async (
     }).save()
   }
 
-  const facebookSettings = facebook.value as FacebookSystemSettings
+  const facebookSettings = (facebook.value || {}) as FacebookSystemSettings
 
   facebookSettings.enableFacebookLogin = options.enableFacebookLogin || false
 

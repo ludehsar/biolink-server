@@ -42,7 +42,7 @@ export const editNotificationSettings = async (
     }).save()
   }
 
-  const notificationSettings = notification.value as NotificationSystemSettings
+  const notificationSettings = (notification.value || {}) as NotificationSystemSettings
 
   notificationSettings.emailOnNewPayment = options.emailOnNewPayment || false
   notificationSettings.emailOnNewUser = options.emailOnNewUser || false

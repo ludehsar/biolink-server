@@ -43,7 +43,7 @@ export const editCaptchaSettings = async (
     }).save()
   }
 
-  const captchaSettings = captcha.value as CaptchaSystemSettings
+  const captchaSettings = (captcha.value || {}) as CaptchaSystemSettings
 
   captchaSettings.captchaType = options.captchaType || CaptchaType.Basic
   captchaSettings.enableCaptchaOnLoginPage = options.enableCaptchaOnLoginPage || false

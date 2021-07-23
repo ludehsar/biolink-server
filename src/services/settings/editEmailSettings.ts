@@ -42,7 +42,7 @@ export const editEmailSettings = async (
     }).save()
   }
 
-  const emailSettings = email.value as EmailSystemSettings
+  const emailSettings = (email.value || {}) as EmailSystemSettings
 
   emailSettings.fromEmail = options.fromEmail || ''
   emailSettings.fromName = options.fromName || ''

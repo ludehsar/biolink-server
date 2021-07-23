@@ -42,7 +42,7 @@ export const editSocialSettings = async (
     }).save()
   }
 
-  const socialSettings = social.value as SocialSystemSettings
+  const socialSettings = (social.value || {}) as SocialSystemSettings
 
   socialSettings.facebook = options.facebook || ''
   socialSettings.instagram = options.instagram || ''

@@ -42,7 +42,7 @@ export const editLinkSettings = async (
     }).save()
   }
 
-  const linkSettings = link.value as LinkSystemSettings
+  const linkSettings = (link.value || {}) as LinkSystemSettings
 
   linkSettings.branding = options.branding || ''
   linkSettings.enableGoogleSafeBrowsing = options.enableGoogleSafeBrowsing || false

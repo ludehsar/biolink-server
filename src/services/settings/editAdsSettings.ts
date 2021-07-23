@@ -42,7 +42,7 @@ export const editAdsSettings = async (
     }).save()
   }
 
-  const adsSettings = ads.value as AdsSystemSettings
+  const adsSettings = (ads.value || {}) as AdsSystemSettings
 
   adsSettings.biolinkPageFooter = options.biolinkPageFooter || ''
   adsSettings.biolinkPageHeader = options.biolinkPageHeader || ''
