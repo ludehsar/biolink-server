@@ -100,7 +100,6 @@
   "resolutions": {
     "minimist": "^1.2.5",
     "moment": "^2.24.0",
-    "ws": "^7.4.6",
-    "graphql-upload": "^12.0.0"
+    "ws": "^7.4.6"
   }
 }
