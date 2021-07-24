@@ -1,5 +1,4 @@
 import { IsBoolean, IsOptional, IsUrl, ValidateIf } from 'class-validator'
-import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { Field, InputType } from 'type-graphql'
 
 @InputType()
@@ -9,12 +8,6 @@ export class MainSettingsInput {
 
   @Field(() => String, { nullable: true })
   defaultLanguage?: string
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  websiteLogo?: FileUpload
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  faviconLogo?: FileUpload
 
   @Field(() => String, { nullable: true })
   defaultTimezone?: string

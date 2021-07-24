@@ -9,12 +9,6 @@ export class MainSystemSettings {
   defaultLanguage!: string
 
   @Field(() => String, { nullable: true })
-  websiteLogoUrl!: string
-
-  @Field(() => String, { nullable: true })
-  faviconLogoUrl!: string
-
-  @Field(() => String, { nullable: true })
   defaultTimezone!: string
 
   @Field(() => Boolean, { nullable: true })
