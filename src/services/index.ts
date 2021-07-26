@@ -9,6 +9,7 @@ import { getBiolinkClicksData } from './analytics/getBiolinkClicksData'
 import { getDashboardTotalCounts } from './analytics/getDashboardTotalCounts'
 import { getLast30DaysEarnings } from './analytics/getLast30DaysEarnings'
 import { getLinkClicksData } from './analytics/getLinkClicksData'
+import { getUsersAndAdminsCountData } from './analytics/getUsersAndAdminsCountData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
@@ -178,6 +179,7 @@ export {
   getDashboardTotalCounts,
   getLast30DaysEarnings,
   getLinkClicksData,
+  getUsersAndAdminsCountData,
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth

@@ -11,6 +11,7 @@ import { EarningChartValue } from './analytics/EarningChartValue'
 import { LinkClicksResponse } from './analytics/LinkClicksResponse'
 import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
+import { UsersAdminsCountResponse } from './analytics/UsersAdminsCountResponse'
 // Auth
 import { AccessTokenResponse } from './auth/AccessTokenResponse'
 // Biolink
@@ -157,6 +158,7 @@ export {
   UserConnection,
   UserEdge,
   UserResponse,
+  UsersAdminsCountResponse,
   UserTotalCountsResponse,
   UsernameConnection,
   UsernameEdge,

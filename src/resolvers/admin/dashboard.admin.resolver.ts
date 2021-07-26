@@ -1,8 +1,16 @@
 import { Query, Resolver } from 'type-graphql'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
-import { DashboardTotalCountsResponse, EarningChartResponse } from '../../object-types'
-import { getDashboardTotalCounts, getLast30DaysEarnings } from '../../services'
+import {
+  DashboardTotalCountsResponse,
+  EarningChartResponse,
+  UsersAdminsCountResponse,
+} from '../../object-types'
+import {
+  getDashboardTotalCounts,
+  getLast30DaysEarnings,
+  getUsersAndAdminsCountData,
+} from '../../services'
 
 @Resolver()
 export class DashboardAdminResolver {
@@ -18,5 +26,12 @@ export class DashboardAdminResolver {
     @CurrentAdmin() adminUser: User
   ): Promise<EarningChartResponse> {
     return await getLast30DaysEarnings(adminUser)
+  }
+
+  @Query(() => UsersAdminsCountResponse)
+  async getUsersAndAdminsCountData(
+    @CurrentAdmin() adminUser: User
+  ): Promise<UsersAdminsCountResponse> {
+    return await getUsersAndAdminsCountData(adminUser)
   }
 }
