@@ -1,3 +1,4 @@
+import { validate } from 'class-validator'
 import { SocialSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
@@ -10,6 +11,17 @@ export const editSocialSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<SocialSettingsResponse> => {
+  const validationErrors = await validate(options)
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   if (!adminUser) {
     return {
       errors: [

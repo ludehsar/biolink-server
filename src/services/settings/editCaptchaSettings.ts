@@ -1,3 +1,4 @@
+import { validate } from 'class-validator'
 import { CaptchaSettingsResponse } from '../../object-types'
 import { Settings, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
@@ -11,6 +12,17 @@ export const editCaptchaSettings = async (
   adminUser: User,
   context: MyContext
 ): Promise<CaptchaSettingsResponse> => {
+  const validationErrors = await validate(options)
+  if (validationErrors.length > 0) {
+    return {
+      errors: validationErrors.map((err) => ({
+        field: err.property,
+        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
+        message: 'Not correctly formatted',
+      })),
+    }
+  }
+
   if (!adminUser) {
     return {
       errors: [
