@@ -1,6 +1,6 @@
 import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 
-import { BiolinkClicksResponse, ChartResponse, LinkClicksResponse } from '../../object-types'
+import { BiolinkClicksResponse, BiolinkChartResponse, LinkClicksResponse } from '../../object-types'
 import { getBiolinkChartData, getBiolinkClicksData, getLinkClicksData } from '../../services'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
@@ -8,12 +8,12 @@ import { MyContext } from '../../types'
 
 @Resolver()
 export class AnalyticsResolver {
-  @Query(() => ChartResponse)
+  @Query(() => BiolinkChartResponse)
   async getBiolinkChartData(
     @Arg('id', { defaultValue: 'Biolink ID' }) id: string,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<ChartResponse> {
+  ): Promise<BiolinkChartResponse> {
     return await getBiolinkChartData(id, user, context)
   }
 

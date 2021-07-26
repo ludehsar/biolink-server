@@ -7,6 +7,7 @@ import { getAdminRoles } from './adminRole/getAdminRoles'
 import { getBiolinkChartData } from './analytics/getBiolinkChartData'
 import { getBiolinkClicksData } from './analytics/getBiolinkClicksData'
 import { getDashboardTotalCounts } from './analytics/getDashboardTotalCounts'
+import { getLast30DaysEarnings } from './analytics/getLast30DaysEarnings'
 import { getLinkClicksData } from './analytics/getLinkClicksData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
@@ -175,6 +176,7 @@ export {
   getBiolinkChartData,
   getBiolinkClicksData,
   getDashboardTotalCounts,
+  getLast30DaysEarnings,
   getLinkClicksData,
   trackBiolinkClicks,
   trackLinkClicks,

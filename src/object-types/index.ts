@@ -3,9 +3,11 @@ import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { BiolinkClicksResponse } from './analytics/BiolinkClicksResponse'
-import { ChartResponse } from './analytics/ChartResponse'
-import { ChartValue } from './analytics/ChartValue'
+import { BiolinkChartResponse } from './analytics/BiolinkChartResponse'
+import { BiolinkChartValue } from './analytics/BiolinkChartValue'
 import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
+import { EarningChartResponse } from './analytics/EarningChartResponse'
+import { EarningChartValue } from './analytics/EarningChartValue'
 import { LinkClicksResponse } from './analytics/LinkClicksResponse'
 import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
@@ -104,14 +106,16 @@ export {
   CategoryConnection,
   CategoryEdge,
   CategoryResponse,
-  ChartResponse,
-  ChartValue,
+  BiolinkChartResponse,
+  BiolinkChartValue,
   CodeConnection,
   CodeEdge,
   CodeResponse,
   DashboardTotalCountsResponse,
   DefaultResponse,
   DirectorySearchResponse,
+  EarningChartResponse,
+  EarningChartValue,
   ErrorResponse,
   LinkClicksResponse,
   LinkConnection,
