@@ -4,6 +4,7 @@ import { BiolinkAdminResolver } from './biolink.admin.resolver'
 import { BlackListAdminResolver } from './blackList.admin.resolver'
 import { CategoryAdminResolver } from './category.admin.resolver'
 import { CodeAdminResolver } from './code.admin.resolver'
+import { DashboardAdminResolver } from './dashboard.admin.resolver'
 import { LinkAdminResolver } from './link.admin.resolver'
 import { PaymentsAdminResolver } from './payments.admin.resolver'
 import { PlanAdminResolver } from './plan.admin.resolver'
@@ -22,6 +23,7 @@ export {
   BlackListAdminResolver,
   CategoryAdminResolver,
   CodeAdminResolver,
+  DashboardAdminResolver,
   LinkAdminResolver,
   PaymentsAdminResolver,
   PlanAdminResolver,

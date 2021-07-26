@@ -2,11 +2,12 @@
 import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
+import { BiolinkClicksResponse } from './analytics/BiolinkClicksResponse'
 import { ChartResponse } from './analytics/ChartResponse'
 import { ChartValue } from './analytics/ChartValue'
-import { BiolinkClicksResponse } from './analytics/BiolinkClicksResponse'
-import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
+import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
 import { LinkClicksResponse } from './analytics/LinkClicksResponse'
+import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
 // Auth
 import { AccessTokenResponse } from './auth/AccessTokenResponse'
@@ -107,6 +108,7 @@ export {
   CodeConnection,
   CodeEdge,
   CodeResponse,
+  DashboardTotalCountsResponse,
   DefaultResponse,
   DirectorySearchResponse,
   ErrorResponse,
