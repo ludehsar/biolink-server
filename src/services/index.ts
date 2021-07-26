@@ -146,6 +146,7 @@ import { editUser } from './user/editUser'
 import { updateBilling } from './user/updateBilling'
 import { getAdminsPaginated } from './user/getAdminsPaginated'
 import { getUsersPaginated } from './user/getUsersPaginated'
+import { getUserSummaryCounts } from './user/getUserSummaryCount'
 import { getUser } from './user/getUser'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
@@ -316,6 +317,7 @@ export {
   getUsersPaginated,
   updateBilling,
   getUser,
+  getUserSummaryCounts,
   // Username
   addUsername,
   editUsername,

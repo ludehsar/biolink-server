@@ -79,6 +79,7 @@ import { TaxResponse } from './tax/TaxResponse'
 import { UserConnection } from './user/UserConnection'
 import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
+import { UserTotalCountsResponse } from './user/UserTotalCountsResponse'
 // Username
 import { UsernameConnection } from './username/UsernameConnection'
 import { UsernameEdge } from './username/UsernameEdge'
@@ -152,6 +153,7 @@ export {
   UserConnection,
   UserEdge,
   UserResponse,
+  UserTotalCountsResponse,
   UsernameConnection,
   UsernameEdge,
   UsernameResponse,

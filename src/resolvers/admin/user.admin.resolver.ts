@@ -1,6 +1,11 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
-import { DefaultResponse, UserConnection, UserResponse } from '../../object-types'
+import {
+  DefaultResponse,
+  UserConnection,
+  UserResponse,
+  UserTotalCountsResponse,
+} from '../../object-types'
 import { ConnectionArgs, EditUserInput, NewUserInput } from '../../input-types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
@@ -10,6 +15,7 @@ import {
   getAdminsPaginated,
   getUser,
   getUsersPaginated,
+  getUserSummaryCounts,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -40,6 +46,14 @@ export class UserAdminResolver {
     @Ctx() context: MyContext
   ): Promise<UserConnection> {
     return await getUser(id, admin, context)
+  }
+
+  @Query(() => UserTotalCountsResponse, { nullable: true })
+  async getUserSummaryCounts(
+    @Arg('userId') userId: string,
+    @CurrentAdmin() admin: User
+  ): Promise<UserTotalCountsResponse> {
+    return await getUserSummaryCounts(userId, admin)
   }
 
   @Mutation(() => DefaultResponse, { nullable: true })

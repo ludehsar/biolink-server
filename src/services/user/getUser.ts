@@ -21,6 +21,17 @@ export const getUser = async (
     }
   }
 
+  if (!adminUser) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHORIZED,
+          message: 'User not authorized',
+        },
+      ],
+    }
+  }
+
   const adminRole = await adminUser.adminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
