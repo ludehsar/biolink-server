@@ -63,7 +63,7 @@ export const createNewMessage = async (
   if (options.attachment) {
     const { createReadStream, filename } = options.attachment
 
-    const attachmentExt = filename.split('.').pop()
+    const attachmentExt = filename?.split('.').pop() || ''
 
     const errors: ErrorResponse[] = []
 
