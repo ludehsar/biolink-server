@@ -1,6 +1,7 @@
 import { validate } from 'class-validator'
 import randToken from 'rand-token'
 import { createWriteStream } from 'fs'
+import { FileUpload } from 'graphql-upload'
 import path from 'path'
 
 import { User, Message } from '../../entities'
@@ -14,7 +15,8 @@ export const createNewMessage = async (
   receiverId: string,
   options: NewMessageInput,
   sender: User,
-  context: MyContext
+  context: MyContext,
+  attachment?: FileUpload
 ): Promise<MessageResponse> => {
   const validationErrors = await validate(options)
   if (validationErrors.length > 0) {
@@ -60,8 +62,8 @@ export const createNewMessage = async (
     message.message = options.message
   }
 
-  if (options.attachment) {
-    const { createReadStream, filename } = options.attachment
+  if (attachment) {
+    const { createReadStream, filename } = attachment
 
     const attachmentExt = filename?.split('.').pop() || ''
 

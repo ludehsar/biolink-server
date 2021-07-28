@@ -1,4 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { MyContext } from '../../types'
 import { ConnectionArgs, NewMessageInput } from '../../input-types'
 import { MessageConnection, MessageResponse } from '../../object-types'
@@ -12,6 +13,7 @@ export class MessageResolver {
   async sendMessage(
     @Arg('receiverId', () => String) receiverId: string,
     @Arg('options', () => NewMessageInput) options: NewMessageInput,
+    @Arg('attachment', () => GraphQLUpload, { nullable: true }) attachment: FileUpload,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<MessageResponse> {
