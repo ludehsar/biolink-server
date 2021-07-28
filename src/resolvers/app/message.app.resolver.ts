@@ -17,7 +17,7 @@ export class MessageResolver {
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<MessageResponse> {
-    return await createNewMessage(receiverId, options, user, context)
+    return await createNewMessage(receiverId, options, user, context, attachment)
   }
 
   @Query(() => MessageConnection)
