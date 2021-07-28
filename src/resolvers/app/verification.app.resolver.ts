@@ -9,9 +9,9 @@ import { MyContext } from '../../types'
 @Resolver()
 export class VerificationResolver {
   @Mutation(() => DefaultResponse)
-  async verifyBiolinkByUsername(
-    @Arg('options') options: VerificationInput,
+  async verifyBiolink(
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
+    @Arg('options') options: VerificationInput,
     @Ctx() context: MyContext,
     @CurrentUser() user: User
   ): Promise<DefaultResponse> {
