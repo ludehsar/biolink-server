@@ -138,7 +138,6 @@ export class User extends BaseEntity {
   })
   domains!: Promise<Domain[]>
 
-  @Field(() => [UserLogs], { nullable: true })
   @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true, cascade: true })
   activities!: Promise<UserLogs[]>
 
@@ -170,11 +169,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true, cascade: true })
   referrals!: Promise<Referral[]>
 
-  @Field(() => [Report], { nullable: true })
   @OneToMany(() => Report, (report) => report.reporter, { lazy: true, cascade: true })
   reports!: Promise<Report[]>
 
-  @Field(() => [Support], { nullable: true })
   @OneToMany(() => Support, (support) => support.user, { lazy: true, cascade: true })
   supports!: Promise<Support[]>
 
