@@ -83,6 +83,9 @@ import { UserConnection } from './user/UserConnection'
 import { UserEdge } from './user/UserEdge'
 import { UserResponse } from './user/UserResponse'
 import { UserTotalCountsResponse } from './user/UserTotalCountsResponse'
+// User Logs
+import { ActivityConnection } from './userActivity/ActivityConnection'
+import { ActivityEdge } from './userActivity/ActivityEdge'
 // Username
 import { UsernameConnection } from './username/UsernameConnection'
 import { UsernameEdge } from './username/UsernameEdge'
@@ -94,6 +97,8 @@ import { VerificationResponse } from './verification/VerificationResponse'
 
 export {
   AccessTokenResponse,
+  ActivityConnection,
+  ActivityEdge,
   AdminRoleListResponse,
   AdminRoleResponse,
   BiolinkConnection,

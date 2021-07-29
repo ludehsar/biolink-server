@@ -3,7 +3,7 @@ import { Brackets, getRepository } from 'typeorm'
 
 import { User, Message } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
-import { MessageConnection, MessageResponse } from '../../object-types'
+import { MessageConnection } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -12,7 +12,7 @@ export const getMessagesPaginated = async (
   options: ConnectionArgs,
   user: User,
   context: MyContext
-): Promise<MessageResponse> => {
+): Promise<MessageConnection> => {
   if (!user) {
     return {
       errors: [

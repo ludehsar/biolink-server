@@ -3,13 +3,13 @@ import { getConnection } from 'typeorm'
 
 import { User, Message } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
-import { MessageConnection, MessageResponse } from '../../object-types'
+import { MessageConnection } from '../../object-types'
 import { ErrorCode } from '../../types'
 
 export const getLastMessagesPaginated = async (
   options: ConnectionArgs,
   user: User
-): Promise<MessageResponse> => {
+): Promise<MessageConnection> => {
   if (!user) {
     return {
       errors: [

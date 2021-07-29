@@ -152,6 +152,7 @@ import { getUserSummaryCounts } from './user/getUserSummaryCount'
 import { getUser } from './user/getUser'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
+import { getUserActivityPaginated } from './userLog/getUserActivityPaginated'
 // Username
 import { addUsername } from './username/addUsername'
 import { editUsername } from './username/editUsername'
@@ -253,8 +254,6 @@ export {
   createNewMessage,
   getLastMessagesPaginated,
   getMessagesPaginated,
-  // User Log
-  captureUserActivity,
   // Payment
   getPayment,
   getStripePaymentsPaginated,
@@ -322,6 +321,9 @@ export {
   updateBilling,
   getUser,
   getUserSummaryCounts,
+  // User Log
+  captureUserActivity,
+  getUserActivityPaginated,
   // Username
   addUsername,
   editUsername,

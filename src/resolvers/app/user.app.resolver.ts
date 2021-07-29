@@ -9,8 +9,14 @@ import {
   ChangePasswordInput,
   PasswordInput,
   BillingInput,
+  ConnectionArgs,
 } from '../../input-types'
-import { UserResponse, DefaultResponse, AccessTokenResponse } from '../../object-types'
+import {
+  UserResponse,
+  DefaultResponse,
+  AccessTokenResponse,
+  ActivityConnection,
+} from '../../object-types'
 import {
   registerUser,
   sendVerificationEmail,
@@ -25,6 +31,7 @@ import {
   updateBilling,
   getAccessToken,
   changeCurrentBiolinkId,
+  getUserActivityPaginated,
 } from '../../services'
 import { MyContext } from '../../types'
 
@@ -137,6 +144,15 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<UserResponse> {
     return await changeCurrentBiolinkId(biolinkId, user, context)
+  }
+
+  @Query(() => ActivityConnection, { nullable: true })
+  async getUserActivity(
+    @Arg('options') options: ConnectionArgs,
+    @CurrentUser() user: User,
+    @Ctx() context: MyContext
+  ): Promise<ActivityConnection> {
+    return await getUserActivityPaginated(options, user, context)
   }
 
   @Mutation(() => DefaultResponse)
