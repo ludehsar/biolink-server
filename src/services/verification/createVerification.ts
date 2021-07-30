@@ -10,9 +10,13 @@ import { MyContext, ErrorCode } from '../../types'
 import { BACKEND_URL } from '../../config'
 import { VerificationStatus } from '../../enums'
 import { isMalicious } from '../../utilities'
+import { FileUpload } from 'graphql-upload'
 
 export const createVerification = async (
   options: VerificationInput,
+  photoId: FileUpload,
+  businessDocument: FileUpload,
+  otherDocuments: FileUpload,
   biolinkId: string,
   user: User,
   context: MyContext
@@ -125,8 +129,8 @@ export const createVerification = async (
   let photoIdName = ''
   let businessDocumentName = ''
   let otherDocumentsName = ''
-  if (options.photoId) {
-    const { createReadStream: photoIdCreateReadStream, filename: photoIdFilename } = options.photoId
+  if (photoId) {
+    const { createReadStream: photoIdCreateReadStream, filename: photoIdFilename } = photoId
 
     const photoIdExt = photoIdFilename.split('.').pop()
 
@@ -144,11 +148,11 @@ export const createVerification = async (
       })
   }
 
-  if (options.businessDocument) {
+  if (businessDocument) {
     const {
       createReadStream: businessDocumentCreateReadStream,
       filename: businessDocumentFilename,
-    } = options.businessDocument
+    } = businessDocument
 
     const businessDocumentExt = businessDocumentFilename.split('.').pop()
 
@@ -171,9 +175,9 @@ export const createVerification = async (
       })
   }
 
-  if (options.otherDocuments) {
+  if (otherDocuments) {
     const { createReadStream: otherDocumentsCreateReadStream, filename: otherDocumentsFilename } =
-      options.otherDocuments
+      otherDocuments
 
     const otherDocumentsExt = otherDocumentsFilename.split('.').pop()
 

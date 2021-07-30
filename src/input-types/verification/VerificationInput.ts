@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber, IsUrl } from 'class-validator'
-import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()
@@ -50,18 +49,6 @@ export class VerificationInput {
   @IsNotEmpty()
   @IsUrl()
   linkedinAccount?: string
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  @IsNotEmpty()
-  photoId?: FileUpload
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  @IsNotEmpty()
-  businessDocument?: FileUpload
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  @IsNotEmpty()
-  otherDocuments?: FileUpload
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
