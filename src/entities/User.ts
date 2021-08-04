@@ -77,7 +77,7 @@ export class User extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  planExpirationDate!: Date
+  planExpirationDate!: Date | null
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })
@@ -148,7 +148,7 @@ export class User extends BaseEntity {
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.users, { lazy: true })
   @JoinColumn({ name: 'planId' })
-  plan!: Promise<Plan>
+  plan!: Plan | Promise<Plan>
 
   @RelationId((user: User) => user.plan)
   planId!: number

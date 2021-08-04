@@ -44,6 +44,7 @@ import {
   UsernameAdminResolver,
   VerificationAdminResolver,
 } from './resolvers/admin'
+import { planDismissScheduler } from './schedulers'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -148,8 +149,10 @@ const main = async (): Promise<void> => {
     cors: false,
   })
 
+  planDismissScheduler()
+
   // Listen to the port
-  app.listen(port, () => {
+  app.listen(port, async () => {
     console.log(`🚀 Server ready at port ${port}.`)
   })
 }

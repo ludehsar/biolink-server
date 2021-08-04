@@ -90,6 +90,7 @@ import { savePayment } from './payments/savePayment'
 import { saveStripeCustomerId } from './payments/saveStripeCustomerId'
 // Plan
 import { createPlan } from './plan/createPlan'
+import { dismissPlan } from './plan/dismissPlan'
 import { editPlan } from './plan/editPlan'
 import { getAllPlans } from './plan/getAllPlans'
 import { getPlan } from './plan/getPlan'
@@ -261,6 +262,7 @@ export {
   saveStripeCustomerId,
   // Plan
   createPlan,
+  dismissPlan,
   editPlan,
   getAllPlans,
   getPlan,
