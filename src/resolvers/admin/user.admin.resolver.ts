@@ -11,8 +11,10 @@ import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import {
   addNewUser,
+  deleteUser,
   editUser,
   getAdminsPaginated,
+  getDeletedUsersPaginated,
   getUser,
   getUsersPaginated,
   getUserSummaryCounts,
@@ -37,6 +39,14 @@ export class UserAdminResolver {
     @Ctx() context: MyContext
   ): Promise<UserConnection> {
     return await getAdminsPaginated(options, admin, context)
+  }
+
+  @Query(() => UserConnection, { nullable: true })
+  async getAllDeletedUsers(
+    @Arg('options') options: ConnectionArgs,
+    @CurrentAdmin() admin: User
+  ): Promise<UserConnection> {
+    return await getDeletedUsersPaginated(options, admin)
   }
 
   @Query(() => UserResponse, { nullable: true })
@@ -73,5 +83,14 @@ export class UserAdminResolver {
     @Ctx() context: MyContext
   ): Promise<DefaultResponse> {
     return await editUser(id, options, admin, context)
+  }
+
+  @Mutation(() => DefaultResponse, { nullable: true })
+  async deleteUser(
+    @Arg('id') id: string,
+    @CurrentAdmin() admin: User,
+    @Ctx() context: MyContext
+  ): Promise<DefaultResponse> {
+    return await deleteUser(id, admin, context)
   }
 }
