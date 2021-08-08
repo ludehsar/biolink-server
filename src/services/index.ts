@@ -1,5 +1,6 @@
 // Admin Role
 import { createAdminRole } from './adminRole/createAdminRole'
+import { deleteAdminRole } from './adminRole/deleteAdminRole'
 import { editAdminRole } from './adminRole/editAdminRole'
 import { getAdminRole } from './adminRole/getAdminRole'
 import { getAdminRoles } from './adminRole/getAdminRoles'
@@ -55,6 +56,7 @@ import { getBlackListedEmailsPaginated } from './blackList/getBlackListedEmailsP
 import { getBlackListedUsernamesPaginated } from './blackList/getBlackListedUsernamesPaginated'
 // Category
 import { addCategory } from './category/addCategory'
+import { deleteCategory } from './category/deleteCategory'
 import { editCategory } from './category/editCategory'
 import { getCategory } from './category/getCategory'
 import { getCategoriesPaginated } from './category/getCategoriesPaginated'
@@ -174,6 +176,7 @@ import { getVerifiedVerificationsPaginated } from './verification/getVerifiedVer
 export {
   // Admin Role
   createAdminRole,
+  deleteAdminRole,
   editAdminRole,
   getAdminRole,
   getAdminRoles,
@@ -229,6 +232,7 @@ export {
   getBlackListedUsernamesPaginated,
   // Categories
   addCategory,
+  deleteCategory,
   editCategory,
   getCategoriesPaginated,
   getCategory,

@@ -1,6 +1,12 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { createAdminRole, editAdminRole, getAdminRole, getAdminRoles } from '../../services'
-import { AdminRoleListResponse, AdminRoleResponse } from '../../object-types'
+import {
+  createAdminRole,
+  deleteAdminRole,
+  editAdminRole,
+  getAdminRole,
+  getAdminRoles,
+} from '../../services'
+import { AdminRoleListResponse, AdminRoleResponse, DefaultResponse } from '../../object-types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { NewAdminRoleInput } from '../../input-types'
@@ -42,5 +48,14 @@ export class AdminRoleAdminResolver {
     @Ctx() context: MyContext
   ): Promise<AdminRoleResponse> {
     return await editAdminRole(id, options, adminUser, context)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async deleteAdminRole(
+    @Arg('id', () => Int) id: number,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<DefaultResponse> {
+    return await deleteAdminRole(id, adminUser, context)
   }
 }

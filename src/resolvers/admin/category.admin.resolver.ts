@@ -1,7 +1,13 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { ConnectionArgs, NewCategoryInput } from '../../input-types'
-import { CategoryConnection, CategoryResponse } from '../../object-types'
-import { addCategory, editCategory, getCategoriesPaginated, getCategory } from '../../services'
+import { CategoryConnection, CategoryResponse, DefaultResponse } from '../../object-types'
+import {
+  addCategory,
+  deleteCategory,
+  editCategory,
+  getCategoriesPaginated,
+  getCategory,
+} from '../../services'
 import { User } from '../../entities'
 import { CurrentAdmin } from '../../decorators'
 import { MyContext } from '../../types'
@@ -30,6 +36,15 @@ export class CategoryAdminResolver {
     @Ctx() context: MyContext
   ): Promise<CategoryResponse> {
     return await editCategory(id, options, adminUser, context)
+  }
+
+  @Mutation(() => DefaultResponse, { nullable: true })
+  async deleteCategory(
+    @Arg('id', () => Int) id: number,
+    @CurrentAdmin() adminUser: User,
+    @Ctx() context: MyContext
+  ): Promise<DefaultResponse> {
+    return await deleteCategory(id, adminUser, context)
   }
 
   @Query(() => CategoryResponse, { nullable: true })
