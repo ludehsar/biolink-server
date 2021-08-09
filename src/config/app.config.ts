@@ -15,3 +15,4 @@ export const ADMIN_APP_URL = process.env.ADMIN_APP_URL || 'http://localhost:3000
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
 export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || ''
 export const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || ''
+export const POSITIONTRACK_API_KEY = process.env.POSITIONTRACK_API_KEY || ''

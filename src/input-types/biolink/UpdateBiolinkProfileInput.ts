@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsInt, IsNumber, IsOptional } from 'class-validator'
+import { IsInt, IsOptional } from 'class-validator'
 
 @InputType()
 export class UpdateBiolinkProfileInput {
@@ -18,16 +18,6 @@ export class UpdateBiolinkProfileInput {
   @Field({ nullable: true })
   @IsOptional()
   country?: string
-
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsNumber()
-  latitude?: number
-
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsNumber()
-  longitude?: number
 
   @Field({ nullable: true })
   @IsOptional()

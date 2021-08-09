@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+import { POSITIONTRACK_API_KEY } from '../../config'
 import { User, Biolink, Category } from '../../entities'
 import { UpdateBiolinkProfileInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
@@ -37,10 +40,23 @@ export const updateBiolink = async (
   biolink.displayName = options.displayName || ''
   biolink.city = options.city || ''
   biolink.country = options.country || ''
-  biolink.latitude = options.latitude || 0.0
-  biolink.longitude = options.longitude || 0.0
   biolink.state = options.state || ''
   biolink.bio = options.bio || ''
+
+  try {
+    const geoResponse = await axios.get(
+      `http://api.positionstack.com/v1/forward?&access_key=${POSITIONTRACK_API_KEY}&query=${
+        biolink.city + ', ' + biolink.state + ', ' + biolink.country
+      }&limit=1&output=json`
+    )
+
+    const geoData = await geoResponse.data
+
+    biolink.latitude = geoData.data[0].latitude || 0
+    biolink.longitude = geoData.data[0].longitude || 0
+  } catch (err) {
+    console.error(err.message)
+  }
 
   if (options.categoryId) {
     const category = await Category.findOne(options.categoryId)
