@@ -1,8 +1,8 @@
 import { getRepository } from 'typeorm'
 import moment from 'moment'
-import { User } from '../../entities'
+import { Biolink, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
-import { UserConnection } from '../../object-types'
+import { BiolinkConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -10,13 +10,13 @@ export const getFolloweesPaginated = async (
   options: ConnectionArgs,
   user: User,
   context: MyContext
-): Promise<UserConnection> => {
+): Promise<BiolinkConnection> => {
   if (!user) {
     return {
       errors: [
         {
           errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
-          message: 'User not authenticated',
+          message: 'Biolink not authenticated',
         },
       ],
     }
@@ -32,69 +32,69 @@ export const getFolloweesPaginated = async (
       .format('YYYY-MM-DD HH:mm:ss')
 
   // Gettings the directories and preparing objects
-  const connection = new UserConnection()
+  const connection = new BiolinkConnection()
 
-  const qb = getRepository(User)
-    .createQueryBuilder('user')
-    .leftJoinAndSelect('user.followees', 'follow')
+  const qb = getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.followees', 'follow')
     .where('follow.followerId = :userId', { userId: user.id })
 
   if (before) {
-    qb.andWhere('user.createdAt < :before', { before })
-      .orderBy('user.createdAt', 'DESC')
+    qb.andWhere('biolink.createdAt < :before', { before })
+      .orderBy('biolink.createdAt', 'DESC')
       .limit(options.first)
   } else if (after) {
-    qb.andWhere('user.createdAt > :after', { after })
-      .orderBy('user.createdAt', 'ASC')
+    qb.andWhere('biolink.createdAt > :after', { after })
+      .orderBy('biolink.createdAt', 'ASC')
       .limit(options.first)
   } else {
-    qb.orderBy('user.createdAt', 'ASC').limit(options.first)
+    qb.orderBy('biolink.createdAt', 'ASC').limit(options.first)
   }
 
-  const users = await qb.getMany()
+  const biolinks = await qb.getMany()
 
   if (before) {
-    users.reverse()
+    biolinks.reverse()
   }
 
-  const firstUser = users[0]
-  const lastUser = users[users.length - 1]
+  const firstBiolink = biolinks[0]
+  const lastBiolink = biolinks[biolinks.length - 1]
 
   // Checking if previous page and next page is present
-  const minDate = moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss')
-  const maxDate = moment(lastUser?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
+  const minDate = moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment(lastBiolink?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
-  connection.edges = users.map((user) => ({
-    node: user,
-    cursor: Buffer.from(moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
+  connection.edges = biolinks.map((biolink) => ({
+    node: biolink,
+    cursor: Buffer.from(moment(biolink.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
   }))
 
-  const previousUsers = await getRepository(User)
-    .createQueryBuilder('user')
-    .leftJoinAndSelect('user.followees', 'follow')
+  const previousBiolinks = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.followees', 'follow')
     .where('follow.followerId = :userId', { userId: user.id })
-    .andWhere('user.createdAt < :minDate', { minDate })
+    .andWhere('biolink.createdAt < :minDate', { minDate })
     .getMany()
 
-  const nextUsers = await getRepository(User)
-    .createQueryBuilder('user')
-    .leftJoinAndSelect('user.followees', 'follow')
+  const nextBiolinks = await getRepository(Biolink)
+    .createQueryBuilder('biolink')
+    .leftJoinAndSelect('biolink.followees', 'follow')
     .where('follow.followerId = :userId', { userId: user.id })
-    .andWhere('user.createdAt > :maxDate', { maxDate })
+    .andWhere('biolink.createdAt > :maxDate', { maxDate })
     .getMany()
 
   connection.pageInfo = {
     startCursor: Buffer.from(
-      moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
     endCursor: Buffer.from(
-      moment(lastUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(lastBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
-    hasNextPage: !!nextUsers.length,
-    hasPreviousPage: !!previousUsers.length,
+    hasNextPage: !!nextBiolinks.length,
+    hasPreviousPage: !!previousBiolinks.length,
   }
 
-  await captureUserActivity(user, context, 'Requested user followees', false)
+  await captureUserActivity(user, context, 'Requested followees', false)
 
   return connection
 }

@@ -2,50 +2,49 @@ import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import {
-  followUser,
+  followBiolink,
   getFolloweesPaginated,
-  getFollowersPaginated,
-  unfollowUser,
+  getIfFollowingBiolink,
+  unfollowBiolink,
 } from '../../services'
 import { MyContext } from '../../types'
-import { DefaultResponse, UserConnection } from '../../object-types'
+import { BiolinkConnection, DefaultResponse, FollowingResponse } from '../../object-types'
 import { ConnectionArgs } from '../../input-types'
 
 @Resolver()
 export class FollowResolver {
   @Mutation(() => DefaultResponse)
-  async followUser(
-    @Arg('followingId', () => String) followingId: string,
+  async followBiolink(
+    @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<DefaultResponse> {
-    return await followUser(followingId, user, context)
+    return await followBiolink(followingBiolinkId, user, context)
   }
 
   @Mutation(() => DefaultResponse)
-  async unfollowUser(
-    @Arg('followingId', () => String) followingId: string,
+  async unfollowBiolink(
+    @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<DefaultResponse> {
-    return await unfollowUser(followingId, user, context)
+    return await unfollowBiolink(followingBiolinkId, user, context)
   }
 
-  @Query(() => UserConnection)
-  async getAllFollowers(
+  @Query(() => BiolinkConnection)
+  async getAllFollowings(
     @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<UserConnection> {
-    return await getFollowersPaginated(options, user, context)
-  }
-
-  @Query(() => UserConnection)
-  async getAllFollowees(
-    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
-    @CurrentUser() user: User,
-    @Ctx() context: MyContext
-  ): Promise<UserConnection> {
+  ): Promise<BiolinkConnection> {
     return await getFolloweesPaginated(options, user, context)
+  }
+
+  @Query(() => FollowingResponse)
+  async getIfFollowing(
+    @Arg('biolinkId', () => String) biolinkId: string,
+    @CurrentUser() user: User
+  ): Promise<FollowingResponse> {
+    return await getIfFollowingBiolink(biolinkId, user)
   }
 }

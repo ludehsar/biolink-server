@@ -1,10 +1,10 @@
-import { Follow, User } from '../../entities'
+import { Biolink, Follow, User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '..'
 
-export const followUser = async (
-  followingId: string,
+export const followBiolink = async (
+  followingBiolinkId: string,
   user: User,
   context: MyContext
 ): Promise<DefaultResponse> => {
@@ -19,14 +19,14 @@ export const followUser = async (
     }
   }
 
-  const otherUser = await User.findOne(followingId)
+  const biolink = await Biolink.findOne(followingBiolinkId)
 
-  if (!otherUser) {
+  if (!biolink) {
     return {
       errors: [
         {
-          errorCode: ErrorCode.USER_NOT_FOUND,
-          message: 'User with this id not found',
+          errorCode: ErrorCode.BIOLINK_COULD_NOT_BE_FOUND,
+          message: 'Biolink with this id not found',
         },
       ],
     }
@@ -34,7 +34,7 @@ export const followUser = async (
 
   const follow = await Follow.findOne({
     where: {
-      followee: otherUser,
+      followee: biolink,
       follower: user,
     },
   })
@@ -43,11 +43,16 @@ export const followUser = async (
     const newFollow = Follow.create()
 
     newFollow.follower = Promise.resolve(user)
-    newFollow.followee = Promise.resolve(otherUser)
+    newFollow.followee = Promise.resolve(biolink)
 
     await newFollow.save()
 
-    await captureUserActivity(user, context, `Started following user ${otherUser.id}`, true)
+    await captureUserActivity(
+      user,
+      context,
+      `Started following biolink ${(await biolink.username)?.username}`,
+      true
+    )
   }
 
   return {}

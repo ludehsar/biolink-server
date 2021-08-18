@@ -199,9 +199,6 @@ export class User extends BaseEntity {
   @OneToMany(() => Follow, (follow) => follow.follower, { lazy: true, cascade: true })
   followers!: Promise<Follow[]>
 
-  @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true, cascade: true })
-  followees!: Promise<Follow[]>
-
   @OneToMany(() => Message, (message) => message.sender, { lazy: true, cascade: true })
   sentMessages!: Promise<Message[]>
 

@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm'
+import { Biolink } from './Biolink'
 
 import { User } from './User'
 
@@ -31,10 +32,10 @@ export class Follow extends BaseEntity {
   @RelationId((follow: Follow) => follow.follower)
   followerId!: string
 
-  @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.followees, { nullable: true, lazy: true })
+  @Field(() => Biolink, { nullable: true })
+  @ManyToOne(() => Biolink, (user) => user.followees, { nullable: true, lazy: true })
   @JoinColumn({ name: 'followeeId' })
-  followee!: Promise<User>
+  followee!: Promise<Biolink>
 
   @RelationId((follow: Follow) => follow.followee)
   followeeId!: string

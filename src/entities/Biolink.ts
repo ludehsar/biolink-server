@@ -16,7 +16,7 @@ import {
 } from 'typeorm'
 
 import { BiolinkSettings } from '../json-types'
-import { User, Link, TrackLink, Category, Verification } from '../entities'
+import { User, Link, TrackLink, Category, Verification, Follow } from '../entities'
 import { VerificationStatus } from '../enums'
 import { BACKEND_URL } from '../config'
 import { Username } from './Username'
@@ -168,4 +168,7 @@ export class Biolink extends BaseEntity {
 
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string
+
+  @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true, cascade: true })
+  followees!: Promise<Follow[]>
 }

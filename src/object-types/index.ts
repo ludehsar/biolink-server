@@ -36,6 +36,8 @@ import { CodeResponse } from './code/CodeResponse'
 import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
+// Follow
+import { FollowingResponse } from './follow/FollowingResponse'
 // Links
 import { LinkConnection } from './links/LinkConnection'
 import { LinkEdge } from './links/LinkEdge'
@@ -123,6 +125,7 @@ export {
   EarningChartResponse,
   EarningChartValue,
   ErrorResponse,
+  FollowingResponse,
   LinkClicksResponse,
   LinkConnection,
   LinkEdge,
