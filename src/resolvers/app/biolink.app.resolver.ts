@@ -1,4 +1,4 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Int, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
 import { CurrentUser } from '../../decorators'
@@ -51,6 +51,7 @@ import {
   getBiolink,
 } from '../../services'
 import { MyContext } from '../../types'
+import { emailVerified } from '../../middlewares'
 
 @Resolver()
 export class BiolinkResolver {
@@ -90,6 +91,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UpdateBiolinkProfileInput,
@@ -100,6 +102,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateDarkModeOptions(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DarkModeInput,
@@ -110,6 +113,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateDonationSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DonationInput,
@@ -120,6 +124,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateContactButtonSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: ContactButtonInput,
@@ -130,6 +135,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateSocialAccountsSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SocialAccountsInput,
@@ -140,6 +146,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateIntegrationSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: IntegrationInput,
@@ -150,6 +157,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateUTMParameterSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UTMParameterInput,
@@ -160,6 +168,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateSEOSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SEOInput,
@@ -170,6 +179,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateBrandingSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: BrandingInput,
@@ -180,6 +190,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updatePrivacySettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: PrivacyInput,
@@ -190,6 +201,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async uploadBiolinkProfilePhoto(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('profilePhoto', () => GraphQLUpload) profilePhoto: FileUpload,
@@ -200,6 +212,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async uploadBiolinkCoverPhoto(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('coverPhoto', () => GraphQLUpload) coverPhoto: FileUpload,
@@ -210,6 +223,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async updateDirectorySettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DirectoryInput,
@@ -245,6 +259,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async removeBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Ctx() context: MyContext,
@@ -254,6 +269,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(emailVerified)
   async importBiolinkDetailsFromLinktreeProfile(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('linktreeUsername') linktreeUsername: string,

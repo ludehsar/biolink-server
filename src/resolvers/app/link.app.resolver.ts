@@ -1,4 +1,5 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { emailVerified } from '../../middlewares'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import { NewLinkInput } from '../../input-types'
@@ -34,6 +35,7 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
+  @UseMiddleware(emailVerified)
   async createNewLink(
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,
@@ -44,6 +46,7 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
+  @UseMiddleware(emailVerified)
   async updateLink(
     @Arg('id', { description: 'Link ID' }) id: string,
     @Arg('options') options: NewLinkInput,
@@ -65,6 +68,7 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
+  @UseMiddleware(emailVerified)
   async removeLink(
     @Arg('id', { description: 'Link ID' }) id: string,
     @Ctx() context: MyContext,

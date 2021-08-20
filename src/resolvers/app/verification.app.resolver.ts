@@ -1,5 +1,6 @@
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
-import { Arg, Ctx, Mutation, Resolver } from 'type-graphql'
+import { emailVerified } from '../../middlewares'
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import { VerificationInput } from '../../input-types'
@@ -10,6 +11,7 @@ import { MyContext } from '../../types'
 @Resolver()
 export class VerificationResolver {
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async verifyBiolink(
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Arg('options') options: VerificationInput,

@@ -1,4 +1,5 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { emailVerified } from '../../middlewares'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import {
@@ -101,6 +102,7 @@ export class UserResolver {
   }
 
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async changeUserAccountInfo(
     @Arg('options') options: EmailAndUsernameInput,
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
@@ -111,6 +113,7 @@ export class UserResolver {
   }
 
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async changeUserPassword(
     @Arg('options') options: ChangePasswordInput,
     @CurrentUser() user: User,
@@ -129,6 +132,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
+  @UseMiddleware(emailVerified)
   async updateBilling(
     @Arg('options') options: BillingInput,
     @Ctx() context: MyContext,

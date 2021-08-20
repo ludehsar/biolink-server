@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import {
@@ -10,10 +10,12 @@ import {
 import { MyContext } from '../../types'
 import { BiolinkConnection, DefaultResponse, FollowingResponse } from '../../object-types'
 import { ConnectionArgs } from '../../input-types'
+import { emailVerified } from '../../middlewares'
 
 @Resolver()
 export class FollowResolver {
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async followBiolink(
     @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
     @CurrentUser() user: User,
@@ -23,6 +25,7 @@ export class FollowResolver {
   }
 
   @Mutation(() => DefaultResponse)
+  @UseMiddleware(emailVerified)
   async unfollowBiolink(
     @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
     @CurrentUser() user: User,

@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { MyContext } from '../../types'
 import { ConnectionArgs, NewMessageInput } from '../../input-types'
@@ -6,10 +6,12 @@ import { MessageConnection, MessageResponse } from '../../object-types'
 import { createNewMessage, getLastMessagesPaginated, getMessagesPaginated } from '../../services'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
+import { emailVerified } from '../../middlewares'
 
 @Resolver()
 export class MessageResolver {
   @Mutation(() => MessageResponse)
+  @UseMiddleware(emailVerified)
   async sendMessage(
     @Arg('receiverId', () => String) receiverId: string,
     @Arg('options', () => NewMessageInput) options: NewMessageInput,
