@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsBoolean, IsEmail, IsOptional, IsPhoneNumber, ValidateIf } from 'class-validator'
+import { IsBoolean, IsEmail, IsOptional, ValidateIf } from 'class-validator'
 
 @InputType()
 export class ContactButtonInput {
@@ -20,9 +20,9 @@ export class ContactButtonInput {
   showPhone?: boolean
 
   @Field({ nullable: true })
-  @IsPhoneNumber()
+  // @IsPhoneNumber()
   @IsOptional()
-  @ValidateIf((e) => e.customBrandingUrl !== '')
+  @ValidateIf((e) => e.phone !== '')
   phone?: string
 
   @Field({ nullable: true, defaultValue: false })
