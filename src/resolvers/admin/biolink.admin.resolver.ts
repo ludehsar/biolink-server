@@ -4,11 +4,12 @@ import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import { ConnectionArgs, UpdateBiolinkProfileInput } from '../../input-types'
-import { BiolinkConnection, BiolinkResponse } from '../../object-types'
+import { BiolinkConnection, BiolinkResponse, DefaultResponse } from '../../object-types'
 import {
   getBiolink,
   getBiolinksPaginated,
   getDirectoriesPaginated,
+  removeBiolink,
   updateBiolink,
 } from '../../services'
 
@@ -48,5 +49,14 @@ export class BiolinkAdminResolver {
     @CurrentAdmin() adminUser: User
   ): Promise<BiolinkResponse> {
     return await updateBiolink(adminUser, id, options, context)
+  }
+
+  @Mutation(() => DefaultResponse)
+  async removeBiolink(
+    @Arg('id', { description: 'Biolink ID' }) id: string,
+    @Ctx() context: MyContext,
+    @CurrentAdmin() adminUser: User
+  ): Promise<DefaultResponse> {
+    return await removeBiolink(id, context, adminUser)
   }
 }

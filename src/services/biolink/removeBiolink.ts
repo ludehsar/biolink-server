@@ -32,7 +32,22 @@ export const removeBiolink = async (
     }
   }
 
-  if (biolink.userId !== user.id) {
+  const adminRole = await user.adminRole
+  let userSettings = null
+
+  if (adminRole) {
+    const adminRoleSettings = adminRole.roleSettings || []
+
+    userSettings = adminRoleSettings.find((role): boolean => {
+      return role.resource === 'biolink'
+    })
+  }
+
+  if (
+    biolink.userId !== user.id &&
+    (!adminRole || !userSettings || !userSettings.canDelete) &&
+    (!adminRole || adminRole.roleName !== 'Administrator')
+  ) {
     return {
       errors: [
         {

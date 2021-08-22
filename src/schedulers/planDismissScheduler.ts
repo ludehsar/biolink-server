@@ -9,7 +9,7 @@ export const planDismissScheduler = (): void => {
     if (res.errors && res.errors.length > 0) {
       console.log(res.errors[0].message)
     } else {
-      console.log('Successfully runed plan dismissal cron job')
+      console.log('Successfully ran plan dismissal cron job')
     }
   })
 }
