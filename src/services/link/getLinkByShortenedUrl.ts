@@ -63,7 +63,7 @@ export const getLinkByShortenedUrl = async (
     }
   }
 
-  const plan = (await user.plan) || Plan.findOne({ where: { name: 'Free' } })
+  const plan = (await user?.plan) || Plan.findOne({ where: { name: 'Free' } })
 
   if (!plan) {
     return {
