@@ -4,6 +4,7 @@ import { CategoryResolver } from './category.app.resolver'
 import { FollowResolver } from './follow.app.resolver'
 import { LinkResolver } from './link.app.resolver'
 import { MessageResolver } from './message.app.resolver'
+import { PaymentResolver } from './payment.app.resolver'
 import { PlanResolver } from './plan.app.resolver'
 import { ReferralResolver } from './referral.app.resolver'
 import { ReportResolver } from './report.app.resolver'
@@ -19,6 +20,7 @@ export {
   FollowResolver,
   LinkResolver,
   MessageResolver,
+  PaymentResolver,
   PlanResolver,
   ReferralResolver,
   ReportResolver,

@@ -5,10 +5,10 @@ import { captureUserActivity } from '../../services'
 
 export const getPayment = async (
   paymentId: number,
-  adminUser: User,
+  user: User,
   context: MyContext
 ): Promise<PaymentResponse> => {
-  if (!adminUser) {
+  if (!user) {
     return {
       errors: [
         {
@@ -32,7 +32,7 @@ export const getPayment = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = await user.adminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 
@@ -41,6 +41,7 @@ export const getPayment = async (
   })
 
   if (
+    payment.userId !== user.id &&
     (!adminRole || !userSettings || !userSettings.canShow) &&
     adminRole.roleName !== 'Administrator'
   ) {
@@ -54,7 +55,7 @@ export const getPayment = async (
     }
   }
 
-  await captureUserActivity(adminUser, context, `Requested payment ${payment.id}`, false)
+  await captureUserActivity(user, context, `Requested payment ${payment.id}`, false)
 
   return { payment }
 }

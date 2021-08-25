@@ -88,6 +88,7 @@ import { getMessagesPaginated } from './messages/getMessagesPaginated'
 // Payment
 import { getPayment } from './payments/getPayment'
 import { getStripePaymentsPaginated } from './payments/getStripePaymentsPaginated'
+import { getUserPaymentsPaginated } from './payments/getUserPaymentsPaginated'
 import { savePayment } from './payments/savePayment'
 import { saveStripeCustomerId } from './payments/saveStripeCustomerId'
 // Plan
@@ -264,6 +265,7 @@ export {
   // Payment
   getPayment,
   getStripePaymentsPaginated,
+  getUserPaymentsPaginated,
   savePayment,
   saveStripeCustomerId,
   // Plan
