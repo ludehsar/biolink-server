@@ -34,7 +34,7 @@ export const getPayment = async (
 
   const adminRole = await user.adminRole
 
-  const adminRoleSettings = adminRole.roleSettings || []
+  const adminRoleSettings = adminRole?.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {
     return role.resource === 'payment'
@@ -43,7 +43,7 @@ export const getPayment = async (
   if (
     payment.userId !== user.id &&
     (!adminRole || !userSettings || !userSettings.canShow) &&
-    adminRole.roleName !== 'Administrator'
+    (!adminRole || adminRole.roleName !== 'Administrator')
   ) {
     return {
       errors: [
