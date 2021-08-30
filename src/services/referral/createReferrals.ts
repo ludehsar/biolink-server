@@ -4,8 +4,8 @@ import { FRONTEND_APP_URL } from '../../config'
 import { User, Code, Referral } from '../../entities'
 import { CodeType } from '../../enums'
 import { ReferralInput } from '../../input-types'
-import { ReferralResponse } from '../../object-types'
-import { createReferralCode, captureUserActivity, getUserReferrals } from '../../services'
+import { DefaultResponse } from '../../object-types'
+import { createReferralCode, captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
 import { sgMail } from '../../utilities'
 
@@ -13,7 +13,7 @@ export const createReferrals = async (
   referralOptions: ReferralInput,
   user: User,
   context: MyContext
-): Promise<ReferralResponse> => {
+): Promise<DefaultResponse> => {
   if (!user) {
     return {
       errors: [
@@ -76,5 +76,5 @@ export const createReferrals = async (
   // Capture user log
   await captureUserActivity(user, context, 'Sent referrals to other users', true)
 
-  return await getUserReferrals(user)
+  return {}
 }

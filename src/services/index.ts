@@ -101,7 +101,7 @@ import { getVisiblePlans } from './plan/getVisiblePlans'
 import { subscribePlan } from './plan/subscribePlan'
 // Referral
 import { createReferrals } from './referral/createReferrals'
-import { getUserReferrals } from './referral/getUserReferrals'
+import { getSentEmailReferralsPaginated } from './referral/getSentEmailReferralsPaginated'
 // Report
 import { addReport } from './report/addReport'
 import { changeReportStatus } from './report/changeReportStatus'
@@ -278,7 +278,7 @@ export {
   subscribePlan,
   // Referral
   createReferrals,
-  getUserReferrals,
+  getSentEmailReferralsPaginated,
   // Report
   addReport,
   changeReportStatus,

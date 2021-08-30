@@ -23,13 +23,17 @@ export const verifyEmailActivationToken = async (
   }
 
   let newEmailActivationCode = randToken.generate(132)
-  let userWithSameActivationCode = await User.findOne({ where: { newEmailActivationCode } })
+  let userWithSameActivationCode = await User.findOne({
+    where: { emailActivationCode: newEmailActivationCode },
+  })
 
   while (userWithSameActivationCode) {
     newEmailActivationCode = randToken.generate(132)
-    userWithSameActivationCode = await User.findOne({ where: { newEmailActivationCode } })
+    userWithSameActivationCode = await User.findOne({
+      where: { emailActivationCode: newEmailActivationCode },
+    })
   }
-
+  ;``
   user.emailVerifiedAt = moment().toDate()
   user.emailActivationCode = newEmailActivationCode
   await user.save()

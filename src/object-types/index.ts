@@ -55,6 +55,8 @@ import { PaymentResponse } from './payment/PaymentResponse'
 import { PlanListResponse } from './plans/PlanListResponse'
 import { PlanResponse } from './plans/PlanResponse'
 // Referrals
+import { ReferralConnection } from './referrals/ReferralConnection'
+import { ReferralEdge } from './referrals/ReferralEdge'
 import { ReferralResponse } from './referrals/ReferralResponse'
 // Report
 import { ReportConnection } from './report/ReportConnection'
@@ -153,6 +155,8 @@ export {
   MainSettingsResponse,
   NotificationSettingsResponse,
   PaymentSettingsResponse,
+  ReferralConnection,
+  ReferralEdge,
   SocialSettingsResponse,
   SettingsResponse,
   SingleBiolinkClickCount,
