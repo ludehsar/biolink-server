@@ -83,6 +83,10 @@ export class User extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   planTrialDone!: boolean
 
+  @Field(() => Boolean, { nullable: true })
+  @Column({ type: 'boolean', default: false })
+  usedReferralsToPurchasePlan!: boolean
+
   @Column({ nullable: true })
   stripeCustomerId!: string
 

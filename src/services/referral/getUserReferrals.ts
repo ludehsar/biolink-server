@@ -1,12 +1,8 @@
-import { captureUserActivity } from '../../services'
 import { User } from '../../entities'
 import { ReferralResponse } from '../../object-types'
-import { ErrorCode, MyContext } from '../../types'
+import { ErrorCode } from '../../types'
 
-export const getUserReferrals = async (
-  user: User,
-  context: MyContext
-): Promise<ReferralResponse> => {
+export const getUserReferrals = async (user: User): Promise<ReferralResponse> => {
   if (!user) {
     return {
       errors: [
@@ -19,8 +15,6 @@ export const getUserReferrals = async (
   }
 
   const referrals = await user.referrals
-
-  await captureUserActivity(user, context, `Requested user referrals`, false)
 
   return {
     referrals,

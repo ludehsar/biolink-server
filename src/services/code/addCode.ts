@@ -3,6 +3,8 @@ import { Code, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewCodeInput } from '../../input-types'
+import { stripe } from '../../utilities'
+import moment from 'moment'
 
 export const addCode = async (
   options: NewCodeInput,
@@ -67,6 +69,14 @@ export const addCode = async (
 
       code.referrer = Promise.resolve(user)
     }
+
+    await stripe.coupons.create({
+      id: code.code,
+      max_redemptions: code.quantity >= 0 ? code.quantity : undefined,
+      percent_off: code.discount,
+      duration: 'once',
+      redeem_by: moment(code.expireDate).unix() || undefined,
+    })
 
     await code.save()
 

@@ -1,9 +1,11 @@
+import moment from 'moment'
 import { CodeResponse } from '../../object-types'
 import { Code, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewCodeInput } from '../../input-types'
 import { CodeType } from '../../enums'
+import { stripe } from '../../utilities'
 
 export const editCode = async (
   codeId: string,
@@ -58,6 +60,8 @@ export const editCode = async (
   }
 
   try {
+    const prevCode = code.code
+
     if (options.code) code.code = options.code
     code.discount = options.discount || 0.0
     code.expireDate = options.expireDate || null
@@ -82,6 +86,16 @@ export const editCode = async (
     }
 
     await code.save()
+
+    await stripe.coupons.del(prevCode)
+
+    await stripe.coupons.create({
+      id: code.code,
+      max_redemptions: code.quantity >= 0 ? code.quantity : undefined,
+      percent_off: code.discount,
+      duration: 'once',
+      redeem_by: moment(code.expireDate).unix() || undefined,
+    })
 
     await captureUserActivity(adminUser, context, `Edited code ${code.id}`, true)
 

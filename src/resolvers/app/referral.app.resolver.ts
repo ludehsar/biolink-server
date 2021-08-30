@@ -9,11 +9,8 @@ import { MyContext } from '../../types'
 @Resolver()
 export class ReferralResolver {
   @Query(() => ReferralResponse)
-  async getReferralsList(
-    @CurrentUser() user: User,
-    @Ctx() context: MyContext
-  ): Promise<ReferralResponse> {
-    return await getUserReferrals(user, context)
+  async getReferralsList(@CurrentUser() user: User): Promise<ReferralResponse> {
+    return await getUserReferrals(user)
   }
 
   @Mutation(() => ReferralResponse)

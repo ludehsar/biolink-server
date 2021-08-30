@@ -1,4 +1,5 @@
 import randToken from 'rand-token'
+import { stripe } from '../../utilities'
 import { User, Code } from '../../entities'
 import { CodeType } from '../../enums'
 
@@ -12,6 +13,12 @@ export const createReferralCode = async (user: User): Promise<Code> => {
     discount: 20,
     quantity: -1,
     type: CodeType.Referral,
+  })
+
+  await stripe.coupons.create({
+    id: code.code,
+    percent_off: code.discount,
+    duration: 'once',
   })
 
   code.referrer = Promise.resolve(user)
