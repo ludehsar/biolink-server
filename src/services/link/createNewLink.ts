@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm'
+import { getConnection, getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 import randToken from 'rand-token'
 import argon2 from 'argon2'
@@ -152,14 +152,15 @@ export const createNewLink = async (
         }
       }
 
-      const linkCount = await Link.count({
-        where: {
-          biolink: biolink,
-        },
-      })
+      await getConnection()
+        .createQueryBuilder()
+        .update(Link)
+        .set({ order: () => 'order + 1' })
+        .where('biolinkId = :biolinkId', { biolinkId: biolink.id })
+        .execute()
 
       link.biolink = Promise.resolve(biolink)
-      link.order = linkCount
+      link.order = 0
     }
 
     if (options.linkImage) {
