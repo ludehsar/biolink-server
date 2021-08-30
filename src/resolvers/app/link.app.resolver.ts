@@ -35,7 +35,7 @@ export class LinkResolver {
   }
 
   @Mutation(() => LinkResponse)
-  @UseMiddleware(emailVerified)
+  // @UseMiddleware(emailVerified)
   async createNewLink(
     @Arg('options') options: NewLinkInput,
     @Ctx() context: MyContext,

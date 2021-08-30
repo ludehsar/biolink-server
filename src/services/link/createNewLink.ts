@@ -155,7 +155,7 @@ export const createNewLink = async (
       await getConnection()
         .createQueryBuilder()
         .update(Link)
-        .set({ order: () => 'order + 1' })
+        .set({ order: () => '"order" + 1' })
         .where('biolinkId = :biolinkId', { biolinkId: biolink.id })
         .execute()
 
