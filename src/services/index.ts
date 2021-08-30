@@ -102,6 +102,7 @@ import { subscribePlan } from './plan/subscribePlan'
 // Referral
 import { createReferrals } from './referral/createReferrals'
 import { getSentEmailReferralsPaginated } from './referral/getSentEmailReferralsPaginated'
+import { getUsedCodeUsersPaginated } from './referral/getUsedCodesUsersPaginated'
 // Report
 import { addReport } from './report/addReport'
 import { changeReportStatus } from './report/changeReportStatus'
@@ -279,6 +280,7 @@ export {
   // Referral
   createReferrals,
   getSentEmailReferralsPaginated,
+  getUsedCodeUsersPaginated,
   // Report
   addReport,
   changeReportStatus,

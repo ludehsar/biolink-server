@@ -115,19 +115,19 @@ export const getUsersPaginated = async (
     users.reverse()
   }
 
-  const firstBiolink = users[0]
-  const lastBiolink = users[users.length - 1]
+  const firstUser = users[0]
+  const lastUser = users[users.length - 1]
 
   // Checking if previous page and next page is present
-  const minDate = moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss')
-  const maxDate = moment(lastBiolink?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
+  const minDate = moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss')
+  const maxDate = moment(lastUser?.createdAt).add(1, 's').format('YYYY-MM-DD HH:mm:ss') // add changes the dates, so it should be at the last
 
   connection.edges = users.map((user) => ({
     node: user,
     cursor: Buffer.from(moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')).toString('base64'),
   }))
 
-  const previousBiolinks = await getRepository(User)
+  const previousUsers = await getRepository(User)
     .createQueryBuilder('user')
     .where(
       new Brackets((qb) => {
@@ -166,10 +166,10 @@ export const getUsersPaginated = async (
           })
       })
     )
-    .where('user.createdAt < :minDate', { minDate })
+    .andWhere('user.createdAt < :minDate', { minDate })
     .getMany()
 
-  const nextBiolinks = await getRepository(User)
+  const nextUsers = await getRepository(User)
     .createQueryBuilder('user')
     .where(
       new Brackets((qb) => {
@@ -208,18 +208,18 @@ export const getUsersPaginated = async (
           })
       })
     )
-    .where('user.createdAt > :maxDate', { maxDate })
+    .andWhere('user.createdAt > :maxDate', { maxDate })
     .getMany()
 
   connection.pageInfo = {
     startCursor: Buffer.from(
-      moment(firstBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(firstUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
     endCursor: Buffer.from(
-      moment(lastBiolink?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
+      moment(lastUser?.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''
     ).toString('base64'),
-    hasNextPage: !!nextBiolinks.length,
-    hasPreviousPage: !!previousBiolinks.length,
+    hasNextPage: !!nextUsers.length,
+    hasPreviousPage: !!previousUsers.length,
   }
 
   await captureUserActivity(user, context, `Requested all users`, false)
