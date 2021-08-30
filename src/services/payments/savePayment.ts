@@ -50,6 +50,7 @@ export const savePayment = async (
   payment.user = Promise.resolve(user)
 
   user.stripeCustomerId = payment.stripeCustomerId
+  user.usedReferralsToPurchasePlan = true
   await user.save()
 
   await payment.save()

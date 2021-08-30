@@ -26,6 +26,10 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
   }
 
   const { priceId } = req.body
+  const couponCode =
+    (await user.registeredByCode) && !user.usedReferralsToPurchasePlan
+      ? (await user.registeredByCode).code
+      : undefined
 
   // See https://stripe.com/docs/api/checkout/sessions/create
   // for additional parameters to pass.
@@ -41,7 +45,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
       ],
       discounts: [
         {
-          coupon: (await user.registeredByCode)?.code,
+          coupon: couponCode,
         },
       ],
       customer: user.stripeCustomerId,
