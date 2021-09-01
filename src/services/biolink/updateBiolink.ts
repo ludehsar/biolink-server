@@ -13,6 +13,17 @@ export const updateBiolink = async (
   options: UpdateBiolinkProfileInput,
   context: MyContext
 ): Promise<BiolinkResponse> => {
+  if (!user) {
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.USER_NOT_AUTHENTICATED,
+          message: 'User not authenticated',
+        },
+      ],
+    }
+  }
+
   const biolink = await Biolink.findOne(id)
 
   if (!biolink) {
