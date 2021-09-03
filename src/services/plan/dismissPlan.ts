@@ -2,6 +2,7 @@ import { getConnection } from 'typeorm'
 import { ErrorCode } from '../../types'
 import { Plan, User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
+import { PlanType } from '../../enums'
 
 export const dismissPlan = async (): Promise<DefaultResponse> => {
   const freePlan = await Plan.findOne({ where: { name: 'Free' } })
@@ -24,6 +25,7 @@ export const dismissPlan = async (): Promise<DefaultResponse> => {
       .set({
         plan: freePlan,
         planExpirationDate: null,
+        planType: PlanType.Free,
       })
       .where(`"planExpirationDate" < NOW()`)
       .execute()

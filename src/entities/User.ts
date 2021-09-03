@@ -32,6 +32,7 @@ import {
   Message,
 } from '../entities'
 import { Billing } from '../json-types'
+import { PlanType } from '../enums'
 
 @ObjectType()
 @Entity()
@@ -82,6 +83,15 @@ export class User extends BaseEntity {
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })
   planTrialDone!: boolean
+
+  @Field(() => String, { nullable: true })
+  @Column({
+    type: 'enum',
+    enum: PlanType,
+    default: PlanType.Free,
+    nullable: true,
+  })
+  planType!: PlanType
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })

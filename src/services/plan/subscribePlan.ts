@@ -2,6 +2,7 @@ import { captureUserActivity } from '../../services'
 import { Plan, User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
+import { PlanType } from '../../enums'
 
 export const subscribePlan = async (
   stripePriceId: string,
@@ -37,6 +38,9 @@ export const subscribePlan = async (
 
   user.plan = Promise.resolve(plan)
   user.planExpirationDate = expirationDate
+
+  if (plan.monthlyPriceStripeId === stripePriceId) user.planType = PlanType.Monthly
+  else if (plan.annualPriceStripeId === stripePriceId) user.planType = PlanType.Annual
 
   await user.save()
 

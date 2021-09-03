@@ -8,6 +8,7 @@ import { EnabledStatus } from './EnabledStatus'
 import { LinkType } from './LinkType'
 import { PaymentMethod } from './PaymentMethod'
 import { PaymentType } from './PaymentType'
+import { PlanType } from './PlanType'
 import { PremiumUsernameType } from './PremiumUsernameType'
 import { ResolveStatus } from './ResolveStatus'
 import { SocialAccountStyleType } from './SocialAccountStyleType'
@@ -28,6 +29,7 @@ export {
   LinkType,
   PaymentMethod,
   PaymentType,
+  PlanType,
   PremiumUsernameType,
   ResolveStatus,
   SocialAccountStyleType,
