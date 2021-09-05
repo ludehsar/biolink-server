@@ -142,21 +142,20 @@ export class User extends BaseEntity {
 
   // Relationships
   @Field(() => [Biolink], { nullable: true })
-  @OneToMany(() => Biolink, (biolink) => biolink.user, { lazy: true, cascade: true })
+  @OneToMany(() => Biolink, (biolink) => biolink.user, { lazy: true })
   biolinks!: Promise<Biolink[]>
 
   @Field(() => [Domain], { nullable: true })
   @OneToMany(() => Domain, (domain) => domain.user, {
     lazy: true,
-    cascade: true,
   })
   domains!: Promise<Domain[]>
 
-  @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true, cascade: true })
+  @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true })
   activities!: Promise<UserLogs[]>
 
   @Field(() => [Link], { nullable: true })
-  @OneToMany(() => Link, (link) => link.user, { lazy: true, cascade: true })
+  @OneToMany(() => Link, (link) => link.user, { lazy: true })
   links!: Promise<Link[]>
 
   @Field(() => Plan, { nullable: true })
@@ -176,20 +175,20 @@ export class User extends BaseEntity {
   payments!: Promise<Payment[]>
 
   @Field(() => [Code], { nullable: true })
-  @OneToMany(() => Code, (code) => code.referrer, { lazy: true, cascade: true })
+  @OneToMany(() => Code, (code) => code.referrer, { lazy: true })
   codes!: Promise<Code[]>
 
   @Field(() => [Referral], { nullable: true })
-  @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true, cascade: true })
+  @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true })
   referrals!: Promise<Referral[]>
 
-  @OneToMany(() => Report, (report) => report.reporter, { lazy: true, cascade: true })
+  @OneToMany(() => Report, (report) => report.reporter, { lazy: true })
   reports!: Promise<Report[]>
 
-  @OneToMany(() => Support, (support) => support.user, { lazy: true, cascade: true })
+  @OneToMany(() => Support, (support) => support.user, { lazy: true })
   supports!: Promise<Support[]>
 
-  @OneToMany(() => Verification, (verification) => verification.user, { lazy: true, cascade: true })
+  @OneToMany(() => Verification, (verification) => verification.user, { lazy: true })
   verifications!: Promise<Verification[]>
 
   @Field(() => AdminRole, { nullable: true })
@@ -210,12 +209,12 @@ export class User extends BaseEntity {
   @RelationId((user: User) => user.registeredByCode)
   registeredByCodeId!: string
 
-  @OneToMany(() => Follow, (follow) => follow.follower, { lazy: true, cascade: true })
+  @OneToMany(() => Follow, (follow) => follow.follower, { lazy: true })
   followers!: Promise<Follow[]>
 
-  @OneToMany(() => Message, (message) => message.sender, { lazy: true, cascade: true })
+  @OneToMany(() => Message, (message) => message.sender, { lazy: true })
   sentMessages!: Promise<Message[]>
 
-  @OneToMany(() => Message, (message) => message.receiver, { lazy: true, cascade: true })
+  @OneToMany(() => Message, (message) => message.receiver, { lazy: true })
   receivedMessages!: Promise<Message[]>
 }

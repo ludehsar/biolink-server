@@ -13,7 +13,6 @@ import { IntegrationInput } from './biolink/IntegrationInput'
 import { NewBiolinkInput } from './biolink/NewBiolinkInput'
 import { PrivacyInput } from './biolink/PrivacyInput'
 import { SEOInput } from './biolink/SEOInput'
-import { SingleSocialAccount } from './biolink/SingleSocialAccount'
 import { SocialAccountsInput } from './biolink/SocialAccountsInput'
 import { SortedLinksInput } from './biolink/SortedLinksInput'
 import { UTMParameterInput } from './biolink/UTMParameterInput'
@@ -89,7 +88,6 @@ export {
   NewBiolinkInput,
   PrivacyInput,
   SEOInput,
-  SingleSocialAccount,
   SocialAccountsInput,
   SortedLinksInput,
   UTMParameterInput,

@@ -52,7 +52,11 @@ export class BiolinkSettings {
   @Field(() => String, { nullable: true, defaultValue: SocialAccountStyleType.Round })
   socialAccountStyleType!: SocialAccountStyleType
 
-  @Field(() => [SocialMediaProps], { nullable: true })
+  @Field(() => [SocialMediaProps], {
+    nullable: true,
+    deprecationReason:
+      'Social accounts will not be saved here from now on. It has been integrated with the Link object',
+  })
   socialAccounts!: SocialMediaProps[]
 
   // ----- Analytics ----- //

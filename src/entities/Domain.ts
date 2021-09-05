@@ -51,7 +51,7 @@ export class Domain extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @ManyToOne(() => User, (user) => user.domains, { lazy: true })
+  @ManyToOne(() => User, (user) => user.domains, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>
 

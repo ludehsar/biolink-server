@@ -46,6 +46,7 @@ export class Message extends BaseEntity {
   @ManyToOne(() => User, (user) => user.sentMessages, {
     nullable: true,
     lazy: true,
+    cascade: true,
   })
   @JoinColumn({ name: 'senderId' })
   sender!: Promise<User>
@@ -57,6 +58,7 @@ export class Message extends BaseEntity {
   @ManyToOne(() => User, (user) => user.receivedMessages, {
     nullable: true,
     lazy: true,
+    cascade: true,
   })
   @JoinColumn({ name: 'receiverId' })
   receiver!: Promise<User>

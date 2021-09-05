@@ -68,7 +68,7 @@ export class Support extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.supports, { nullable: true, lazy: true })
+  @ManyToOne(() => User, (user) => user.supports, { nullable: true, lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User> | User
 

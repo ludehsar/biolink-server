@@ -45,6 +45,18 @@ export class Link extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
+  platform?: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  icon?: string
+
+  @Field(() => Boolean, { nullable: true })
+  @Column({ type: 'boolean', nullable: true, default: false })
+  featured?: boolean
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
   url!: string
 
   @Field(() => String, { nullable: true })
@@ -88,7 +100,7 @@ export class Link extends BaseEntity {
 
   // Relationships
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.links, { lazy: true })
+  @ManyToOne(() => User, (user) => user.links, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>
 
@@ -106,6 +118,6 @@ export class Link extends BaseEntity {
   @RelationId((link: Link) => link.biolink)
   biolinkId!: string
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.link, { lazy: true, cascade: true })
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.link, { lazy: true })
   trackLinks!: Promise<TrackLink[]>
 }

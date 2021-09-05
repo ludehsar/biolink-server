@@ -2,7 +2,7 @@ import { User, Biolink, Plan } from '../../entities'
 import { BiolinkResponse } from '../../object-types'
 import { createNewLink, captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { isMalicious, linktreeImportHandler } from '../../utilities'
+import { linktreeImportHandler } from '../../utilities'
 
 export const importFromLinktree = async (
   id: string,
@@ -70,14 +70,19 @@ export const importFromLinktree = async (
     if (res.profilePhotoUrl) biolink.profilePhotoUrl = res.profilePhotoUrl
 
     if (planSettings.socialEnabled && res.socials) {
-      const biolinkSettings = biolink.settings || {}
-
-      const malicious = await isMalicious(res.socials.map((link) => link.link))
-
-      if (!malicious) {
-        biolinkSettings.socialAccounts = res.socials
-        biolink.settings = biolinkSettings
-      }
+      res.socials.forEach(async (link) => {
+        await createNewLink(
+          {
+            url: link.url,
+            platform: link.platform,
+            featured: false,
+            enablePasswordProtection: false,
+          },
+          context,
+          user,
+          id
+        )
+      })
     }
 
     await biolink.save()

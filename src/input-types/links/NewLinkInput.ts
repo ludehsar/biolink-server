@@ -35,4 +35,10 @@ export class NewLinkInput {
 
   @Field(() => String, { nullable: true })
   password?: string
+
+  @Field(() => String, { nullable: true })
+  platform?: string
+
+  @Field(() => Boolean, { defaultValue: false, nullable: true })
+  featured?: boolean
 }

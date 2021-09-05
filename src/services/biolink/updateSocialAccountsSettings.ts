@@ -1,12 +1,10 @@
 import { validate } from 'class-validator'
 import { SocialAccountStyleType } from '../../enums'
-import { BACKEND_URL } from '../../config'
 import { User, Biolink, Plan } from '../../entities'
-import { SingleSocialAccount, SocialAccountsInput } from '../../input-types'
-import { BiolinkResponse, ErrorResponse } from '../../object-types'
+import { SocialAccountsInput } from '../../input-types'
+import { BiolinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { isMalicious } from '../../utilities'
 
 export const updateSocialAccountsSettings = async (
   id: string,
@@ -24,28 +22,6 @@ export const updateSocialAccountsSettings = async (
         errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
         message: 'Not correctly formatted',
       })),
-    }
-  }
-
-  let errors: ErrorResponse[] = []
-
-  for (let i = 0; i < (options.socialAccounts || []).length; ++i) {
-    const socialAccountValidationError = await validate(
-      (options.socialAccounts as SingleSocialAccount[])[i]
-    )
-
-    if (socialAccountValidationError.length > 0) {
-      errors = socialAccountValidationError.map((err) => ({
-        field: err.property,
-        errorCode: ErrorCode.REQUEST_VALIDATION_ERROR,
-        message: 'Not correctly formatted',
-      }))
-    }
-  }
-
-  if (errors.length > 0) {
-    return {
-      errors,
     }
   }
 
@@ -86,21 +62,6 @@ export const updateSocialAccountsSettings = async (
     }
   }
 
-  if (options.socialAccounts) {
-    const malicious = await isMalicious(options.socialAccounts.map((link) => link.link || '#'))
-
-    if (malicious) {
-      return {
-        errors: [
-          {
-            errorCode: ErrorCode.LINK_IS_MALICIOUS,
-            message: 'Malicious links detected',
-          },
-        ],
-      }
-    }
-  }
-
   const planSettings = plan.settings || {}
 
   const biolinkSettings = biolink.settings || {}
@@ -121,13 +82,6 @@ export const updateSocialAccountsSettings = async (
     }
     biolinkSettings.socialAccountStyleType =
       options.socialAccountStyleType || SocialAccountStyleType.Round
-    biolinkSettings.socialAccounts =
-      options.socialAccounts?.map((option) => ({
-        link: option.link || '#',
-        platform: option.platform || 'Unknown',
-        icon: BACKEND_URL + `/static/socialIcons/${option.platform}.png`,
-        featured: option.featured || false,
-      })) || []
   } else {
     return {
       errors: [

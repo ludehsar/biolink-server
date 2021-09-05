@@ -133,7 +133,7 @@ export class Biolink extends BaseEntity {
   usernameId!: string
 
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.biolinks, { lazy: true })
+  @ManyToOne(() => User, (user) => user.biolinks, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
   user!: Promise<User>
 
@@ -144,7 +144,7 @@ export class Biolink extends BaseEntity {
   @OneToMany(() => Link, (link) => link.biolink, { lazy: true })
   links!: Promise<Link[]>
 
-  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true, cascade: true })
+  @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true })
   trackLinks!: Promise<TrackLink[]>
 
   @Field(() => Category, { nullable: true })
@@ -161,7 +161,6 @@ export class Biolink extends BaseEntity {
   @OneToOne(() => Verification, (verification) => verification.biolink, {
     nullable: true,
     lazy: true,
-    cascade: true,
   })
   @JoinColumn({ name: 'verificationId' })
   verification!: Promise<Verification>
@@ -169,6 +168,6 @@ export class Biolink extends BaseEntity {
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string
 
-  @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true, cascade: true })
+  @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true })
   followees!: Promise<Follow[]>
 }

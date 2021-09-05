@@ -61,7 +61,6 @@ export class Username extends BaseEntity {
   @OneToOne(() => Biolink, (biolink) => biolink.username, {
     nullable: true,
     lazy: true,
-    cascade: true,
   })
   @JoinColumn({ name: 'biolinkId' })
   biolink?: Promise<Biolink> | Biolink | null

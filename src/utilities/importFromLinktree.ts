@@ -4,7 +4,6 @@ import fs from 'fs'
 import request from 'request'
 import path from 'path'
 import randToken from 'rand-token'
-import { SocialMediaProps } from '../json-types'
 import { BACKEND_URL } from '../config'
 import getSupportedSocialIcons from './getSupportedSocialIcons'
 
@@ -15,7 +14,10 @@ export interface LinktreeParsingProps {
     linkTitle: string
     url: string
   }[]
-  socials?: SocialMediaProps[]
+  socials?: {
+    platform: string
+    url: string
+  }[]
 }
 
 const download = (url: string, path: string, errorCallback: (err: Error) => void): void => {
@@ -58,9 +60,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
         })
         .map((element) => ({
           platform: element.attribs['aria-label'].trim(),
-          link: element.attribs['href'].trim(),
-          icon: BACKEND_URL + `/static/socialIcons/${element.attribs['aria-label'].trim()}.png`,
-          featured: false,
+          url: element.attribs['href'].trim(),
         })) || [],
   }
 

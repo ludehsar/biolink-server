@@ -1,4 +1,4 @@
-import { getConnection, getRepository } from 'typeorm'
+import { Brackets, getConnection, getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 import randToken from 'rand-token'
 import argon2 from 'argon2'
@@ -42,10 +42,28 @@ export const createNewLink = async (
     }
   }
 
-  const currentLinksCount = await getRepository(Link)
-    .createQueryBuilder('link')
-    .where('link.userId = :userId', { userId: user.id })
-    .getCount()
+  let currentLinksCount = 0
+
+  if (options.linkType === LinkType.Link || options.linkType === LinkType.Embed) {
+    currentLinksCount = await getRepository(Link)
+      .createQueryBuilder('link')
+      .where('link.userId = :userId', { userId: user.id })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('link.linkType = :linkType', { linkType: LinkType.Link }).orWhere(
+            'link.linkType = :linkType',
+            { linkType: LinkType.Embed }
+          )
+        })
+      )
+      .getCount()
+  } else if (options.linkType === LinkType.Social) {
+    currentLinksCount = await getRepository(Link)
+      .createQueryBuilder('link')
+      .where('link.userId = :userId', { userId: user.id })
+      .andWhere('link.linkType = :linkType', { linkType: LinkType.Social })
+      .getCount()
+  }
 
   const plan = (await user.plan) || (await Plan.findOne({ where: { name: 'Free' } }))
 
@@ -65,6 +83,7 @@ export const createNewLink = async (
   if (
     planSettings.totalLinksLimit &&
     planSettings.totalLinksLimit !== -1 &&
+    options.linkType !== LinkType.Line &&
     currentLinksCount >= planSettings.totalLinksLimit
   ) {
     return {
@@ -110,6 +129,9 @@ export const createNewLink = async (
       endDate: options.endDate,
       enablePasswordProtection: options.enablePasswordProtection,
       note: options.note,
+      platform: options.platform || 'Unknown',
+      icon: BACKEND_URL + `/static/socialIcons/${options.platform}.png`,
+      featured: options.featured || false,
     })
 
     if (options.enablePasswordProtection) {
@@ -152,12 +174,29 @@ export const createNewLink = async (
         }
       }
 
-      await getConnection()
-        .createQueryBuilder()
-        .update(Link)
-        .set({ order: () => '"order" + 1' })
-        .where('biolinkId = :biolinkId', { biolinkId: biolink.id })
-        .execute()
+      if (options.linkType !== LinkType.Social) {
+        await getConnection()
+          .createQueryBuilder()
+          .update(Link)
+          .set({ order: () => '"order" + 1' })
+          .where('biolinkId = :biolinkId', { biolinkId: biolink.id })
+          .andWhere(
+            new Brackets((qb) => {
+              qb.where('linkType = :linkType', { linkType: LinkType.Link })
+                .orWhere('linkType = :linkType', { linkType: LinkType.Embed })
+                .orWhere('linkType = :linkType', { linkType: LinkType.Line })
+            })
+          )
+          .execute()
+      } else {
+        await getConnection()
+          .createQueryBuilder()
+          .update(Link)
+          .set({ order: () => '"order" + 1' })
+          .where('biolinkId = :biolinkId', { biolinkId: biolink.id })
+          .andWhere('linkType = :linkType', { linkType: LinkType.Social })
+          .execute()
+      }
 
       link.biolink = Promise.resolve(biolink)
       link.order = 0
