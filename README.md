@@ -1,4 +1,4 @@
-# Stashee -- Backend
+# Stashee - Backend
 
 This is the backend project for the Stashee project.
 
