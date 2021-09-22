@@ -10,7 +10,7 @@ import { Token, User } from '../entities'
 import { ErrorCode } from '../types'
 import { TokenType } from '../enums'
 import { UserService } from './user.service'
-import { AuthToken } from '../object-types/auth/AuthToken'
+import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToken'
 import { Response } from 'express'
 
 @Service()
@@ -99,7 +99,7 @@ export class TokenService {
     }
 
     const payload = jwt.verify(token, secret)
-    const user = await this.userService.getUser(payload.sub as string)
+    const user = await this.userService.getUserById(payload.sub as string)
 
     const tokenDoc = await this.tokenRepository.findOne({
       token,
@@ -120,10 +120,7 @@ export class TokenService {
    * @param {User} user
    * @returns {Promise<Object>}
    */
-  async generateAuthTokens(
-    user: User,
-    res: Response
-  ): Promise<{ access: AuthToken; refresh: AuthToken }> {
+  async generateAuthTokens(user: User, res: Response): Promise<AccessAndRefreshToken> {
     const accessTokenExpires = moment().add(appConfig.accessTokenExpirationMinutes, 'minutes')
     const accessToken = this.generateToken(
       user.id,

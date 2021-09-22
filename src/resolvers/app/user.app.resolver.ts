@@ -21,19 +21,18 @@ import {
 import {
   sendVerificationEmail,
   verifyEmailActivationToken,
-  loginUser,
   sendForgotPasswordEmail,
   verifyForgotPasswordToken,
   changeEmailAndUsername,
   changePassword,
   deleteAccount,
-  logoutUser,
   updateBilling,
   changeCurrentBiolinkId,
   getUserActivityPaginated,
 } from '../../services'
 import { MyContext } from '../../types'
 import { AuthController } from '../../controllers'
+import { AccessAndRefreshToken } from 'object-types/auth/AccessAndRefreshToken'
 
 @Resolver(User)
 export class UserResolver {
@@ -54,6 +53,24 @@ export class UserResolver {
     return await this.authController.register(options, context)
   }
 
+  @Mutation(() => UserWithTokens)
+  async login(
+    @Arg('options') options: LoginInput,
+    @Ctx() context: MyContext
+  ): Promise<UserWithTokens> {
+    return await this.authController.login(options, context)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async logout(@Ctx() context: MyContext): Promise<void> {
+    return await this.authController.logout(context)
+  }
+
+  @Mutation(() => AccessAndRefreshToken)
+  async refreshToken(@Ctx() context: MyContext): Promise<AccessAndRefreshToken> {
+    return await this.authController.refreshToken(context)
+  }
+
   @Mutation(() => DefaultResponse)
   async sendEmailForVerification(
     @Ctx() context: MyContext,
@@ -68,14 +85,6 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<DefaultResponse> {
     return await verifyEmailActivationToken(emailActivationCode, context)
-  }
-
-  @Mutation(() => UserResponse)
-  async login(
-    @Arg('options') options: LoginInput,
-    @Ctx() context: MyContext
-  ): Promise<UserResponse> {
-    return await loginUser(options, context)
   }
 
   @Mutation(() => DefaultResponse)
@@ -151,10 +160,5 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<ActivityConnection> {
     return await getUserActivityPaginated(options, user, context)
-  }
-
-  @Mutation(() => DefaultResponse)
-  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<DefaultResponse> {
-    return await logoutUser(context, user)
   }
 }

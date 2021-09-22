@@ -89,7 +89,7 @@ export class UserService {
    * @param {string} userId
    * @returns {Promise<User>}
    */
-  async getUser(userId: string): Promise<User> {
+  async getUserById(userId: string): Promise<User> {
     const user = await this.userRepository.findOne(userId)
 
     if (!user) {
