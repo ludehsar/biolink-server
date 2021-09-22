@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
-import { emailVerified } from '../../middlewares'
+import { authUser, emailVerified } from '../../middlewares'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import {
@@ -38,9 +38,12 @@ import { AuthController } from '../../controllers'
 @Resolver(User)
 export class UserResolver {
   constructor(private readonly authController: AuthController) {}
+
   @Query(() => User, { nullable: true })
-  me(@CurrentUser() user: User): User | null {
-    return user
+  @UseMiddleware(authUser)
+  me(@Ctx() context: MyContext): User | null {
+    if (context.user) return context.user
+    return null
   }
 
   @Mutation(() => UserWithTokens)

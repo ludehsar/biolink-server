@@ -19,10 +19,9 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
   const user = await User.findOneOrFail({ where: { email: options.email } })
 
   // Implement jwt
-  const { refreshToken, accessToken } = await createAuthTokens(user)
+  const { refreshToken } = await createAuthTokens(user)
 
   context.res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
-  context.res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
 
   user.totalLogin++
 

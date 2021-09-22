@@ -62,10 +62,9 @@ export const registerUser = async (
   await createReferralCode(user)
 
   // Implement jwt
-  const { refreshToken, accessToken } = await createAuthTokens(user)
+  const { refreshToken } = await createAuthTokens(user)
 
   context.res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
-  context.res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
 
   // Capture user log
   await captureUserActivity(user, context, 'User Registered', true)

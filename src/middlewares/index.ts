@@ -1,3 +1,4 @@
 import { emailVerified } from './emailVerified'
+import { authUser } from './authUser'
 
-export { emailVerified }
+export { authUser, emailVerified }

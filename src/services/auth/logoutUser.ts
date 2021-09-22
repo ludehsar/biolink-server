@@ -20,7 +20,6 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Defaul
   await user.save()
 
   context.res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
-  context.res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 
   // Capture user log
   await captureUserActivity(user, context, 'User logs out', true)

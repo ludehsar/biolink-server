@@ -16,13 +16,11 @@ interface DataProps {
 
 const invalidateToken = (res: Response): void => {
   res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
-  res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 }
 
 const generateNewToken = async (user: User, res: Response): Promise<void> => {
-  const { refreshToken, accessToken } = await createAuthTokens(user)
+  const { refreshToken } = await createAuthTokens(user)
 
-  res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
   res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
 }
 

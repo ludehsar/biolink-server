@@ -48,7 +48,7 @@ export class AuthController {
     )
     await this.biolinkService.createBiolink(user, registerInput.username)
 
-    const { access, refresh } = await this.tokenService.generateAuthTokens(user)
+    const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
 
     await this.trackingService.createUserLogs(user, context, 'Created new account', true)
 
