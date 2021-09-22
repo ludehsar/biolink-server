@@ -129,7 +129,6 @@ export const changeEmailAndUsername = async (
         errors: [
           {
             errorCode: ErrorCode.USERNAME_BLACKLISTED,
-            field: 'username',
             message: 'Cannot create account with this username.',
           },
         ],
@@ -155,7 +154,6 @@ export const changeEmailAndUsername = async (
         errors: [
           {
             errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-            field: 'username',
             message: 'Contact admin support to get this username.',
           },
         ],

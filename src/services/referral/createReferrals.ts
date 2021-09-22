@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm'
 import { MailDataRequired } from '@sendgrid/mail'
-import { FRONTEND_APP_URL } from '../../config'
+import { appConfig } from '../../config'
 import { User, Code, Referral } from '../../entities'
 import { CodeType } from '../../enums'
 import { ReferralInput } from '../../input-types'
@@ -39,7 +39,7 @@ export const createReferrals = async (
       email: 'info@stash.ee',
     },
     subject: `Invitation from ${referralOptions.referredByName} to give you 20% discount on Stashee`,
-    text: `Your invitation code is ${FRONTEND_APP_URL}/auth/register?code=${referralCode.code}`,
+    text: `Your invitation code is ${appConfig.FRONTEND_APP_URL}/auth/register?code=${referralCode.code}`,
     cc: {
       email: referralOptions.referredByEmail,
       name: referralOptions.referredByName,

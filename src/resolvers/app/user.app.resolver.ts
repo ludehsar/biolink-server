@@ -15,11 +15,10 @@ import {
 import {
   UserResponse,
   DefaultResponse,
-  AccessTokenResponse,
   ActivityConnection,
+  UserWithTokens,
 } from '../../object-types'
 import {
-  registerUser,
   sendVerificationEmail,
   verifyEmailActivationToken,
   loginUser,
@@ -30,34 +29,26 @@ import {
   deleteAccount,
   logoutUser,
   updateBilling,
-  getAccessToken,
   changeCurrentBiolinkId,
   getUserActivityPaginated,
 } from '../../services'
 import { MyContext } from '../../types'
+import { AuthController } from '../../controllers'
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  constructor(private readonly authController: AuthController) {}
   @Query(() => User, { nullable: true })
   me(@CurrentUser() user: User): User | null {
     return user
   }
 
-  @Query(() => AccessTokenResponse)
-  async getAccessToken(
-    @CurrentUser() user: User,
-    @Ctx() context: MyContext
-  ): Promise<AccessTokenResponse> {
-    return await getAccessToken(user, context)
-  }
-
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserWithTokens)
   async registerUser(
     @Arg('options') options: RegisterInput,
-    @Ctx() context: MyContext,
-    @Arg('referralToken', { nullable: true }) referralToken?: string
-  ): Promise<UserResponse> {
-    return await registerUser(options, context, referralToken)
+    @Ctx() context: MyContext
+  ): Promise<UserWithTokens> {
+    return await this.authController.register(options, context)
   }
 
   @Mutation(() => DefaultResponse)

@@ -1,4 +1,4 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { cookieConfig } from '../../config'
 import { User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -16,11 +16,11 @@ export const logoutUser = async (context: MyContext, user: User): Promise<Defaul
     }
   }
 
-  user.tokenCode = ''
+  // user.tokenCode = ''
   await user.save()
 
-  context.res.cookie('refresh_token', '', refreshTokenCookieOptions)
-  context.res.cookie('access_token', '', accessTokenCookieOptions)
+  context.res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
+  context.res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 
   // Capture user log
   await captureUserActivity(user, context, 'User logs out', true)

@@ -1,12 +1,7 @@
 import { Request, Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { User } from '../entities'
-import {
-  accessTokenCookieOptions,
-  accessTokenSecret,
-  refreshTokenCookieOptions,
-  refreshTokenSecret,
-} from '../config'
+import { appConfig, cookieConfig } from '../config'
 import { createAuthTokens } from '../utilities'
 
 export interface DataProps {
@@ -17,8 +12,8 @@ export interface DataProps {
 }
 
 export const invalidateToken = (res: Response): void => {
-  res.cookie('refresh_token', '', refreshTokenCookieOptions)
-  res.cookie('access_token', '', accessTokenCookieOptions)
+  res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
+  res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 }
 
 export const generateNewToken = async (
@@ -27,8 +22,8 @@ export const generateNewToken = async (
 ): Promise<{ accessToken: string; refreshToken: string }> => {
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
-  res.cookie('access_token', accessToken, accessTokenCookieOptions)
-  res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+  res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
+  res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
 
   return {
     accessToken,
@@ -46,7 +41,7 @@ export const getAuthUser = async (req: Request, res: Response): Promise<User | n
 
   if (accessToken) {
     try {
-      const data = verify(accessToken, accessTokenSecret) as DataProps
+      const data = verify(accessToken, appConfig.accessTokenSecret) as DataProps
 
       const user = await User.findOne({ where: { id: data.userId } })
 
@@ -62,7 +57,7 @@ export const getAuthUser = async (req: Request, res: Response): Promise<User | n
     }
   } else if (refreshToken) {
     try {
-      const data = verify(refreshToken, refreshTokenSecret) as DataProps
+      const data = verify(refreshToken, appConfig.refreshTokenSecret) as DataProps
 
       const user = await User.findOne({ where: { id: data.userId, tokenCode: refreshToken } })
 

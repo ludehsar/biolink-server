@@ -2,12 +2,7 @@ import { Response } from 'express'
 import { verify } from 'jsonwebtoken'
 import { createParamDecorator } from 'type-graphql'
 
-import {
-  refreshTokenCookieOptions,
-  accessTokenCookieOptions,
-  accessTokenSecret,
-  refreshTokenSecret,
-} from '../config'
+import { appConfig, cookieConfig } from '../config'
 import { User, AdminRole } from '../entities'
 import { MyContext } from '../types'
 import { createAuthTokens } from '../utilities'
@@ -20,15 +15,15 @@ interface DataProps {
 }
 
 const invalidateToken = (res: Response): void => {
-  res.cookie('refresh_token', '', refreshTokenCookieOptions)
-  res.cookie('access_token', '', accessTokenCookieOptions)
+  res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
+  res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 }
 
 const generateNewToken = async (user: User, res: Response): Promise<void> => {
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
-  res.cookie('access_token', accessToken, accessTokenCookieOptions)
-  res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
+  res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
+  res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
 }
 
 export default function CurrentAdmin(): ParameterDecorator {
@@ -38,7 +33,7 @@ export default function CurrentAdmin(): ParameterDecorator {
 
     if (accessToken) {
       try {
-        const data = verify(accessToken, accessTokenSecret) as DataProps
+        const data = verify(accessToken, appConfig.accessTokenSecret) as DataProps
 
         const user = await User.findOne({ where: { id: data.userId } })
 
@@ -61,7 +56,7 @@ export default function CurrentAdmin(): ParameterDecorator {
       }
     } else if (refreshToken) {
       try {
-        const data = verify(refreshToken, refreshTokenSecret) as DataProps
+        const data = verify(refreshToken, appConfig.refreshTokenSecret) as DataProps
 
         const user = await User.findOne({ where: { id: data.userId, tokenCode: refreshToken } })
 

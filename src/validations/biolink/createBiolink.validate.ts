@@ -44,7 +44,6 @@ export const createBiolinkValidated = async (
   if (blacklisted) {
     errors.push({
       errorCode: ErrorCode.USERNAME_BLACKLISTED,
-      field: 'username',
       message: 'Cannot create account with this username.',
     })
 
@@ -68,7 +67,6 @@ export const createBiolinkValidated = async (
   if (premiumUsername && premiumUsername.ownerId !== user.id) {
     errors.push({
       errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-      field: 'username',
       message: 'Contact to the admin support for this username.',
     })
 
@@ -88,7 +86,6 @@ export const createBiolinkValidated = async (
   ) {
     errors.push({
       errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-      field: 'username',
       message: 'Username has already been taken.',
     })
 

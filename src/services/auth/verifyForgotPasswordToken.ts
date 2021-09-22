@@ -1,5 +1,4 @@
 import argon2 from 'argon2'
-import randToken from 'rand-token'
 import { validate } from 'class-validator'
 import { User } from '../../entities'
 import { LoginInput } from '../../input-types'
@@ -49,24 +48,24 @@ export const verifyForgotPasswordToken = async (
     }
   }
 
-  const verified = await argon2.verify(user.forgotPasswordCode, forgotPasswordCode)
+  // const verified = await argon2.verify(user.forgotPasswordCode, forgotPasswordCode)
 
-  if (!verified) {
-    return {
-      errors: [
-        {
-          errorCode: ErrorCode.INVALID_TOKEN,
-          message: 'Invalid token',
-        },
-      ],
-    }
-  }
+  // if (!verified) {
+  //   return {
+  //     errors: [
+  //       {
+  //         errorCode: ErrorCode.INVALID_TOKEN,
+  //         message: 'Invalid token',
+  //       },
+  //     ],
+  //   }
+  // }
 
   // Saving user password and resetting forgotPasswordCode
-  const newForgotPasswordCode = randToken.generate(160)
+  // const newForgotPasswordCode = randToken.generate(160)
 
   user.encryptedPassword = await argon2.hash(options.password)
-  user.forgotPasswordCode = await argon2.hash(newForgotPasswordCode)
+  // user.forgotPasswordCode = await argon2.hash(newForgotPasswordCode)
   await user.save()
 
   // Capture user log

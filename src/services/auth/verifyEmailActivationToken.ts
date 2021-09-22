@@ -35,7 +35,7 @@ export const verifyEmailActivationToken = async (
   }
   ;``
   user.emailVerifiedAt = moment().toDate()
-  user.emailActivationCode = newEmailActivationCode
+  // user.emailActivationCode = newEmailActivationCode
   await user.save()
 
   // Capture user log

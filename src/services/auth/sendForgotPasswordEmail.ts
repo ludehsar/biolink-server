@@ -1,9 +1,8 @@
 import randToken from 'rand-token'
-import argon2 from 'argon2'
 import { MailDataRequired } from '@sendgrid/mail'
 import { validate } from 'class-validator'
 
-import { FRONTEND_APP_URL } from '../../config'
+import { appConfig } from '../../config'
 import { User } from '../../entities'
 import { EmailInput } from '../../input-types'
 import { DefaultResponse } from '../../object-types'
@@ -42,7 +41,7 @@ export const sendForgotPasswordEmail = async (
 
   const forgotPasswordCode = randToken.generate(160)
 
-  user.forgotPasswordCode = await argon2.hash(forgotPasswordCode)
+  // user.forgotPasswordCode = await argon2.hash(forgotPasswordCode)
   await user.save()
 
   const forgetPasswordMailData: MailDataRequired = {
@@ -54,7 +53,7 @@ export const sendForgotPasswordEmail = async (
       email: 'info@stash.ee',
     },
     subject: `Reset Your Stashee Password`,
-    html: `Click <a href="${FRONTEND_APP_URL}/auth/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
+    html: `Click <a href="${appConfig.FRONTEND_APP_URL}/auth/reset_password?email=${user.email}&token=${forgotPasswordCode}" target="_blank">here</a> to reset your Stashee Password.`,
   }
 
   await sgMail.send(forgetPasswordMailData, false)

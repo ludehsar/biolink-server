@@ -26,7 +26,6 @@ export const loginUserValidated = async (options: LoginInput): Promise<ErrorResp
 
   if (!user) {
     errors.push({
-      field: 'email',
       errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
       message: 'User with this email does not exist',
     })
@@ -38,7 +37,6 @@ export const loginUserValidated = async (options: LoginInput): Promise<ErrorResp
 
   if (!passwordVerified) {
     errors.push({
-      field: 'password',
       errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
       message: 'Password did not match',
     })

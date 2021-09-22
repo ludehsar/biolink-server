@@ -2,7 +2,6 @@
 
 This is the backend project for the Stashee project.
 
----
 ## Requirements
 
 For development, you will need
@@ -13,14 +12,12 @@ For development, you will need
 Recommended, but currently not necessary,
   - Redis
 
----
 ## Install
 
     $ git clone https://github.com/ludehsar/biolink-server.git
     $ cd biolink-server
     $ yarn
 
----
 ## Configure app
 
 In order to configure this app after installing the npm packages, you need to:
@@ -32,7 +29,6 @@ In order to configure this app after installing the npm packages, you need to:
   
         $ yarn typeorm migration:run
 
----
 ## Running the project
 
 The project has been built using TypeScript. So first we need to compile the code into JavaScript. To compile the codes, open the terminal and write:
@@ -43,7 +39,6 @@ While this is running in a terminal, open another terminal and paste the below c
 
     $ yarn dev
 
----
 ## Simple build for production
 
 To compile and run the codes in production mode, open the terminal and write:
@@ -51,12 +46,10 @@ To compile and run the codes in production mode, open the terminal and write:
     $ yarn build
     $ yarn start
 
----
 ## Finding bugs
 
 If you find any bugs, please feel free to use the issues tab in GitHub to give the details of the bug. You can also request new features using the issues tab. By using the issues tab, it will be easier for me to fix the issues.
 
----
 ## Contribute
 
 You are more welcome to contribute in the project if you want. Just write the codes in a new branch and I will merge those changes.

@@ -1,10 +1,10 @@
 import { CorsOptions } from 'cors'
-import { FRONTEND_APP_URL, ADMIN_APP_URL } from '../config'
+import { appConfig } from '../config'
 
 const options: CorsOptions = {
   origin: [
-    FRONTEND_APP_URL,
-    ADMIN_APP_URL,
+    appConfig.FRONTEND_APP_URL,
+    appConfig.ADMIN_APP_URL,
     'http://54.83.50.148',
     'http://54.165.248.251',
     'http://localhost:3000',

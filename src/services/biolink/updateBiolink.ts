@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { POSITIONTRACK_API_KEY } from '../../config'
+import { appConfig } from '../../config'
 import { User, Biolink, Category } from '../../entities'
 import { UpdateBiolinkProfileInput } from '../../input-types'
 import { BiolinkResponse } from '../../object-types'
@@ -71,9 +71,9 @@ export const updateBiolink = async (
 
   try {
     const geoResponse = await axios.get(
-      `http://api.positionstack.com/v1/forward?&access_key=${POSITIONTRACK_API_KEY}&query=${
-        biolink.city + ', ' + biolink.state + ', ' + biolink.country
-      }&limit=1&output=json`
+      `http://api.positionstack.com/v1/forward?&access_key=${
+        appConfig.POSITIONTRACK_API_KEY
+      }&query=${biolink.city + ', ' + biolink.state + ', ' + biolink.country}&limit=1&output=json`
     )
 
     const geoData = await geoResponse.data

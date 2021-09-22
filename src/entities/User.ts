@@ -50,21 +50,12 @@ export class User extends BaseEntity {
   @Column({ type: 'timestamp', nullable: true })
   emailVerifiedAt!: Date | null
 
-  @Column({ nullable: true })
-  emailActivationCode!: string
-
   @Column()
   encryptedPassword!: string
-
-  @Column({ nullable: true })
-  forgotPasswordCode!: string
 
   @Field(() => Billing, { nullable: true })
   @Column({ type: 'json', nullable: true })
   billing!: Billing
-
-  @Column({ nullable: true })
-  tokenCode!: string
 
   @Column({ nullable: true })
   authenticatorSecret!: string

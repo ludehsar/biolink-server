@@ -18,7 +18,7 @@ import {
 import { BiolinkSettings } from '../json-types'
 import { User, Link, TrackLink, Category, Verification, Follow } from '../entities'
 import { VerificationStatus } from '../enums'
-import { BACKEND_URL } from '../config'
+import { appConfig } from '../config'
 import { Username } from './Username'
 
 @ObjectType()
@@ -29,17 +29,17 @@ export class Biolink extends BaseEntity {
   @Field(() => String, { nullable: true })
   id!: string
 
-  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultProfilePhoto.png' })
+  @Column({ nullable: true, default: appConfig.BACKEND_URL + '/static/defaultProfilePhoto.png' })
   @Field(() => String, {
     nullable: true,
-    defaultValue: BACKEND_URL + '/static/defaultProfilePhoto.png',
+    defaultValue: appConfig.BACKEND_URL + '/static/defaultProfilePhoto.png',
   })
   profilePhotoUrl!: string
 
-  @Column({ nullable: true, default: BACKEND_URL + '/static/defaultCoverPhoto.jpg' })
+  @Column({ nullable: true, default: appConfig.BACKEND_URL + '/static/defaultCoverPhoto.jpg' })
   @Field(() => String, {
     nullable: true,
-    defaultValue: BACKEND_URL + '/static/defaultCoverPhoto.jpg',
+    defaultValue: appConfig.BACKEND_URL + '/static/defaultCoverPhoto.jpg',
   })
   coverPhotoUrl!: string
 

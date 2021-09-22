@@ -15,6 +15,7 @@ import { SocialAccountStyleType } from './SocialAccountStyleType'
 import { TaxBillingForType } from './TaxBillingForType'
 import { TaxType } from './TaxType'
 import { TaxValueType } from './TaxValueType'
+import { TokenType } from './TokenType'
 import { UserRole } from './UserRole'
 import { VerificationStatus } from './VerificationStatus'
 
@@ -36,6 +37,7 @@ export {
   TaxBillingForType,
   TaxType,
   TaxValueType,
+  TokenType,
   UserRole,
   VerificationStatus,
 }

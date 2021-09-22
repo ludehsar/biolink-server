@@ -1,12 +1,9 @@
-import { ObjectType, Field, Int } from 'type-graphql'
+import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
 export class ErrorResponse {
-  @Field(() => Int)
-  errorCode!: number
-
-  @Field({ nullable: true })
-  field?: string
+  @Field()
+  errorCode!: string
 
   @Field()
   message!: string

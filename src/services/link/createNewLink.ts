@@ -11,7 +11,7 @@ import { NewLinkInput } from '../../input-types'
 import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { BACKEND_URL } from '../../config'
+import { appConfig } from '../../config'
 import { isMalicious } from '../../utilities'
 
 export const createNewLink = async (
@@ -130,7 +130,7 @@ export const createNewLink = async (
       enablePasswordProtection: options.enablePasswordProtection,
       note: options.note,
       platform: options.platform || 'Unknown',
-      icon: BACKEND_URL + `/static/socialIcons/${options.platform}.png`,
+      icon: appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`,
       featured: options.featured || false,
     })
 
@@ -224,7 +224,7 @@ export const createNewLink = async (
         }
       }
 
-      link.linkImageUrl = BACKEND_URL + '/static/linkImages/' + linkImageName
+      link.linkImageUrl = appConfig.BACKEND_URL + '/static/linkImages/' + linkImageName
     }
 
     link.user = Promise.resolve(user)

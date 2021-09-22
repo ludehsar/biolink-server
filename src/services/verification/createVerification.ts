@@ -7,7 +7,7 @@ import { VerificationInput } from '../../input-types'
 import { DefaultResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { BACKEND_URL } from '../../config'
+import { appConfig } from '../../config'
 import { VerificationStatus } from '../../enums'
 import { isMalicious } from '../../utilities'
 import { FileUpload } from 'graphql-upload'
@@ -212,9 +212,10 @@ export const createVerification = async (
     workNumber: options.workNumber,
     email: options.email,
     websiteLink: options.websiteLink,
-    photoIdUrl: BACKEND_URL + '/static/photoIds/' + photoIdName,
-    businessDocumentUrl: BACKEND_URL + '/static/businessDocuments/' + businessDocumentName,
-    otherDocumentsUrl: BACKEND_URL + '/static/otherDocuments/' + otherDocumentsName,
+    photoIdUrl: appConfig.BACKEND_URL + '/static/photoIds/' + photoIdName,
+    businessDocumentUrl:
+      appConfig.BACKEND_URL + '/static/businessDocuments/' + businessDocumentName,
+    otherDocumentsUrl: appConfig.BACKEND_URL + '/static/otherDocuments/' + otherDocumentsName,
     instagramUrl: options.instagramAccount,
     twitterUrl: options.twitterAccount,
     linkedinUrl: options.linkedinAccount,

@@ -34,7 +34,6 @@ export const registerUserValidated = async (
 
   if (blacklisted) {
     errors.push({
-      field: 'email',
       errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
       message: 'Cannot create new account.',
     })
@@ -46,7 +45,6 @@ export const registerUserValidated = async (
   const user = await User.findOne({ where: { email: options.email } })
   if (user) {
     errors.push({
-      field: 'email',
       errorCode: ErrorCode.EMAIL_ALREADY_EXISTS,
       message: 'User with this email address already exists.',
     })
@@ -78,7 +76,6 @@ export const registerUserValidated = async (
     if (blacklisted) {
       errors.push({
         errorCode: ErrorCode.USERNAME_BLACKLISTED,
-        field: 'username',
         message: 'Cannot create account with this username.',
       })
 
@@ -96,7 +93,6 @@ export const registerUserValidated = async (
     ) {
       errors.push({
         errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-        field: 'username',
         message: 'Username has already been taken.',
       })
 
@@ -120,7 +116,6 @@ export const registerUserValidated = async (
     if (premiumUsername && premiumUsername.ownerId !== null) {
       errors.push({
         errorCode: ErrorCode.USERNAME_ALREADY_EXISTS,
-        field: 'username',
         message: 'Username has already been taken.',
       })
     }
