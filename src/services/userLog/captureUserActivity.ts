@@ -1,9 +1,9 @@
 import DeviceDetector from 'device-detector-js'
 import geoip from 'geoip-lite'
 import moment from 'moment'
-import axios from 'axios'
+// import axios from 'axios'
 import { User, UserLogs } from '../../entities'
-import { CountryInfo } from '../../interfaces'
+// import { CountryInfo } from '../../interfaces'
 import { DefaultResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
 
@@ -56,10 +56,9 @@ export const captureUserActivity = async (
   user.timezone = new Date().getTimezoneOffset().toString()
   user.lastActiveTill = moment(moment.now()).add(5, 'm').toDate()
   if (geo) {
-    const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
-
-    user.country = (countryInfo.data as CountryInfo).name
-    console.log(countryInfo)
+    // const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
+    // user.country = (countryInfo.data as CountryInfo).name
+    // console.log(countryInfo)
   }
 
   await user.save()

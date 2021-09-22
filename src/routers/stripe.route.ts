@@ -1,7 +1,7 @@
 import { Router, Response } from 'express'
 
 import { savePayment, saveStripeCustomerId } from '../services'
-import { STRIPE_WEBHOOK_SECRET } from '../config'
+import { STRIPE_WEBHOOK_SECRET, FRONTEND_APP_URL } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
 
@@ -52,8 +52,8 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
       // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
-      success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/payment/canceled`,
+      success_url: `${FRONTEND_APP_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${FRONTEND_APP_URL}/payment/canceled`,
     })
 
     res.send({
