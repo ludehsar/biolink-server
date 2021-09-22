@@ -13,7 +13,6 @@ export interface DataProps {
 
 export const invalidateToken = (res: Response): void => {
   res.cookie('refresh_token', '', cookieConfig.refreshTokenCookieOptions)
-  res.cookie('access_token', '', cookieConfig.accessTokenCookieOptions)
 }
 
 export const generateNewToken = async (
@@ -22,7 +21,6 @@ export const generateNewToken = async (
 ): Promise<{ accessToken: string; refreshToken: string }> => {
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
-  res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
   res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
 
   return {

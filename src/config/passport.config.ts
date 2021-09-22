@@ -1,4 +1,4 @@
-import { Strategy, VerifyCallback, ExtractJwt, StrategyOptions } from 'passport-jwt'
+import { Strategy, VerifyCallback, StrategyOptions, ExtractJwt } from 'passport-jwt'
 
 import { User } from '../entities'
 import { appConfig } from '../config'

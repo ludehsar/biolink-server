@@ -5,12 +5,13 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import { ApolloError } from 'apollo-server-errors'
 
-import { appConfig } from '../config'
+import { appConfig, cookieConfig } from '../config'
 import { Token, User } from '../entities'
 import { ErrorCode } from '../types'
 import { TokenType } from '../enums'
 import { UserService } from './user.service'
 import { AuthToken } from '../object-types/auth/AuthToken'
+import { Response } from 'express'
 
 @Service()
 export class TokenService {
@@ -119,7 +120,10 @@ export class TokenService {
    * @param {User} user
    * @returns {Promise<Object>}
    */
-  async generateAuthTokens(user: User): Promise<{ access: AuthToken; refresh: AuthToken }> {
+  async generateAuthTokens(
+    user: User,
+    res: Response
+  ): Promise<{ access: AuthToken; refresh: AuthToken }> {
     const accessTokenExpires = moment().add(appConfig.accessTokenExpirationMinutes, 'minutes')
     const accessToken = this.generateToken(
       user.id,
@@ -129,8 +133,14 @@ export class TokenService {
     )
 
     const refreshTokenExpires = moment().add(appConfig.refreshTokenExpirationDays, 'days')
-    const refreshToken = this.generateToken(user.id, refreshTokenExpires, TokenType.Refresh)
+    const refreshToken = this.generateToken(
+      user.id,
+      refreshTokenExpires,
+      TokenType.Refresh,
+      appConfig.refreshTokenSecret
+    )
     await this.saveToken(refreshToken, user, refreshTokenExpires, TokenType.Refresh)
+    res.cookie('token', refreshToken, cookieConfig.refreshTokenCookieOptions)
 
     return {
       access: {
