@@ -1,4 +1,4 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { cookieConfig } from '../../config'
 import { User } from '../../entities'
 import { LoginInput } from '../../input-types'
 import { UserResponse } from '../../object-types'
@@ -21,8 +21,8 @@ export const loginUser = async (options: LoginInput, context: MyContext): Promis
   // Implement jwt
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
-  context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
-  context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
+  context.res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
+  context.res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
 
   user.totalLogin++
 

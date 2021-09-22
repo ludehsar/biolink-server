@@ -1,6 +1,6 @@
 import sgMail from '@sendgrid/mail'
-import { SENDGRID_API_KEY } from '../config'
+import { appConfig } from '../config'
 
-sgMail.setApiKey(SENDGRID_API_KEY)
+sgMail.setApiKey(appConfig.SENDGRID_API_KEY)
 
 export default sgMail

@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { GOOGLE_API_KEY } from '../config'
+import { appConfig } from '../config'
 
 export const checkGoogleSafeBrowsing = async (urls: string[]): Promise<boolean> => {
   try {
-    const BASE_URL = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${GOOGLE_API_KEY}`
+    const BASE_URL = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${appConfig.GOOGLE_API_KEY}`
     const data = {
       client: {
         clientId: 'stashee-safe-browser',

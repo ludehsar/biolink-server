@@ -15,6 +15,7 @@ import { Report } from './Report'
 import { Settings } from './Settings'
 import { Support } from './Support'
 import { Tax } from './Tax'
+import { Token } from './Token'
 import { TrackLink } from './TrackLink'
 import { User } from './User'
 import { UserLogs } from './UserLogs'
@@ -39,6 +40,7 @@ export {
   Support,
   Tax,
   TrackLink,
+  Token,
   User,
   UserLogs,
   Verification,

@@ -10,7 +10,7 @@ import { NewLinkInput } from '../../input-types'
 import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { MyContext, ErrorCode } from '../../types'
-import { BACKEND_URL } from '../../config'
+import { appConfig } from '../../config'
 import { isMalicious } from '../../utilities'
 
 export const updateLink = async (
@@ -104,7 +104,7 @@ export const updateLink = async (
 
   if (options.linkType === LinkType.Social) {
     link.platform = options.platform || 'Unknown'
-    link.icon = BACKEND_URL + `/static/socialIcons/${options.platform}.png`
+    link.icon = appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`
     link.featured = options.featured || false
   }
 
@@ -198,7 +198,7 @@ export const updateLink = async (
       }
     }
 
-    link.linkImageUrl = BACKEND_URL + '/static/linkImages/' + linkImageName
+    link.linkImageUrl = appConfig.BACKEND_URL + '/static/linkImages/' + linkImageName
   }
 
   await link.save()

@@ -1,51 +1,7 @@
-import {
-  ADMIN_APP_URL,
-  BACKEND_URL,
-  COOKIE_NAME,
-  COOKIE_SAMESITE,
-  COOKIE_SECURE,
-  FRONTEND_APP_URL,
-  SENDGRID_API_KEY,
-  STRIPE_SECRET_KEY,
-  __prod__,
-  accessTokenSecret,
-  appDebug,
-  appKey,
-  port,
-  refreshTokenSecret,
-  STRIPE_WEBHOOK_SECRET,
-  GOOGLE_API_KEY,
-  POSITIONTRACK_API_KEY,
-} from './app.config'
-import { accessTokenCookieOptions, refreshTokenCookieOptions } from './cookie.config'
-import corsOptions from './cors.config'
-import { dbHost, dbName, dbPassword, dbPort, dbType, dbUser } from './database.config'
+import appConfig from './app.config'
+import cookieConfig from './cookie.config'
+import corsConfig from './cors.config'
+import dbConfig from './database.config'
+import jwtStrategy from './passport.config'
 
-export {
-  ADMIN_APP_URL,
-  BACKEND_URL,
-  COOKIE_NAME,
-  COOKIE_SAMESITE,
-  COOKIE_SECURE,
-  FRONTEND_APP_URL,
-  GOOGLE_API_KEY,
-  POSITIONTRACK_API_KEY,
-  SENDGRID_API_KEY,
-  STRIPE_SECRET_KEY,
-  STRIPE_WEBHOOK_SECRET,
-  __prod__,
-  accessTokenCookieOptions,
-  accessTokenSecret,
-  appDebug,
-  appKey,
-  corsOptions,
-  dbHost,
-  dbName,
-  dbPassword,
-  dbPort,
-  dbType,
-  dbUser,
-  port,
-  refreshTokenCookieOptions,
-  refreshTokenSecret,
-}
+export { appConfig, cookieConfig, corsConfig, dbConfig, jwtStrategy }

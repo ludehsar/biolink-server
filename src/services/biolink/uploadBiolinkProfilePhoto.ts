@@ -3,7 +3,7 @@ import { FileUpload } from 'graphql-upload'
 import path from 'path'
 import randToken from 'rand-token'
 
-import { BACKEND_URL } from '../../config'
+import { appConfig } from '../../config'
 import { User, Biolink } from '../../entities'
 import { BiolinkResponse, ErrorResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -64,7 +64,7 @@ export const uploadBiolinkProfilePhoto = async (
     }
   }
 
-  biolink.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
+  biolink.profilePhotoUrl = appConfig.BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
   await biolink.save()
 
   await captureUserActivity(user, context, `Uploaded ${biolink.username} profile photo`, true)

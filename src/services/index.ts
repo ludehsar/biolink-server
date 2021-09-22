@@ -14,7 +14,6 @@ import { getUsersAndAdminsCountData } from './analytics/getUsersAndAdminsCountDa
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
-import { getAccessToken } from './auth/getAccessToken'
 import { loginAdmin } from './auth/loginAdmin'
 import { loginUser } from './auth/loginUser'
 import { logoutUser } from './auth/logoutUser'
@@ -192,7 +191,6 @@ export {
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth
-  getAccessToken,
   loginAdmin,
   loginUser,
   registerUser,

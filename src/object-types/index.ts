@@ -13,7 +13,7 @@ import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
 import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
 import { UsersAdminsCountResponse } from './analytics/UsersAdminsCountResponse'
 // Auth
-import { AccessTokenResponse } from './auth/AccessTokenResponse'
+import { UserWithTokens } from './auth/UserWithTokens'
 // Biolink
 import { BiolinkConnection } from './biolink/BiolinkConnection'
 import { BiolinkEdge } from './biolink/BiolinkEdge'
@@ -100,7 +100,7 @@ import { VerificationEdge } from './verification/VerificationEdge'
 import { VerificationResponse } from './verification/VerificationResponse'
 
 export {
-  AccessTokenResponse,
+  UserWithTokens,
   ActivityConnection,
   ActivityEdge,
   AdminRoleListResponse,

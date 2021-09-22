@@ -1,4 +1,4 @@
-export const dbType =
+const dbType =
   <
     | 'postgres'
     | 'mysql'
@@ -18,8 +18,10 @@ export const dbType =
     | 'expo'
     | 'better-sqlite3'
   >process.env.DATABASE_TYPE || undefined
-export const dbHost = process.env.DATABASE_HOST || 'localhost'
-export const dbPort = parseInt(process.env.DATABASE_PORT || '') || 5432
-export const dbName = process.env.DATABASE_NAME || 'dbname'
-export const dbUser = process.env.DATABASE_USER || 'user'
-export const dbPassword = process.env.DATABASE_PASSWORD || ''
+const dbHost = process.env.DATABASE_HOST || 'localhost'
+const dbPort = parseInt(process.env.DATABASE_PORT || '') || 5432
+const dbName = process.env.DATABASE_NAME || 'dbname'
+const dbUser = process.env.DATABASE_USER || 'user'
+const dbPassword = process.env.DATABASE_PASSWORD || ''
+
+export default { dbHost, dbName, dbPassword, dbPort, dbType, dbUser }

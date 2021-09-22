@@ -1,4 +1,4 @@
-import { refreshTokenCookieOptions, accessTokenCookieOptions } from '../../config'
+import { cookieConfig } from '../../config'
 import { Code, User, Plan } from '../../entities'
 import { RegisterInput } from '../../input-types'
 import { UserResponse } from '../../object-types'
@@ -12,7 +12,6 @@ import { MyContext } from '../../types'
 import { createAuthTokens } from '../../utilities'
 import { registerUserValidated } from '../../validations'
 import argon2 from 'argon2'
-import randToken from 'rand-token'
 
 export const registerUser = async (
   options: RegisterInput,
@@ -40,12 +39,11 @@ export const registerUser = async (
   const hashedPassword = await argon2.hash(options.password as string)
 
   // Saving user password and resetting forgotPasswordCode
-  const encryptedForgotPasswordCode = await argon2.hash(randToken.generate(160))
+  // const encryptedForgotPasswordCode = await argon2.hash(randToken.generate(160))
 
   const user = User.create({
     email: options.email,
     encryptedPassword: hashedPassword,
-    forgotPasswordCode: encryptedForgotPasswordCode,
     totalLogin: 1,
   })
 
@@ -66,8 +64,8 @@ export const registerUser = async (
   // Implement jwt
   const { refreshToken, accessToken } = await createAuthTokens(user)
 
-  context.res.cookie('refresh_token', refreshToken, refreshTokenCookieOptions)
-  context.res.cookie('access_token', accessToken, accessTokenCookieOptions)
+  context.res.cookie('refresh_token', refreshToken, cookieConfig.refreshTokenCookieOptions)
+  context.res.cookie('access_token', accessToken, cookieConfig.accessTokenCookieOptions)
 
   // Capture user log
   await captureUserActivity(user, context, 'User Registered', true)

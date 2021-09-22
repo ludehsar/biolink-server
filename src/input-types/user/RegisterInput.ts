@@ -6,15 +6,18 @@ export class RegisterInput {
   @Field()
   @IsNotEmpty()
   @IsEmail()
-  email?: string
+  email!: string
 
   @Field()
   @IsNotEmpty()
   @MinLength(8)
-  password?: string
+  password!: string
 
   @Field()
   @IsNotEmpty()
   @Matches('^[a-zA-Z0-9_.]{4,20}$')
-  username?: string
+  username!: string
+
+  @Field()
+  referralToken?: string
 }

@@ -2,13 +2,16 @@ import 'reflect-metadata'
 import path from 'path'
 import express from 'express'
 import cors from 'cors'
+import { Container } from 'typeorm-typedi-extensions'
 import rateLimit from 'express-rate-limit'
 import { ApolloServer } from 'apollo-server-express'
-import { createConnection } from 'typeorm'
+import { createConnection, useContainer } from 'typeorm'
 import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
 import { graphqlUploadExpress } from 'graphql-upload'
-import { corsOptions, port } from './config'
+import passport from 'passport'
+
+import { corsConfig, appConfig, jwtStrategy } from './config'
 import { stripeRoutes } from './routers'
 import { MyContext } from './types'
 import {
@@ -50,6 +53,7 @@ import { planDismissScheduler } from './schedulers'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
+  useContainer(Container)
   await createConnection()
 
   // Configure app
@@ -59,17 +63,19 @@ const main = async (): Promise<void> => {
   app.set('trust proxy', true)
 
   // cors
-  app.use(cors(corsOptions))
+  app.use(cors(corsConfig))
 
   // Cookie parser
   app.use(cookieParser())
 
   // Limiting requesting rates
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-  })
-  app.use(limiter)
+  if (appConfig.__prod__) {
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    })
+    app.use(limiter)
+  }
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
@@ -85,6 +91,10 @@ const main = async (): Promise<void> => {
       },
     })
   )
+
+  // Passport jwt
+  app.use(passport.initialize())
+  passport.use('jwt', jwtStrategy)
 
   // Stripe router
   app.use('/api/stripe', stripeRoutes)
@@ -111,12 +121,10 @@ const main = async (): Promise<void> => {
         SupportResolver,
         VerificationResolver,
       ],
-      validate: false,
+      container: Container,
     }),
     uploads: false,
     context: ({ req, res }): MyContext => ({ req, res }),
-    playground: true, // TODO: disable playground in production
-    introspection: true, // TODO: disable introspection in production
   })
 
   appServer.applyMiddleware({
@@ -162,8 +170,8 @@ const main = async (): Promise<void> => {
   planDismissScheduler()
 
   // Listen to the port
-  app.listen(port, async () => {
-    console.log(`🚀 Server ready at port ${port}.`)
+  app.listen(appConfig.port, async () => {
+    console.log(`🚀 Server ready at port ${appConfig.port}.`)
   })
 }
 

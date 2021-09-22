@@ -4,7 +4,7 @@ import fs from 'fs'
 import request from 'request'
 import path from 'path'
 import randToken from 'rand-token'
-import { BACKEND_URL } from '../config'
+import { appConfig } from '../config'
 import getSupportedSocialIcons from './getSupportedSocialIcons'
 
 export interface LinktreeParsingProps {
@@ -66,7 +66,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
 
   if (imageUrl) {
     download(imageUrl, directory, (err) => console.log(err.message))
-    result.profilePhotoUrl = BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
+    result.profilePhotoUrl = appConfig.BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
   }
 
   return result

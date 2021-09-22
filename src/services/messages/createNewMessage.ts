@@ -8,7 +8,7 @@ import { User, Message } from '../../entities'
 import { NewMessageInput } from '../../input-types'
 import { ErrorResponse, MessageResponse } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
-import { BACKEND_URL } from '../../config'
+import { appConfig } from '../../config'
 import { captureUserActivity } from '../../services'
 
 export const createNewMessage = async (
@@ -88,7 +88,7 @@ export const createNewMessage = async (
       }
     }
 
-    message.attachmentUrl = BACKEND_URL + '/static/attachments/' + attachmentName
+    message.attachmentUrl = appConfig.BACKEND_URL + '/static/attachments/' + attachmentName
   }
 
   await message.save()

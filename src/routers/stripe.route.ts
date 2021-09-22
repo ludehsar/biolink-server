@@ -1,7 +1,7 @@
 import { Router, Response } from 'express'
 
 import { savePayment, saveStripeCustomerId } from '../services'
-import { STRIPE_WEBHOOK_SECRET } from '../config'
+import { appConfig } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
 
@@ -52,14 +52,14 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
       // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
       // the actual Session ID is returned in the query parameter when your customer
       // is redirected to the success page.
-      success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/payment/canceled`,
+      success_url: appConfig.FRONTEND_APP_URL + `/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: appConfig.FRONTEND_APP_URL + `/payment/canceled`,
     })
 
     res.send({
       sessionId: session.id,
     })
-  } catch (e) {
+  } catch (e: any) {
     res.status(400)
     return res.send({
       error: {
@@ -74,7 +74,7 @@ stripeRoutes.post('/webhook', async (req, res): Promise<Response | void> => {
   let eventType
 
   // Check if webhook signing is configured.
-  const webhookSecret = STRIPE_WEBHOOK_SECRET
+  const webhookSecret = appConfig.STRIPE_WEBHOOK_SECRET
   if (webhookSecret) {
     // Retrieve the event by verifying the signature using the raw body and secret.
     let event

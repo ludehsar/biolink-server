@@ -25,7 +25,6 @@ export const loginAdminValidated = async (options: LoginInput): Promise<ErrorRes
 
   if (!user || user.adminRoleId === null) {
     errors.push({
-      field: 'email',
       errorCode: ErrorCode.EMAIL_COULD_NOT_BE_FOUND,
       message: 'User with this email does not exist or do not have admin access',
     })
@@ -48,7 +47,6 @@ export const loginAdminValidated = async (options: LoginInput): Promise<ErrorRes
 
   if (!passwordVerified) {
     errors.push({
-      field: 'password',
       errorCode: ErrorCode.PASSWORD_DID_NOT_MATCH,
       message: 'Password did not match',
     })
