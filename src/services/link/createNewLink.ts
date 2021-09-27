@@ -130,7 +130,8 @@ export const createNewLink = async (
       enablePasswordProtection: options.enablePasswordProtection,
       note: options.note,
       platform: options.platform || 'Unknown',
-      icon: appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`,
+      iconColorful: appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`,
+      iconMinimal: appConfig.BACKEND_URL + `/static/socialIcons/minimals/${options.platform}.png`,
       featured: options.featured || false,
     })
 

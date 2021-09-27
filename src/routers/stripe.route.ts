@@ -41,6 +41,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
         {
           price: priceId,
           quantity: 1,
+          currency: 'usd',
         },
       ],
       discounts: [

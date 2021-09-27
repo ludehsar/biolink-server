@@ -104,7 +104,9 @@ export const updateLink = async (
 
   if (options.linkType === LinkType.Social) {
     link.platform = options.platform || 'Unknown'
-    link.icon = appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`
+    link.iconColorful = appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`
+    link.iconMinimal =
+      appConfig.BACKEND_URL + `/static/socialIcons/minimals/${options.platform}.png`
     link.featured = options.featured || false
   }
 
