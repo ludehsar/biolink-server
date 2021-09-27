@@ -65,7 +65,7 @@ export const linktreeImportHandler = async (url: string): Promise<LinktreeParsin
   }
 
   if (imageUrl) {
-    download(imageUrl, directory, (err) => console.log(err.message))
+    download(imageUrl, directory, () => console.log('Something went wrong'))
     result.profilePhotoUrl = appConfig.BACKEND_URL + '/static/profilePhotos/' + profilePhotoName
   }
 

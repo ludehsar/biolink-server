@@ -5,7 +5,7 @@ const accessTokenSecret: string = process.env.ACCESS_TOKEN_SECRET as string
 const refreshTokenSecret: string = process.env.REFRESH_TOKEN_SECRET as string
 const emailVerificationTokenSecret: string = process.env.EMAIL_VERIFICATION_TOKEN_SECRET as string
 const forgotPasswordTokenSecret: string = process.env.FORGOT_PASSWORD_TOKEN_SECRET as string
-const accessTokenExpirationMinutes = 15
+const accessTokenExpirationMinutes = 5
 const refreshTokenExpirationDays = 7
 const emailVerificationTokenExpirationDays = 2
 const forgotPasswordTokenExpirationMinutes = 45
@@ -22,6 +22,8 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || ''
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || ''
 const POSITIONTRACK_API_KEY = process.env.POSITIONTRACK_API_KEY || ''
+const FROM_EMAIL = 'info@stash.ee'
+const FROM_EMAIL_NAME = 'Stashee Support'
 
 export default {
   ADMIN_APP_URL,
@@ -47,4 +49,6 @@ export default {
   refreshTokenExpirationDays,
   emailVerificationTokenExpirationDays,
   forgotPasswordTokenExpirationMinutes,
+  FROM_EMAIL,
+  FROM_EMAIL_NAME,
 }

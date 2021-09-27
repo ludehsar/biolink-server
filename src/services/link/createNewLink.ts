@@ -236,28 +236,36 @@ export const createNewLink = async (
 
     return { link }
   } catch (err) {
-    switch (err.constraint) {
-      case 'UQ_d0d8043be438496bc31c73e9ed5': {
-        return {
-          errors: [
-            {
-              errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
-              message: 'Shortened URL already taken',
-            },
-          ],
-        }
-      }
-      default: {
-        console.log(err.message)
-        return {
-          errors: [
-            {
-              errorCode: ErrorCode.DATABASE_ERROR,
-              message: 'Something went wrong',
-            },
-          ],
-        }
-      }
+    return {
+      errors: [
+        {
+          errorCode: ErrorCode.DATABASE_ERROR,
+          message: 'Something went wrong',
+        },
+      ],
     }
+    // switch (err.constraint) {
+    //   case 'UQ_d0d8043be438496bc31c73e9ed5': {
+    //     return {
+    //       errors: [
+    //         {
+    //           errorCode: ErrorCode.SHORTENED_URL_ALREADY_EXISTS,
+    //           message: 'Shortened URL already taken',
+    //         },
+    //       ],
+    //     }
+    //   }
+    //   default: {
+    //     console.log('Something went wrong')
+    //     return {
+    //       errors: [
+    //         {
+    //           errorCode: ErrorCode.DATABASE_ERROR,
+    //           message: 'Something went wrong',
+    //         },
+    //       ],
+    //     }
+    //   }
+    // }
   }
 }

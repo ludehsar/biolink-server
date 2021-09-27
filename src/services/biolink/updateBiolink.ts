@@ -81,7 +81,7 @@ export const updateBiolink = async (
     biolink.latitude = geoData.data[0].latitude || 0
     biolink.longitude = geoData.data[0].longitude || 0
   } catch (err) {
-    console.error(err.message)
+    console.error('Something went wrong')
   }
 
   if (options.categoryId) {

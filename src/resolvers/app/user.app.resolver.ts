@@ -19,21 +19,16 @@ import {
   UserWithTokens,
 } from '../../object-types'
 import {
-  sendVerificationEmail,
-  verifyEmailActivationToken,
-  loginUser,
-  sendForgotPasswordEmail,
-  verifyForgotPasswordToken,
   changeEmailAndUsername,
   changePassword,
   deleteAccount,
-  logoutUser,
   updateBilling,
   changeCurrentBiolinkId,
   getUserActivityPaginated,
 } from '../../services'
 import { MyContext } from '../../types'
 import { AuthController } from '../../controllers'
+import { AccessAndRefreshToken } from '../../object-types/auth/AccessAndRefreshToken'
 
 @Resolver(User)
 export class UserResolver {
@@ -54,45 +49,48 @@ export class UserResolver {
     return await this.authController.register(options, context)
   }
 
-  @Mutation(() => DefaultResponse)
-  async sendEmailForVerification(
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<DefaultResponse> {
-    return await sendVerificationEmail(user, context)
-  }
-
-  @Mutation(() => DefaultResponse)
-  async verifyUserEmailByActivationCode(
-    @Arg('emailActivationCode') emailActivationCode: string,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await verifyEmailActivationToken(emailActivationCode, context)
-  }
-
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserWithTokens)
   async login(
     @Arg('options') options: LoginInput,
     @Ctx() context: MyContext
-  ): Promise<UserResponse> {
-    return await loginUser(options, context)
+  ): Promise<UserWithTokens> {
+    return await this.authController.login(options, context)
   }
 
-  @Mutation(() => DefaultResponse)
-  async sendForgotPasswordEmail(
-    @Arg('options') options: EmailInput,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await sendForgotPasswordEmail(options, context)
+  @Mutation(() => Boolean, { nullable: true })
+  async logout(@Ctx() context: MyContext): Promise<void> {
+    return await this.authController.logout(context)
   }
 
-  @Mutation(() => DefaultResponse)
+  @Mutation(() => AccessAndRefreshToken)
+  async refreshToken(@Ctx() context: MyContext): Promise<AccessAndRefreshToken> {
+    return await this.authController.refreshToken(context)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async sendForgotPasswordEmail(@Arg('options') options: EmailInput): Promise<void> {
+    return await this.authController.forgotPassword(options.email)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
   async verifyForgotPassword(
-    @Arg('options') options: LoginInput,
-    @Arg('forgotPasswordCode') forgotPasswordCode: string,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await verifyForgotPasswordToken(options, forgotPasswordCode, context)
+    @Arg('options') options: PasswordInput,
+    @Arg('forgotPasswordToken') forgotPasswordToken: string
+  ): Promise<void> {
+    return await this.authController.resetPassword(forgotPasswordToken, options.password)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  @UseMiddleware(authUser)
+  async sendEmailForVerification(@Ctx() context: MyContext): Promise<void> {
+    return await this.authController.sendVerificationEmail(context)
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async verifyUserEmailByActivationCode(
+    @Arg('emailActivationCode') emailActivationCode: string
+  ): Promise<void> {
+    return await this.authController.verifyEmail(emailActivationCode)
   }
 
   @Mutation(() => DefaultResponse)
@@ -151,10 +149,5 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<ActivityConnection> {
     return await getUserActivityPaginated(options, user, context)
-  }
-
-  @Mutation(() => DefaultResponse)
-  async logout(@Ctx() context: MyContext, @CurrentUser() user: User): Promise<DefaultResponse> {
-    return await logoutUser(context, user)
   }
 }
