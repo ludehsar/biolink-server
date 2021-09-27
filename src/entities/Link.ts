@@ -49,7 +49,11 @@ export class Link extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  icon?: string
+  iconColorful?: string
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  iconMinimal?: string
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', nullable: true, default: false })
