@@ -84,7 +84,7 @@ export const editCategory = async (
       errors: [
         {
           errorCode: ErrorCode.CATEGORY_ALREADY_EXISTS,
-          message: err.message,
+          message: 'Something went wrong',
         },
       ],
     }

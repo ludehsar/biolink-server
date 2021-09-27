@@ -11,8 +11,10 @@ import { TokenService } from '../services/token.service'
 import { TrackingService } from '../services/tracking.service'
 import { BlackListService } from '../services/blacklist.service'
 import { BlacklistType } from '../enums'
-import { AuthService } from 'services/auth.service'
-import { AccessAndRefreshToken } from 'object-types/auth/AccessAndRefreshToken'
+import { AuthService } from '../services/auth.service'
+import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToken'
+import { EmailService } from '../services/email.service'
+import { User } from '../entities'
 
 @Service()
 export class AuthController {
@@ -23,7 +25,8 @@ export class AuthController {
     private readonly blackListService: BlackListService,
     private readonly usernameService: UsernameService,
     private readonly tokenService: TokenService,
-    private readonly trackingService: TrackingService
+    private readonly trackingService: TrackingService,
+    private readonly emailService: EmailService
   ) {}
 
   async register(registerInput: RegisterInput, context: MyContext): Promise<UserWithTokens> {
@@ -82,5 +85,23 @@ export class AuthController {
 
   async refreshToken(context: MyContext): Promise<AccessAndRefreshToken> {
     return await this.authService.refreshAuth(context.req.cookies['token'], context.res)
+  }
+
+  async forgotPassword(email: string): Promise<void> {
+    const resetPasswordToken = await this.tokenService.generateResetPasswordToken(email)
+    await this.emailService.sendResetPasswordEmail({ email }, resetPasswordToken)
+  }
+
+  async resetPassword(token: string, password: string): Promise<void> {
+    await this.authService.resetPassword(token, password)
+  }
+
+  async sendVerificationEmail(context: MyContext): Promise<void> {
+    const verifyEmailToken = await this.tokenService.generateVerifyEmailToken(context.user as User)
+    await this.emailService.sendVerificationEmail({ email: (context.user as User).email }, verifyEmailToken)
+  }
+
+  async verifyEmail(token: string): Promise<void> {
+    await this.authService.verifyEmail(token)
   }
 }

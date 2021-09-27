@@ -3,10 +3,13 @@ import { Repository } from 'typeorm'
 import DeviceDetector from 'device-detector-js'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import * as geoip from 'geoip-lite'
+import moment from 'moment'
+import axios from 'axios'
 
 import { User, UserLogs } from '../entities'
 import { MyContext } from '../types'
 import { UserService } from './user.service'
+import { CountryInfo } from '../interfaces'
 
 @Service()
 export class TrackingService {
@@ -50,7 +53,21 @@ export class TrackingService {
     userLog.user = Promise.resolve(user)
     await userLog.save()
 
-    await this.userService.updateUserMetadata(user, context)
+    let country = ''
+
+    if (geo) {
+      const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
+      country = ((await countryInfo.data) as CountryInfo).name
+    }
+
+    await this.userService.updateUserById(user.id, {
+      language: context.req.acceptsLanguages()[0] || 'Unknown',
+      lastIPAddress: ip,
+      lastUserAgent: context.req.headers['user-agent'] || '',
+      timezone: new Date().getTimezoneOffset().toString(),
+      lastActiveTill: moment(moment.now()).add(5, 'm').toDate(),
+      country,
+    })
 
     return userLog
   }

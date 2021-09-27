@@ -88,7 +88,7 @@ export class TokenService {
       case TokenType.EmailVerification:
         secret = appConfig.emailVerificationTokenSecret
         break
-      case TokenType.ForgotPassword:
+      case TokenType.ResetPassword:
         secret = appConfig.forgotPasswordTokenSecret
         break
       case TokenType.Refresh:
@@ -104,7 +104,7 @@ export class TokenService {
     const tokenDoc = await this.tokenRepository.findOne({
       token,
       type,
-      userId: user.id,
+      user: Promise.resolve(user),
       blacklisted: false,
     })
 
@@ -118,7 +118,7 @@ export class TokenService {
   /**
    * Generate auth tokens
    * @param {User} user
-   * @returns {Promise<Object>}
+   * @returns {Promise<AccessAndRefreshToken>}
    */
   async generateAuthTokens(user: User, res: Response): Promise<AccessAndRefreshToken> {
     const accessTokenExpires = moment().add(appConfig.accessTokenExpirationMinutes, 'minutes')
@@ -160,8 +160,13 @@ export class TokenService {
     const user = await this.userService.getUserByEmail(email)
 
     const expires = moment().add(appConfig.forgotPasswordTokenExpirationMinutes, 'minutes')
-    const resetPasswordToken = this.generateToken(user.id, expires, TokenType.ForgotPassword)
-    await this.saveToken(resetPasswordToken, user, expires, TokenType.ForgotPassword)
+    const resetPasswordToken = this.generateToken(
+      user.id,
+      expires,
+      TokenType.ResetPassword,
+      appConfig.forgotPasswordTokenSecret
+    )
+    await this.saveToken(resetPasswordToken, user, expires, TokenType.ResetPassword)
     return resetPasswordToken
   }
 
@@ -172,7 +177,12 @@ export class TokenService {
    */
   async generateVerifyEmailToken(user: User): Promise<string> {
     const expires = moment().add(appConfig.emailVerificationTokenExpirationDays, 'days')
-    const verifyEmailToken = this.generateToken(user.id, expires, TokenType.EmailVerification)
+    const verifyEmailToken = this.generateToken(
+      user.id,
+      expires,
+      TokenType.EmailVerification,
+      appConfig.emailVerificationTokenSecret
+    )
     await this.saveToken(verifyEmailToken, user, expires, TokenType.EmailVerification)
     return verifyEmailToken
   }

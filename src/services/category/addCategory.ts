@@ -66,7 +66,7 @@ export const addCategory = async (
       errors: [
         {
           errorCode: ErrorCode.CATEGORY_ALREADY_EXISTS,
-          message: err.message,
+          message: 'Something went wrong',
         },
       ],
     }
