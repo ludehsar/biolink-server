@@ -99,7 +99,7 @@ export const createPlan = async (
       errors: [
         {
           errorCode: ErrorCode.PLAN_ALREADY_EXISTS,
-          message: err.message,
+          message: 'Something went wrong',
         },
       ],
     }

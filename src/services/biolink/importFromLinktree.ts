@@ -100,7 +100,7 @@ export const importFromLinktree = async (
       errors: [
         {
           errorCode: ErrorCode.INVALID_TOKEN,
-          message: err.message,
+          message: 'Something went wrong',
         },
       ],
     }

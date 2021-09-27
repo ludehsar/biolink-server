@@ -5,8 +5,6 @@ import { STRIPE_WEBHOOK_SECRET, FRONTEND_APP_URL } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
 
-// TODO: change http://localhost:3000 to FRONTEND_APP_URL
-
 const stripeRoutes = Router()
 
 stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response | void> => {
@@ -41,6 +39,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
         {
           price: priceId,
           quantity: 1,
+          currency: 'usd',
         },
       ],
       discounts: [
@@ -63,7 +62,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
     res.status(400)
     return res.send({
       error: {
-        message: e.message,
+        message: 'Something went wrong',
       },
     })
   }

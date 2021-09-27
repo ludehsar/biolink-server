@@ -75,7 +75,7 @@ export const addUsername = async (
       errors: [
         {
           errorCode: ErrorCode.DATABASE_ERROR,
-          message: err.message,
+          message: 'Something went wrong',
         },
       ],
     }
