@@ -37,6 +37,20 @@ export class AuthService {
   }
 
   /**
+   * Check if password matched
+   * @param {User} user
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   */
+  async isPasswordMatched(user: User, password: string): Promise<boolean> {
+    if (await argon2.verify(user.encryptedPassword, password)) {
+      return true
+    }
+
+    return false
+  }
+
+  /**
    * Logout
    * @param {string} refreshToken
    * @returns {Promise<void>}

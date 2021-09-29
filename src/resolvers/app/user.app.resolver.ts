@@ -11,7 +11,6 @@ import {
 } from '../../input-types'
 import { UserResponse, DefaultResponse, ActivityConnection } from '../../object-types'
 import {
-  changePassword,
   deleteAccount,
   updateBilling,
   changeCurrentBiolinkId,
@@ -34,14 +33,13 @@ export class UserResolver {
     return await this.userController.changeUserEmailAddressAndUsername(options, biolinkId, context)
   }
 
-  @Mutation(() => DefaultResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Boolean, { nullable: true })
+  @UseMiddleware(authUser, emailVerified)
   async changeUserPassword(
     @Arg('options') options: ChangePasswordInput,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await changePassword(options, user, context)
+  ): Promise<void> {
+    return await this.userController.changePassword(options, context)
   }
 
   @Mutation(() => DefaultResponse)
