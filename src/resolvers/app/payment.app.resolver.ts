@@ -1,7 +1,7 @@
 import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { PaymentConnection, PaymentResponse } from '../../object-types'
 import { getPayment, getUserPaymentsPaginated } from '../../services'
 import { MyContext } from '../../types'
@@ -10,7 +10,7 @@ import { MyContext } from '../../types'
 export class PaymentResolver {
   @Query(() => PaymentConnection, { nullable: true })
   async getAllUserPayments(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<PaymentConnection> {

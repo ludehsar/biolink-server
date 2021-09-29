@@ -3,7 +3,7 @@ import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
 import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
-import { ConnectionArgs, UpdateBiolinkProfileInput } from '../../input-types'
+import { ConnectionArgsOld, UpdateBiolinkProfileInput } from '../../input-types'
 import { BiolinkConnection, BiolinkResponse, DefaultResponse } from '../../object-types'
 import {
   getBiolink,
@@ -17,7 +17,7 @@ import {
 export class BiolinkAdminResolver {
   @Query(() => BiolinkConnection, { nullable: true })
   async getAllBiolinks(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BiolinkConnection> {
@@ -26,7 +26,7 @@ export class BiolinkAdminResolver {
 
   @Query(() => BiolinkConnection, { nullable: true })
   async getAllDirectories(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
   ): Promise<BiolinkConnection> {
     return await getDirectoriesPaginated(categoryIds, options)

@@ -5,11 +5,14 @@ import { InjectRepository } from 'typeorm-typedi-extensions'
 import * as geoip from 'geoip-lite'
 import moment from 'moment'
 import axios from 'axios'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 
 import { User, UserLogs } from '../entities'
 import { MyContext } from '../types'
 import { UserService } from './user.service'
 import { CountryInfo } from '../interfaces'
+import { ConnectionArgs } from '../input-types'
+import { PaginatedUserLogResponse } from '../object-types'
 
 @Service()
 export class TrackingService {
@@ -70,5 +73,42 @@ export class TrackingService {
     })
 
     return userLog
+  }
+
+  /**
+   * Get user notification
+   * @param {User} user
+   * @param {MyContext} context
+   * @param {string} description
+   * @param {boolean} [showInActivity]
+   * @returns {Promise<PaginatedUserLogResponse>}
+   */
+  async getNotification(
+    userId: string,
+    options: ConnectionArgs
+  ): Promise<PaginatedUserLogResponse> {
+    const queryBuilder = this.userlogsRepository
+      .createQueryBuilder('activity')
+      .where(`activity.userId = :userId`, {
+        userId: userId,
+      })
+      .andWhere(`activity.showInActivity = TRUE`)
+      .andWhere(`LOWER(activity.description) like :query`, {
+        query: `%${options.query.toLowerCase()}%`,
+      })
+
+    const paginator = buildPaginator({
+      entity: UserLogs,
+      alias: 'activity',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
   }
 }

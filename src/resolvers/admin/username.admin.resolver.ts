@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, NewUsernameInput } from '../../input-types'
+import { ConnectionArgsOld, NewUsernameInput } from '../../input-types'
 import { UsernameConnection, UsernameResponse } from '../../object-types'
 import {
   addUsername,
@@ -17,7 +17,7 @@ import { MyContext } from '../../types'
 export class UsernameAdminResolver {
   @Query(() => UsernameConnection, { nullable: true })
   async getAllUsernames(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<UsernameConnection> {
@@ -26,7 +26,7 @@ export class UsernameAdminResolver {
 
   @Query(() => UsernameConnection, { nullable: true })
   async getAllPremiumUsernames(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<UsernameConnection> {
@@ -35,7 +35,7 @@ export class UsernameAdminResolver {
 
   @Query(() => UsernameConnection, { nullable: true })
   async getAllTrademarkUsernames(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<UsernameConnection> {

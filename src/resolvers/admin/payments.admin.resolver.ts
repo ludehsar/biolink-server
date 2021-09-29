@@ -1,5 +1,5 @@
 import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { PaymentConnection, PaymentResponse } from '../../object-types'
 import { getPayment, getStripePaymentsPaginated } from '../../services'
 import { User } from '../../entities'
@@ -10,7 +10,7 @@ import { MyContext } from '../../types'
 export class PaymentsAdminResolver {
   @Query(() => PaymentConnection, { nullable: true })
   async getAllStripePayments(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<PaymentConnection> {

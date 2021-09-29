@@ -16,7 +16,7 @@ import {
   PrivacyInput,
   DirectoryInput,
   SortedLinksInput,
-  ConnectionArgs,
+  ConnectionArgsOld,
   DonationInput,
 } from '../../input-types'
 import {
@@ -245,7 +245,7 @@ export class BiolinkResolver {
 
   @Query(() => BiolinkConnection, { nullable: true })
   async getAllDirectories(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
   ): Promise<BiolinkConnection> {
     return await getDirectoriesPaginated(categoryIds, options)

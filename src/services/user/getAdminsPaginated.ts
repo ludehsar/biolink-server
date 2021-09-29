@@ -1,5 +1,5 @@
 import { UserConnection } from '../../object-types'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { ErrorCode, MyContext } from '../../types'
 import { AdminRole, User } from '../../entities'
 import { Brackets, getRepository } from 'typeorm'
@@ -7,7 +7,7 @@ import moment from 'moment'
 import { captureUserActivity } from '../../services'
 
 export const getAdminsPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User,
   context: MyContext
 ): Promise<UserConnection> => {

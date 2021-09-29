@@ -3,7 +3,7 @@ import { Arg, Ctx, Query, Resolver } from 'type-graphql'
 import { MyContext } from '../../types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { LinkConnection } from '../../object-types'
 import { getEmbedsPaginated, getLinksPaginated } from '../../services'
 
@@ -11,7 +11,7 @@ import { getEmbedsPaginated, getLinksPaginated } from '../../services'
 export class LinkAdminResolver {
   @Query(() => LinkConnection, { nullable: true })
   async getAllLinks(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<LinkConnection> {
@@ -20,7 +20,7 @@ export class LinkAdminResolver {
 
   @Query(() => LinkConnection, { nullable: true })
   async getAllEmbeds(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<LinkConnection> {

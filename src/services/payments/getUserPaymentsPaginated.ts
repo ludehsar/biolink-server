@@ -1,13 +1,13 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
 import { Payment, User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { PaymentConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
 export const getUserPaymentsPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User,
   context: MyContext
 ): Promise<PaymentConnection> => {

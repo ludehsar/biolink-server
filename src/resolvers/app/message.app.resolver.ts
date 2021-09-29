@@ -1,7 +1,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { MyContext } from '../../types'
-import { ConnectionArgs, NewMessageInput } from '../../input-types'
+import { ConnectionArgsOld, NewMessageInput } from '../../input-types'
 import { MessageConnection, MessageResponse } from '../../object-types'
 import { createNewMessage, getLastMessagesPaginated, getMessagesPaginated } from '../../services'
 import { CurrentUser } from '../../decorators'
@@ -25,7 +25,7 @@ export class MessageResolver {
   @Query(() => MessageConnection)
   async getAllMessages(
     @Arg('otherUserId', () => String) otherUserId: string,
-    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
+    @Arg('options', () => ConnectionArgsOld) options: ConnectionArgsOld,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<MessageConnection> {
@@ -34,7 +34,7 @@ export class MessageResolver {
 
   @Query(() => MessageConnection)
   async getLastMessages(
-    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
+    @Arg('options', () => ConnectionArgsOld) options: ConnectionArgsOld,
     @CurrentUser() user: User
   ): Promise<MessageConnection> {
     return await getLastMessagesPaginated(options, user)

@@ -1,4 +1,4 @@
-import { ConnectionArgs } from 'input-types'
+import { ConnectionArgsOld } from 'input-types'
 import moment from 'moment'
 import { Brackets, getRepository } from 'typeorm'
 import { Referral, User } from '../../entities'
@@ -6,7 +6,7 @@ import { ReferralConnection } from '../../object-types'
 import { ErrorCode } from '../../types'
 
 export const getSentEmailReferralsPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User
 ): Promise<ReferralConnection> => {
   if (!user) {

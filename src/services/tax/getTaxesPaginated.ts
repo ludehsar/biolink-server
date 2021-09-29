@@ -1,13 +1,13 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
 import { AdminRole, Tax, User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { TaxConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
 export const getTaxesPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   adminUser: User,
   context: MyContext
 ): Promise<TaxConnection> => {

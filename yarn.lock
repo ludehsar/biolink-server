@@ -5850,6 +5850,11 @@ typeorm-cli@^1.0.7:
     typescript "^3.5.3"
     warning "^4.0.3"
 
+typeorm-cursor-pagination@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/typeorm-cursor-pagination/-/typeorm-cursor-pagination-0.6.1.tgz#c4b809135402e38d434ae97747eabaadc18c3ee0"
+  integrity sha512-lqlvXBG2prsYFsBVZrWz2/wgoAcYzWCks/EMxP4wIVTISEO70dHQtQuaWWQP528lnW+rQNRwIK8sUuXMKJKavw==
+
 typeorm-typedi-extensions@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/typeorm-typedi-extensions/-/typeorm-typedi-extensions-0.4.1.tgz#e62e3c8f30021c9b8f258e068d38723dbd64de1d"

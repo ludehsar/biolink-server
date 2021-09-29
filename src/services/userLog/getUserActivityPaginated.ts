@@ -2,13 +2,13 @@ import moment from 'moment'
 import { getRepository } from 'typeorm'
 
 import { User, UserLogs } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { ActivityConnection } from '../../object-types'
 import { MyContext, ErrorCode } from '../../types'
 import { captureUserActivity } from '../../services'
 
 export const getUserActivityPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User,
   context: MyContext
 ): Promise<ActivityConnection> => {

@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, SupportAdminInput } from '../../input-types'
+import { ConnectionArgsOld, SupportAdminInput } from '../../input-types'
 import { SupportConnection, SupportResponse } from '../../object-types'
 import {
   editSupport,
@@ -16,7 +16,7 @@ import { MyContext } from '../../types'
 export class SupportAdminResolver {
   @Query(() => SupportConnection, { nullable: true })
   async getAllPendingSupports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<SupportConnection> {
@@ -25,7 +25,7 @@ export class SupportAdminResolver {
 
   @Query(() => SupportConnection, { nullable: true })
   async getAllResolvedSupports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<SupportConnection> {
@@ -34,7 +34,7 @@ export class SupportAdminResolver {
 
   @Query(() => SupportConnection, { nullable: true })
   async getAllDismissedSupports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<SupportConnection> {

@@ -1,14 +1,14 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
 import { AdminRole, Report, User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { ReportConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { ResolveStatus } from '../../enums'
 import { captureUserActivity } from '../../services'
 
 export const getPendingReportsPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   adminUser: User,
   context: MyContext
 ): Promise<ReportConnection> => {

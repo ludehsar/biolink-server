@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service'
 import {
   BillingInput,
   ChangePasswordInput,
+  ConnectionArgs,
   EmailAndUsernameInput,
   PasswordInput,
 } from '../input-types'
@@ -14,6 +15,8 @@ import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
 import { AuthService } from '../services/auth.service'
 import { BillingType } from '../enums'
+import { TrackingService } from '../services/tracking.service'
+import { PaginatedUserLogResponse } from '../object-types'
 
 @Service()
 export class UserController {
@@ -21,7 +24,8 @@ export class UserController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly biolinkService: BiolinkService,
-    private readonly usernameService: UsernameService
+    private readonly usernameService: UsernameService,
+    private readonly trackingService: TrackingService
   ) {}
 
   async changeUserEmailAddressAndUsername(
@@ -29,8 +33,7 @@ export class UserController {
     biolinkId: string,
     context: MyContext
   ): Promise<void> {
-    console.log((context.user as User).id)
-    await this.userService.updateUserById((context.user as User).id, {
+    const user = await this.userService.updateUserById((context.user as User).id, {
       email: emailAndUsernameInput.email,
     })
 
@@ -66,13 +69,15 @@ export class UserController {
         username: usernameDoc,
       })
     }
+
+    await this.trackingService.createUserLogs(user, context, 'Changed user email or username', true)
   }
 
   async changePassword(
     changePasswordInput: ChangePasswordInput,
     context: MyContext
   ): Promise<void> {
-    const user = await this.userService.getUserById((context.user as User).id)
+    const user = context.user as User
 
     if (!(await this.authService.isPasswordMatched(user, changePasswordInput.oldPassword))) {
       throw new ApolloError('Password did not match', ErrorCode.PASSWORD_DID_NOT_MATCH)
@@ -80,16 +85,20 @@ export class UserController {
     await this.userService.updateUserById((context.user as User).id, {
       password: changePasswordInput.newPassword,
     })
+
+    await this.trackingService.createUserLogs(user, context, 'Changed user password', false)
   }
 
   async deleteUserAccount(passwordInput: PasswordInput, context: MyContext): Promise<void> {
-    const user = await this.userService.getUserById((context.user as User).id)
+    const user = context.user as User
 
     if (!(await this.authService.isPasswordMatched(user, passwordInput.password))) {
       throw new ApolloError('Password did not match', ErrorCode.PASSWORD_DID_NOT_MATCH)
     }
     await this.userService.softDeleteUserById((context.user as User).id)
     await this.authService.logout(context.req.cookies['token'])
+
+    await this.trackingService.createUserLogs(user, context, 'Deleted user account', true)
   }
 
   async updateBilling(billingInput: BillingInput, context: MyContext): Promise<User> {
@@ -106,6 +115,8 @@ export class UserController {
         zip: billingInput.zip || '',
       },
     })
+
+    await this.trackingService.createUserLogs(user, context, 'Updated user billing info', true)
     return user
   }
 
@@ -120,5 +131,12 @@ export class UserController {
       currentBiolinkId: biolinkId,
     })
     return user
+  }
+
+  async getNotification(
+    connectionArgs: ConnectionArgs,
+    context: MyContext
+  ): Promise<PaginatedUserLogResponse> {
+    return await this.trackingService.getNotification((context.user as User).id, connectionArgs)
   }
 }

@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, ReportStatusInput } from '../../input-types'
+import { ConnectionArgsOld, ReportStatusInput } from '../../input-types'
 import { ReportConnection, ReportResponse } from '../../object-types'
 import {
   changeReportStatus,
@@ -16,7 +16,7 @@ import { MyContext } from '../../types'
 export class ReportAdminResolver {
   @Query(() => ReportConnection, { nullable: true })
   async getAllPendingReports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<ReportConnection> {
@@ -25,7 +25,7 @@ export class ReportAdminResolver {
 
   @Query(() => ReportConnection, { nullable: true })
   async getAllResolvedReports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<ReportConnection> {
@@ -34,7 +34,7 @@ export class ReportAdminResolver {
 
   @Query(() => ReportConnection, { nullable: true })
   async getAllDismissedReports(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<ReportConnection> {

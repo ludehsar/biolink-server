@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, NewCodeInput } from '../../input-types'
+import { ConnectionArgsOld, NewCodeInput } from '../../input-types'
 import { CodeConnection, CodeResponse } from '../../object-types'
 import {
   addCode,
@@ -16,7 +16,7 @@ import { MyContext } from '../../types'
 export class CodeAdminResolver {
   @Query(() => CodeConnection, { nullable: true })
   async getAllDiscounts(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<CodeConnection> {
@@ -25,7 +25,7 @@ export class CodeAdminResolver {
 
   @Query(() => CodeConnection, { nullable: true })
   async getAllReferrals(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<CodeConnection> {

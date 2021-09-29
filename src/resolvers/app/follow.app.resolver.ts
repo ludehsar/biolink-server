@@ -9,7 +9,7 @@ import {
 } from '../../services'
 import { MyContext } from '../../types'
 import { BiolinkConnection, DefaultResponse, FollowingResponse } from '../../object-types'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { emailVerified } from '../../middlewares'
 
 @Resolver()
@@ -36,7 +36,7 @@ export class FollowResolver {
 
   @Query(() => BiolinkConnection)
   async getAllFollowings(
-    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
+    @Arg('options', () => ConnectionArgsOld) options: ConnectionArgsOld,
     @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<BiolinkConnection> {

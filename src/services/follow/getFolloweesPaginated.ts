@@ -1,13 +1,13 @@
 import { getRepository } from 'typeorm'
 import moment from 'moment'
 import { Biolink, User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
 export const getFolloweesPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User,
   context: MyContext
 ): Promise<BiolinkConnection> => {

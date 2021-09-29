@@ -1,14 +1,14 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
 import { AdminRole, BlackList, User } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { BlackListConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 import { BlacklistType } from '../../enums'
 import { captureUserActivity } from '../../services'
 
 export const getBlackListedEmailsPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   adminUser: User,
   context: MyContext
 ): Promise<BlackListConnection> => {

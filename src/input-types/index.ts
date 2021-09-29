@@ -24,6 +24,7 @@ import { NewCategoryInput } from './category/NewCategoryInput'
 // Code
 import { NewCodeInput } from './code/NewCodeInput'
 // Common
+import { ConnectionArgsOld } from './common/ConnectionArgsOld'
 import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
 // Links
@@ -99,8 +100,9 @@ export {
   // Code
   NewCodeInput,
   // Common
-  ConnectionArgs,
+  ConnectionArgsOld,
   FileType,
+  ConnectionArgs,
   // Links
   NewLinkInput,
   // Message

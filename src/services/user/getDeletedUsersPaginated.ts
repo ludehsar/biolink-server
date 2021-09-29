@@ -1,12 +1,12 @@
 import { UserConnection } from '../../object-types'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { ErrorCode } from '../../types'
 import { AdminRole, User } from '../../entities'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
 
 export const getDeletedUsersPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User
 ): Promise<UserConnection> => {
   if (!user) {

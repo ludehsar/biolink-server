@@ -1,11 +1,11 @@
 import { getRepository } from 'typeorm'
 import moment from 'moment'
 import { Category } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { CategoryConnection } from '../../object-types'
 
 export const getCategoriesPaginated = async (
-  options: ConnectionArgs
+  options: ConnectionArgsOld
 ): Promise<CategoryConnection> => {
   // Getting before and after cursors from connection args
   let before = null

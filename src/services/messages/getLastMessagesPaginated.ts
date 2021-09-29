@@ -2,12 +2,12 @@ import moment from 'moment'
 import { getConnection } from 'typeorm'
 
 import { User, Message } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { MessageConnection } from '../../object-types'
 import { ErrorCode } from '../../types'
 
 export const getLastMessagesPaginated = async (
-  options: ConnectionArgs,
+  options: ConnectionArgsOld,
   user: User
 ): Promise<MessageConnection> => {
   if (!user) {

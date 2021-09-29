@@ -1,5 +1,5 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, NewCategoryInput } from '../../input-types'
+import { ConnectionArgsOld, NewCategoryInput } from '../../input-types'
 import { CategoryConnection, CategoryResponse, DefaultResponse } from '../../object-types'
 import {
   addCategory,
@@ -15,7 +15,7 @@ import { MyContext } from '../../types'
 @Resolver()
 export class CategoryAdminResolver {
   @Query(() => CategoryConnection, { nullable: true })
-  async getAllCategories(@Arg('options') options: ConnectionArgs): Promise<CategoryConnection> {
+  async getAllCategories(@Arg('options') options: ConnectionArgsOld): Promise<CategoryConnection> {
     return await getCategoriesPaginated(options)
   }
 

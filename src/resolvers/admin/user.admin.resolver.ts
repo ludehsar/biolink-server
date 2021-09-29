@@ -6,7 +6,7 @@ import {
   UserResponse,
   UserTotalCountsResponse,
 } from '../../object-types'
-import { ConnectionArgs, EditUserInput, NewUserInput } from '../../input-types'
+import { ConnectionArgsOld, EditUserInput, NewUserInput } from '../../input-types'
 import { CurrentAdmin } from '../../decorators'
 import { User } from '../../entities'
 import {
@@ -25,7 +25,7 @@ import { MyContext } from '../../types'
 export class UserAdminResolver {
   @Query(() => UserConnection, { nullable: true })
   async getAllUsers(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() admin: User,
     @Ctx() context: MyContext
   ): Promise<UserConnection> {
@@ -34,7 +34,7 @@ export class UserAdminResolver {
 
   @Query(() => UserConnection, { nullable: true })
   async getAllAdmins(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() admin: User,
     @Ctx() context: MyContext
   ): Promise<UserConnection> {
@@ -43,7 +43,7 @@ export class UserAdminResolver {
 
   @Query(() => UserConnection, { nullable: true })
   async getAllDeletedUsers(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() admin: User
   ): Promise<UserConnection> {
     return await getDeletedUsersPaginated(options, admin)

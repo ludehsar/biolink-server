@@ -1,12 +1,12 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
 import { Biolink } from '../../entities'
-import { ConnectionArgs } from '../../input-types'
+import { ConnectionArgsOld } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 
 export const getDirectoriesPaginated = async (
   categoryIds: number[],
-  options: ConnectionArgs
+  options: ConnectionArgsOld
 ): Promise<BiolinkConnection> => {
   // Getting before and after cursors from connection args
   let before = null

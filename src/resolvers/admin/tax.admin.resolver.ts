@@ -1,5 +1,5 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, NewTaxInput } from '../../input-types'
+import { ConnectionArgsOld, NewTaxInput } from '../../input-types'
 import { TaxConnection, TaxResponse } from '../../object-types'
 import { addTax, editTax, getTax, getTaxesPaginated } from '../../services'
 import { User } from '../../entities'
@@ -10,7 +10,7 @@ import { MyContext } from '../../types'
 export class TaxAdminResolver {
   @Query(() => TaxConnection, { nullable: true })
   async getAllTaxes(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<TaxConnection> {

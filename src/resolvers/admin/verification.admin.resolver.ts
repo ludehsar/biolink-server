@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, VerificationStatusInput } from '../../input-types'
+import { ConnectionArgsOld, VerificationStatusInput } from '../../input-types'
 import { VerificationConnection, VerificationResponse } from '../../object-types'
 import {
   changeVerificationStatus,
@@ -16,7 +16,7 @@ import { MyContext } from '../../types'
 export class VerificationAdminResolver {
   @Query(() => VerificationConnection, { nullable: true })
   async getAllPendingVerifications(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<VerificationConnection> {
@@ -25,7 +25,7 @@ export class VerificationAdminResolver {
 
   @Query(() => VerificationConnection, { nullable: true })
   async getAllVerifiedVerifications(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<VerificationConnection> {
@@ -34,7 +34,7 @@ export class VerificationAdminResolver {
 
   @Query(() => VerificationConnection, { nullable: true })
   async getAllRejectedVerifications(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<VerificationConnection> {

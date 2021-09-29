@@ -1,6 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { authUser, emailVerified } from '../../middlewares'
-import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import {
   EmailAndUsernameInput,
@@ -9,10 +8,9 @@ import {
   BillingInput,
   ConnectionArgs,
 } from '../../input-types'
-import { ActivityConnection } from '../../object-types'
-import { getUserActivityPaginated } from '../../services'
 import { MyContext } from '../../types'
 import { UserController } from '../../controllers'
+import { PaginatedUserLogResponse } from '../../object-types'
 
 @Resolver(User)
 export class UserResolver {
@@ -64,13 +62,12 @@ export class UserResolver {
     return await this.userController.updateCurrentBiolink(biolinkId, context)
   }
 
-  @Query(() => ActivityConnection, { nullable: true })
+  @Query(() => PaginatedUserLogResponse, { nullable: true })
   @UseMiddleware(authUser)
-  async getUserActivity(
+  async getUserNotification(
     @Arg('options') options: ConnectionArgs,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<ActivityConnection> {
-    return await getUserActivityPaginated(options, user, context)
+  ): Promise<PaginatedUserLogResponse> {
+    return await this.userController.getNotification(options, context)
   }
 }

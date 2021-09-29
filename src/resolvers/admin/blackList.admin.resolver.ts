@@ -1,5 +1,5 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgs, NewBlackListInput } from '../../input-types'
+import { ConnectionArgsOld, NewBlackListInput } from '../../input-types'
 import { BlackListConnection, BlackListResponse } from '../../object-types'
 import {
   addBlackList,
@@ -17,7 +17,7 @@ import { MyContext } from '../../types'
 export class BlackListAdminResolver {
   @Query(() => BlackListConnection, { nullable: true })
   async getAllBlackListedBadWords(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BlackListConnection> {
@@ -26,7 +26,7 @@ export class BlackListAdminResolver {
 
   @Query(() => BlackListConnection, { nullable: true })
   async getAllBlackListedEmails(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BlackListConnection> {
@@ -35,7 +35,7 @@ export class BlackListAdminResolver {
 
   @Query(() => BlackListConnection, { nullable: true })
   async getAllBlackListedUsernames(
-    @Arg('options') options: ConnectionArgs,
+    @Arg('options') options: ConnectionArgsOld,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BlackListConnection> {

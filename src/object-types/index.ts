@@ -36,6 +36,8 @@ import { CodeResponse } from './code/CodeResponse'
 import { DefaultResponse } from './common/DefaultResponse'
 import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
+import { PaginatedUserLogResponse } from './common/PaginatedUserLogResponse'
+import PagingResult from './common/PagingResult'
 // Follow
 import { FollowingResponse } from './follow/FollowingResponse'
 // Links
@@ -178,4 +180,6 @@ export {
   VerificationConnection,
   VerificationEdge,
   VerificationResponse,
+  PaginatedUserLogResponse,
+  PagingResult,
 }
