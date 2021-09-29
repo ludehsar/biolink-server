@@ -166,4 +166,21 @@ export class UserService {
     await user.save()
     return user
   }
+
+  /**
+   * Delete user by Id
+   * @param {string} userId
+   * @returns {Promise<User>}
+   */
+  async softDeleteUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne(userId)
+
+    if (!user) {
+      throw new ApolloError('Invalid user id', ErrorCode.USER_NOT_FOUND)
+    }
+
+    await user.softRemove()
+
+    return user
+  }
 }

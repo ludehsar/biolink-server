@@ -9,13 +9,8 @@ import {
   BillingInput,
   ConnectionArgs,
 } from '../../input-types'
-import { UserResponse, DefaultResponse, ActivityConnection } from '../../object-types'
-import {
-  deleteAccount,
-  updateBilling,
-  changeCurrentBiolinkId,
-  getUserActivityPaginated,
-} from '../../services'
+import { ActivityConnection } from '../../object-types'
+import { getUserActivityPaginated } from '../../services'
 import { MyContext } from '../../types'
 import { UserController } from '../../controllers'
 
@@ -24,7 +19,7 @@ export class UserResolver {
   constructor(private readonly userController: UserController) {}
 
   @Mutation(() => Boolean, { nullable: true })
-  @UseMiddleware(authUser, emailVerified)
+  @UseMiddleware(authUser)
   async changeUserAccountInfo(
     @Arg('options') options: EmailAndUsernameInput,
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
@@ -34,7 +29,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean, { nullable: true })
-  @UseMiddleware(authUser, emailVerified)
+  @UseMiddleware(authUser)
   async changeUserPassword(
     @Arg('options') options: ChangePasswordInput,
     @Ctx() context: MyContext
@@ -42,35 +37,35 @@ export class UserResolver {
     return await this.userController.changePassword(options, context)
   }
 
-  @Mutation(() => DefaultResponse)
+  @Mutation(() => Boolean, { nullable: true })
+  @UseMiddleware(authUser)
   async deleteUserAccount(
     @Arg('options') options: PasswordInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<DefaultResponse> {
-    return await deleteAccount(options, user, context)
+    @Ctx() context: MyContext
+  ): Promise<void> {
+    return await this.userController.deleteUserAccount(options, context)
   }
 
-  @Mutation(() => UserResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => User)
+  @UseMiddleware(authUser, emailVerified)
   async updateBilling(
     @Arg('options') options: BillingInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<UserResponse> {
-    return await updateBilling(options, user, context)
+    @Ctx() context: MyContext
+  ): Promise<User> {
+    return await this.userController.updateBilling(options, context)
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => User)
+  @UseMiddleware(authUser)
   async changeCurrentBiolinkId(
     @Arg('biolinkId', () => String) biolinkId: string,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<UserResponse> {
-    return await changeCurrentBiolinkId(biolinkId, user, context)
+  ): Promise<User> {
+    return await this.userController.updateCurrentBiolink(biolinkId, context)
   }
 
   @Query(() => ActivityConnection, { nullable: true })
+  @UseMiddleware(authUser)
   async getUserActivity(
     @Arg('options') options: ConnectionArgs,
     @CurrentUser() user: User,
