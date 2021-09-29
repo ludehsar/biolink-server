@@ -1,6 +1,6 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
-import { Biolink, User } from '../../entities'
+import { AdminRole, Biolink, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { BiolinkConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
@@ -22,7 +22,7 @@ export const getBiolinksPaginated = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

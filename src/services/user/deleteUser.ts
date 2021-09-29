@@ -1,5 +1,5 @@
 import { ErrorCode, MyContext } from '../../types'
-import { User } from '../../entities'
+import { AdminRole, User } from '../../entities'
 import { DefaultResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 
@@ -19,7 +19,7 @@ export const deleteUser = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

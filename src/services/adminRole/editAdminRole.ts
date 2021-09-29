@@ -33,7 +33,7 @@ export const editAdminRole = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

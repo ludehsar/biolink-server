@@ -1,5 +1,5 @@
 import { ReportResponse } from '../../object-types'
-import { Report, User } from '../../entities'
+import { AdminRole, Report, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -32,7 +32,7 @@ export const getReport = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

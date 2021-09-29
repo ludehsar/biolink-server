@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { CodeResponse } from '../../object-types'
-import { Code, User } from '../../entities'
+import { AdminRole, Code, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewCodeInput } from '../../input-types'
@@ -37,7 +37,7 @@ export const editCode = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

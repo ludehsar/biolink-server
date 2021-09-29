@@ -1,5 +1,5 @@
 import { SupportResponse } from '../../object-types'
-import { Support, User } from '../../entities'
+import { AdminRole, Support, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -32,7 +32,7 @@ export const getSupport = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

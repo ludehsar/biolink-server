@@ -1,5 +1,5 @@
 import { TaxResponse } from '../../object-types'
-import { Tax, User } from '../../entities'
+import { AdminRole, Tax, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewTaxInput } from '../../input-types'
@@ -20,7 +20,7 @@ export const addTax = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

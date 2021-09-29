@@ -185,7 +185,7 @@ export class User extends BaseEntity {
   @Field(() => AdminRole, { nullable: true })
   @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true, lazy: true })
   @JoinColumn({ name: 'adminRoleId' })
-  adminRole!: Promise<AdminRole>
+  adminRole!: Promise<AdminRole> | null
 
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: number
@@ -195,7 +195,7 @@ export class User extends BaseEntity {
     lazy: true,
   })
   @JoinColumn({ name: 'registeredByCodeId' })
-  registeredByCode!: Promise<Code>
+  registeredByCode!: Promise<Code> | null
 
   @RelationId((user: User) => user.registeredByCode)
   registeredByCodeId!: string

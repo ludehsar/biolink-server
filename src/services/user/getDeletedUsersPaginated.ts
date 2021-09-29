@@ -1,7 +1,7 @@
 import { UserConnection } from '../../object-types'
 import { ConnectionArgs } from '../../input-types'
 import { ErrorCode } from '../../types'
-import { User } from '../../entities'
+import { AdminRole, User } from '../../entities'
 import { Brackets, getRepository } from 'typeorm'
 import moment from 'moment'
 
@@ -20,7 +20,7 @@ export const getDeletedUsersPaginated = async (
     }
   }
 
-  const adminRole = await user.adminRole
+  const adminRole = (await user.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

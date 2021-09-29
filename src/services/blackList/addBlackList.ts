@@ -1,5 +1,5 @@
 import { BlackListResponse } from '../../object-types'
-import { BlackList, User } from '../../entities'
+import { AdminRole, BlackList, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { NewBlackListInput } from '../../input-types'
@@ -20,7 +20,7 @@ export const addBlackList = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

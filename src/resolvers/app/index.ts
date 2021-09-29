@@ -1,4 +1,5 @@
 import { AnalyticsResolver } from './analytics.app.resolver'
+import { AuthResolver } from './auth.app.resolver'
 import { BiolinkResolver } from './biolink.app.resolver'
 import { CategoryResolver } from './category.app.resolver'
 import { FollowResolver } from './follow.app.resolver'
@@ -15,6 +16,7 @@ import { VerificationResolver } from './verification.app.resolver'
 
 export {
   AnalyticsResolver,
+  AuthResolver,
   BiolinkResolver,
   CategoryResolver,
   FollowResolver,

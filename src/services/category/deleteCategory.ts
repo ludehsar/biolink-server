@@ -1,6 +1,6 @@
 import { DefaultResponse } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
-import { Category, User } from '../../entities'
+import { AdminRole, Category, User } from '../../entities'
 import { captureUserActivity } from '../../services'
 
 export const deleteCategory = async (
@@ -19,7 +19,7 @@ export const deleteCategory = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

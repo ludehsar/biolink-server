@@ -4,6 +4,7 @@ import { savePayment, saveStripeCustomerId } from '../services'
 import { appConfig } from '../config'
 import { getAuthUser, stripe } from '../utilities'
 import { PaymentMethod } from '../enums'
+import { Code } from '../entities'
 
 // TODO: change http://localhost:3000 to FRONTEND_APP_URL
 
@@ -28,7 +29,7 @@ stripeRoutes.post('/create-checkout-session', async (req, res): Promise<Response
   const { priceId } = req.body
   const couponCode =
     (await user.registeredByCode) && !user.usedReferralsToPurchasePlan
-      ? (await user.registeredByCode).code
+      ? ((await user.registeredByCode) as Code).code
       : undefined
 
   // See https://stripe.com/docs/api/checkout/sessions/create

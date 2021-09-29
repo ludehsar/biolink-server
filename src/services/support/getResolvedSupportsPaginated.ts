@@ -1,6 +1,6 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
-import { Support, User } from '../../entities'
+import { AdminRole, Support, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { SupportConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
@@ -23,7 +23,7 @@ export const getResolvedSupportsPaginated = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

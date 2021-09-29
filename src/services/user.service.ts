@@ -10,7 +10,7 @@ import { BlackListService } from './blacklist.service'
 import { BlacklistType } from '../enums'
 import { CodeService } from './code.service'
 import { PlanService } from './plan.service'
-import { UserUpdateBody } from 'interfaces/UserUpdateBody'
+import { UserUpdateBody } from '../interfaces/UserUpdateBody'
 
 @Service()
 export class UserService {
@@ -129,6 +129,7 @@ export class UserService {
     }
 
     if (updateBody.adminRole) user.adminRole = Promise.resolve(updateBody.adminRole)
+    else if (updateBody.adminRole === null) user.adminRole = null
     if (updateBody.authenticatorSecret) user.authenticatorSecret = updateBody.authenticatorSecret
     if (updateBody.billing) user.billing = updateBody.billing
     if (updateBody.country) user.country = updateBody.country
@@ -136,7 +137,8 @@ export class UserService {
     if (updateBody.email) {
       if (await this.isEmailTaken(updateBody.email, userId)) {
         throw new ApolloError('Email is already taken', ErrorCode.EMAIL_ALREADY_EXISTS)
-      } else if (await this.isEmailTaken(updateBody.email)) {
+      }
+      if (user.email !== updateBody.email) {
         user.emailVerifiedAt = null
       }
       user.email = updateBody.email
@@ -156,6 +158,7 @@ export class UserService {
     if (updateBody.planType) user.planType = updateBody.planType
     if (updateBody.registeredByCode)
       user.registeredByCode = Promise.resolve(updateBody.registeredByCode)
+    else if (updateBody.registeredByCode === null) user.registeredByCode = null
     if (updateBody.stripeCustomerId) user.stripeCustomerId = updateBody.stripeCustomerId
     if (updateBody.timezone) user.timezone = updateBody.timezone
     if (updateBody.totalLogin) user.totalLogin = updateBody.totalLogin

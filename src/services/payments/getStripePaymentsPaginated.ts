@@ -1,6 +1,6 @@
 import { getRepository, Brackets } from 'typeorm'
 import moment from 'moment'
-import { Payment, User } from '../../entities'
+import { AdminRole, Payment, User } from '../../entities'
 import { ConnectionArgs } from '../../input-types'
 import { PaymentConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
@@ -23,7 +23,7 @@ export const getStripePaymentsPaginated = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

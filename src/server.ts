@@ -29,6 +29,7 @@ import {
   FollowResolver,
   MessageResolver,
   PaymentResolver,
+  AuthResolver,
 } from './resolvers/app'
 import {
   AdminRoleAdminResolver,
@@ -107,6 +108,7 @@ const main = async (): Promise<void> => {
     schema: await buildSchema({
       resolvers: [
         AnalyticsResolver,
+        AuthResolver,
         SettingsResolver,
         UserResolver,
         CategoryResolver,

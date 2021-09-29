@@ -1,5 +1,5 @@
 import { UsernameResponse } from '../../object-types'
-import { Username, User } from '../../entities'
+import { Username, User, AdminRole } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -32,7 +32,7 @@ export const getUsername = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

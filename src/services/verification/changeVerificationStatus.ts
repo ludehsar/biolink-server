@@ -1,5 +1,5 @@
 import { ErrorCode, MyContext } from '../../types'
-import { User, Verification } from '../../entities'
+import { AdminRole, User, Verification } from '../../entities'
 import { VerificationResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
 import { VerificationStatusInput } from '../../input-types'
@@ -21,7 +21,7 @@ export const changeVerificationStatus = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

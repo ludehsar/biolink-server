@@ -2,7 +2,7 @@ import { validate } from 'class-validator'
 import { PlanResponse } from '../../object-types'
 import { PlanInput } from '../../input-types'
 import { ErrorCode, MyContext } from '../../types'
-import { Plan, User } from '../../entities'
+import { AdminRole, Plan, User } from '../../entities'
 import { captureUserActivity } from '../../services'
 import { PlanSettings } from '../../json-types'
 import { EnabledStatus } from '../../enums'
@@ -35,7 +35,7 @@ export const editPlan = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

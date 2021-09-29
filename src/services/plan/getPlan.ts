@@ -1,5 +1,5 @@
 import { captureUserActivity } from '../../services'
-import { Plan, User } from '../../entities'
+import { AdminRole, Plan, User } from '../../entities'
 import { PlanResponse } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
 
@@ -19,7 +19,7 @@ export const getPlan = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

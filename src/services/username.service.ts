@@ -5,8 +5,9 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { ErrorCode } from '../types'
-import { Biolink, User, Username } from '../entities'
+import { Username } from '../entities'
 import { PremiumUsernameType } from '../enums'
+import { UsernameUpdateBody } from '../interfaces/UsernameUpdateBody'
 
 @Service()
 export class UsernameService {
@@ -35,7 +36,8 @@ export class UsernameService {
       if (
         usernameDoc.biolinkId ||
         (usernameDoc.expireDate !== null &&
-          moment(moment.now()).isBefore(moment(usernameDoc.expireDate)))
+          moment(moment.now()).isBefore(moment(usernameDoc.expireDate))) ||
+        username.startsWith('0')
       ) {
         return true
       }
@@ -68,11 +70,10 @@ export class UsernameService {
 
   /**
    * Create a username
-   * @param {User} user
    * @param {string} username
    * @returns {Promise<Username>}
    */
-  async createUsername(user: User, username: string): Promise<Username> {
+  async createUsername(username: string): Promise<Username> {
     if (await this.isUsernameTaken(username)) {
       throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
@@ -80,7 +81,6 @@ export class UsernameService {
     const usernameDoc = this.usernameRepository.create({
       username,
     })
-    usernameDoc.owner = Promise.resolve(user)
     await usernameDoc.save()
 
     return usernameDoc
@@ -88,39 +88,45 @@ export class UsernameService {
 
   /**
    * Find or create a username
-   * @param {User} user
    * @param {string} username
    * @returns {Promise<Username>}
    */
-  async findOneOrCreate(user: User, username: string): Promise<Username> {
-    if (await this.isUsernameTaken(username)) {
-      throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
-    }
-
+  async findOneOrCreate(username: string): Promise<Username> {
     let usernameDoc = await this.usernameRepository.findOne({
       username,
     })
 
+    if (await this.isUsernameTaken(username)) {
+      throw new ApolloError('Username already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
+    }
+
     if (!usernameDoc) {
-      usernameDoc = this.usernameRepository.create({
-        username,
-      })
-      usernameDoc.owner = Promise.resolve(user)
-      await usernameDoc.save()
+      usernameDoc = await this.createUsername(username)
     }
 
     return usernameDoc
   }
 
   /**
-   * Links username with biolink
-   * @param {Username} username
-   * @param {Biolink} biolink
+   * Update username by id
+   * @param {string} usernameId
+   * @param {UsernameUpdateBody} updateBody
    * @returns {Promise<Username>}
    */
-  async linkBiolink(username: Username, biolink: Biolink): Promise<Username> {
-    username.biolink = Promise.resolve(biolink)
-    username.owner = Promise.resolve(await biolink.user)
+  async updateUsernameById(usernameId: string, updateBody: UsernameUpdateBody): Promise<Username> {
+    const username = await this.usernameRepository.findOne(usernameId)
+
+    if (!username) {
+      throw new ApolloError('No username found', ErrorCode.USERNAME_NOT_FOUND)
+    }
+
+    if (updateBody.biolink) username.biolink = Promise.resolve(updateBody.biolink)
+    else if (updateBody.biolink === null) username.biolink = null
+    if (updateBody.expireDate) username.expireDate = updateBody.expireDate
+    if (updateBody.owner) username.owner = Promise.resolve(updateBody.owner)
+    else if (updateBody.owner === null) username.owner = null
+    if (updateBody.premiumType) username.premiumType = updateBody.premiumType
+
     await username.save()
 
     return username

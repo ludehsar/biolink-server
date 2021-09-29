@@ -1,6 +1,6 @@
 import { MailDataRequired } from '@sendgrid/mail'
 import { ReportResponse } from '../../object-types'
-import { Report, User } from '../../entities'
+import { AdminRole, Report, User } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { ReportStatusInput } from '../../input-types'
@@ -37,7 +37,7 @@ export const changeReportStatus = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

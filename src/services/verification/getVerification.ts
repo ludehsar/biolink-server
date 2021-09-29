@@ -1,5 +1,5 @@
 import { VerificationResponse } from '../../object-types'
-import { Verification, User } from '../../entities'
+import { Verification, User, AdminRole } from '../../entities'
 import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 
@@ -32,7 +32,7 @@ export const getVerification = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

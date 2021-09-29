@@ -2,7 +2,7 @@ import { validate } from 'class-validator'
 import { CategoryResponse } from '../../object-types'
 import { NewCategoryInput } from '../../input-types'
 import { ErrorCode, MyContext } from '../../types'
-import { Category, User } from '../../entities'
+import { AdminRole, Category, User } from '../../entities'
 import { captureUserActivity } from '../../services'
 
 export const addCategory = async (
@@ -32,7 +32,7 @@ export const addCategory = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
   const adminRoleSettings = adminRole.roleSettings || []
 
   const userSettings = adminRoleSettings.find((role): boolean => {

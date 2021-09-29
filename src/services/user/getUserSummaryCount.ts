@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm'
 import { ErrorCode } from '../../types'
-import { Biolink, Link, User, Code, Payment } from '../../entities'
+import { Biolink, Link, User, Code, Payment, AdminRole } from '../../entities'
 import { UserTotalCountsResponse } from '../../object-types'
 
 export const getUserSummaryCounts = async (
@@ -31,7 +31,7 @@ export const getUserSummaryCounts = async (
     }
   }
 
-  const adminRole = await adminUser.adminRole
+  const adminRole = (await adminUser.adminRole) as AdminRole
 
   const adminRoleSettings = adminRole.roleSettings || []
 

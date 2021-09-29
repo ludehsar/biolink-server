@@ -98,7 +98,10 @@ export class AuthController {
 
   async sendVerificationEmail(context: MyContext): Promise<void> {
     const verifyEmailToken = await this.tokenService.generateVerifyEmailToken(context.user as User)
-    await this.emailService.sendVerificationEmail({ email: (context.user as User).email }, verifyEmailToken)
+    await this.emailService.sendVerificationEmail(
+      { email: (context.user as User).email },
+      verifyEmailToken
+    )
   }
 
   async verifyEmail(token: string): Promise<void> {
