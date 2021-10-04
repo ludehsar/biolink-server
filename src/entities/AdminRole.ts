@@ -19,7 +19,7 @@ export class AdminRole extends BaseEntity {
   @Field(() => Int, { nullable: true })
   id!: number
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   @Field(() => String, { nullable: true })
   roleName!: string
 

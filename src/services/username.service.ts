@@ -71,17 +71,21 @@ export class UsernameService {
   /**
    * Create a username
    * @param {string} username
+   * @param {UsernameUpdateBody} updateBody
    * @returns {Promise<Username>}
    */
-  async createUsername(username: string): Promise<Username> {
+  async createUsername(username: string, updateBody?: UsernameUpdateBody): Promise<Username> {
     if (await this.isUsernameTaken(username)) {
       throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
 
-    const usernameDoc = this.usernameRepository.create({
-      username,
-    })
-    await usernameDoc.save()
+    let usernameDoc = await this.usernameRepository
+      .create({
+        username,
+      })
+      .save()
+
+    if (updateBody) usernameDoc = await this.updateUsernameById(usernameDoc.id, updateBody)
 
     return usernameDoc
   }
@@ -91,7 +95,7 @@ export class UsernameService {
    * @param {string} username
    * @returns {Promise<Username>}
    */
-  async findOneOrCreate(username: string): Promise<Username> {
+  async findAvailableOneOrCreate(username: string): Promise<Username> {
     let usernameDoc = await this.usernameRepository.findOne({
       username,
     })

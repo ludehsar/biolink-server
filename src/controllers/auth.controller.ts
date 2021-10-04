@@ -15,12 +15,16 @@ import { AuthService } from '../services/auth.service'
 import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToken'
 import { EmailService } from '../services/email.service'
 import { User } from '../entities'
+import { CodeService } from '../services/code.service'
+import { PlanService } from '../services/plan.service'
 
 @Service()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly codeService: CodeService,
+    private readonly planService: PlanService,
     private readonly biolinkService: BiolinkService,
     private readonly blackListService: BlackListService,
     private readonly usernameService: UsernameService,
@@ -34,6 +38,10 @@ export class AuthController {
       throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
 
+    if (await this.userService.isEmailTaken(registerInput.email)) {
+      throw new ApolloError('Email is already taken', ErrorCode.EMAIL_ALREADY_EXISTS)
+    }
+
     if (
       await this.blackListService.isKeywordBlacklisted(
         registerInput.username,
@@ -43,18 +51,42 @@ export class AuthController {
       throw new ApolloError('Username cannot be used', ErrorCode.USERNAME_BLACKLISTED)
     }
 
+    if (
+      await this.blackListService.isKeywordBlacklisted(registerInput.email, BlacklistType.Email)
+    ) {
+      throw new ApolloError('Email is blacklisted', ErrorCode.EMAIL_BLACKLISTED)
+    }
+
     if (await this.usernameService.isPremiumUsername(registerInput.username)) {
       throw new ApolloError('Premium username cannot be used', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
 
-    const user = await this.userService.createUser(
-      registerInput.email,
-      registerInput.password,
-      registerInput.referralToken
-    )
-    await this.biolinkService.createBiolink(user, registerInput.username)
+    let code = undefined
+    if (registerInput.referralToken) {
+      code = await this.codeService.getCodeByReferralCode(registerInput.referralToken)
+    }
+
+    const freePlan = await this.planService.getFreePlan()
+
+    const user = await this.userService.createUser({
+      email: registerInput.email,
+      password: registerInput.password,
+      registeredByCode: code,
+      plan: freePlan,
+      totalLogin: 1,
+    })
+
+    const username = await this.usernameService.findAvailableOneOrCreate(registerInput.username)
+    await this.biolinkService.createBiolink({
+      user,
+      username,
+    })
 
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
+
+    context.user = user
+
+    await this.sendVerificationEmail(context)
 
     await this.notificationService.createUserLogs(user, context, 'Created new account', true)
 

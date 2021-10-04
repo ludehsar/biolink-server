@@ -63,9 +63,11 @@ export class UserController {
         throw new ApolloError('Premium username cannot be taken', ErrorCode.USERNAME_ALREADY_EXISTS)
       }
 
-      const usernameDoc = await this.usernameService.findOneOrCreate(emailAndUsernameInput.username)
+      const usernameDoc = await this.usernameService.findAvailableOneOrCreate(
+        emailAndUsernameInput.username
+      )
 
-      await this.biolinkService.updateUserById(biolinkId, {
+      await this.biolinkService.updateBiolinkById(biolinkId, {
         username: usernameDoc,
       })
     }

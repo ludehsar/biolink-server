@@ -18,7 +18,7 @@ export class CodeService {
    * @param {string} referralCode
    * @returns {Promise<Code>}
    */
-  async getCodeDoc(referralCode: string): Promise<Code> {
+  async getCodeByReferralCode(referralCode: string): Promise<Code> {
     const codeDoc = await this.codeRepository.findOne({
       where: {
         code: referralCode,

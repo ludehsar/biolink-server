@@ -18,15 +18,15 @@ export class Tax extends BaseEntity {
   @Field(() => Int, { nullable: true })
   id!: number
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   internalName!: string
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   name!: string
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   description!: string
 

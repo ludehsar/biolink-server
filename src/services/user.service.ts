@@ -6,53 +6,25 @@ import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { ErrorCode } from '../types'
 import { User } from '../entities'
-import { BlackListService } from './blacklist.service'
-import { BlacklistType } from '../enums'
 import { CodeService } from './code.service'
-import { PlanService } from './plan.service'
 import { UserUpdateBody } from '../interfaces/UserUpdateBody'
 
 @Service()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly blacklistService: BlackListService,
-    private readonly codeService: CodeService,
-    private readonly planService: PlanService
+    private readonly codeService: CodeService
   ) {}
 
   /**
    * Create a user
-   * @param {string} email
-   * @param {string} password
-   * @param {string} [referralToken]
+   * @param {UserUpdateBody} updateBody
    * @returns {Promise<User>}
    */
-  async createUser(email: string, password: string, referralToken?: string): Promise<User> {
-    if (await this.isEmailTaken(email)) {
-      throw new ApolloError('Email is already taken', ErrorCode.EMAIL_ALREADY_EXISTS)
-    }
+  async createUser(updateBody: UserUpdateBody): Promise<User> {
+    let user = await User.create().save()
 
-    if (await this.blacklistService.isKeywordBlacklisted(email, BlacklistType.Email)) {
-      throw new ApolloError('Email is blacklisted', ErrorCode.EMAIL_BLACKLISTED)
-    }
-
-    const encryptedPassword = await argon2.hash(password)
-    const user = this.userRepository.create({
-      email,
-      encryptedPassword,
-    })
-
-    if (referralToken) {
-      const code = this.codeService.getCodeDoc(referralToken)
-
-      if (code) {
-        user.registeredByCode = Promise.resolve(code)
-      }
-    }
-
-    const freePlan = await this.planService.getFreePlan()
-    user.plan = Promise.resolve(freePlan)
+    user = await this.updateUserById(user.id, updateBody)
 
     await user.save()
 

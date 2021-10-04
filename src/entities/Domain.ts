@@ -27,7 +27,7 @@ export class Domain extends BaseEntity {
   scheme!: DomainScheme
 
   @Field(() => String, { nullable: true })
-  @Column()
+  @Column({ nullable: true })
   host!: string
 
   @Field(() => String, { nullable: true })

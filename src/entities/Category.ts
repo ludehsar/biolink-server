@@ -20,7 +20,7 @@ export class Category extends BaseEntity {
   id!: number
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   categoryName!: string
 
   @Field(() => Boolean, { nullable: true, defaultValue: false })

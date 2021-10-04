@@ -9,7 +9,7 @@ export class Settings extends BaseEntity {
   id!: number
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   key!: string
 
   @Field(() => String, { nullable: true })

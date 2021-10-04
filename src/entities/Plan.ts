@@ -22,7 +22,7 @@ export class Plan extends BaseEntity {
   id!: number
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   name!: string
 
   @Field(() => Float, { nullable: true })

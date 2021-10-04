@@ -3,52 +3,27 @@ import { Service } from 'typedi'
 import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 
-import { Biolink, User } from '../entities'
+import { Biolink } from '../entities'
 import { UsernameService } from './username.service'
 import { ErrorCode } from '../types'
-import { BlackListService } from './blacklist.service'
-import { BlacklistType } from '../enums'
 import { BiolinkUpdateBody } from '../interfaces/BiolinkUpdateBody'
 
 @Service()
 export class BiolinkService {
   constructor(
     @InjectRepository(Biolink) private readonly biolinkRepository: Repository<Biolink>,
-    private readonly usernameService: UsernameService,
-    private readonly blacklistService: BlackListService
+    private readonly usernameService: UsernameService
   ) {}
 
   /**
    * Create a biolink
-   * @param {User} user
-   * @param {string} username
+   * @param {BiolinkUpdateBody} updateBody
    * @returns {Promise<Biolink>}
    */
-  async createBiolink(user: User, username: string): Promise<Biolink> {
-    if (await this.usernameService.isUsernameTaken(username)) {
-      throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
-    }
+  async createBiolink(updateBody: BiolinkUpdateBody): Promise<Biolink> {
+    let biolink = await this.biolinkRepository.create().save()
 
-    if (await this.blacklistService.isKeywordBlacklisted(username, BlacklistType.Username)) {
-      throw new ApolloError('Username cannot be used', ErrorCode.USERNAME_BLACKLISTED)
-    }
-
-    if (await this.usernameService.isPremiumUsername(username, user.id)) {
-      throw new ApolloError('Premium username cannot be used', ErrorCode.USERNAME_ALREADY_EXISTS)
-    }
-
-    const usernameDoc = await this.usernameService.findOneOrCreate(username)
-
-    const biolink = this.biolinkRepository.create()
-    biolink.username = Promise.resolve(usernameDoc)
-    biolink.user = Promise.resolve(user)
-    await biolink.save()
-
-    await this.usernameService.updateUsernameById(usernameDoc.id, {
-      biolink,
-      owner: user,
-      expireDate: null,
-    })
+    biolink = await this.updateBiolinkById(biolink.id, updateBody)
 
     return biolink
   }
@@ -74,7 +49,7 @@ export class BiolinkService {
    * @param {BiolinkUpdateBody} updateBody
    * @returns {Promise<Biolink>}
    */
-  async updateUserById(biolinkId: string, updateBody: BiolinkUpdateBody): Promise<Biolink> {
+  async updateBiolinkById(biolinkId: string, updateBody: BiolinkUpdateBody): Promise<Biolink> {
     const biolink = await this.getBiolinkById(biolinkId)
 
     if (!biolink) {

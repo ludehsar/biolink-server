@@ -25,7 +25,7 @@ export class BlackList extends BaseEntity {
   blacklistType!: BlacklistType
 
   @Field(() => String, { nullable: true })
-  @Column()
+  @Column({ nullable: true })
   keyword!: string
 
   @Field(() => String, { nullable: true })

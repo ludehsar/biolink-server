@@ -24,7 +24,7 @@ export class Username extends BaseEntity {
   @Field(() => String, { nullable: true })
   id!: string
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   @Field(() => String, { nullable: true })
   username!: string
 

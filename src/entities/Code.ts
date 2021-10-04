@@ -28,7 +28,7 @@ export class Code extends BaseEntity {
   type!: CodeType
 
   @Field(() => String, { nullable: true })
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   code!: string
 
   @Field(() => Float, { nullable: true })

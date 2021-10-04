@@ -19,7 +19,7 @@ export class Token extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
   token!: string
 
