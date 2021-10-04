@@ -1,4 +1,5 @@
 import { ClassType, Field, ObjectType } from 'type-graphql'
+import { Cursor } from './Cursor'
 
 export default function PagingResult<TItem>(TItemClass: ClassType<TItem>) {
   @ObjectType({ isAbstract: true })
@@ -10,13 +11,4 @@ export default function PagingResult<TItem>(TItemClass: ClassType<TItem>) {
     cursor!: Cursor
   }
   return PagingResultClass
-}
-
-@ObjectType()
-class Cursor {
-  @Field(() => String, { nullable: true })
-  beforeCursor!: string | null
-
-  @Field(() => String, { nullable: true })
-  afterCursor!: string | null
 }

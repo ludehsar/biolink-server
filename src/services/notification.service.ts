@@ -78,9 +78,7 @@ export class NotificationService {
   /**
    * Get user notification
    * @param {User} user
-   * @param {MyContext} context
-   * @param {string} description
-   * @param {boolean} [showInActivity]
+   * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedUserLogResponse>}
    */
   async getNotification(

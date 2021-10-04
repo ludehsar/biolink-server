@@ -2,15 +2,14 @@
 import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
-import { BiolinkClicksResponse } from './analytics/BiolinkClicksResponse'
+import { BiolinkClicksResponse } from './common/BiolinkClicksResponse'
 import { BiolinkChartResponse } from './analytics/BiolinkChartResponse'
 import { BiolinkChartValue } from './analytics/BiolinkChartValue'
 import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
 import { EarningChartResponse } from './analytics/EarningChartResponse'
 import { EarningChartValue } from './analytics/EarningChartValue'
-import { LinkClicksResponse } from './analytics/LinkClicksResponse'
-import { SingleBiolinkClickCount } from './analytics/SingleBiolinkClickCount'
-import { SingleLinkClickCount } from './analytics/SingleLinkClickCount'
+import { SingleBiolinkClickCount } from './common/SingleBiolinkClickCount'
+import { SingleLinkClickCount } from './common/SingleLinkClickCount'
 import { UsersAdminsCountResponse } from './analytics/UsersAdminsCountResponse'
 // Auth
 import { UserWithTokens } from './auth/UserWithTokens'
@@ -38,6 +37,8 @@ import { ErrorResponse } from './common/ErrorResponse'
 import { PageInfo } from './common/PageInfo'
 import { PaginatedUserLogResponse } from './common/PaginatedUserLogResponse'
 import PagingResult from './common/PagingResult'
+import { Cursor } from './common/Cursor'
+import { LinkClicksResponse } from './common/LinkClicksResponse'
 // Follow
 import { FollowingResponse } from './follow/FollowingResponse'
 // Links
@@ -117,6 +118,7 @@ export {
   BlackListResponse,
   CategoryConnection,
   CategoryEdge,
+  Cursor,
   CategoryResponse,
   BiolinkChartResponse,
   BiolinkChartValue,

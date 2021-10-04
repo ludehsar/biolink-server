@@ -6,6 +6,8 @@ import { User } from '../entities'
 import { TrackingService } from '../services/tracking.service'
 import { DailyClickChartResponse } from '../object-types/common/DailyClickChartResponse'
 import { BiolinkService } from '../services/biolink.service'
+import { ConnectionArgs } from '../input-types'
+import { BiolinkClicksResponse, LinkClicksResponse } from '../object-types'
 
 @Service()
 export class TrackingController {
@@ -25,5 +27,28 @@ export class TrackingController {
     }
 
     return this.trackingService.getBiolinkDailyClickChartsByBiolinkId(biolinkId)
+  }
+
+  async getLinkClicksData(
+    connectionArgs: ConnectionArgs,
+    context: MyContext
+  ): Promise<LinkClicksResponse> {
+    return this.trackingService.getLinksClickCountsByUserId(
+      (context.user as User).id,
+      connectionArgs
+    )
+  }
+
+  async getBiolinkClicksData(
+    biolinkId: string,
+    context: MyContext
+  ): Promise<BiolinkClicksResponse> {
+    const biolink = await this.biolinkService.getBiolinkById(biolinkId)
+
+    if (biolink.userId !== (context.user as User).id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    return this.trackingService.getBiolinksClickCounts(biolink)
   }
 }
