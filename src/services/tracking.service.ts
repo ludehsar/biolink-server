@@ -5,7 +5,7 @@ import DeviceDetector from 'device-detector-js'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import * as geoip from 'geoip-lite'
 
-import { Biolink, Link, TrackLink, UserLogs } from '../entities'
+import { Biolink, Link, TrackLink } from '../entities'
 import { MyContext } from '../types'
 import { DailyClickChartResponse } from '../object-types/common/DailyClickChartResponse'
 import { ConnectionArgs } from '../input-types'
@@ -19,8 +19,8 @@ import {
 @Service()
 export class TrackingService {
   constructor(
-    @InjectRepository(UserLogs) private readonly tracklinkRepository: Repository<TrackLink>,
-    @InjectRepository(UserLogs) private readonly linkRepository: Repository<Link>
+    @InjectRepository(TrackLink) private readonly tracklinkRepository: Repository<TrackLink>,
+    @InjectRepository(Link) private readonly linkRepository: Repository<Link>
   ) {}
 
   /**

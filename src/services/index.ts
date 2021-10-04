@@ -5,7 +5,6 @@ import { editAdminRole } from './adminRole/editAdminRole'
 import { getAdminRole } from './adminRole/getAdminRole'
 import { getAdminRoles } from './adminRole/getAdminRoles'
 // Analytics
-import { getBiolinkChartData } from './analytics/getBiolinkChartData'
 import { getDashboardTotalCounts } from './analytics/getDashboardTotalCounts'
 import { getLast30DaysEarnings } from './analytics/getLast30DaysEarnings'
 import { getUsersAndAdminsCountData } from './analytics/getUsersAndAdminsCountData'
@@ -180,7 +179,6 @@ export {
   getAdminRole,
   getAdminRoles,
   // Analytics
-  getBiolinkChartData,
   getDashboardTotalCounts,
   getLast30DaysEarnings,
   getUsersAndAdminsCountData,

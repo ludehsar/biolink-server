@@ -3,7 +3,7 @@ import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { BiolinkClicksResponse } from './common/BiolinkClicksResponse'
-import { BiolinkChartResponse } from './analytics/BiolinkChartResponse'
+import { BiolinkChartResponse } from './common/BiolinkChartResponse'
 import { BiolinkChartValue } from './analytics/BiolinkChartValue'
 import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
 import { EarningChartResponse } from './analytics/EarningChartResponse'
