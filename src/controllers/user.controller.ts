@@ -15,7 +15,7 @@ import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
 import { AuthService } from '../services/auth.service'
 import { BillingType } from '../enums'
-import { TrackingService } from '../services/tracking.service'
+import { NotificationService } from '../services/notification.service'
 import { PaginatedUserLogResponse } from '../object-types'
 
 @Service()
@@ -25,7 +25,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly biolinkService: BiolinkService,
     private readonly usernameService: UsernameService,
-    private readonly trackingService: TrackingService
+    private readonly notificationService: NotificationService
   ) {}
 
   async changeUserEmailAddressAndUsername(
@@ -70,7 +70,12 @@ export class UserController {
       })
     }
 
-    await this.trackingService.createUserLogs(user, context, 'Changed user email or username', true)
+    await this.notificationService.createUserLogs(
+      user,
+      context,
+      'Changed user email or username',
+      true
+    )
   }
 
   async changePassword(
@@ -86,7 +91,7 @@ export class UserController {
       password: changePasswordInput.newPassword,
     })
 
-    await this.trackingService.createUserLogs(user, context, 'Changed user password', false)
+    await this.notificationService.createUserLogs(user, context, 'Changed user password', false)
   }
 
   async deleteUserAccount(passwordInput: PasswordInput, context: MyContext): Promise<void> {
@@ -98,7 +103,7 @@ export class UserController {
     await this.userService.softDeleteUserById((context.user as User).id)
     await this.authService.logout(context.req.cookies['token'])
 
-    await this.trackingService.createUserLogs(user, context, 'Deleted user account', true)
+    await this.notificationService.createUserLogs(user, context, 'Deleted user account', true)
   }
 
   async updateBilling(billingInput: BillingInput, context: MyContext): Promise<User> {
@@ -116,7 +121,7 @@ export class UserController {
       },
     })
 
-    await this.trackingService.createUserLogs(user, context, 'Updated user billing info', true)
+    await this.notificationService.createUserLogs(user, context, 'Updated user billing info', true)
     return user
   }
 
@@ -137,6 +142,6 @@ export class UserController {
     connectionArgs: ConnectionArgs,
     context: MyContext
   ): Promise<PaginatedUserLogResponse> {
-    return await this.trackingService.getNotification((context.user as User).id, connectionArgs)
+    return await this.notificationService.getNotification((context.user as User).id, connectionArgs)
   }
 }

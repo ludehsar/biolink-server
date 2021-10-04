@@ -8,7 +8,7 @@ import { ErrorCode, MyContext } from '../types'
 import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
 import { TokenService } from '../services/token.service'
-import { TrackingService } from '../services/tracking.service'
+import { NotificationService } from '../services/notification.service'
 import { BlackListService } from '../services/blacklist.service'
 import { BlacklistType } from '../enums'
 import { AuthService } from '../services/auth.service'
@@ -25,7 +25,7 @@ export class AuthController {
     private readonly blackListService: BlackListService,
     private readonly usernameService: UsernameService,
     private readonly tokenService: TokenService,
-    private readonly trackingService: TrackingService,
+    private readonly notificationService: NotificationService,
     private readonly emailService: EmailService
   ) {}
 
@@ -56,7 +56,7 @@ export class AuthController {
 
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
 
-    await this.trackingService.createUserLogs(user, context, 'Created new account', true)
+    await this.notificationService.createUserLogs(user, context, 'Created new account', true)
 
     return {
       access,

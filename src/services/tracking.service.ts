@@ -3,46 +3,29 @@ import { Repository } from 'typeorm'
 import DeviceDetector from 'device-detector-js'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import * as geoip from 'geoip-lite'
-import moment from 'moment'
-import axios from 'axios'
-import { buildPaginator } from 'typeorm-cursor-pagination'
 
-import { User, UserLogs } from '../entities'
+import { Biolink, Link, TrackLink, UserLogs } from '../entities'
 import { MyContext } from '../types'
-import { UserService } from './user.service'
-import { CountryInfo } from '../interfaces'
-import { ConnectionArgs } from '../input-types'
-import { PaginatedUserLogResponse } from '../object-types'
+import { DailyClickChartResponse } from '../object-types/common/DailyClickChartResponse'
 
 @Service()
 export class TrackingService {
   constructor(
-    @InjectRepository(UserLogs) private readonly userlogsRepository: Repository<UserLogs>,
-    private readonly userService: UserService
+    @InjectRepository(UserLogs) private readonly tracklinkRepository: Repository<TrackLink>
   ) {}
 
   /**
-   * Tracks user major activities
-   * @param {User} user
-   * @param {MyContext} context
-   * @param {string} description
-   * @param {boolean} [showInActivity]
-   * @returns {Promise<UserLogs>}
+   * Tracks links or biolinks
+   * @param {Biolink | Link} linkOrBiolink
+   * @returns {Promise<TrackLink>}
    */
-  async createUserLogs(
-    user: User,
-    context: MyContext,
-    description: string,
-    showInActivity = false
-  ): Promise<UserLogs> {
+  async trackVisitors(linkOrBiolink: Biolink | Link, context: MyContext): Promise<TrackLink> {
     const ip = context.req.ip
     const geo = geoip.lookup(ip)
     const deviceDetector = new DeviceDetector()
     const device = deviceDetector.parse(context.req.headers['user-agent'] || '')
 
-    const userLog = this.userlogsRepository.create({
-      description,
-      ipAddress: ip,
+    const trackingDoc = this.tracklinkRepository.create({
       browserLanguage: context.req.acceptsLanguages()[0] || 'Unknown',
       browserName: device.client?.name || 'Unknown',
       cityName: geo?.city || 'Unknown',
@@ -51,64 +34,48 @@ export class TrackingService {
         ? device.device.type.charAt(0).toUpperCase() + device.device.type.slice(1)
         : 'Unknown',
       osName: device.os?.name || 'Unknown',
-      showInActivity,
-    })
-    userLog.user = Promise.resolve(user)
-    await userLog.save()
-
-    let country = ''
-
-    if (geo) {
-      const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
-      country = ((await countryInfo.data) as CountryInfo).name
-    }
-
-    await this.userService.updateUserById(user.id, {
-      language: context.req.acceptsLanguages()[0] || 'Unknown',
-      lastIPAddress: ip,
-      lastUserAgent: context.req.headers['user-agent'] || '',
-      timezone: new Date().getTimezoneOffset().toString(),
-      lastActiveTill: moment(moment.now()).add(5, 'm').toDate(),
-      country,
+      referer: context.req.headers.referer || 'Unknown',
+      utmCampaign: context.req.params.utm_campaign || 'Unknown',
+      utmMedium: context.req.params.utm_medium || 'Unknown',
+      utmSource: context.req.params.utm_source || 'Unknown',
     })
 
-    return userLog
+    if (linkOrBiolink instanceof Link) trackingDoc.link = Promise.resolve(linkOrBiolink)
+    else trackingDoc.biolink = Promise.resolve(linkOrBiolink)
+    await trackingDoc.save()
+
+    return trackingDoc
   }
 
   /**
-   * Get user notification
-   * @param {User} user
-   * @param {MyContext} context
-   * @param {string} description
-   * @param {boolean} [showInActivity]
-   * @returns {Promise<PaginatedUserLogResponse>}
+   * Gets biolink daily clicks chart
+   * @param {string} biolinkId
+   * @returns {Promise<DailyClickChartResponse>}
    */
-  async getNotification(
-    userId: string,
-    options: ConnectionArgs
-  ): Promise<PaginatedUserLogResponse> {
-    const queryBuilder = this.userlogsRepository
-      .createQueryBuilder('activity')
-      .where(`activity.userId = :userId`, {
-        userId: userId,
-      })
-      .andWhere(`activity.showInActivity = TRUE`)
-      .andWhere(`LOWER(activity.description) like :query`, {
-        query: `%${options.query.toLowerCase()}%`,
-      })
+  async getBiolinkDailyClickChartsByBiolinkId(biolinkId: string): Promise<DailyClickChartResponse> {
+    const result = await this.tracklinkRepository.query(
+      `
+        SELECT date, coalesce(views, 0) as views
+        FROM  (
+          SELECT "date"::date
+          FROM generate_series(current_date - interval '7 days'
+                            ,  current_date
+                            ,  interval  '1 day') "date"
+          ) d
+        LEFT JOIN (
+          SELECT "tb"."createdAt"::date AS date
+                , count(*) AS views
+          FROM   "track_link" "tb"
+          WHERE  "tb"."createdAt" >= current_date - interval '7 days'
+          AND    "tb"."biolinkId" = '${biolinkId}'
+          GROUP  BY 1
+          ) t USING (date)
+        ORDER  BY date;
+      `
+    )
 
-    const paginator = buildPaginator({
-      entity: UserLogs,
-      alias: 'activity',
-      paginationKeys: ['createdAt'],
-      query: {
-        afterCursor: options.afterCursor,
-        beforeCursor: options.beforeCursor,
-        limit: options.limit,
-        order: options.order,
-      },
-    })
-
-    return await paginator.paginate(queryBuilder)
+    return {
+      result,
+    }
   }
 }

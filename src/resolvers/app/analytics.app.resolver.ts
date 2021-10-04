@@ -1,26 +1,28 @@
 import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 
 import { BiolinkClicksResponse, BiolinkChartResponse, LinkClicksResponse } from '../../object-types'
-import { getBiolinkChartData, getBiolinkClicksData, getLinkClicksData } from '../../services'
+import { getBiolinkClicksData, getLinkClicksData } from '../../services'
 import { CurrentUser } from '../../decorators'
 import { User } from '../../entities'
 import { MyContext } from '../../types'
-import { emailVerified } from '../../middlewares'
+import { authUser } from '../../middlewares'
+import { TrackingController } from '../../controllers'
 
 @Resolver()
 export class AnalyticsResolver {
+  constructor(private readonly trackingController: TrackingController) {}
+
   @Query(() => BiolinkChartResponse)
-  @UseMiddleware(emailVerified)
+  @UseMiddleware(authUser)
   async getBiolinkChartData(
     @Arg('id', { defaultValue: 'Biolink ID' }) id: string,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
   ): Promise<BiolinkChartResponse> {
-    return await getBiolinkChartData(id, user, context)
+    return await this.trackingController.getBiolinkChartData(id, context)
   }
 
   @Query(() => LinkClicksResponse)
-  @UseMiddleware(emailVerified)
+  @UseMiddleware(authUser)
   async getLinkClicksData(
     @CurrentUser() user: User,
     @Ctx() context: MyContext
@@ -29,7 +31,7 @@ export class AnalyticsResolver {
   }
 
   @Query(() => BiolinkClicksResponse)
-  @UseMiddleware(emailVerified)
+  @UseMiddleware(authUser)
   async getBiolinkClicksData(
     @Arg('biolinkId', { description: 'Biolink Id' }) biolinkId: string,
     @CurrentUser() user: User,
