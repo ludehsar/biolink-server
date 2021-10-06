@@ -29,6 +29,7 @@ import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolin
 import { CategoryService } from '../services/category.service'
 import { appConfig } from '../config'
 import { PlanService } from '../services/plan.service'
+import { DirectorySearchResponse } from 'object-types'
 
 @Service()
 export class BiolinkController {
@@ -82,6 +83,10 @@ export class BiolinkController {
     return biolink
   }
 
+  async getSearchQueries(query: string): Promise<DirectorySearchResponse> {
+    return await this.biolinkService.directorySearchQueries(query)
+  }
+
   async getBiolinkFromUsername(username: string, password?: string): Promise<Biolink> {
     const biolink = await this.biolinkService.getBiolinkByUsername(username)
 
@@ -114,6 +119,13 @@ export class BiolinkController {
     context: MyContext
   ): Promise<PaginatedBiolinkResponse> {
     return await this.biolinkService.getAllBiolinksByUserId((context.user as User).id, options)
+  }
+
+  async getAllDirectories(
+    options: ConnectionArgs,
+    categoryIds: number[]
+  ): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkService.getAllDirectories(options, categoryIds)
   }
 
   async updateBiolinkProfile(

@@ -2,6 +2,7 @@ import { ApolloError } from 'apollo-server-errors'
 import { Service } from 'typedi'
 import { Brackets, Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 import * as argon2 from 'argon2'
 
 import { Biolink } from '../entities'
@@ -10,7 +11,7 @@ import { ErrorCode } from '../types'
 import { BiolinkUpdateBody } from '../interfaces/BiolinkUpdateBody'
 import { ConnectionArgs } from '../input-types'
 import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolinkResponse'
-import { buildPaginator } from 'typeorm-cursor-pagination'
+import { DirectorySearchResponse } from '../object-types'
 
 @Service()
 export class BiolinkService {
@@ -214,5 +215,284 @@ export class BiolinkService {
     })
 
     return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Get all directories
+   * @param {ConnectionArgs} options
+   * @param {number[]} categoryIds
+   * @returns {Promise<PaginatedBiolinkResponse>}
+   */
+  async getAllDirectories(
+    options: ConnectionArgs,
+    categoryIds: number[],
+    searchParameter?:
+      | 'username'
+      | 'displayName'
+      | 'city'
+      | 'state'
+      | 'country'
+      | 'bio'
+      | 'directoryBio'
+      | 'categoryName'
+  ): Promise<PaginatedBiolinkResponse> {
+    const queryBuilder = this.biolinkRepository
+      .createQueryBuilder('biolink')
+      .leftJoinAndSelect('biolink.category', 'category')
+      .leftJoinAndSelect('biolink.user', 'user')
+      .leftJoinAndSelect('biolink.username', 'username')
+      .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+
+    if (searchParameter) {
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          switch (searchParameter) {
+            case 'username': {
+              qb.where(`LOWER(username.username) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'displayName': {
+              qb.where(`LOWER(biolink.displayName) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'city': {
+              qb.where(`LOWER(biolink.city) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'state': {
+              qb.where(`LOWER(biolink.state) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'country': {
+              qb.where(`LOWER(biolink.country) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'bio': {
+              qb.where(`LOWER(biolink.bio) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'directoryBio': {
+              qb.where(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            case 'categoryName': {
+              qb.where(`LOWER(category.categoryName) like :query`, {
+                query: `%${options.query.toLowerCase()}%`,
+              })
+              break
+            }
+            default:
+              break
+          }
+        })
+      )
+    } else {
+      queryBuilder.andWhere(
+        new Brackets((qb) => {
+          qb.where(`LOWER(username.username) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+            .orWhere(`LOWER(biolink.displayName) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.city) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.state) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.country) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.bio) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(category.categoryName) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(user.email) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+        })
+      )
+    }
+
+    if (categoryIds) {
+      queryBuilder.andWhere('biolink.categoryId in (:...categoryIds)', { categoryIds })
+    }
+
+    const paginator = buildPaginator({
+      entity: Biolink,
+      alias: 'biolink',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Get directory search queries
+   * @param {string} query
+   * @returns {Promise<DirectorySearchResponse>}
+   */
+  async directorySearchQueries(query: string): Promise<DirectorySearchResponse> {
+    const response: DirectorySearchResponse = {}
+
+    try {
+      const biolinksForCategoryName = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'categoryName'
+        )
+      ).data
+
+      response.results = await Promise.all(
+        biolinksForCategoryName.map(async (biolink) => (await biolink.category)?.categoryName || '')
+      )
+
+      const biolinksForUsername = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'username'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        await Promise.all(
+          biolinksForUsername.map(async (biolink) => (await biolink.username)?.username || '')
+        )
+      )
+
+      const biolinksForDisplayName = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'displayName'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        biolinksForDisplayName.map((biolink) => biolink.displayName || '')
+      )
+
+      const biolinksForDirectoryBio = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'directoryBio'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        biolinksForDirectoryBio.map((biolink) => biolink.settings.directoryBio || '')
+      )
+
+      const biolinksForBio = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'bio'
+        )
+      ).data
+
+      response.results = response.results.concat(biolinksForBio.map((biolink) => biolink.bio || ''))
+
+      const biolinksForCity = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'city'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        biolinksForCity.map((biolink) => biolink.city || '')
+      )
+
+      const biolinksForState = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'state'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        biolinksForState.map((biolink) => biolink.state || '')
+      )
+
+      const biolinksForCountry = (
+        await this.getAllDirectories(
+          {
+            limit: Math.max(10 - (response.results || []).length, 0),
+            order: 'ASC',
+            query,
+          },
+          [],
+          'country'
+        )
+      ).data
+
+      response.results = response.results.concat(
+        biolinksForCountry.map((biolink) => biolink.country || '')
+      )
+    } catch (err) {
+      throw new ApolloError('Something went wrong', ErrorCode.DATABASE_ERROR)
+    }
+
+    return response
   }
 }

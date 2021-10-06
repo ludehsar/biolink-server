@@ -16,23 +16,11 @@ import {
   PrivacyInput,
   DirectoryInput,
   SortedLinksInput,
-  ConnectionArgsOld,
   DonationInput,
   ConnectionArgs,
 } from '../../input-types'
-import {
-  BiolinkResponse,
-  BiolinkConnection,
-  DefaultResponse,
-  DirectorySearchResponse,
-} from '../../object-types'
-import {
-  sortBiolinkLinks,
-  getDirectoriesPaginated,
-  removeBiolink,
-  importFromLinktree,
-  getSearchQueries,
-} from '../../services'
+import { BiolinkResponse, DefaultResponse, DirectorySearchResponse } from '../../object-types'
+import { sortBiolinkLinks, removeBiolink, importFromLinktree } from '../../services'
 import { MyContext } from '../../types'
 import { authUser, emailVerified } from '../../middlewares'
 import { BiolinkController } from '../../controllers'
@@ -214,19 +202,19 @@ export class BiolinkResolver {
     return await sortBiolinkLinks(id, options, context, user)
   }
 
-  @Query(() => BiolinkConnection, { nullable: true })
+  @Query(() => PaginatedBiolinkResponse, { nullable: true })
   async getAllDirectories(
-    @Arg('options') options: ConnectionArgsOld,
+    @Arg('options') options: ConnectionArgs,
     @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
-  ): Promise<BiolinkConnection> {
-    return await getDirectoriesPaginated(categoryIds, options)
+  ): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkController.getAllDirectories(options, categoryIds)
   }
 
   @Query(() => DirectorySearchResponse, { nullable: true })
   async getSearchQueries(
     @Arg('query', { defaultValue: '' }) query: string
   ): Promise<DirectorySearchResponse> {
-    return await getSearchQueries(query)
+    return await this.biolinkController.getSearchQueries(query)
   }
 
   @Mutation(() => DefaultResponse)

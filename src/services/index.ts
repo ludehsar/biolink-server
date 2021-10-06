@@ -26,7 +26,6 @@ import { getDirectoriesPaginated } from './biolink/getDirectoriesPaginated'
 import { getBiolink } from './biolink/getBiolink'
 import { getBiolinkFromUsername } from './biolink/getBiolinkFromUsername'
 import { getUserBiolinks } from './biolink/getUserBiolinks'
-import { getSearchQueries } from './biolink/getSearchQueries'
 import { importFromLinktree } from './biolink/importFromLinktree'
 import { removeBiolink } from './biolink/removeBiolink'
 import { sortBiolinkLinks } from './biolink/sortBiolinkLinks'
@@ -214,7 +213,6 @@ export {
   updateDirectorySettings,
   sortBiolinkLinks,
   getDirectoriesPaginated,
-  getSearchQueries,
   removeBiolink,
   importFromLinktree,
   // Black List

@@ -1,10 +1,13 @@
 import { Service } from 'typedi'
 import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 import { ApolloError } from 'apollo-server-errors'
 
 import { Category } from '../entities'
 import { ErrorCode } from '../types'
+import { PaginatedCategoryResponse } from '../object-types/common/PaginatedCategoryResponse'
+import { ConnectionArgs } from '../input-types'
 
 @Service()
 export class CategoryService {
@@ -25,5 +28,32 @@ export class CategoryService {
     }
 
     return category
+  }
+
+  /**
+   * Get all categoris
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedUserLogResponse>}
+   */
+  async getCategories(options: ConnectionArgs): Promise<PaginatedCategoryResponse> {
+    const queryBuilder = this.categoryRepository
+      .createQueryBuilder('category')
+      .where(`LOWER(category.categoryName) like :query`, {
+        query: `%${options.query.toLowerCase()}%`,
+      })
+
+    const paginator = buildPaginator({
+      entity: Category,
+      alias: 'category',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
   }
 }
