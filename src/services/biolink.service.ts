@@ -495,4 +495,17 @@ export class BiolinkService {
 
     return response
   }
+
+  /**
+   * Delete biolink by Id
+   * @param {string} biolinkId
+   * @returns {Promise<Biolink>}
+   */
+  async softDeleteBiolinkById(biolinkId: string): Promise<Biolink> {
+    const biolink = await this.getBiolinkById(biolinkId)
+
+    await biolink.softRemove()
+
+    return biolink
+  }
 }

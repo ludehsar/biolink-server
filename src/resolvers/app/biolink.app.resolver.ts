@@ -19,8 +19,8 @@ import {
   DonationInput,
   ConnectionArgs,
 } from '../../input-types'
-import { BiolinkResponse, DefaultResponse, DirectorySearchResponse } from '../../object-types'
-import { sortBiolinkLinks, removeBiolink, importFromLinktree } from '../../services'
+import { BiolinkResponse, DirectorySearchResponse } from '../../object-types'
+import { sortBiolinkLinks, importFromLinktree } from '../../services'
 import { MyContext } from '../../types'
 import { authUser, emailVerified } from '../../middlewares'
 import { BiolinkController } from '../../controllers'
@@ -193,6 +193,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
+  @UseMiddleware(authUser)
   async sortBiolinkLinks(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SortedLinksInput,
@@ -217,14 +218,13 @@ export class BiolinkResolver {
     return await this.biolinkController.getSearchQueries(query)
   }
 
-  @Mutation(() => DefaultResponse)
-  @UseMiddleware(authUser, emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser)
   async removeBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<DefaultResponse> {
-    return await removeBiolink(id, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.removeBiolink(id, context)
   }
 
   @Mutation(() => BiolinkResponse)

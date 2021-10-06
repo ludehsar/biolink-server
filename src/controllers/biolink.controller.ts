@@ -87,6 +87,18 @@ export class BiolinkController {
     return await this.biolinkService.directorySearchQueries(query)
   }
 
+  async removeBiolink(biolinkId: string, context: MyContext): Promise<Biolink> {
+    let biolink = await this.biolinkService.getBiolinkById(biolinkId)
+
+    if (biolink.userId !== (context.user as User).id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    biolink = await this.biolinkService.softDeleteBiolinkById(biolink.id)
+
+    return biolink
+  }
+
   async getBiolinkFromUsername(username: string, password?: string): Promise<Biolink> {
     const biolink = await this.biolinkService.getBiolinkByUsername(username)
 
@@ -369,6 +381,8 @@ export class BiolinkController {
       throw new ForbiddenError('Forbidden')
     }
 
+    console.log(profilePhoto)
+
     // TODO: Upload photo in aws s3
 
     return biolink
@@ -385,6 +399,8 @@ export class BiolinkController {
     if (biolink.userId !== user.id) {
       throw new ForbiddenError('Forbidden')
     }
+
+    console.log(coverPhoto)
 
     // TODO: Upload photo in aws s3
 
