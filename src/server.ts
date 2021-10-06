@@ -8,7 +8,7 @@ import { createConnection } from 'typeorm'
 import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
 import { graphqlUploadExpress } from 'graphql-upload'
-import { corsOptions, port } from './config'
+import { corsOptions, port, __prod__ } from './config'
 import { stripeRoutes } from './routers'
 import { MyContext } from './types'
 import {
@@ -64,12 +64,14 @@ const main = async (): Promise<void> => {
   // Cookie parser
   app.use(cookieParser())
 
-  // Limiting requesting rates
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-  })
-  app.use(limiter)
+  if (__prod__) {
+    // Limiting requesting rates
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+    })
+    app.use(limiter)
+  }
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
