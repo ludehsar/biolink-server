@@ -4,135 +4,135 @@ import { SocialAccountStyleType } from '../enums'
 @ObjectType()
 export class SocialMediaProps {
   @Field(() => String, { nullable: true })
-  platform!: string
+  platform?: string
 
   @Field(() => String, { nullable: true })
   icon?: string
 
   @Field(() => String, { nullable: true })
-  link!: string
+  link?: string
 
   @Field(() => Boolean, { defaultValue: false, nullable: true })
-  featured!: boolean
+  featured?: boolean
 }
 
 @ObjectType()
 export class BiolinkSettings {
   // ----- Dark Mode ----- //
   @Field(() => Boolean, { nullable: true })
-  enableDarkMode!: boolean
+  enableDarkMode?: boolean
 
   // ----- Contacts ----- //
   @Field(() => Boolean, { nullable: true })
-  showEmail!: boolean
+  showEmail?: boolean
 
   @Field(() => String, { nullable: true })
-  email!: string
+  email?: string
 
   @Field(() => Boolean, { nullable: true })
-  showPhone!: boolean
+  showPhone?: boolean
 
   @Field(() => String, { nullable: true })
-  phone!: string
+  phone?: string
 
   @Field(() => Boolean, { nullable: true })
-  enableColoredContactButtons!: boolean
+  enableColoredContactButtons?: boolean
 
   // ----- Directory Settings ----- //
   @Field(() => Boolean, { nullable: true })
-  addedToDirectory!: boolean
+  addedToDirectory?: boolean
 
   @Field(() => String, { nullable: true })
-  directoryBio!: string
+  directoryBio?: string
 
   // ----- Social Media Icons ----- //
   @Field(() => Boolean, { nullable: true })
-  enableColoredSocialMediaIcons!: boolean
+  enableColoredSocialMediaIcons?: boolean
 
   @Field(() => String, { nullable: true, defaultValue: SocialAccountStyleType.Round })
-  socialAccountStyleType!: SocialAccountStyleType
+  socialAccountStyleType?: SocialAccountStyleType
 
   @Field(() => [SocialMediaProps], {
     nullable: true,
     deprecationReason:
       'Social accounts will not be saved here from now on. It has been integrated with the Link object',
   })
-  socialAccounts!: SocialMediaProps[]
+  socialAccounts?: SocialMediaProps[]
 
   // ----- Analytics ----- //
   @Field(() => Boolean, { nullable: true })
-  enableFacebookPixel!: boolean
+  enableFacebookPixel?: boolean
 
   @Field(() => String, { nullable: true })
-  facebookPixelId!: string
+  facebookPixelId?: string
 
   @Field(() => Boolean, { nullable: true })
-  enableGoogleAnalytics!: boolean
+  enableGoogleAnalytics?: boolean
 
   @Field(() => String, { nullable: true })
-  googleAnalyticsCode!: string
+  googleAnalyticsCode?: string
 
   @Field(() => Boolean, { nullable: true })
-  enableEmailCapture!: boolean
+  enableEmailCapture?: boolean
 
   @Field(() => String, { nullable: true })
-  emailCaptureId!: string
+  emailCaptureId?: string
 
   // ----- UTM Parameter ----- //
   @Field(() => Boolean, { nullable: true })
-  enableUtmParameters!: boolean
+  enableUtmParameters?: boolean
 
   @Field(() => String, { nullable: true })
-  utmSource!: string
+  utmSource?: string
 
   @Field(() => String, { nullable: true })
-  utmMedium!: string
+  utmMedium?: string
 
   @Field(() => String, { nullable: true })
-  utmCampaign!: string
+  utmCampaign?: string
 
   // ----- SEO ----- //
   @Field(() => Boolean, { nullable: true })
-  blockSearchEngineIndexing!: boolean
+  blockSearchEngineIndexing?: boolean
 
   @Field(() => String, { nullable: true })
-  pageTitle!: string
+  pageTitle?: string
 
   @Field(() => String, { nullable: true })
-  metaDescription!: string
+  metaDescription?: string
 
   @Field(() => String, { nullable: true })
-  opengraphImageUrl!: string
+  opengraphImageUrl?: string
 
   // ----- Custom Branding ----- //
   @Field(() => Boolean, { nullable: true })
-  removeDefaultBranding!: boolean
+  removeDefaultBranding?: boolean
 
   @Field(() => Boolean, { nullable: true })
-  enableCustomBranding!: boolean
+  enableCustomBranding?: boolean
 
   @Field(() => String, { nullable: true })
-  customBrandingName!: string
+  customBrandingName?: string
 
   @Field(() => String, { nullable: true })
-  customBrandingUrl!: string
+  customBrandingUrl?: string
 
   // ----- Protection ------ //
   @Field(() => Boolean, { nullable: true })
-  enablePasswordProtection!: boolean
+  enablePasswordProtection?: boolean
 
-  password!: string
+  password?: string
 
   @Field(() => Boolean, { nullable: true })
-  enableSensitiveContentWarning!: boolean
+  enableSensitiveContentWarning?: boolean
 
   // ----- Donation ----- //
   @Field(() => String, { nullable: true })
-  paypalLink!: string
+  paypalLink?: string
 
   @Field(() => String, { nullable: true })
-  venmoLink!: string
+  venmoLink?: string
 
   @Field(() => String, { nullable: true })
-  payoneerLink!: string
+  payoneerLink?: string
 }

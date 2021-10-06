@@ -2,7 +2,7 @@ import { Arg, Ctx, Int, Mutation, Query, Resolver, UseMiddleware } from 'type-gr
 import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
 import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
+import { Biolink, User } from '../../entities'
 import {
   NewBiolinkInput,
   UpdateBiolinkProfileInput,
@@ -18,219 +18,190 @@ import {
   SortedLinksInput,
   ConnectionArgsOld,
   DonationInput,
+  ConnectionArgs,
 } from '../../input-types'
 import {
   BiolinkResponse,
-  BiolinkListResponse,
   BiolinkConnection,
   DefaultResponse,
   DirectorySearchResponse,
 } from '../../object-types'
 import {
-  createBiolink,
-  getBiolinkFromUsername,
-  getUserBiolinks,
-  updateBiolink,
-  updateDarkModeSettings,
-  updateContactButtonSettings,
-  updateSocialAccountsSettings,
-  updateIntegrationSettings,
-  updateUTMParameterSettings,
-  updateSEOSettings,
-  updateBrandingSettings,
-  updatePrivacySettings,
-  uploadBiolinkProfilePhoto,
-  uploadBiolinkCoverPhoto,
-  updateDirectorySettings,
   sortBiolinkLinks,
   getDirectoriesPaginated,
   removeBiolink,
   importFromLinktree,
   getSearchQueries,
-  updateDonationSettings,
-  getBiolink,
 } from '../../services'
 import { MyContext } from '../../types'
-import { emailVerified } from '../../middlewares'
+import { authUser, emailVerified } from '../../middlewares'
+import { BiolinkController } from '../../controllers'
+import { PaginatedBiolinkResponse } from '../../object-types/common/PaginatedBiolinkResponse'
 
 @Resolver()
 export class BiolinkResolver {
-  @Mutation(() => BiolinkResponse)
+  constructor(private readonly biolinkController: BiolinkController) {}
+
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async createNewBiolink(
     @Arg('options') options: NewBiolinkInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await createBiolink(options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.createBiolink(options, context)
   }
 
-  @Query(() => BiolinkResponse)
+  @Query(() => Biolink)
   async getBiolinkFromUsername(
     @Arg('username', { description: 'Biolink Username' }) username: string,
-    @Arg('password', { description: 'Biolink Password', nullable: true }) password: string,
-    @Ctx() context: MyContext
-  ): Promise<BiolinkResponse> {
-    return await getBiolinkFromUsername(username, context, password)
+    @Arg('password', { description: 'Biolink Password', nullable: true }) password: string
+  ): Promise<Biolink> {
+    return await this.biolinkController.getBiolinkFromUsername(username, password)
   }
 
-  @Query(() => BiolinkResponse, { nullable: true })
-  async getBiolink(
-    @Arg('id') id: string,
-    @CurrentUser() user: User,
-    @Ctx() context: MyContext
-  ): Promise<BiolinkResponse> {
-    return await getBiolink(id, user, context)
+  @Query(() => Biolink, { nullable: true })
+  @UseMiddleware(authUser)
+  async getBiolink(@Arg('id') id: string, @Ctx() context: MyContext): Promise<Biolink> {
+    return await this.biolinkController.getBiolink(id, context)
   }
 
-  @Query(() => BiolinkListResponse)
+  @Query(() => PaginatedBiolinkResponse)
+  @UseMiddleware(authUser)
   async getAllUserBiolinks(
-    @CurrentUser() user: User,
+    @Arg('options') options: ConnectionArgs,
     @Ctx() context: MyContext
-  ): Promise<BiolinkListResponse> {
-    return await getUserBiolinks(user, context)
+  ): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkController.getAllUserBiolinks(options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
-  async updateBiolink(
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
+  async updateBiolinkProfile(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UpdateBiolinkProfileInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateBiolink(user, id, options, context)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateBiolinkProfile(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateDarkModeOptions(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DarkModeInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateDarkModeSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateBiolinkTheme(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateDonationSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DonationInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateDonationSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateDonationLink(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateContactButtonSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: ContactButtonInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateContactButtonSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateContactButtons(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateSocialAccountsSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SocialAccountsInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateSocialAccountsSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateSocialIconSettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateIntegrationSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: IntegrationInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateIntegrationSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateIntegrationSettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateUTMParameterSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: UTMParameterInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateUTMParameterSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateUTMParameter(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateSEOSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SEOInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateSEOSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateSEOSettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateBrandingSettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: BrandingInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateBrandingSettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateBrandSettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updatePrivacySettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: PrivacyInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updatePrivacySettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updatePrivacySettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async uploadBiolinkProfilePhoto(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('profilePhoto', () => GraphQLUpload) profilePhoto: FileUpload,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await uploadBiolinkProfilePhoto(id, profilePhoto, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.uploadProfilePhoto(id, profilePhoto, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async uploadBiolinkCoverPhoto(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('coverPhoto', () => GraphQLUpload) coverPhoto: FileUpload,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await uploadBiolinkCoverPhoto(id, coverPhoto, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.uploadCoverPhoto(id, coverPhoto, context)
   }
 
-  @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authUser, emailVerified)
   async updateDirectorySettings(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: DirectoryInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await updateDirectorySettings(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateDirectorySettings(id, options, context)
   }
 
   @Mutation(() => BiolinkResponse)
@@ -259,7 +230,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => DefaultResponse)
-  @UseMiddleware(emailVerified)
+  @UseMiddleware(authUser, emailVerified)
   async removeBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Ctx() context: MyContext,
@@ -269,7 +240,7 @@ export class BiolinkResolver {
   }
 
   @Mutation(() => BiolinkResponse)
-  @UseMiddleware(emailVerified)
+  @UseMiddleware(authUser, emailVerified)
   async importBiolinkDetailsFromLinktreeProfile(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('linktreeUsername') linktreeUsername: string,

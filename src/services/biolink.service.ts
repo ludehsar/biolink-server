@@ -1,12 +1,16 @@
 import { ApolloError } from 'apollo-server-errors'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
+import { Brackets, Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import * as argon2 from 'argon2'
 
 import { Biolink } from '../entities'
 import { UsernameService } from './username.service'
 import { ErrorCode } from '../types'
 import { BiolinkUpdateBody } from '../interfaces/BiolinkUpdateBody'
+import { ConnectionArgs } from '../input-types'
+import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolinkResponse'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 
 @Service()
 export class BiolinkService {
@@ -41,6 +45,48 @@ export class BiolinkService {
     }
 
     return biolink
+  }
+
+  /**
+   * Get biolink by username
+   * @param {string} username
+   * @returns {Promise<Biolink>}
+   */
+  async getBiolinkByUsername(username: string): Promise<Biolink> {
+    const usernameDoc = await this.usernameService.getUsernameDocByUsername(username)
+    const biolink = await usernameDoc.biolink
+
+    if (!biolink) {
+      throw new ApolloError('Invalid username', ErrorCode.BIOLINK_COULD_NOT_BE_FOUND)
+    }
+
+    return biolink
+  }
+
+  /**
+   * Check if password matched
+   * @param {Biolink} biolink
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   */
+  async isPasswordMatched(biolink: Biolink, password: string): Promise<boolean> {
+    if (await argon2.verify((biolink.settings || {}).password || '', password)) {
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   * Count number of biolinks by user id
+   * @param {string} userId
+   * @returns {Promise<number>}
+   */
+  async countBiolinksByUserId(userId: string): Promise<number> {
+    return await this.biolinkRepository
+      .createQueryBuilder('biolink')
+      .where('biolink.userId = :userId', { userId: userId })
+      .getCount()
   }
 
   /**
@@ -84,14 +130,16 @@ export class BiolinkService {
           biolink: null,
           expireDate: new Date(Date.now() + 12096e5),
         })
-        biolink.username = Promise.resolve(updateBody.username)
+
         biolink.changedUsername = true
-        await this.usernameService.updateUsernameById(updateBody.username.id, {
-          biolink,
-          owner: await biolink.user,
-          expireDate: null,
-        })
       }
+
+      biolink.username = Promise.resolve(updateBody.username)
+      await this.usernameService.updateUsernameById(updateBody.username.id, {
+        biolink,
+        owner: await biolink.user,
+        expireDate: null,
+      })
     }
     if (updateBody.verification) {
       biolink.verification = Promise.resolve(updateBody.verification)
@@ -105,5 +153,66 @@ export class BiolinkService {
 
     await biolink.save()
     return biolink
+  }
+
+  /**
+   * Get all user biolinks
+   * @param {string} userId
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedBiolinkResponse>}
+   */
+  async getAllBiolinksByUserId(
+    userId: string,
+    options: ConnectionArgs
+  ): Promise<PaginatedBiolinkResponse> {
+    const queryBuilder = this.biolinkRepository
+      .createQueryBuilder('biolink')
+      .leftJoinAndSelect('biolink.category', 'category')
+      .leftJoinAndSelect('biolink.username', 'username')
+      .where(`biolink.userId = :userId`, {
+        userId: userId,
+      })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`LOWER(username.username) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+            .orWhere(`LOWER(biolink.displayName) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.city) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.state) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.country) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.bio) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+            .orWhere(`LOWER(category.categoryName) like :query`, {
+              query: `%${options.query.toLowerCase()}%`,
+            })
+        })
+      )
+
+    const paginator = buildPaginator({
+      entity: Biolink,
+      alias: 'biolink',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
   }
 }

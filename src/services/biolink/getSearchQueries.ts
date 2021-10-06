@@ -61,7 +61,7 @@ export const getSearchQueries = async (query: string): Promise<DirectorySearchRe
 
     response.results = response.results.concat(
       (await biolinkDirectoryBioQueryBuilder.getMany()).map(
-        (biolink) => biolink.settings.directoryBio
+        (biolink) => biolink.settings.directoryBio as string
       )
     )
 

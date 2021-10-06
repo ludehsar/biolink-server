@@ -37,7 +37,7 @@ export const getBiolinkFromUsername = async (
       }
     }
 
-    const passwordVerified = await argon2.verify(biolinkSettings.password, password)
+    const passwordVerified = await argon2.verify(biolinkSettings.password || '', password)
 
     if (!passwordVerified) {
       return {

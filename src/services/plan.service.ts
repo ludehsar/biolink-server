@@ -5,6 +5,7 @@ import { ApolloError } from 'apollo-server-errors'
 
 import { Plan } from '../entities'
 import { ErrorCode } from '../types'
+import { PlanSettings } from '../json-types'
 
 @Service()
 export class PlanService {
@@ -29,5 +30,37 @@ export class PlanService {
     }
 
     return plan
+  }
+
+  /**
+   * Get free plan
+   * @param {number} planId
+   * @returns {Promise<Plan>}
+   */
+  async getPlanByPlanId(planId: number): Promise<Plan> {
+    const plan = await this.planRepository.findOne(planId)
+
+    if (!plan) {
+      throw new ApolloError('plan is not available', ErrorCode.PLAN_COULD_NOT_BE_FOUND)
+    }
+
+    return plan
+  }
+
+  /**
+   * Get values from plan settings
+   * @param {number} planId
+   * @param {keyof PlanSettings} keyword
+   * @returns {Promise<boolean | number | undefined>}
+   */
+  async getValuesFromPlanSettingsByPlanId(
+    planId: number,
+    keyword: keyof PlanSettings
+  ): Promise<boolean | number | undefined> {
+    const plan = await this.getPlanByPlanId(planId)
+
+    const planSettings = plan.settings || {}
+
+    return planSettings[keyword]
   }
 }
