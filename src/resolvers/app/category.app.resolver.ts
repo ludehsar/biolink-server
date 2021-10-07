@@ -1,14 +1,16 @@
 import { Arg, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld } from '../../input-types'
-import { CategoryConnection } from '../../object-types'
-import { getCategoriesPaginated } from '../../services'
+import { CategoryController } from '../../controllers'
+import { ConnectionArgs } from '../../input-types'
+import { PaginatedCategoryResponse } from '../../object-types/common/PaginatedCategoryResponse'
 
 @Resolver()
 export class CategoryResolver {
-  @Query(() => CategoryConnection, { nullable: true })
-  async fetchAllCategories(
-    @Arg('options') options: ConnectionArgsOld
-  ): Promise<CategoryConnection> {
-    return await getCategoriesPaginated(options)
+  constructor(private readonly categoryController: CategoryController) {}
+
+  @Query(() => PaginatedCategoryResponse, { nullable: true })
+  async getAllCategories(
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedCategoryResponse> {
+    return await this.categoryController.getAllCategories(options)
   }
 }
