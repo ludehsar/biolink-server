@@ -1,53 +1,48 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
-import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
-import {
-  followBiolink,
-  getFolloweesPaginated,
-  getIfFollowingBiolink,
-  unfollowBiolink,
-} from '../../services'
+import { Follow } from '../../entities'
 import { MyContext } from '../../types'
-import { BiolinkConnection, DefaultResponse, FollowingResponse } from '../../object-types'
-import { ConnectionArgsOld } from '../../input-types'
-import { emailVerified } from '../../middlewares'
+import { ConnectionArgs } from '../../input-types'
+import { authUser } from '../../middlewares'
+import { FollowController } from '../../controllers'
+import { PaginatedBiolinkResponse } from '../../object-types/common/PaginatedBiolinkResponse'
 
 @Resolver()
 export class FollowResolver {
-  @Mutation(() => DefaultResponse)
-  @UseMiddleware(emailVerified)
+  constructor(private readonly followController: FollowController) {}
+
+  @Mutation(() => Follow)
+  @UseMiddleware(authUser)
   async followBiolink(
     @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await followBiolink(followingBiolinkId, user, context)
+  ): Promise<Follow> {
+    return await this.followController.followBiolink(followingBiolinkId, context)
   }
 
-  @Mutation(() => DefaultResponse)
-  @UseMiddleware(emailVerified)
+  @Mutation(() => Follow)
+  @UseMiddleware(authUser)
   async unfollowBiolink(
     @Arg('followingBiolinkId', () => String) followingBiolinkId: string,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await unfollowBiolink(followingBiolinkId, user, context)
+  ): Promise<Follow> {
+    return await this.followController.unfollowBiolink(followingBiolinkId, context)
   }
 
-  @Query(() => BiolinkConnection)
+  @Query(() => PaginatedBiolinkResponse)
+  @UseMiddleware(authUser)
   async getAllFollowings(
-    @Arg('options', () => ConnectionArgsOld) options: ConnectionArgsOld,
-    @CurrentUser() user: User,
+    @Arg('options', () => ConnectionArgs) options: ConnectionArgs,
     @Ctx() context: MyContext
-  ): Promise<BiolinkConnection> {
-    return await getFolloweesPaginated(options, user, context)
+  ): Promise<PaginatedBiolinkResponse> {
+    return await this.followController.getFollowingBiolinks(options, context)
   }
 
-  @Query(() => FollowingResponse)
+  @Query(() => Boolean)
+  @UseMiddleware(authUser)
   async getIfFollowing(
     @Arg('biolinkId', () => String) biolinkId: string,
-    @CurrentUser() user: User
-  ): Promise<FollowingResponse> {
-    return await getIfFollowingBiolink(biolinkId, user)
+    @Ctx() context: MyContext
+  ): Promise<boolean> {
+    return await this.followController.getFollowingStatus(biolinkId, context)
   }
 }

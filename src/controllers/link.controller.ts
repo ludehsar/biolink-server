@@ -24,6 +24,6 @@ export class LinkController {
       throw new ForbiddenError('Forbidden')
     }
 
-    return this.linkService.getBiolinkDailyClickChartsByBiolinkId(biolinkId)
+    return await this.linkService.getBiolinkDailyClickChartsByBiolinkId(biolinkId)
   }
 }

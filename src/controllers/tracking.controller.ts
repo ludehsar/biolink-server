@@ -26,14 +26,14 @@ export class TrackingController {
       throw new ForbiddenError('Forbidden')
     }
 
-    return this.trackingService.getBiolinkDailyClickChartsByBiolinkId(biolinkId)
+    return await this.trackingService.getBiolinkDailyClickChartsByBiolinkId(biolinkId)
   }
 
   async getLinkClicksData(
     connectionArgs: ConnectionArgs,
     context: MyContext
   ): Promise<LinkClicksResponse> {
-    return this.trackingService.getLinksClickCountsByUserId(
+    return await this.trackingService.getLinksClickCountsByUserId(
       (context.user as User).id,
       connectionArgs
     )
@@ -49,6 +49,6 @@ export class TrackingController {
       throw new ForbiddenError('Forbidden')
     }
 
-    return this.trackingService.getBiolinksClickCounts(biolink)
+    return await this.trackingService.getBiolinksClickCounts(biolink)
   }
 }

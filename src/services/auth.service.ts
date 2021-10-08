@@ -86,7 +86,7 @@ export class AuthService {
 
       await refreshTokenDoc.remove()
 
-      return this.tokenService.generateAuthTokens(user, res)
+      return await this.tokenService.generateAuthTokens(user, res)
     } catch (error) {
       throw new AuthenticationError('User not authenticated')
     }
