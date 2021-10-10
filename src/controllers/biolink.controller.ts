@@ -29,7 +29,8 @@ import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolin
 import { CategoryService } from '../services/category.service'
 import { appConfig } from '../config'
 import { PlanService } from '../services/plan.service'
-import { DirectorySearchResponse } from 'object-types'
+import { DirectorySearchResponse } from '../object-types'
+import { TrackingService } from '../services/tracking.service'
 
 @Service()
 export class BiolinkController {
@@ -38,6 +39,7 @@ export class BiolinkController {
     private readonly blacklistService: BlackListService,
     private readonly categoryService: CategoryService,
     private readonly planService: PlanService,
+    private readonly trackingService: TrackingService,
     private readonly usernameService: UsernameService
   ) {}
 
@@ -99,7 +101,11 @@ export class BiolinkController {
     return biolink
   }
 
-  async getBiolinkFromUsername(username: string, password?: string): Promise<Biolink> {
+  async getBiolinkFromUsername(
+    username: string,
+    context: MyContext,
+    password?: string
+  ): Promise<Biolink> {
     const biolink = await this.biolinkService.getBiolinkByUsername(username)
 
     if ((biolink.settings || {}).enablePasswordProtection) {
@@ -112,6 +118,8 @@ export class BiolinkController {
         )
       }
     }
+
+    await this.trackingService.trackVisitors(biolink, context)
 
     return biolink
   }

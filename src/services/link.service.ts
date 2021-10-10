@@ -1,45 +1,312 @@
+import { ApolloError } from 'apollo-server-express'
+import moment from 'moment'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
+import { Brackets, Repository } from 'typeorm'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import * as argon2 from 'argon2'
+import * as randToken from 'rand-token'
 
-import { TrackLink } from '../entities'
-import { DailyClickChartResponse } from '../object-types/common/DailyClickChartResponse'
+import { Link } from '../entities'
+import { ErrorCode } from '../types'
+import { LinkType } from '../enums'
+import { ConnectionArgs } from '../input-types'
+import { PaginatedLinkResponse } from '../object-types/common/PaginatedLinkResponse'
+import { LinkUpdateBody } from '../interfaces/LinkUpdateBody'
 
 @Service()
 export class LinkService {
-  constructor(
-    @InjectRepository(TrackLink) private readonly tracklinkRepository: Repository<TrackLink>
-  ) {}
+  constructor(@InjectRepository(Link) private readonly linkRepository: Repository<Link>) {}
 
   /**
-   * Gets biolink daily clicks chart
-   * @param {string} biolinkId
-   * @returns {Promise<DailyClickChartResponse>}
+   * Links paginated results search criteria
+   * @returns {Promise<Brackets>}
    */
-  async getBiolinkDailyClickChartsByBiolinkId(biolinkId: string): Promise<DailyClickChartResponse> {
-    const result = await this.tracklinkRepository.query(
-      `
-        SELECT date, coalesce(views, 0) as views
-        FROM  (
-          SELECT "date"::date
-          FROM generate_series(current_date - interval '7 days'
-                            ,  current_date
-                            ,  interval  '1 day') "date"
-          ) d
-        LEFT JOIN (
-          SELECT "tb"."createdAt"::date AS date
-                , count(*) AS views
-          FROM   "track_link" "tb"
-          WHERE  "tb"."createdAt" >= current_date - interval '7 days'
-          AND    "tb"."biolinkId" = '${biolinkId}'
-          GROUP  BY 1
-          ) t USING (date)
-        ORDER  BY date;
-      `
-    )
+  private linksPaginatedResultsSearchBracket(query: string): Brackets {
+    return new Brackets((qb) => {
+      qb.where(`LOWER(link.linkTitle) like :query`, {
+        query: `%${query.toLowerCase()}%`,
+      })
+        .orWhere(`LOWER(link.url) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(link.shortenedUrl) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(link.note) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+    })
+  }
 
-    return {
-      result,
+  /**
+   * Get all user links
+   * @param {string} userId
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedLinkResponse>}
+   */
+  async getAllLinksByUserId(
+    userId: string,
+    options: ConnectionArgs
+  ): Promise<PaginatedLinkResponse> {
+    const queryBuilder = this.linkRepository
+      .createQueryBuilder('link')
+      .where(`link.linkType != '${LinkType.Line}'`)
+      .andWhere('link.userId = :userId', { userId })
+      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+
+    const paginator = buildPaginator({
+      entity: Link,
+      alias: 'link',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Get All links by biolink id
+   * @param {string} biolinkId
+   * @param {ConnectionArgs} options
+   * @param {[boolean]} returnForPage
+   * @returns {Promise<PaginatedLinkResponse>}
+   */
+  async getAllLinksByBiolinkId(
+    biolinkId: string,
+    options: ConnectionArgs,
+    returnForPage = true
+  ): Promise<PaginatedLinkResponse> {
+    const queryBuilder = this.linkRepository
+      .createQueryBuilder('link')
+      .where(`link.linkType != '${LinkType.Social}'`)
+      .andWhere('link.biolinkId = :biolinkId', { biolinkId })
+      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+
+    if (returnForPage) {
+      queryBuilder.andWhere(
+        `(link.startDate IS NULL AND link.endDate IS NULL) OR (link.startDate <= :currentDate AND link.endDate >= :currentDate)`,
+        {
+          currentDate: moment().toISOString(),
+        }
+      )
     }
+
+    const paginator = buildPaginator({
+      entity: Link,
+      alias: 'link',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Get All social links by biolink id
+   * @param {string} biolinkId
+   * @param {ConnectionArgs} options
+   * @param {[boolean]} returnForPage
+   * @returns {Promise<PaginatedLinkResponse>}
+   */
+  async getAllSocialLinksByBiolinkId(
+    biolinkId: string,
+    options: ConnectionArgs,
+    returnForPage = true
+  ): Promise<PaginatedLinkResponse> {
+    const queryBuilder = this.linkRepository
+      .createQueryBuilder('link')
+      .where(`link.linkType = '${LinkType.Social}'`)
+      .andWhere('link.biolinkId = :biolinkId', { biolinkId })
+      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+
+    if (returnForPage) {
+      queryBuilder.andWhere(
+        `(link.startDate IS NULL AND link.endDate IS NULL) OR (link.startDate <= :currentDate AND link.endDate >= :currentDate)`,
+        {
+          currentDate: moment().toISOString(),
+        }
+      )
+    }
+
+    const paginator = buildPaginator({
+      entity: Link,
+      alias: 'link',
+      paginationKeys: ['createdAt'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Generate new short link url
+   * @returns {Promise<string>}
+   */
+  async generateNewShortUrl(): Promise<string> {
+    let shortenedUrl = '0' + randToken.generate(8)
+    let otherLink = await this.linkRepository.findOne({ where: { shortenedUrl } })
+    while (otherLink) {
+      shortenedUrl = '0' + randToken.generate(8)
+      otherLink = await Link.findOne({ where: { shortenedUrl } })
+    }
+    return shortenedUrl
+  }
+
+  /**
+   * Get link by Id
+   * @param {string} linkId
+   * @returns {Promise<Link>}
+   */
+  async getLinkById(linkId: string): Promise<Link> {
+    const link = await this.linkRepository.findOne(linkId)
+
+    if (!link) {
+      throw new ApolloError('Invalid link id', ErrorCode.LINK_COULD_NOT_BE_FOUND)
+    }
+
+    return link
+  }
+
+  /**
+   * Get link by shortened url id
+   * @param {string} shortenedUrl
+   * @returns {Promise<Link>}
+   */
+  async getLinkByShortenedUrl(shortenedUrl: string): Promise<Link> {
+    const link = await this.linkRepository.findOne({
+      where: {
+        shortenedUrl,
+      },
+    })
+
+    if (!link) {
+      throw new ApolloError('Invalid shortened url', ErrorCode.LINK_COULD_NOT_BE_FOUND)
+    }
+
+    return link
+  }
+
+  /**
+   * Create a link
+   * @param {LinkUpdateBody} updateBody
+   * @returns {Promise<Link>}
+   */
+  async createLink(updateBody: LinkUpdateBody): Promise<Link> {
+    let link = await this.linkRepository.create().save()
+
+    link = await this.updateLinkById(link.id, updateBody)
+
+    return link
+  }
+
+  /**
+   * Update link by link id
+   * @param {string} linkId
+   * @param {LinkUpdateBody} updateBody
+   * @returns {Promise<Link>}
+   */
+  async updateLinkById(linkId: string, updateBody: LinkUpdateBody): Promise<Link> {
+    const link = await this.getLinkById(linkId)
+
+    if (updateBody.biolink) link.biolink = Promise.resolve(updateBody.biolink)
+    if (updateBody.enablePasswordProtection)
+      link.enablePasswordProtection = updateBody.enablePasswordProtection
+    if (updateBody.endDate) link.endDate = updateBody.endDate
+    if (updateBody.featured) link.featured = updateBody.featured
+    if (updateBody.iconColorful) link.iconColorful = updateBody.iconColorful
+    if (updateBody.iconMinimal) link.iconMinimal = updateBody.iconMinimal
+    if (updateBody.linkColor) link.linkColor = updateBody.linkColor
+    if (updateBody.linkImage) {
+      // TODO: Upload photo to aws s3
+    }
+    if (updateBody.linkTitle) link.linkTitle = updateBody.linkTitle
+    if (updateBody.linkType) link.linkType = updateBody.linkType
+    if (updateBody.note) link.note = updateBody.note
+    if (updateBody.order) link.order = updateBody.order
+    if (updateBody.password) {
+      link.password = await argon2.hash(updateBody.password)
+    }
+    if (updateBody.platform) link.platform = updateBody.platform
+    if (updateBody.shortenedUrl) link.shortenedUrl = updateBody.shortenedUrl
+    if (updateBody.startDate) link.startDate = updateBody.startDate
+    if (updateBody.url) link.url = updateBody.url
+    if (updateBody.user) link.user = Promise.resolve(updateBody.user)
+
+    await link.save()
+    return link
+  }
+
+  /**
+   * Check if password matched
+   * @param {Link} link
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   */
+  async isPasswordMatched(link: Link, password: string): Promise<boolean> {
+    if (await argon2.verify(link.password || '', password)) {
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   * Count number of links by user id
+   * @param {string} userId
+   * @returns {Promise<number>}
+   */
+  async countLinksByUserId(userId: string): Promise<number> {
+    return await this.linkRepository
+      .createQueryBuilder('link')
+      .where('link.userId = :userId', { userId: userId })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('link.linkType = :linkType', { linkType: LinkType.Embed })
+          qb.orWhere('link.linkType = :linkType', { linkType: LinkType.Link })
+        })
+      )
+      .getCount()
+  }
+
+  /**
+   * Count number of social links by user id
+   * @param {string} userId
+   * @returns {Promise<number>}
+   */
+  async countSocialLinksByUserId(userId: string): Promise<number> {
+    return await this.linkRepository
+      .createQueryBuilder('link')
+      .where('link.userId = :userId', { userId: userId })
+      .andWhere('link.linkType = :linkType', { linkType: LinkType.Social })
+      .getCount()
+  }
+
+  /**
+   * Delete link by Id
+   * @param {string} linkId
+   * @returns {Promise<Link>}
+   */
+  async softDeleteLinkById(linkId: string): Promise<Link> {
+    const link = await this.getLinkById(linkId)
+
+    await link.softRemove()
+
+    return link
   }
 }

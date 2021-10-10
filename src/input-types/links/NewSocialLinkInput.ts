@@ -1,8 +1,7 @@
-import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()
-export class NewLinkInput {
+export class NewSocialLinkInput {
   @Field(() => String, { nullable: true })
   biolinkId?: string
 
@@ -14,9 +13,6 @@ export class NewLinkInput {
 
   @Field(() => String, { nullable: true })
   linkColor?: string
-
-  @Field(() => GraphQLUpload, { nullable: true })
-  linkImage?: FileUpload
 
   @Field(() => String, { nullable: true })
   note?: string
@@ -32,6 +28,9 @@ export class NewLinkInput {
 
   @Field(() => String, { nullable: true })
   password?: string
+
+  @Field(() => String, { nullable: true })
+  platform?: string
 
   @Field(() => Boolean, { defaultValue: false, nullable: true })
   featured?: boolean

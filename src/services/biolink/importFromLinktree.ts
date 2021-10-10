@@ -47,7 +47,7 @@ export const importFromLinktree = async (
     }
   }
 
-  const planSettings = plan.settings || {}
+  // const planSettings = plan.settings || {}
 
   const url = `https://linktr.ee/${linktreeUsername}`
 
@@ -69,21 +69,21 @@ export const importFromLinktree = async (
 
     if (res.profilePhotoUrl) biolink.profilePhotoUrl = res.profilePhotoUrl
 
-    if (planSettings.socialEnabled && res.socials) {
-      res.socials.forEach(async (link) => {
-        await createNewLink(
-          {
-            url: link.url,
-            platform: link.platform,
-            featured: false,
-            enablePasswordProtection: false,
-          },
-          context,
-          user,
-          id
-        )
-      })
-    }
+    // if (planSettings.socialEnabled && res.socials) {
+    //   res.socials.forEach(async (link) => {
+    //     await createNewSocialLink(
+    //       {
+    //         url: link.url,
+    //         platform: link.platform,
+    //         featured: false,
+    //         enablePasswordProtection: false,
+    //       },
+    //       context,
+    //       user,
+    //       id
+    //     )
+    //   })
+    // }
 
     await biolink.save()
 

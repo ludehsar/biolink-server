@@ -21,6 +21,39 @@ export class BiolinkService {
   ) {}
 
   /**
+   * Biolinks paginated results search criteria
+   * @returns {Promise<Brackets>}
+   */
+  private biolinksPaginatedResultsSearchBracket(query: string): Brackets {
+    return new Brackets((qb) => {
+      qb.where(`LOWER(username.username) like :query`, {
+        query: `%${query.toLowerCase()}%`,
+      })
+        .orWhere(`LOWER(biolink.displayName) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(biolink.city) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(biolink.state) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(biolink.country) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(biolink.bio) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+        .orWhere(`LOWER(category.categoryName) like :query`, {
+          query: `%${query.toLowerCase()}%`,
+        })
+    })
+  }
+
+  /**
    * Create a biolink
    * @param {BiolinkUpdateBody} updateBody
    * @returns {Promise<Biolink>}
@@ -173,34 +206,7 @@ export class BiolinkService {
       .where(`biolink.userId = :userId`, {
         userId: userId,
       })
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`LOWER(username.username) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-            .orWhere(`LOWER(biolink.displayName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.city) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.state) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.country) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.bio) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(category.categoryName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-        })
-      )
+      .andWhere(this.biolinksPaginatedResultsSearchBracket(options.query))
 
     const paginator = buildPaginator({
       entity: Biolink,
@@ -301,37 +307,7 @@ export class BiolinkService {
         })
       )
     } else {
-      queryBuilder.andWhere(
-        new Brackets((qb) => {
-          qb.where(`LOWER(username.username) like :query`, {
-            query: `%${options.query.toLowerCase()}%`,
-          })
-            .orWhere(`LOWER(biolink.displayName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.city) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.state) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.country) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.bio) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(category.categoryName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(user.email) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-        })
-      )
+      queryBuilder.andWhere(this.biolinksPaginatedResultsSearchBracket(options.query))
     }
 
     if (categoryIds) {

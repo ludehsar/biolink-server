@@ -5,7 +5,6 @@ import path from 'path'
 import { createWriteStream } from 'fs'
 
 import { User, Link, Biolink, Plan } from '../../entities'
-import { LinkType } from '../../enums'
 import { NewLinkInput } from '../../input-types'
 import { ErrorResponse, LinkResponse } from '../../object-types'
 import { captureUserActivity } from '../../services'
@@ -96,19 +95,19 @@ export const updateLink = async (
 
   const planSettings = plan.settings || {}
 
-  link.linkTitle = options.linkTitle
-  link.note = options.note
-  link.linkType = options.linkType as LinkType
-  link.url = options.url || ''
-  link.linkColor = options.linkColor || '#000'
+  // link.linkTitle = options.linkTitle
+  // link.note = options.note
+  // link.linkType = options.linkType as LinkType
+  // link.url = options.url || ''
+  // link.linkColor = options.linkColor || '#000'
 
-  if (options.linkType === LinkType.Social) {
-    link.platform = options.platform || 'Unknown'
-    link.iconColorful = appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`
-    link.iconMinimal =
-      appConfig.BACKEND_URL + `/static/socialIcons/minimals/${options.platform}.png`
-    link.featured = options.featured || false
-  }
+  // if (options.linkType === LinkType.Social) {
+  //   link.platform = options.platform || 'Unknown'
+  //   link.iconColorful = appConfig.BACKEND_URL + `/static/socialIcons/${options.platform}.png`
+  //   link.iconMinimal =
+  //     appConfig.BACKEND_URL + `/static/socialIcons/minimals/${options.platform}.png`
+  //   link.featured = options.featured || false
+  // }
 
   if (planSettings.linksSchedulingEnabled) {
     link.startDate = options.startDate

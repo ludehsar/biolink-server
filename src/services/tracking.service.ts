@@ -15,6 +15,7 @@ import {
   SingleBiolinkClickCount,
   SingleLinkClickCount,
 } from '../object-types'
+import { LinkType } from '../enums'
 
 @Service()
 export class TrackingService {
@@ -124,7 +125,8 @@ export class TrackingService {
   ): Promise<LinkClicksResponse> {
     const queryBuilder = this.linkRepository
       .createQueryBuilder('link')
-      .where(`link.userId = :userId`, {
+      .where(`link.linkType != '${LinkType.Line}'`)
+      .andWhere(`link.userId = :userId`, {
         userId: userId,
       })
       .andWhere(

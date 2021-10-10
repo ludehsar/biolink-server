@@ -2,7 +2,7 @@ import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
 
 @InputType()
-export class NewLinkInput {
+export class NewEmbedInput {
   @Field(() => String, { nullable: true })
   biolinkId?: string
 
