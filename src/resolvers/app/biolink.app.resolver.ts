@@ -1,8 +1,7 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { GraphQLUpload, FileUpload } from 'graphql-upload'
 
-import { CurrentUser } from '../../decorators'
-import { Biolink, User } from '../../entities'
+import { Biolink } from '../../entities'
 import {
   NewBiolinkInput,
   UpdateBiolinkProfileInput,
@@ -19,8 +18,7 @@ import {
   DonationInput,
   ConnectionArgs,
 } from '../../input-types'
-import { BiolinkResponse, DirectorySearchResponse } from '../../object-types'
-import { sortBiolinkLinks, importFromLinktree } from '../../services'
+import { DirectorySearchResponse } from '../../object-types'
 import { MyContext } from '../../types'
 import { authUser, emailVerified } from '../../middlewares'
 import { BiolinkController } from '../../controllers'
@@ -193,15 +191,14 @@ export class BiolinkResolver {
     return await this.biolinkController.updateDirectorySettings(id, options, context)
   }
 
-  @Mutation(() => BiolinkResponse)
+  @Mutation(() => Biolink)
   @UseMiddleware(authUser)
   async sortBiolinkLinks(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('options') options: SortedLinksInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await sortBiolinkLinks(id, options, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.sortLinksByBiolinkId(id, options, context)
   }
 
   @Query(() => PaginatedBiolinkResponse, { nullable: true })
@@ -228,14 +225,13 @@ export class BiolinkResolver {
     return await this.biolinkController.removeBiolink(id, context)
   }
 
-  @Mutation(() => BiolinkResponse)
+  @Mutation(() => Biolink)
   @UseMiddleware(authUser, emailVerified)
   async importBiolinkDetailsFromLinktreeProfile(
     @Arg('id', { description: 'Biolink ID' }) id: string,
     @Arg('linktreeUsername') linktreeUsername: string,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<BiolinkResponse> {
-    return await importFromLinktree(id, linktreeUsername, context, user)
+    @Ctx() context: MyContext
+  ): Promise<Biolink> {
+    return await this.biolinkController.importFromLinkTree(id, linktreeUsername, context)
   }
 }

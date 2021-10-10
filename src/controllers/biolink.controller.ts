@@ -16,6 +16,7 @@ import {
   PrivacyInput,
   SEOInput,
   SocialAccountsInput,
+  SortedLinksInput,
   UpdateBiolinkProfileInput,
   UTMParameterInput,
 } from '../input-types'
@@ -31,6 +32,9 @@ import { appConfig } from '../config'
 import { PlanService } from '../services/plan.service'
 import { DirectorySearchResponse } from '../object-types'
 import { TrackingService } from '../services/tracking.service'
+import { linktreeImportHandler } from '../utilities'
+import { LinkController } from '../controllers'
+import { LinkService } from '../services/link.service'
 
 @Service()
 export class BiolinkController {
@@ -40,7 +44,9 @@ export class BiolinkController {
     private readonly categoryService: CategoryService,
     private readonly planService: PlanService,
     private readonly trackingService: TrackingService,
-    private readonly usernameService: UsernameService
+    private readonly usernameService: UsernameService,
+    private readonly linkController: LinkController,
+    private readonly linkService: LinkService
   ) {}
 
   async createBiolink(biolinkInput: NewBiolinkInput, context: MyContext): Promise<Biolink> {
@@ -652,6 +658,97 @@ export class BiolinkController {
         directoryBio: directoryInput.directoryBio,
       },
     })
+
+    return biolink
+  }
+
+  async sortLinksByBiolinkId(
+    biolinkId: string,
+    sortedLinkIds: SortedLinksInput,
+    context: MyContext
+  ): Promise<Biolink> {
+    const biolink = await this.biolinkService.getBiolinkById(biolinkId)
+    const user = context.user as User
+
+    if (biolink.userId !== user.id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    let counter = 1
+
+    sortedLinkIds.linkIds?.forEach(async (linkId) => {
+      const link = await this.linkService.getLinkById(linkId)
+
+      if (link.userId !== user.id) {
+        throw new ForbiddenError('Forbidden')
+      }
+
+      await this.linkService.updateLinkById(linkId, {
+        order: counter,
+      })
+
+      counter++
+    })
+
+    return biolink
+  }
+
+  async importFromLinkTree(
+    biolinkId: string,
+    linktreeUsername: string,
+    context: MyContext
+  ): Promise<Biolink> {
+    const biolink = await this.biolinkService.getBiolinkById(biolinkId)
+    const user = context.user as User
+
+    if (biolink.userId !== user.id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    const url = `https://linktr.ee/${linktreeUsername}`
+
+    try {
+      const res = await linktreeImportHandler(url)
+
+      if (res.bio) biolink.bio = res.bio
+
+      if (res.links) {
+        res.links.forEach(async (link) => {
+          await this.linkController.createNewLink(
+            {
+              biolinkId: biolink.id,
+              url: link.url,
+              linkTitle: link.linkTitle,
+              enablePasswordProtection: false,
+            },
+            context
+          )
+        })
+      }
+
+      if (res.socials) {
+        res.socials.forEach(async (link) => {
+          await this.linkController.createNewSocialLink(
+            {
+              biolinkId: biolink.id,
+              url: link.url,
+              platform: link.platform,
+              featured: false,
+              enablePasswordProtection: false,
+            },
+            context
+          )
+        })
+      }
+
+      await this.biolinkService.updateBiolinkById(biolink.id, {
+        bio: res.bio,
+        // profilePhoto: res.profilePhotoUrl,
+        // TODO: Upload profile photo in aws s3
+      })
+    } catch (err) {
+      throw new ApolloError('Something went wrong', ErrorCode.DATABASE_ERROR)
+    }
 
     return biolink
   }

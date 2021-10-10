@@ -309,4 +309,40 @@ export class LinkService {
 
     return link
   }
+
+  /**
+   * Increases biolink links orders by 1
+   * @param {string} biolinkId
+   * @returns {Promise<void>}
+   */
+  async increaseBiolinkLinksOrderBy1(biolinkId: string): Promise<void> {
+    await this.linkRepository
+      .createQueryBuilder()
+      .update(Link)
+      .set({ order: () => '"order" + 1' })
+      .where('biolinkId = :biolinkId', { biolinkId })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('linkType = :linkType', { linkType: LinkType.Link })
+            .orWhere('linkType = :linkType', { linkType: LinkType.Embed })
+            .orWhere('linkType = :linkType', { linkType: LinkType.Line })
+        })
+      )
+      .execute()
+  }
+
+  /**
+   * Increases biolink links orders by 1
+   * @param {string} biolinkId
+   * @returns {Promise<void>}
+   */
+  async increaseBiolinkSocialLinksOrderBy1(biolinkId: string): Promise<void> {
+    await this.linkRepository
+      .createQueryBuilder()
+      .update(Link)
+      .set({ order: () => '"order" + 1' })
+      .where('biolinkId = :biolinkId', { biolinkId })
+      .andWhere('linkType = :linkType', { linkType: LinkType.Social })
+      .execute()
+  }
 }

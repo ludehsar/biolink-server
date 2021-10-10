@@ -128,13 +128,6 @@ export class LinkController {
   async createNewLink(newLinkInput: NewLinkInput, context: MyContext): Promise<Link> {
     let biolink = undefined
     const user = context.user as User
-    if (newLinkInput.biolinkId) {
-      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
-
-      if (biolink.userId !== user.id) {
-        throw new ForbiddenError('Forbidden')
-      }
-    }
 
     const totalCurrentlyAvailableLinks = await this.linkService.countLinksByUserId(user.id)
     const totalAllowedLinks = (await this.planService.getValuesFromPlanSettingsByPlanId(
@@ -194,6 +187,16 @@ export class LinkController {
       if (malicious) {
         throw new ApolloError('Malicious link detected', ErrorCode.LINK_IS_MALICIOUS)
       }
+    }
+
+    if (newLinkInput.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
+
+      if (biolink.userId !== user.id) {
+        throw new ForbiddenError('Forbidden')
+      }
+
+      this.linkService.increaseBiolinkLinksOrderBy1(biolink.id)
     }
 
     const link = await this.linkService.createLink({
@@ -220,13 +223,6 @@ export class LinkController {
   async createNewEmbed(newLinkInput: NewEmbedInput, context: MyContext): Promise<Link> {
     let biolink = undefined
     const user = context.user as User
-    if (newLinkInput.biolinkId) {
-      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
-
-      if (biolink.userId !== user.id) {
-        throw new ForbiddenError('Forbidden')
-      }
-    }
 
     const totalCurrentlyAvailableLinks = await this.linkService.countLinksByUserId(user.id)
     const totalAllowedLinks = (await this.planService.getValuesFromPlanSettingsByPlanId(
@@ -288,6 +284,16 @@ export class LinkController {
       }
     }
 
+    if (newLinkInput.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
+
+      if (biolink.userId !== user.id) {
+        throw new ForbiddenError('Forbidden')
+      }
+
+      this.linkService.increaseBiolinkLinksOrderBy1(biolink.id)
+    }
+
     const link = await this.linkService.createLink({
       biolink,
       enablePasswordProtection: newLinkInput.enablePasswordProtection,
@@ -312,13 +318,6 @@ export class LinkController {
   async createNewLine(newLinkInput: NewLineInput, context: MyContext): Promise<Link> {
     const user = context.user as User
     let biolink = undefined
-    if (newLinkInput.biolinkId) {
-      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
-
-      if (biolink.userId !== user.id) {
-        throw new ForbiddenError('Forbidden')
-      }
-    }
 
     if (
       !(await this.planService.getValuesFromPlanSettingsByPlanId(
@@ -331,6 +330,16 @@ export class LinkController {
         'Link color option is disabled in the current plan',
         ErrorCode.CURRENT_PLAN_DO_NOT_SUPPORT_THIS_REQUEST
       )
+    }
+
+    if (newLinkInput.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
+
+      if (biolink.userId !== user.id) {
+        throw new ForbiddenError('Forbidden')
+      }
+
+      this.linkService.increaseBiolinkLinksOrderBy1(biolink.id)
     }
 
     const link = await this.linkService.createLink({
@@ -347,13 +356,6 @@ export class LinkController {
   async createNewSocialLink(newLinkInput: NewSocialLinkInput, context: MyContext): Promise<Link> {
     let biolink = undefined
     const user = context.user as User
-    if (newLinkInput.biolinkId) {
-      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
-
-      if (biolink.userId !== user.id) {
-        throw new ForbiddenError('Forbidden')
-      }
-    }
 
     if (
       !(await this.planService.getValuesFromPlanSettingsByPlanId(
@@ -412,6 +414,16 @@ export class LinkController {
       if (malicious) {
         throw new ApolloError('Malicious link detected', ErrorCode.LINK_IS_MALICIOUS)
       }
+    }
+
+    if (newLinkInput.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(newLinkInput.biolinkId)
+
+      if (biolink.userId !== user.id) {
+        throw new ForbiddenError('Forbidden')
+      }
+
+      this.linkService.increaseBiolinkSocialLinksOrderBy1(biolink.id)
     }
 
     const link = await this.linkService.createLink({
