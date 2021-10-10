@@ -100,7 +100,7 @@ export class LinkService {
     const paginator = buildPaginator({
       entity: Link,
       alias: 'link',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['order'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
@@ -142,7 +142,7 @@ export class LinkService {
     const paginator = buildPaginator({
       entity: Link,
       alias: 'link',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['order'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
