@@ -2,6 +2,8 @@ import { AdminRole } from './AdminRole'
 import { Biolink } from './Biolink'
 import { BlackList } from './BlackList'
 import { Category } from './Category'
+import { ChatRoom } from './ChatRoom'
+import { ChatRoomToUser } from './ChatRoomToUser'
 import { Code } from './Code'
 import { Domain } from './Domain'
 import { Follow } from './Follow'
@@ -26,6 +28,8 @@ export {
   Biolink,
   BlackList,
   Category,
+  ChatRoom,
+  ChatRoomToUser,
   Code,
   Domain,
   Follow,

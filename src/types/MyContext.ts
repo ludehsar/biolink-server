@@ -5,4 +5,5 @@ export type MyContext = {
   req: Request
   res: Response
   user?: User
+  connection?: any
 }

@@ -10,6 +10,8 @@ import { buildSchema } from 'type-graphql'
 import cookieParser from 'cookie-parser'
 import { graphqlUploadExpress } from 'graphql-upload'
 import passport from 'passport'
+import { createServer } from 'http'
+import * as jwt from 'jsonwebtoken'
 
 import { corsConfig, appConfig, jwtStrategy } from './config'
 import { stripeRoutes } from './routers'
@@ -51,6 +53,7 @@ import {
   VerificationAdminResolver,
 } from './resolvers/admin'
 import { planDismissScheduler } from './schedulers'
+import { TokenType } from './enums'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -94,7 +97,8 @@ const main = async (): Promise<void> => {
   )
 
   // Passport jwt
-  app.use(passport.initialize())
+  const passportInit = passport.initialize()
+  app.use(passportInit)
   passport.use('jwt', jwtStrategy)
 
   // Stripe router
@@ -126,7 +130,23 @@ const main = async (): Promise<void> => {
       container: Container,
     }),
     uploads: false,
-    context: ({ req, res }): MyContext => ({ req, res }),
+    context: ({ req, res, connection }): MyContext => ({ req, res, connection }),
+    subscriptions: {
+      path: '/subscriptions',
+      onConnect: (connectionParams: any) =>
+        new Promise((resolve) => {
+          const authHeader = connectionParams.Authorization
+
+          if (authHeader.startsWith('Bearer ')) {
+            const token = authHeader.substring(7, authHeader.length)
+
+            const decoded: any = jwt.verify(token, appConfig.accessTokenSecret)
+            if (decoded.type === TokenType.Access) {
+              resolve({ userId: decoded.sub })
+            }
+          }
+        }),
+    },
   })
 
   appServer.applyMiddleware({
@@ -134,6 +154,9 @@ const main = async (): Promise<void> => {
     path: '/graphql',
     cors: false,
   })
+
+  const httpServer = createServer(app)
+  appServer.installSubscriptionHandlers(httpServer)
 
   // Configuring admin app api
   const adminServer = new ApolloServer({
@@ -172,7 +195,7 @@ const main = async (): Promise<void> => {
   planDismissScheduler()
 
   // Listen to the port
-  app.listen(appConfig.port, async () => {
+  httpServer.listen(appConfig.port, async () => {
     console.log(`🚀 Server ready at port ${appConfig.port}.`)
   })
 }

@@ -33,6 +33,7 @@ import {
 } from '../entities'
 import { Billing } from '../json-types'
 import { PlanType } from '../enums'
+import { ChatRoomToUser } from './ChatRoomToUser'
 
 @ObjectType()
 @Entity()
@@ -206,6 +207,6 @@ export class User extends BaseEntity {
   @OneToMany(() => Message, (message) => message.sender, { lazy: true })
   sentMessages!: Promise<Message[]>
 
-  @OneToMany(() => Message, (message) => message.receiver, { lazy: true })
-  receivedMessages!: Promise<Message[]>
+  @OneToMany(() => ChatRoomToUser, (room) => room.user, { lazy: true })
+  chatRoomToUserRelations!: Promise<ChatRoomToUser[]>
 }

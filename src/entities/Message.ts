@@ -13,6 +13,7 @@ import {
 } from 'typeorm'
 
 import { User } from '../entities'
+import { ChatRoom } from './ChatRoom'
 
 @ObjectType()
 @Entity()
@@ -54,15 +55,15 @@ export class Message extends BaseEntity {
   @RelationId((message: Message) => message.sender)
   senderId!: string
 
-  @Field(() => User, { nullable: false })
-  @ManyToOne(() => User, (user) => user.receivedMessages, {
+  @Field(() => ChatRoom, { nullable: false })
+  @ManyToOne(() => ChatRoom, (room) => room.messages, {
     nullable: true,
     lazy: true,
     cascade: true,
   })
-  @JoinColumn({ name: 'receiverId' })
-  receiver!: Promise<User>
+  @JoinColumn({ name: 'chatRoomId' })
+  chatRoom!: Promise<ChatRoom>
 
-  @RelationId((message: Message) => message.receiver)
-  receiverId!: string
+  @RelationId((message: Message) => message.chatRoom)
+  chatRoomId!: string
 }
