@@ -63,4 +63,18 @@ export class PlanService {
 
     return planSettings[keyword]
   }
+
+  /**
+   * Get all visible plans
+   * @returns {Promise<Plan[]>}
+   */
+  async getAllVisiblePlans(): Promise<Plan[]> {
+    const plan = await this.planRepository.find({
+      where: {
+        visibilityStatus: true,
+      },
+    })
+
+    return plan
+  }
 }

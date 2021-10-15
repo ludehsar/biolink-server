@@ -1,11 +1,13 @@
 import { Query, Resolver } from 'type-graphql'
-import { PlanListResponse } from '../../object-types'
-import { getVisiblePlans } from '../../services'
+
+import { PlanController } from '../../controllers'
+import { Plan } from '../../entities'
 
 @Resolver()
 export class PlanResolver {
-  @Query(() => PlanListResponse)
-  async getAllPlans(): Promise<PlanListResponse> {
-    return await getVisiblePlans()
+  constructor(private readonly planController: PlanController) {}
+  @Query(() => [Plan])
+  async getAllPlans(): Promise<Plan[]> {
+    return await this.planController.getAllVisiblePlans()
   }
 }
