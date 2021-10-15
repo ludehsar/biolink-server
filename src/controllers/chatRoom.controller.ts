@@ -86,4 +86,34 @@ export class ChatRoomController {
 
     return message
   }
+
+  async editMessage(
+    messageId: string,
+    input: NewMessageInput,
+    context: MyContext
+  ): Promise<Message> {
+    let message = await this.messageService.getMessageById(messageId)
+
+    if (message.senderId !== (context.user as User).id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    message = await this.messageService.updateMessageById(message.id, {
+      message: input.message,
+    })
+
+    return message
+  }
+
+  async deleteMessage(messageId: string, context: MyContext): Promise<Message> {
+    let message = await this.messageService.getMessageById(messageId)
+
+    if (message.senderId !== (context.user as User).id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    message = await this.messageService.softDeleteMessageById(message.id)
+
+    return message
+  }
 }

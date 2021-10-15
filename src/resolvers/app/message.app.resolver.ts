@@ -110,4 +110,85 @@ export class MessageResolver {
   ): Message {
     return messagePayload.message
   }
+
+  @Mutation(() => Message)
+  @UseMiddleware(authUser, emailVerified)
+  async editMessage(
+    @Arg('messageId', () => String) messageId: string,
+    @Arg('options', () => NewMessageInput) options: NewMessageInput,
+    @PubSub('messageEdited') publish: Publisher<MessagePayload>,
+    @Ctx() context: MyContext
+  ): Promise<Message> {
+    const message = await this.chatRoomController.editMessage(messageId, options, context)
+    const { data } = await this.chatRoomController.getChatRoomUsersByRoomId(
+      message.chatRoomId,
+      {
+        limit: 250,
+        order: 'ASC',
+        query: '',
+      },
+      context
+    )
+
+    await publish({
+      message,
+      userIds: data.map((user) => user.id),
+    })
+
+    return message
+  }
+
+  @Subscription({
+    topics: 'messageEdited',
+    filter: ({ payload, args, context }) =>
+      payload.message.chatRoomId === args.roomId &&
+      (payload.userIds as string[]).includes(context.connection.context.userId),
+  })
+  editedMessage(
+    @Root() messagePayload: MessagePayload,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Arg('roomId', () => String) _roomId: string
+  ): Message {
+    return messagePayload.message
+  }
+
+  @Mutation(() => Message)
+  @UseMiddleware(authUser, emailVerified)
+  async deleteMessage(
+    @Arg('messageId', () => String) messageId: string,
+    @PubSub('messageDeleted') publish: Publisher<MessagePayload>,
+    @Ctx() context: MyContext
+  ): Promise<Message> {
+    const message = await this.chatRoomController.deleteMessage(messageId, context)
+    const { data } = await this.chatRoomController.getChatRoomUsersByRoomId(
+      message.chatRoomId,
+      {
+        limit: 250,
+        order: 'ASC',
+        query: '',
+      },
+      context
+    )
+
+    await publish({
+      message,
+      userIds: data.map((user) => user.id),
+    })
+
+    return message
+  }
+
+  @Subscription({
+    topics: 'messageDeleted',
+    filter: ({ payload, args, context }) =>
+      payload.message.chatRoomId === args.roomId &&
+      (payload.userIds as string[]).includes(context.connection.context.userId),
+  })
+  deletedMessage(
+    @Root() messagePayload: MessagePayload,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Arg('roomId', () => String) _roomId: string
+  ): Message {
+    return messagePayload.message
+  }
 }

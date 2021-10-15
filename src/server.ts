@@ -134,10 +134,10 @@ const main = async (): Promise<void> => {
     subscriptions: {
       path: '/subscriptions',
       onConnect: (connectionParams: any) =>
-        new Promise((resolve) => {
+        new Promise((resolve, reject) => {
           const authHeader = connectionParams.Authorization
 
-          if (authHeader.startsWith('Bearer ')) {
+          if (authHeader && authHeader.startsWith('Bearer ')) {
             const token = authHeader.substring(7, authHeader.length)
 
             const decoded: any = jwt.verify(token, appConfig.accessTokenSecret)
@@ -145,6 +145,8 @@ const main = async (): Promise<void> => {
               resolve({ userId: decoded.sub })
             }
           }
+
+          reject(new Error('Unauthenticated'))
         }),
     },
   })
