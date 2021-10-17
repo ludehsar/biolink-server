@@ -20,7 +20,7 @@ import { ConnectionArgs, NewMessageInput } from '../../input-types'
 import { PaginatedChatRoomResponse } from '../../object-types/common/PaginatedChatRoomResponse'
 import { PaginatedUserResponse } from '../../object-types/common/PaginatedUserResponse'
 import { MyContext } from '../../types'
-import { MessagePayload } from 'interfaces/MessagePayload'
+import { MessagePayload } from '../../interfaces/MessagePayload'
 
 @Resolver()
 export class MessageResolver {

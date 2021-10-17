@@ -1,16 +1,19 @@
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+
 import { Referral } from '../../entities'
 import { ConnectionArgs, ReferralInput } from '../../input-types'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { MyContext } from '../../types'
 import { ReferralController } from '../../controllers'
 import { PaginatedReferralResponse } from '../../object-types/common/PaginatedReferralResponse'
-import { PaginatedUserResponse } from 'object-types/common/PaginatedUserResponse'
+import { PaginatedUserResponse } from '../../object-types/common/PaginatedUserResponse'
+import { authUser, emailVerified } from '../../middlewares'
 
 @Resolver()
 export class ReferralResolver {
   constructor(private readonly referralController: ReferralController) {}
 
   @Query(() => PaginatedReferralResponse)
+  @UseMiddleware(authUser)
   async getSentEmailReferrals(
     @Arg('options') options: ConnectionArgs,
     @Ctx() context: MyContext
@@ -19,6 +22,7 @@ export class ReferralResolver {
   }
 
   @Mutation(() => [Referral])
+  @UseMiddleware(authUser, emailVerified)
   async createReferrals(
     @Arg('referralOptions') referralOptions: ReferralInput,
     @Ctx() context: MyContext
@@ -27,6 +31,7 @@ export class ReferralResolver {
   }
 
   @Query(() => PaginatedUserResponse, { nullable: true })
+  @UseMiddleware(authUser)
   async getUsedCodesUsers(
     @Arg('options') options: ConnectionArgs,
     @Ctx() context: MyContext

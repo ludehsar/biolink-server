@@ -1,0 +1,32 @@
+import { ReportUpdateBody } from 'interfaces/ReportUpdateBody'
+import { Service } from 'typedi'
+import { Repository } from 'typeorm'
+import { InjectRepository } from 'typeorm-typedi-extensions'
+
+import { Report } from '../entities'
+
+@Service()
+export class ReportService {
+  constructor(@InjectRepository(Report) private readonly reportRepository: Repository<Report>) {}
+
+  /**
+   * Creates a new report
+   * @param {ReportUpdateBody} updateBody
+   * @returns {Promise<boolean>}
+   */
+  async createReport(updateBody: ReportUpdateBody): Promise<Report> {
+    const report = this.reportRepository.create({
+      description: updateBody.description,
+      email: updateBody.email,
+      firstName: updateBody.firstName,
+      lastName: updateBody.lastName,
+      reportedUrl: updateBody.reportedUrl,
+    })
+
+    report.reporter = Promise.resolve(updateBody.user)
+
+    await report.save()
+
+    return report
+  }
+}
