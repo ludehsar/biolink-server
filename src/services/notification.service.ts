@@ -77,7 +77,7 @@ export class NotificationService {
 
   /**
    * Get user notification
-   * @param {User} user
+   * @param {string} userId
    * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedUserLogResponse>}
    */

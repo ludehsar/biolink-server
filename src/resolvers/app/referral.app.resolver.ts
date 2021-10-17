@@ -1,39 +1,36 @@
-import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
-import { ConnectionArgsOld, ReferralInput } from '../../input-types'
-import { DefaultResponse, ReferralConnection, UserConnection } from '../../object-types'
-import {
-  createReferrals,
-  getSentEmailReferralsPaginated,
-  getUsedCodeUsersPaginated,
-} from '../../services'
+import { Referral } from '../../entities'
+import { ConnectionArgs, ReferralInput } from '../../input-types'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { MyContext } from '../../types'
+import { ReferralController } from '../../controllers'
+import { PaginatedReferralResponse } from '../../object-types/common/PaginatedReferralResponse'
+import { PaginatedUserResponse } from 'object-types/common/PaginatedUserResponse'
 
 @Resolver()
 export class ReferralResolver {
-  @Query(() => ReferralConnection)
+  constructor(private readonly referralController: ReferralController) {}
+
+  @Query(() => PaginatedReferralResponse)
   async getSentEmailReferrals(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentUser() user: User
-  ): Promise<ReferralConnection> {
-    return await getSentEmailReferralsPaginated(options, user)
+    @Arg('options') options: ConnectionArgs,
+    @Ctx() context: MyContext
+  ): Promise<PaginatedReferralResponse> {
+    return await this.referralController.getAllSentEmailReferrals(options, context)
   }
 
-  @Mutation(() => DefaultResponse)
+  @Mutation(() => [Referral])
   async createReferrals(
     @Arg('referralOptions') referralOptions: ReferralInput,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<DefaultResponse> {
-    return await createReferrals(referralOptions, user, context)
+    @Ctx() context: MyContext
+  ): Promise<Referral[]> {
+    return await this.referralController.createReferrals(referralOptions, context)
   }
 
-  @Query(() => UserConnection, { nullable: true })
+  @Query(() => PaginatedUserResponse, { nullable: true })
   async getUsedCodesUsers(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentUser() user: User
-  ): Promise<UserConnection> {
-    return await getUsedCodeUsersPaginated(options, user)
+    @Arg('options') options: ConnectionArgs,
+    @Ctx() context: MyContext
+  ): Promise<PaginatedUserResponse> {
+    return await this.referralController.getAllUsersRegisteredWithReferralCodes(options, context)
   }
 }

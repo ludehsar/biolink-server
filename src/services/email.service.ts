@@ -34,6 +34,33 @@ export class EmailService {
   }
 
   /**
+   * Send email to multiple users
+   * @param {{ email: string; name: [string] }[]} to
+   * @param {string} subject
+   * @param {string} html
+   * @param {string} text
+   * @returns {Promise}
+   */
+  async sendMultiple(
+    to: { email: string; name?: string }[],
+    subject: string,
+    html: string,
+    text: string
+  ): Promise<void> {
+    const msg: MailDataRequired = {
+      from: {
+        email: appConfig.FROM_EMAIL,
+        name: appConfig.FROM_EMAIL_NAME,
+      },
+      to,
+      subject,
+      html,
+      text,
+    }
+    await sgMail.sendMultiple(msg)
+  }
+
+  /**
    * Send reset password email
    * @param {{ email: string; name: [string] }} to
    * @param {string} token
@@ -64,5 +91,26 @@ export class EmailService {
                   If you did not create an account, then ignore this email.`
     const html = text
     await this.sendEmail(to, subject, html, text)
+  }
+
+  /**
+   * Send verification email
+   * @param {{ email: string; name: [string] }} to
+   * @param {string} token
+   * @returns {Promise}
+   */
+  async sendReferralInvitationEmail(
+    to: { email: string; name?: string }[],
+    cc: { email: string; name?: string },
+    code: string,
+    discount: number
+  ): Promise<void> {
+    const subject = `Invitation from ${cc.name} to give you 20% discount on Stashee`
+    const registrationUrl = `${appConfig.FRONTEND_APP_URL}/auth/register?code=${code}`
+    const text = `Dear user,
+                  ${cc.name} has invited you to create a new account in Stashee and
+                  purchase an offer with ${discount}% discount. Your referral link is ${registrationUrl}.`
+    const html = text
+    await this.sendMultiple(to, subject, html, text)
   }
 }

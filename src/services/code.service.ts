@@ -33,6 +33,23 @@ export class CodeService {
   }
 
   /**
+   * Gets code object from referral code
+   * @param {User} referrer
+   * @returns {Promise<Code>}
+   */
+  async findOrCreateReferralCodeByReferrerId(referrer: User): Promise<Code> {
+    let referralCodeDoc = await this.codeRepository.findOne({
+      where: { referrer, type: CodeType.Referral },
+    })
+
+    if (!referralCodeDoc) {
+      referralCodeDoc = await this.createReferralCode(referrer)
+    }
+
+    return referralCodeDoc
+  }
+
+  /**
    * Create referral code
    * @param {User} user
    * @returns {Promise<Code>}
