@@ -129,6 +129,8 @@ const main = async (): Promise<void> => {
       ],
       container: Container,
     }),
+    playground: true, // TODO: disable playground in production
+    introspection: true, // TODO: disable introspection in production
     uploads: false,
     context: ({ req, res, connection }): MyContext => ({ req, res, connection }),
     subscriptions: {

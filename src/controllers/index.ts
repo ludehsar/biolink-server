@@ -7,6 +7,7 @@ import { LinkController } from './link.controller'
 import { PlanController } from './plan.controller'
 import { ReferralController } from './referral.controller'
 import { ReportController } from './report.controller'
+import { SupportController } from './support.controller'
 import { TrackingController } from './tracking.controller'
 import { UserController } from './user.controller'
 
@@ -20,6 +21,7 @@ export {
   PlanController,
   ReferralController,
   ReportController,
+  SupportController,
   TrackingController,
   UserController,
 }

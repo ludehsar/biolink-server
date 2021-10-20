@@ -2,21 +2,20 @@ import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
 
 import { MyContext } from '../../types'
 import { NewSupportInput } from '../../input-types'
-import { DefaultResponse } from '../../object-types'
-import { addSupport } from '../../services'
-import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
-import { emailVerified } from '../../middlewares'
+import { Support } from '../../entities'
+import { authUser, emailVerified } from '../../middlewares'
+import { SupportController } from '../../controllers'
 
 @Resolver()
 export class SupportResolver {
-  @Mutation(() => DefaultResponse, { nullable: true })
-  @UseMiddleware(emailVerified)
+  constructor(private readonly supportController: SupportController) {}
+
+  @Mutation(() => Support, { nullable: true })
+  @UseMiddleware(authUser, emailVerified)
   async addSupport(
     @Arg('options') options: NewSupportInput,
-    @CurrentUser() user: User,
     @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await addSupport(options, user, context)
+  ): Promise<Support> {
+    return await this.supportController.addSupport(options, context)
   }
 }

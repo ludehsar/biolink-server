@@ -1,9 +1,10 @@
-import { ReportUpdateBody } from 'interfaces/ReportUpdateBody'
 import { Service } from 'typedi'
 import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 
+import { ResolveStatus } from '../enums'
 import { Report } from '../entities'
+import { ReportUpdateBody } from '../interfaces/ReportUpdateBody'
 
 @Service()
 export class ReportService {
@@ -21,9 +22,10 @@ export class ReportService {
       firstName: updateBody.firstName,
       lastName: updateBody.lastName,
       reportedUrl: updateBody.reportedUrl,
+      status: ResolveStatus.Pending,
     })
 
-    report.reporter = Promise.resolve(updateBody.user)
+    if (updateBody.user) report.reporter = Promise.resolve(updateBody.user)
 
     await report.save()
 

@@ -6,5 +6,5 @@ export interface ReportUpdateBody {
   email?: string
   reportedUrl?: string
   description?: string
-  user: User
+  user?: User
 }
