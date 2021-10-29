@@ -9,11 +9,13 @@ import { Domain } from './Domain'
 import { Follow } from './Follow'
 import { Link } from './Link'
 import { Message } from './Message'
+import { Order } from './Order'
 import { Payment } from './Payment'
 import { Plan } from './Plan'
 import { Username } from './Username'
 import { Referral } from './Referral'
 import { Report } from './Report'
+import { Service } from './Service'
 import { Settings } from './Settings'
 import { Support } from './Support'
 import { Tax } from './Tax'
@@ -35,11 +37,13 @@ export {
   Follow,
   Link,
   Message,
+  Order,
   Payment,
   Plan,
   Username,
   Referral,
   Report,
+  Service,
   Settings,
   Support,
   Tax,

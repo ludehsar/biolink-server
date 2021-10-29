@@ -29,7 +29,9 @@ import {
   AdminRole,
   Report,
   Support,
+  Service,
   Message,
+  Order,
 } from '../entities'
 import { Billing } from '../json-types'
 import { PlanType } from '../enums'
@@ -209,4 +211,10 @@ export class User extends BaseEntity {
 
   @OneToMany(() => ChatRoomToUser, (room) => room.user, { lazy: true })
   chatRoomToUserRelations!: Promise<ChatRoomToUser[]>
+
+  @OneToMany(() => Service, (service) => service.seller, { lazy: true })
+  services!: Promise<Service[]>
+
+  @OneToMany(() => Order, (order) => order.buyer, { lazy: true })
+  orders!: Promise<Order[]>
 }

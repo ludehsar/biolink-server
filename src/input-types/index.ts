@@ -41,6 +41,9 @@ import { ReferredUserInfo } from './referrals/ReferredUserInfo'
 //Report
 import { NewReportInput } from './report/NewReportInput'
 import { ReportStatusInput } from './report/ReportStatusInput'
+// Service
+import { NewOrderInput } from './service/NewOrderInput'
+import { NewServiceInput } from './service/NewServiceInput'
 // Settings
 import { AdsSettingsInput } from './settings/AdsSettingsInput'
 import { BusinessSettingsInput } from './settings/BusinessSettingsInput'
@@ -117,6 +120,9 @@ export {
   // Report
   NewReportInput,
   ReportStatusInput,
+  // Service
+  NewOrderInput,
+  NewServiceInput,
   // Settings
   AdsSettingsInput,
   BusinessSettingsInput,

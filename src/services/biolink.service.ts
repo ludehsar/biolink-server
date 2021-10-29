@@ -133,7 +133,7 @@ export class BiolinkService {
     const biolink = await this.getBiolinkById(biolinkId)
 
     if (!biolink) {
-      throw new ApolloError('User not found', ErrorCode.USER_NOT_FOUND)
+      throw new ApolloError('Biolink not found', ErrorCode.BIOLINK_COULD_NOT_BE_FOUND)
     }
 
     if (updateBody.bio) biolink.bio = updateBody.bio

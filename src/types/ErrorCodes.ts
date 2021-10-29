@@ -37,4 +37,6 @@ export class ErrorCode {
   public static CLIENT_SIDE_ERROR = 'CLIENT_SIDE_ERROR'
   public static CHAT_ROOM_CANNOT_BE_FOUND = 'CHAT_ROOM_CANNOT_BE_FOUND'
   public static INVALID_MESSAGE_ID = 'INVALID_MESSAGE_ID'
+  public static SERVICE_NOT_FOUND = 'SERVICE_NOT_FOUND'
+  public static ORDER_NOT_FOUND = 'ORDER_NOT_FOUND'
 }
