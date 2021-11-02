@@ -135,11 +135,9 @@ export class User extends BaseEntity {
   deletedAt?: Date
 
   // Relationships
-  @Field(() => [Biolink], { nullable: true })
   @OneToMany(() => Biolink, (biolink) => biolink.user, { lazy: true })
   biolinks!: Promise<Biolink[]>
 
-  @Field(() => [Domain], { nullable: true })
   @OneToMany(() => Domain, (domain) => domain.user, {
     lazy: true,
   })
@@ -148,7 +146,6 @@ export class User extends BaseEntity {
   @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true })
   activities!: Promise<UserLogs[]>
 
-  @Field(() => [Link], { nullable: true })
   @OneToMany(() => Link, (link) => link.user, { lazy: true })
   links!: Promise<Link[]>
 
@@ -160,19 +157,15 @@ export class User extends BaseEntity {
   @RelationId((user: User) => user.plan)
   planId!: number
 
-  @Field(() => [Username], { nullable: true })
   @OneToMany(() => Username, (username) => username.owner, { lazy: true })
   usernames!: Promise<Username[]>
 
-  @Field(() => [Payment], { nullable: true })
   @OneToMany(() => Payment, (payment) => payment.user, { lazy: true })
   payments!: Promise<Payment[]>
 
-  @Field(() => [Code], { nullable: true })
   @OneToMany(() => Code, (code) => code.referrer, { lazy: true })
   codes!: Promise<Code[]>
 
-  @Field(() => [Referral], { nullable: true })
   @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true })
   referrals!: Promise<Referral[]>
 

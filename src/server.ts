@@ -83,6 +83,8 @@ const main = async (): Promise<void> => {
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
+  // TODO: Change to development only
+  app.use('/docs', express.static(path.join(__dirname, '../docs'))) // Documentation
 
   app.use(
     express.json({

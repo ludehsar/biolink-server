@@ -2,21 +2,6 @@ import { ObjectType, Field } from 'type-graphql'
 import { SocialAccountStyleType } from '../enums'
 
 @ObjectType()
-export class SocialMediaProps {
-  @Field(() => String, { nullable: true })
-  platform?: string
-
-  @Field(() => String, { nullable: true })
-  icon?: string
-
-  @Field(() => String, { nullable: true })
-  link?: string
-
-  @Field(() => Boolean, { defaultValue: false, nullable: true })
-  featured?: boolean
-}
-
-@ObjectType()
 export class BiolinkSettings {
   // ----- Dark Mode ----- //
   @Field(() => Boolean, { nullable: true })
@@ -51,13 +36,6 @@ export class BiolinkSettings {
 
   @Field(() => String, { nullable: true, defaultValue: SocialAccountStyleType.Round })
   socialAccountStyleType?: SocialAccountStyleType
-
-  @Field(() => [SocialMediaProps], {
-    nullable: true,
-    deprecationReason:
-      'Social accounts will not be saved here from now on. It has been integrated with the Link object',
-  })
-  socialAccounts?: SocialMediaProps[]
 
   // ----- Analytics ----- //
   @Field(() => Boolean, { nullable: true })

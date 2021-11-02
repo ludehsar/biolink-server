@@ -140,7 +140,6 @@ export class Biolink extends BaseEntity {
   @RelationId((biolink: Biolink) => biolink.user)
   userId!: string
 
-  @Field(() => [Link], { nullable: true })
   @OneToMany(() => Link, (link) => link.biolink, { lazy: true })
   links!: Promise<Link[]>
 

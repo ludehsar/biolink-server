@@ -1,6 +1,6 @@
 import { AdsSystemSettings } from './AdsSystemSettings'
 import { Billing } from './Billing'
-import { BiolinkSettings, SocialMediaProps } from './BiolinkSettings'
+import { BiolinkSettings } from './BiolinkSettings'
 import { LinkSystemSettings } from './LinkSystemSettings'
 import { BusinessSystemSettings } from './BusinessSystemSettings'
 import { CaptchaSystemSettings } from './CaptchaSystemSettings'
@@ -27,6 +27,5 @@ export {
   PaymentSystemSettings,
   PlanSettings,
   RoleSettings,
-  SocialMediaProps,
   SocialSystemSettings,
 }

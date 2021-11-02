@@ -1,0 +1,323 @@
+introspection: http://localhost:4000/graphql
+servers:
+  - url: http://localhost:4000/graphql
+    description: Development Server
+  - url: https://stashee-v2.herokuapp.com/graphql
+    description: Production Server
+info:
+  description: |
+    Introduction is coming soon...
+  version: 2.0.0
+  title: Stashee API
+  termsOfService: 'https://avyatated.com/terms_condition'
+  contact:
+    email: info@stash.ee
+  license:
+    name: MIT License
+    url: 'https://github.com/ludehsar/biolink-server/blob/master/LICENSE'
+domains:
+  - name: Auth Section
+    description: Authentication and authorization queries and mutations such as login, register, logout, and so on.
+    usecases:
+      - name: Get the current user
+        description: Get the currently logged in user
+        query: query.me
+      - name: Sign Up
+        description: Registers a new user
+        query: mutation.registerUser
+      - name: Login
+        description: Logs in the user
+        query: mutation.login
+      - name: Logout
+        description: Logs out the currently logged in user
+        query: mutation.logout
+      - name: Refresh Token
+        description: Refreshes both access token and refresh token
+        query: mutation.refreshToken
+      - name: Send Forgot Password Email
+        description: Sends forgot password email to the entered input email
+        query: mutation.sendForgotPasswordEmail
+      - name: Verify Forgot Password
+        description: Matches the forgot password token and verifies them with the token saved in the database. After successful verification of the forgot password token, the new password is saved to the database.
+        query: mutation.verifyForgotPassword
+      - name: Send Email for Verification
+        description: Sends verification code to the email to confirm the email address
+        query: mutation.sendEmailForVerification
+      - name: Verify User Email
+        description: Verifies the activation code with the saved token in the database. After successfully matching the token, the email is verified.
+        query: mutation.verifyUserEmailByActivationCode
+  - name: User Section
+    description: Get and change the info of the currently logged in user.
+    usecases:
+      - name: Change User Email and Username
+        description: Changes user email or username or both. If the username is already changed, then throws error.
+        query: mutation.changeUserAccountInfo
+      - name: Change User Password
+        description: Changes user password.
+        query: mutation.changeUserPassword
+      - name: Delete User Account
+        description: Deletes user account.
+        query: mutation.deleteUserAccount
+      - name: Update Billing Info
+        description: Updates user billing info.
+        query: mutation.updateBilling
+      - name: Change Selected Biolink
+        description: Change current biolink id.
+        query: mutation.changeCurrentBiolinkId
+      - name: Get Notification
+        description: Get user notification
+        query: query.getUserNotification
+  - name: Biolink Section
+    description: Most queries are gonna be used in the dashboard section.
+    usecases:
+      - name: Create Biolink
+        description: Through this API, the user can create new biolinks according to the plan limits.
+        query: mutation.createNewBiolink
+      - name: Get Biolink from Username
+        description: Gets biolink from the **associated username**. This API should be called when rendering **the biolink page from the url**.
+        query: query.getBiolinkFromUsername
+      - name: Get Biolink by Biolink ID
+        description: Gets biolink from **biolink ID**. This API should be called when rendering the biolink information in **user dashboard**.
+        query: query.getBiolink
+      - name: Get All Biolinks of The Currently Logged in User
+        description: Gets all the biolinks of the currently logged in user.
+        query: query.getAllUserBiolinks
+      - name: Update Biolink Profile
+        description: Updates biolink profile such as display name, category, city, state, country, etc.
+        query: mutation.updateBiolinkProfile
+      - name: Update Biolink Theme (Dark / Light)
+        description: Updates biolink page theme. If dark mode is enabled, the page should be in dark theme, otherwise, the page should be in light theme.
+        query: mutation.updateDarkModeOptions
+      - name: Update Donation Buttons
+        description: Updates informations and buttons in donation settings.
+        query: mutation.updateDonationSettings
+      - name: Update Contact Settings
+        description: Updates biolink contact button settings (Email and Phone number).
+        query: mutation.updateContactButtonSettings
+      - name: Update Social Buttons Settings
+        description: Updates biolink social buttons settings.
+        query: mutation.updateSocialAccountsSettings
+      - name: Update Biolink Integration Settings
+        description: Updates biolink integration settings, such as Facebook Pixel, Google Analytics, etc.
+        query: mutation.updateIntegrationSettings
+      - name: Update UTM Parameters Settings
+        description: Updates UTM parameters settings of the clicked links of the biolink.
+        query: mutation.updateUTMParameterSettings
+      - name: Update SEO Settings
+        description: Updates SEO settings of the biolink page.
+        query: mutation.updateSEOSettings
+      - name: Update Branding Settings
+        description: Updates biolink branding settings (Removing / Adding custom branding to the page).
+        query: mutation.updateBrandingSettings
+      - name: Update Privacy Settings
+        description: Updates privacy settings, such as enabling password protection, or adding sensitive content warning.
+        query: mutation.updatePrivacySettings
+      - name: Update Directory Settings
+        description: Updates directory settings, if the biolink is approved for directories.
+        query: mutation.updateDirectorySettings
+      - name: Upload Biolink Profile Photo
+        description: Uploads biolink profile photo.
+        query: mutation.uploadBiolinkProfilePhoto
+      - name: Upload Biolink Cover Photo
+        description: Uploads biolink cover photo.
+        query: mutation.uploadBiolinkCoverPhoto
+      - name: Sort Biolink Links
+        description: Sort the links in the biolink.
+        query: mutation.sortBiolinkLinks
+      - name: Get All Directory
+        description: Gets the list of directory.
+        query: query.getAllDirectories
+      - name: Get Search Queries
+        description: Gets search queries while searching in the directory.
+        query: query.getSearchQueries
+      - name: Remove Biolink
+        description: Deletes the biolink.
+        query: mutation.removeBiolink
+      - name: Import Biolink Details from Linktree
+        description: Imports biolink details from linktree profile.
+        query: mutation.importBiolinkDetailsFromLinktreeProfile
+  - name: Link Section
+    description: Queries and Mutations related to the links.
+    usecases:
+      - name: Get All Links By Biolink ID
+        description: Gets all links by biolink ID. **Should be executed in the user Dashboard, not in the page.**
+        query: query.getAllLinksByBiolinkId
+      - name: Get All Social Links By Biolink ID
+        description: Gets all social links by biolink ID. **Should be executed in the user Dashboard, not in the page.**
+        query: query.getAllSocialLinksByBiolinkId
+      - name: Get All Links By Biolink Username
+        description: Gets all links by biolink Username. **Should be executed in the page, not in the user Dashboard.**
+        query: query.getAllLinksByBiolinkUsername
+      - name: Get All Social Links By Biolink Username
+        description: Gets all social links by biolink Username. **Should be executed in the page, not in the user Dashboard.**
+        query: query.getAllSocialLinksByBiolinkUsername
+      - name: Get All User Links
+        description: Gets all links of the authenticated user. **Should be executed in the user dashboard, or link page only.**
+        query: query.getAllUserLinks
+      - name: Get Link Details by Short URL
+        description: Gets link details by short url. Should be called when the user visits to the short links, and it then should redirect the user to the original link.
+        query: query.getLinkByShortUrl
+      - name: Create New Link
+        description: Creates new link.
+        query: mutation.createNewLink
+      - name: Create New Embedded Link
+        description: Creates new embedded link.
+        query: mutation.createNewEmbed
+      - name: Create New Line
+        description: Creates new line.
+        query: mutation.createNewLine
+      - name: Create New Social Link
+        description: Creates new social link.
+        query: mutation.createNewSocialLink
+      - name: Update Link
+        description: Updates link.
+        query: mutation.updateLink
+      - name: Update Embedded Link
+        description: Updates embedded link.
+        query: mutation.updateEmbed
+      - name: Update Line
+        description: Updates line.
+        query: mutation.updateLine
+      - name: Update Social Link
+        description: Updates social link.
+        query: mutation.updateSocialLink
+      - name: Remove Link
+        description: Removes any link, embed, line, or social link by Link ID.
+        query: mutation.removeLink
+  - name: Verification Section
+    description: Verification section.
+    usecases:
+      - name: Call for Verification
+        description: Fills required user information and sends the form to verify the biolink.
+        query: mutation.verifyBiolink
+  - name: Referral Section
+    description: Referral section.
+    usecases:
+      - name: Get Email Referrals
+        description: Gets user email whom the referrals was sent to.
+        query: query.getSentEmailReferrals
+      - name: Get Used Code Users
+        description: Gets user lists who used the referral code to create a new account.
+        query: query.getUsedCodesUsers
+      - name: Send Referral Codes and Create Referrals
+        description: Sends referral codes to the input user emails.
+        query: mutation.createReferrals
+  - name: Category Section
+    description: Category section.
+    usecases:
+      - name: Get All Categories
+        description: Gets the list of categories.
+        query: query.getAllCategories
+  - name: Follow Section
+    description: Follow section.
+    usecases:
+      - name: Follow Biolink
+        description: Follows the given biolink ID.
+        query: mutation.followBiolink
+      - name: Unfollow Biolink
+        description: Unfollows the given biolink ID, if it is already following that biolink.
+        query: mutation.unfollowBiolink
+      - name: Get All The Following Biolinks
+        description: Gets a list of biolinks which is being followed by the current user.
+        query: query.getAllFollowings
+      - name: Get If Following the Biolink
+        description: Checks if the user is following the given biolink ID.
+        query: query.getIfFollowing
+  - name: Analytics Section
+    description: Getting analytics chart information.
+    usecases:
+      - name: Get Biolink Chart Data
+        description: Gets last 7 days biolink page visited chart data.
+        query: query.getBiolinkChartData
+      - name: Get Links Clicks Data
+        description: Gets all the links **today visited** and **total visited** clicks data.
+        query: query.getLinkClicksData
+      - name: Get Biolink Clicks Data
+        description: Gets the biolink **today visited** and **total visited** clicks data by biolink ID.
+        query: query.getBiolinkClicksData
+  - name: Message Section
+    description: Messaging section.
+    usecases:
+      - name: Get Associated Chat Room with User IDs
+        description: Gets the chat room id that is shared with the given user ids. If the chat room is not present, a new chat room is created. **User Ids should contain the authenticated user id also, otherwise, it will throw forbidden error.**.
+        query: query.getAssociatedChatRoomsOfUsers
+      - name: Get Chat Room Users
+        description: Gets the list of chat room users.
+        query: query.getChatRoomUsers
+      - name: Get All Chat Rooms of the Authenticated User
+        description: Gets all the chat rooms of the currently logged in user.
+        query: query.getAllChatRoomsOfUser
+      - name: Get All Chat Messages of The Room
+        description: Gets all chat messages of the room.
+        query: query.getAllChatMessagesByRoomId
+      - name: Send Message
+        description: |
+          Sends message.
+
+          **Note: The subscription for this mutation cannot be displayed in the documentation. So it is shown here.
+          To run the subscription, run the following query:**
+          <img src="./images/newmessage.png" alt="New Message Subscription" />
+        query: mutation.sendMessage
+      - name: Edit Message
+        description: |
+          Edits message.
+
+          **Note: The subscription for this mutation cannot be displayed in the documentation. So it is shown here.
+          To run the subscription, run the following query:**
+          <img src="./images/editedmessage.png" alt="Edited Message Subscription" />
+        query: mutation.editMessage
+      - name: Delete Message
+        description: |
+          Deletes message.
+
+          **Note: The subscription for this mutation cannot be displayed in the documentation. So it is shown here.
+          To run the subscription, run the following query:**
+          <img src="./images/deletedmessage.png" alt="Deleted Message Subscription" />
+        query: mutation.deleteMessage
+  - name: Plan Section
+    description: Plan section.
+    usecases:
+      - name: Get All Visible Plans
+        description: Gets the list of visible plans.
+        query: query.getAllPlans
+  - name: Payment Section
+    description: Payment section. (*Some API requires modification. Will be modified later*)
+    usecases:
+      - name: Get All User Payments
+        description: Gets the list of payments made by the logged in user.
+        query: query.getAllUserPayments
+      - name: Get Payment Details
+        description: Gets payment details by payment ID.
+        query: query.getPayment
+  - name: Report Section
+    description: Report section.
+    usecases:
+      - name: Report something or someone
+        description: Reports a problem.
+        query: mutation.addReport
+  - name: Support Section
+    description: Support section.
+    usecases:
+      - name: Send Support Message to the Admin
+        description: Sends a message to the support team.
+        query: mutation.addSupport
+  - name: Settings Section
+    description: Settings section.
+    usecases:
+      - name: Get web app settings
+        description: Gets the configuration settings of the website.
+        query: query.getSettings
+securityDefinitions:
+  Bearer Authentication:
+    type: apiKey
+    name: Bearer Authentication
+    description: |
+      Authorization with Bearer token in GraphQL
+
+      Add `"Authorization": "Bearer <token>` in the header (replace &lt;token&gt; with the access token)
+
+      This token will be used to authenticate the user.
+    in: header
+externalDocs:
+  description: Default documentation by Apollo GraphQL
+  url: 'https://stashee-v2.herokuapp.com/graphql'

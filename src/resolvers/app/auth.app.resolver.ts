@@ -20,7 +20,7 @@ export class AuthResolver {
 
   @Mutation(() => UserWithTokens)
   async registerUser(
-    @Arg('options') options: RegisterInput,
+    @Arg('options', { description: 'Register inputs' }) options: RegisterInput,
     @Ctx() context: MyContext
   ): Promise<UserWithTokens> {
     return await this.authController.register(options, context)
@@ -28,7 +28,7 @@ export class AuthResolver {
 
   @Mutation(() => UserWithTokens)
   async login(
-    @Arg('options') options: LoginInput,
+    @Arg('options', { description: 'Login inputs' }) options: LoginInput,
     @Ctx() context: MyContext
   ): Promise<UserWithTokens> {
     return await this.authController.login(options, context)
