@@ -1,6 +1,6 @@
 import { Service, User } from '../entities'
 
-export interface ServiceUpdateBody {
+export interface OrderUpdateBody {
   description?: string
   price?: number
   orderCompleted?: boolean

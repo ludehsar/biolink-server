@@ -76,6 +76,8 @@ export class AuthController {
       totalLogin: 1,
     })
 
+    await this.codeService.createReferralCode(user)
+
     const username = await this.usernameService.findAvailableOneOrCreate(registerInput.username)
     await this.biolinkService.createBiolink({
       user,

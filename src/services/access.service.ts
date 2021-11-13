@@ -76,42 +76,20 @@ export class AccessService {
    * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedServiceResponse>}
    */
-  async getServiceEntityingServicesByUserId(
+  async getAllServicesByUserId(
     userId: string,
     options: ConnectionArgs
   ): Promise<PaginatedServiceResponse> {
     const queryBuilder = this.serviceRepository
       .createQueryBuilder('service')
-      .leftJoinAndSelect('service.followees', 'follow')
-      .leftJoinAndSelect('service.category', 'category')
-      .leftJoinAndSelect('service.username', 'username')
-      .where('follow.followerId = :userId', { userId: userId })
+      .where('service.sellerId = :userId', { userId: userId })
       .andWhere(
         new Brackets((qb) => {
-          qb.where(`LOWER(username.username) like :query`, {
+          qb.where(`LOWER(service.title) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          }).orWhere(`LOWER(service.description) like :query`, {
             query: `%${options.query.toLowerCase()}%`,
           })
-            .orWhere(`LOWER(service.displayName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(service.city) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(service.state) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(service.country) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(service.bio) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(service.settings->>'directoryBio') like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
-            .orWhere(`LOWER(category.categoryName) like :query`, {
-              query: `%${options.query.toLowerCase()}%`,
-            })
         })
       )
 
@@ -128,5 +106,22 @@ export class AccessService {
     })
 
     return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Soft remove service by Id
+   * @param {string} serviceId
+   * @returns {Promise<ServiceEntity>}
+   */
+  async softRemoveServiceById(serviceId: string): Promise<ServiceEntity> {
+    const service = await this.serviceRepository.findOne(serviceId)
+
+    if (!service) {
+      throw new ApolloError('Invalid service id', ErrorCode.SERVICE_NOT_FOUND)
+    }
+
+    await service.softRemove()
+
+    return service
   }
 }

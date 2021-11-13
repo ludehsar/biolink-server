@@ -6,15 +6,11 @@ import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { ErrorCode } from '../types'
 import { User } from '../entities'
-import { CodeService } from './code.service'
 import { UserUpdateBody } from '../interfaces/UserUpdateBody'
 
 @Service()
 export class UserService {
-  constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly codeService: CodeService
-  ) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
   /**
    * Create a user
@@ -27,8 +23,6 @@ export class UserService {
     user = await this.updateUserById(user.id, updateBody)
 
     await user.save()
-
-    await this.codeService.createReferralCode(user)
 
     return user
   }
