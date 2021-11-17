@@ -6,8 +6,10 @@ import { LinktreeParsingProps, linktreeImportHandler } from './importFromLinktre
 import getSupportedSocialIcons from './getSupportedSocialIcons'
 import sgMail from './sendMail'
 import { stripe } from './stripe'
+import ApiError from './ApiError'
 
 export {
+  ApiError,
   DataProps,
   LinktreeParsingProps,
   createAuthTokens,

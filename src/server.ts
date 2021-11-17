@@ -3,7 +3,6 @@ import path from 'path'
 import express from 'express'
 import cors from 'cors'
 import { Container } from 'typeorm-typedi-extensions'
-import rateLimit from 'express-rate-limit'
 import { ApolloServer } from 'apollo-server-express'
 import { createConnection, useContainer } from 'typeorm'
 import { buildSchema } from 'type-graphql'
@@ -73,13 +72,13 @@ const main = async (): Promise<void> => {
   app.use(cookieParser())
 
   // Limiting requesting rates
-  if (appConfig.__prod__) {
-    const limiter = rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100, // limit each IP to 100 requests per windowMs
-    })
-    app.use(limiter)
-  }
+  // if (appConfig.__prod__) {
+  //   const limiter = rateLimit({
+  //     windowMs: 15 * 60 * 1000, // 15 minutes
+  //     max: 100, // limit each IP to 100 requests per windowMs
+  //   })
+  //   app.use(limiter)
+  // }
 
   // static files, such as logo
   app.use('/static', express.static(path.join(__dirname, '../assets')))
