@@ -5,6 +5,7 @@ import { ChatRoomController } from './chatRoom.controller'
 import { FollowController } from './follow.controller'
 import { LinkController } from './link.controller'
 import { OrderController } from './order.controller'
+import { PaymentController } from './payment.controller'
 import { PlanController } from './plan.controller'
 import { ReferralController } from './referral.controller'
 import { ReportController } from './report.controller'
@@ -21,6 +22,7 @@ export {
   FollowController,
   LinkController,
   OrderController,
+  PaymentController,
   PlanController,
   ReferralController,
   ReportController,

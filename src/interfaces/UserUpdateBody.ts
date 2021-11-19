@@ -24,4 +24,5 @@ export interface UserUpdateBody {
   stripeCustomerId?: string
   timezone?: string
   totalLogin?: number
+  usedReferralsToPurchasePlan?: boolean
 }

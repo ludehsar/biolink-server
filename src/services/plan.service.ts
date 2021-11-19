@@ -6,10 +6,15 @@ import { ApolloError } from 'apollo-server-errors'
 import { Plan } from '../entities'
 import { ErrorCode } from '../types'
 import { PlanSettings } from '../json-types'
+import { UserService } from './user.service'
+import { PlanType } from '../enums'
 
 @Service()
 export class PlanService {
-  constructor(@InjectRepository(Plan) private readonly planRepository: Repository<Plan>) {}
+  constructor(
+    @InjectRepository(Plan) private readonly planRepository: Repository<Plan>,
+    private readonly userService: UserService
+  ) {}
 
   /**
    * Get free plan
@@ -76,5 +81,31 @@ export class PlanService {
     })
 
     return plan
+  }
+
+  /**
+   * Subscribe plan
+   * @param {number} planId
+   * @param {keyof PlanSettings} keyword
+   * @returns {Promise<boolean | number | undefined>}
+   */
+  async subscribePlanByUserId(
+    stripePriceId: string,
+    expirationDate: Date,
+    userId: string
+  ): Promise<void> {
+    const plan = await Plan.findOne({
+      where: [{ monthlyPriceStripeId: stripePriceId }, { annualPriceStripeId: stripePriceId }],
+    })
+
+    if (!plan) {
+      throw new ApolloError('Plan not found', ErrorCode.PLAN_COULD_NOT_BE_FOUND)
+    }
+
+    await this.userService.updateUserById(userId, {
+      plan,
+      planExpirationDate: expirationDate,
+      planType: plan.monthlyPriceStripeId === stripePriceId ? PlanType.Monthly : PlanType.Annual,
+    })
   }
 }

@@ -128,6 +128,8 @@ export class UserService {
     if (updateBody.stripeCustomerId) user.stripeCustomerId = updateBody.stripeCustomerId
     if (updateBody.timezone) user.timezone = updateBody.timezone
     if (updateBody.totalLogin) user.totalLogin = updateBody.totalLogin
+    if (updateBody.usedReferralsToPurchasePlan)
+      user.usedReferralsToPurchasePlan = updateBody.usedReferralsToPurchasePlan
 
     await user.save()
     return user
