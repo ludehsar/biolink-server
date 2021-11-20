@@ -1,189 +1,319 @@
-export class AutomaticTax {
-  enabled?: boolean
-  status?: string
+import { Field, ObjectType } from 'type-graphql'
+
+@ObjectType()
+class AutomaticTax {
+  @Field(() => String, { nullable: true })
+  enabled!: boolean
+  @Field(() => String, { nullable: true })
+  status!: string
 }
 
-export class Period {
-  end?: number
-  start?: number
+@ObjectType()
+class Period {
+  @Field(() => String, { nullable: true })
+  end!: number
+  @Field(() => String, { nullable: true })
+  start!: number
 }
 
-export class Plan {
-  id?: string
-  object?: string
-  active?: boolean
-  aggregate_usage?: string
-  amount?: number
-  amount_decimal?: string
-  billing_scheme?: string
-  created?: number
-  currency?: string
-  interval?: string
-  interval_count?: number
-  livemode?: boolean
-  nickname?: string
-  product?: string
-  tiers_mode?: string
-  transform_usage?: string
-  trial_period_days?: string
-  usage_type?: string
+@ObjectType()
+class Plan {
+  @Field(() => String, { nullable: true })
+  id!: string
+  @Field(() => String, { nullable: true })
+  object!: string
+  @Field(() => String, { nullable: true })
+  active!: boolean
+  @Field(() => String, { nullable: true })
+  aggregate_usage!: string
+  @Field(() => String, { nullable: true })
+  amount!: number
+  @Field(() => String, { nullable: true })
+  amount_decimal!: string
+  @Field(() => String, { nullable: true })
+  billing_scheme!: string
+  @Field(() => String, { nullable: true })
+  created!: number
+  @Field(() => String, { nullable: true })
+  currency!: string
+  @Field(() => String, { nullable: true })
+  interval!: string
+  @Field(() => String, { nullable: true })
+  interval_count!: number
+  @Field(() => String, { nullable: true })
+  livemode!: boolean
+  @Field(() => String, { nullable: true })
+  nickname!: string
+  @Field(() => String, { nullable: true })
+  product!: string
+  @Field(() => String, { nullable: true })
+  tiers_mode!: string
+  @Field(() => String, { nullable: true })
+  transform_usage!: string
+  @Field(() => String, { nullable: true })
+  trial_period_days!: string
+  @Field(() => String, { nullable: true })
+  usage_type!: string
 }
 
-export class Recurring {
-  aggregate_usage?: string
-  interval?: string
-  interval_count?: number
-  trial_period_days?: string
-  usage_type?: string
+@ObjectType()
+class Recurring {
+  @Field(() => String, { nullable: true })
+  aggregate_usage!: string
+  @Field(() => String, { nullable: true })
+  interval!: string
+  @Field(() => String, { nullable: true })
+  interval_count!: number
+  @Field(() => String, { nullable: true })
+  trial_period_days!: string
+  @Field(() => String, { nullable: true })
+  usage_type!: string
 }
 
-export class Price {
-  id?: string
-  object?: string
-  active?: boolean
-  billing_scheme?: string
-  created?: number
-  currency?: string
-  livemode?: boolean
-  lookup_key?: string
-  nickname?: string
-  product?: string
-  recurring?: Recurring
-  tax_behavior?: string
-  tiers_mode?: string
-  transform_quantity?: string
-  type?: string
-  unit_amount?: number
-  unit_amount_decimal?: string
+@ObjectType()
+class Price {
+  @Field(() => String, { nullable: true })
+  id!: string
+  @Field(() => String, { nullable: true })
+  object!: string
+  @Field(() => String, { nullable: true })
+  active!: boolean
+  @Field(() => String, { nullable: true })
+  billing_scheme!: string
+  @Field(() => String, { nullable: true })
+  created!: number
+  @Field(() => String, { nullable: true })
+  currency!: string
+  @Field(() => String, { nullable: true })
+  livemode!: boolean
+  @Field(() => String, { nullable: true })
+  lookup_key!: string
+  @Field(() => String, { nullable: true })
+  nickname!: string
+  @Field(() => String, { nullable: true })
+  product!: string
+  @Field(() => String, { nullable: true })
+  recurring!: Recurring
+  @Field(() => String, { nullable: true })
+  tax_behavior!: string
+  @Field(() => String, { nullable: true })
+  tiers_mode!: string
+  @Field(() => String, { nullable: true })
+  transform_quantity!: string
+  @Field(() => String, { nullable: true })
+  type!: string
+  @Field(() => String, { nullable: true })
+  unit_amount!: number
+  @Field(() => String, { nullable: true })
+  unit_amount_decimal!: string
 }
 
-export class Datum {
-  id?: string
-  object?: string
-  amount?: number
-  currency?: string
-  description?: string
-  discount_amounts?: string[]
-  discountable?: boolean
-  discounts?: string[]
-  livemode?: boolean
-  period?: Period
-  plan?: Plan
-  price?: Price
-  proration?: boolean
-  quantity?: number
-  subscription?: string
-  subscription_item?: string
-  tax_amounts?: string[]
-  tax_rates?: string[]
-  type?: string
+@ObjectType()
+class Data {
+  @Field(() => String, { nullable: true })
+  id!: string
+  @Field(() => String, { nullable: true })
+  object!: string
+  @Field(() => String, { nullable: true })
+  amount!: number
+  @Field(() => String, { nullable: true })
+  currency!: string
+  @Field(() => String, { nullable: true })
+  description!: string
+  @Field(() => String, { nullable: true })
+  discount_amounts!: string[]
+  @Field(() => String, { nullable: true })
+  discountable!: boolean
+  @Field(() => String, { nullable: true })
+  discounts!: string[]
+  @Field(() => String, { nullable: true })
+  livemode!: boolean
+  @Field(() => String, { nullable: true })
+  period!: Period
+  @Field(() => String, { nullable: true })
+  plan!: Plan
+  @Field(() => String, { nullable: true })
+  price!: Price
+  @Field(() => String, { nullable: true })
+  proration!: boolean
+  @Field(() => String, { nullable: true })
+  quantity!: number
+  @Field(() => String, { nullable: true })
+  subscription!: string
+  @Field(() => String, { nullable: true })
+  subscription_item!: string
+  @Field(() => String, { nullable: true })
+  tax_amounts!: string[]
+  @Field(() => String, { nullable: true })
+  tax_rates!: string[]
+  @Field(() => String, { nullable: true })
+  type!: string
 }
 
-export class Lines {
-  object?: string
-  data?: Datum[]
-  has_more?: boolean
-  total_count?: number
-  url?: string
+@ObjectType()
+class Lines {
+  @Field(() => String, { nullable: true })
+  object!: string
+  @Field(() => String, { nullable: true })
+  data!: Data[]
+  @Field(() => String, { nullable: true })
+  has_more!: boolean
+  @Field(() => String, { nullable: true })
+  total_count!: number
+  @Field(() => String, { nullable: true })
+  url!: string
 }
 
-export class PaymentSettings {
-  payment_method_options?: string
-  payment_method_types?: string
+@ObjectType()
+class PaymentSettings {
+  @Field(() => String, { nullable: true })
+  payment_method_options!: string
+  @Field(() => String, { nullable: true })
+  payment_method_types!: string
 }
 
-export class StatusTransitions {
-  finalized_at?: number
-  marked_uncollectible_at?: string
-  paid_at?: number
-  voided_at?: string
+@ObjectType()
+class StatusTransitions {
+  @Field(() => String, { nullable: true })
+  finalized_at!: number
+  @Field(() => String, { nullable: true })
+  marked_uncollectible_at!: string
+  @Field(() => String, { nullable: true })
+  paid_at!: number
+  @Field(() => String, { nullable: true })
+  voided_at!: string
 }
 
-export class PaymentEvent {
-  id?: string
-  object?: string
-  account_country?: string
-  account_name?: string
-  account_tax_ids?: string
-  amount_due?: number
-  amount_paid?: number
-  amount_remaining?: number
-  application_fee_amount?: string
-  attempt_count?: number
-  attempted?: boolean
-  auto_advance?: boolean
-  automatic_tax?: AutomaticTax
-  billing_reason?: string
-  charge?: string
-  collection_method?: string
-  created?: number
-  currency?: string
-  custom_fields?: string
-  customer?: string
-  customer_address?: string
-  customer_email?: string
-  customer_name?: string
-  customer_phone?: string
-  customer_shipping?: string
-  customer_tax_exempt?: string
-  customer_tax_ids?: string[]
-  default_payment_method?: string
-  default_source?: string
-  default_tax_rates?: string[]
-  description?: string
-  discount?: string
-  discounts?: string[]
-  due_date?: string
-  ending_balance?: number
-  footer?: string
-  hosted_invoice_url?: string
-  invoice_pdf?: string
-  last_finalization_error?: string
-  lines?: Lines
-  livemode?: boolean
-  next_payment_attempt?: string
-  number?: string
-  on_behalf_of?: string
-  paid?: boolean
-  payment_intent?: string
-  payment_settings?: PaymentSettings
-  period_end?: number
-  period_start?: number
-  post_payment_credit_notes_amount?: number
-  pre_payment_credit_notes_amount?: number
-  quote?: string
-  receipt_number?: string
-  starting_balance?: number
-  statement_descriptor?: string
-  status?: string
-  status_transitions?: StatusTransitions
-  subscription?: string
-  subtotal?: number
-  tax?: string
-  total?: number
-  total_discount_amounts?: string[]
-  total_tax_amounts?: string[]
-  transfer_data?: string
-  webhooks_delivered_at?: number
-}
-
-export class Data {
-  object?: PaymentEvent
-}
-
-export class Request {
-  id?: string
-  idempotency_key?: string
-}
-
-export class StripePaymentRecord {
-  id?: string
-  object?: string
-  api_version?: string
-  created?: number
-  data?: Data
-  livemode?: boolean
-  pending_webhooks?: number
-  request?: Request
-  type?: string
+@ObjectType()
+export class StripeInvoiceObject {
+  @Field(() => String, { nullable: true })
+  id!: string
+  @Field(() => String, { nullable: true })
+  object!: string
+  @Field(() => String, { nullable: true })
+  account_country!: string
+  @Field(() => String, { nullable: true })
+  account_name!: string
+  @Field(() => String, { nullable: true })
+  account_tax_ids!: string
+  @Field(() => String, { nullable: true })
+  amount_due!: number
+  @Field(() => String, { nullable: true })
+  amount_paid!: number
+  @Field(() => String, { nullable: true })
+  amount_remaining!: number
+  @Field(() => String, { nullable: true })
+  application_fee_amount!: string
+  @Field(() => String, { nullable: true })
+  attempt_count!: number
+  @Field(() => String, { nullable: true })
+  attempted!: boolean
+  @Field(() => String, { nullable: true })
+  auto_advance!: boolean
+  @Field(() => String, { nullable: true })
+  automatic_tax!: AutomaticTax
+  @Field(() => String, { nullable: true })
+  billing_reason!: string
+  @Field(() => String, { nullable: true })
+  charge!: string
+  @Field(() => String, { nullable: true })
+  collection_method!: string
+  @Field(() => String, { nullable: true })
+  created!: number
+  @Field(() => String, { nullable: true })
+  currency!: string
+  @Field(() => String, { nullable: true })
+  custom_fields!: string
+  @Field(() => String, { nullable: true })
+  customer!: string
+  @Field(() => String, { nullable: true })
+  customer_address!: string
+  @Field(() => String, { nullable: true })
+  customer_email!: string
+  @Field(() => String, { nullable: true })
+  customer_name!: string
+  @Field(() => String, { nullable: true })
+  customer_phone!: string
+  @Field(() => String, { nullable: true })
+  customer_shipping!: string
+  @Field(() => String, { nullable: true })
+  customer_tax_exempt!: string
+  @Field(() => String, { nullable: true })
+  customer_tax_ids!: string[]
+  @Field(() => String, { nullable: true })
+  default_payment_method!: string
+  @Field(() => String, { nullable: true })
+  default_source!: string
+  @Field(() => String, { nullable: true })
+  default_tax_rates!: string[]
+  @Field(() => String, { nullable: true })
+  description!: string
+  @Field(() => String, { nullable: true })
+  discount!: string
+  @Field(() => String, { nullable: true })
+  discounts!: string[]
+  @Field(() => String, { nullable: true })
+  due_date!: string
+  @Field(() => String, { nullable: true })
+  ending_balance!: number
+  @Field(() => String, { nullable: true })
+  footer!: string
+  @Field(() => String, { nullable: true })
+  hosted_invoice_url!: string
+  @Field(() => String, { nullable: true })
+  invoice_pdf!: string
+  @Field(() => String, { nullable: true })
+  last_finalization_error!: string
+  @Field(() => String, { nullable: true })
+  lines!: Lines
+  @Field(() => String, { nullable: true })
+  livemode!: boolean
+  @Field(() => String, { nullable: true })
+  next_payment_attempt!: string
+  @Field(() => String, { nullable: true })
+  number!: string
+  @Field(() => String, { nullable: true })
+  on_behalf_of!: string
+  @Field(() => String, { nullable: true })
+  paid!: boolean
+  @Field(() => String, { nullable: true })
+  payment_intent!: string
+  @Field(() => String, { nullable: true })
+  payment_settings!: PaymentSettings
+  @Field(() => String, { nullable: true })
+  period_end!: number
+  @Field(() => String, { nullable: true })
+  period_start!: number
+  @Field(() => String, { nullable: true })
+  post_payment_credit_notes_amount!: number
+  @Field(() => String, { nullable: true })
+  pre_payment_credit_notes_amount!: number
+  @Field(() => String, { nullable: true })
+  quote!: string
+  @Field(() => String, { nullable: true })
+  receipt_number!: string
+  @Field(() => String, { nullable: true })
+  starting_balance!: number
+  @Field(() => String, { nullable: true })
+  statement_descriptor!: string
+  @Field(() => String, { nullable: true })
+  status!: string
+  @Field(() => String, { nullable: true })
+  status_transitions!: StatusTransitions
+  @Field(() => String, { nullable: true })
+  subscription!: string
+  @Field(() => String, { nullable: true })
+  subtotal!: number
+  @Field(() => String, { nullable: true })
+  tax!: string
+  @Field(() => String, { nullable: true })
+  total!: number
+  @Field(() => String, { nullable: true })
+  total_discount_amounts!: string[]
+  @Field(() => String, { nullable: true })
+  total_tax_amounts!: string[]
+  @Field(() => String, { nullable: true })
+  transfer_data!: string
+  @Field(() => String, { nullable: true })
+  webhooks_delivered_at!: number
 }

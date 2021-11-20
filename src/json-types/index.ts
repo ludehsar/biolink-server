@@ -12,6 +12,7 @@ import { PaymentSystemSettings } from './PaymentSystemSettings'
 import { PlanSettings } from './PlanSettings'
 import { RoleSettings } from './RoleSettings'
 import { SocialSystemSettings } from './SocialSystemSettings'
+import { StripeInvoiceObject } from './StripePaymentRecord'
 
 export {
   AdsSystemSettings,
@@ -28,4 +29,5 @@ export {
   PlanSettings,
   RoleSettings,
   SocialSystemSettings,
+  StripeInvoiceObject,
 }

@@ -31,8 +31,6 @@ import { FileType } from './common/FileType'
 import { NewLinkInput } from './links/NewLinkInput'
 // Message
 import { NewMessageInput } from './messages/NewMessageInput'
-// Payments
-import { NewPaymentInput } from './payments/NewPaymentInput'
 // Plans
 import { PlanInput } from './plan/PlanInput'
 // Referrals
@@ -110,8 +108,6 @@ export {
   NewLinkInput,
   // Message
   NewMessageInput,
-  // Payment
-  NewPaymentInput,
   // Plans
   PlanInput,
   // Referrals

@@ -13,6 +13,7 @@ import {
 import { PlanSettings } from '../json-types'
 import { User } from '../entities'
 import { EnabledStatus } from '../enums'
+import { Payment } from './Payment'
 
 @ObjectType()
 @Entity()
@@ -68,4 +69,7 @@ export class Plan extends BaseEntity {
   // Relationships
   @OneToMany(() => User, (user) => user.plan, { lazy: true })
   users!: Promise<User[]>
+
+  @OneToMany(() => Payment, (payment) => payment.plan, { nullable: true, lazy: true })
+  payments!: Promise<Payment[]>
 }

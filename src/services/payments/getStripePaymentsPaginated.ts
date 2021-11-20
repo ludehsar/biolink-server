@@ -4,7 +4,7 @@ import { AdminRole, Payment, User } from '../../entities'
 import { ConnectionArgsOld } from '../../input-types'
 import { PaymentConnection } from '../../object-types'
 import { ErrorCode, MyContext } from '../../types'
-import { PaymentMethod } from '../../enums'
+import { PaymentProvider } from '../../enums'
 import { captureUserActivity } from '../../services'
 
 export const getStripePaymentsPaginated = async (
@@ -59,7 +59,7 @@ export const getStripePaymentsPaginated = async (
 
   const qb = getRepository(Payment)
     .createQueryBuilder('payment')
-    .where(`payment.paymentType = '${PaymentMethod.Stripe}'`)
+    .where(`payment.paymentType = '${PaymentProvider.Stripe}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER("payment"."stripeAmountDue"::text) like :query`, {
@@ -133,7 +133,7 @@ export const getStripePaymentsPaginated = async (
 
   const previousPayments = await getRepository(Payment)
     .createQueryBuilder('payment')
-    .where(`payment.paymentType = '${PaymentMethod.Stripe}'`)
+    .where(`payment.paymentType = '${PaymentProvider.Stripe}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER("payment"."stripeAmountDue"::text) like :query`, {
@@ -179,7 +179,7 @@ export const getStripePaymentsPaginated = async (
 
   const nextPayments = await getRepository(Payment)
     .createQueryBuilder('payment')
-    .where(`payment.paymentType = '${PaymentMethod.Stripe}'`)
+    .where(`payment.paymentType = '${PaymentProvider.Stripe}'`)
     .andWhere(
       new Brackets((qb) => {
         qb.where(`LOWER("payment"."stripeAmountDue"::text) like :query`, {

@@ -6,8 +6,8 @@ import { CodeType } from './CodeType'
 import { DomainScheme } from './DomainScheme'
 import { EnabledStatus } from './EnabledStatus'
 import { LinkType } from './LinkType'
-import { PaymentMethod } from './PaymentMethod'
-import { PaymentType } from './PaymentType'
+import { PaymentProvider } from './PaymentProvider'
+import { AcceptingPaymentType } from './AcceptingPaymentType'
 import { PlanType } from './PlanType'
 import { PremiumUsernameType } from './PremiumUsernameType'
 import { ResolveStatus } from './ResolveStatus'
@@ -18,6 +18,8 @@ import { TaxValueType } from './TaxValueType'
 import { TokenType } from './TokenType'
 import { UserRole } from './UserRole'
 import { VerificationStatus } from './VerificationStatus'
+import { PaymentType } from './PaymentType'
+import { PaymentCurrency } from './PaymentCurrency'
 
 export {
   ActiveStatus,
@@ -28,8 +30,8 @@ export {
   DomainScheme,
   EnabledStatus,
   LinkType,
-  PaymentMethod,
-  PaymentType,
+  PaymentProvider,
+  AcceptingPaymentType,
   PlanType,
   PremiumUsernameType,
   ResolveStatus,
@@ -40,4 +42,6 @@ export {
   TokenType,
   UserRole,
   VerificationStatus,
+  PaymentType,
+  PaymentCurrency,
 }

@@ -1,4 +1,4 @@
-import { PaymentType } from '../enums'
+import { AcceptingPaymentType } from '../enums'
 import { Field, ObjectType } from 'type-graphql'
 
 @ObjectType()
@@ -6,8 +6,8 @@ export class PaymentSystemSettings {
   @Field(() => Boolean, { nullable: true })
   enablePaymentSystem!: boolean
 
-  @Field(() => String, { nullable: true, defaultValue: PaymentType.Both })
-  enabledPaymentType!: PaymentType
+  @Field(() => String, { nullable: true, defaultValue: AcceptingPaymentType.Both })
+  enabledAcceptingPaymentType!: AcceptingPaymentType
 
   @Field(() => String, { nullable: true })
   brandName!: string

@@ -5,7 +5,7 @@ import { ErrorCode, MyContext } from '../../types'
 import { captureUserActivity } from '../../services'
 import { PaymentSettingsInput } from '../../input-types'
 import { PaymentSystemSettings } from '../../json-types'
-import { PaymentType } from '../../enums'
+import { AcceptingPaymentType } from '../../enums'
 
 export const editPaymentSettings = async (
   options: PaymentSettingsInput,
@@ -64,7 +64,8 @@ export const editPaymentSettings = async (
   paymentSettings.enablePaypal = options.enablePaypal || false
   paymentSettings.enableStripe = options.enableStripe || false
   paymentSettings.enableTaxesAndBilling = options.enableTaxesAndBilling || false
-  paymentSettings.enabledPaymentType = options.enabledPaymentType || PaymentType.Both
+  paymentSettings.enabledAcceptingPaymentType =
+    options.enabledAcceptingPaymentType || AcceptingPaymentType.Both
 
   payment.value = paymentSettings
   await payment.save()

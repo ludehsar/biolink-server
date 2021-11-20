@@ -1,16 +1,26 @@
+import moment from 'moment'
 import { Service } from 'typedi'
 import { Request, Response } from 'express'
+import Stripe from 'stripe'
 
 import { Code, User } from '../entities'
 import { PaymentService } from '../services/payment.service'
 import { stripe } from '../utilities'
 import { appConfig } from '../config'
-import { PaymentMethod } from '../enums'
-import Stripe from 'stripe'
+import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
+import { StripeInvoiceObject } from '../json-types'
+import { PlanService } from '../services/plan.service'
+import { NotificationService } from '../services/notification.service'
+import { UserService } from '../services/user.service'
 
 @Service()
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) {}
+  constructor(
+    private readonly paymentService: PaymentService,
+    private readonly planService: PlanService,
+    private readonly notificationService: NotificationService,
+    private readonly userService: UserService
+  ) {}
 
   async createStripeCheckoutSession(req: Request, res: Response): Promise<Response | void> {
     const user = req.user as User
@@ -98,7 +108,7 @@ export class PaymentController {
 
     switch (eventType) {
       case 'invoice.paid': {
-        // First, list all the subscriptions
+        // First, list and remove all the previous subscriptions
         const subscriptions = await stripe.subscriptions.list({
           customer: (data.object as Stripe.Invoice).customer as string | undefined,
           limit: 100,
@@ -112,34 +122,39 @@ export class PaymentController {
         // Continue to provision the subscription as payments continue to be made.
         // Store the status in your database and check when a user accesses your service.
         // This approach helps you avoid hitting rate limits.
-        await this.paymentService.saveStripePayment(
-          {
-            stripeAmountDue: (data.object as Stripe.Invoice).amount_due,
-            stripeAmountPaid: (data.object as Stripe.Invoice).amount_paid,
-            stripeAmountRemaining: (data.object as Stripe.Invoice).amount_remaining,
-            stripeChargeId: (data.object as Stripe.Invoice).charge as string,
-            stripeCustomerAddress: (data.object as Stripe.Invoice)
-              .customer_address as unknown as string,
-            stripeCustomerEmail: (data.object as Stripe.Invoice).customer_email as string,
-            stripeCustomerId: (data.object as Stripe.Invoice).customer as string,
-            stripeCustomerName: (data.object as Stripe.Invoice).customer_name as string,
-            stripeCustomerPhone: (data.object as Stripe.Invoice).customer_phone as string,
-            stripeCustomerShipping: (data.object as Stripe.Invoice).customer_shipping as string,
-            stripeDiscount: (data.object as Stripe.Invoice).discount as unknown as string,
-            stripeInvoiceCreated: (data.object as Stripe.Invoice).created.toString(),
-            stripeInvoiceNumber: (data.object as Stripe.Invoice).number as string,
-            stripeInvoicePdfUrl: (data.object as Stripe.Invoice).invoice_pdf as string,
-            stripeInvoiceUrl: (data.object as Stripe.Invoice).hosted_invoice_url as string,
-            stripePaymentCurrency: (data.object as Stripe.Invoice).currency,
-            stripePeriodEnd: (data.object as Stripe.Invoice).lines.data[0].period.end,
-            stripePeriodStart: (data.object as Stripe.Invoice).lines.data[0].period.start,
-            stripePriceId: (data.object as Stripe.Invoice).lines.data[0].price?.id as string,
-            stripeStatus: (data.object as Stripe.Invoice).status as string,
-            stripeSubscriptionId: (data.object as Stripe.Invoice).subscription as string,
-            paymentType: PaymentMethod.Stripe,
-          },
-          { req, res }
+        const user = await this.userService.getUserByStripeCustomerId(
+          (data.object as Stripe.Invoice).customer as string
         )
+
+        const plan = await this.planService.getPlanByStripePriceId(
+          (data.object as Stripe.Invoice).lines.data[0].price?.id || ''
+        )
+
+        const payment = await this.paymentService.saveStripeSubscriptionPayment({
+          amountPaid: (data.object as Stripe.Invoice).amount_paid,
+          paymentCurrency: (data.object as Stripe.Invoice).currency as PaymentCurrency,
+          paymentDetails: Object.assign({} as StripeInvoiceObject, data.object),
+          paymentProvider: PaymentProvider.Stripe,
+          paymentType: PaymentType.Subscription,
+          plan,
+          user,
+        })
+
+        await this.planService.subscribePlanByUserId(
+          (payment.paymentDetails as StripeInvoiceObject).lines?.data[0].price?.id,
+          moment
+            .unix((payment.paymentDetails as StripeInvoiceObject).lines?.data[0].period.end)
+            .toDate(),
+          user.id
+        )
+
+        await this.notificationService.createUserLogs(
+          user,
+          { req, res },
+          `User paid ${payment.amountPaid}$ for subscription`,
+          true
+        )
+
         break
       }
       case 'invoice.payment_failed':

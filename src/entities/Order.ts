@@ -7,12 +7,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
   UpdateDateColumn,
 } from 'typeorm'
 
 import { User } from '../entities'
+import { Payment } from './Payment'
 import { Service } from './Service'
 
 @ObjectType()
@@ -66,4 +68,12 @@ export class Order extends BaseEntity {
 
   @RelationId((support: Order) => support.buyer)
   buyerId!: string
+
+  @Field(() => Payment, { nullable: true })
+  @OneToOne(() => Payment, (payment) => payment.order, { lazy: true })
+  @JoinColumn({ name: 'paymentId' })
+  payment!: Promise<Payment>
+
+  @RelationId((support: Order) => support.payment)
+  paymentId!: string
 }

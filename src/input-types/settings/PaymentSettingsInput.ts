@@ -1,6 +1,6 @@
 import { IsBoolean, IsEnum, IsOptional, ValidateIf } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
-import { PaymentType } from '../../enums'
+import { AcceptingPaymentType } from '../../enums'
 
 @InputType()
 export class PaymentSettingsInput {
@@ -9,11 +9,11 @@ export class PaymentSettingsInput {
   @IsOptional()
   enablePaymentSystem!: boolean
 
-  @Field(() => String, { nullable: true, defaultValue: PaymentType.Both })
-  @IsEnum(PaymentType)
+  @Field(() => String, { nullable: true, defaultValue: AcceptingPaymentType.Both })
+  @IsEnum(AcceptingPaymentType)
   @IsOptional()
-  @ValidateIf((e) => e.enabledPaymentType !== '')
-  enabledPaymentType!: PaymentType
+  @ValidateIf((e) => e.enabledAcceptingPaymentType !== '')
+  enabledAcceptingPaymentType!: AcceptingPaymentType
 
   @Field(() => String, { nullable: true })
   brandName!: string

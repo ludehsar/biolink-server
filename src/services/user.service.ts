@@ -63,6 +63,25 @@ export class UserService {
   }
 
   /**
+   * Get user by stripe customer id
+   * @param {string} stripeCustomerId
+   * @returns {Promise<User>}
+   */
+  async getUserByStripeCustomerId(stripeCustomerId: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        stripeCustomerId,
+      },
+    })
+
+    if (!user) {
+      throw new ApolloError('Invalid stripe customer id', ErrorCode.USER_NOT_FOUND)
+    }
+
+    return user
+  }
+
+  /**
    * Get user by email
    * @param {string} email
    * @returns {Promise<User>}

@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -6,12 +6,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm'
 
-import { User } from '../entities'
-import { PaymentMethod } from '../enums'
+import { StripeInvoiceObject } from '../json-types'
+import { Order, Plan, User } from '../entities'
+import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
 
 @ObjectType()
 @Entity()
@@ -21,92 +23,24 @@ export class Payment extends BaseEntity {
   id!: string
 
   @Field(() => String, { nullable: true })
-  @Column({ type: 'enum', enum: PaymentMethod, default: PaymentMethod.Stripe })
-  paymentType!: PaymentMethod
+  @Column({ type: 'enum', enum: PaymentType, default: PaymentType.Checkout })
+  paymentType!: PaymentType
 
-  @Column({ nullable: true })
-  @Field(() => Int, { nullable: true })
-  stripeAmountDue!: number
-
-  @Column({ nullable: true })
-  @Field(() => Int, { nullable: true })
-  stripeAmountPaid!: number
-
-  @Column({ nullable: true })
-  @Field(() => Int, { nullable: true })
-  stripeAmountRemaining!: number
-
-  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  stripeChargeId!: string
+  @Column({ type: 'enum', enum: PaymentProvider, default: PaymentProvider.Stripe })
+  paymentProvider!: PaymentProvider
 
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeInvoiceCreated!: string
+  @Field(() => Float, { nullable: true })
+  @Column({ type: 'float', default: 0.0 })
+  amountPaid!: number
 
-  @Column({ nullable: true })
   @Field(() => String, { nullable: true })
-  stripePaymentCurrency!: string
+  @Column({ type: 'enum', enum: PaymentCurrency, default: PaymentCurrency.USD })
+  paymentCurrency!: PaymentCurrency
 
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerId!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerAddress!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerEmail!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerName!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerPhone!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeCustomerShipping!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeDiscount!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeInvoicePdfUrl!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeInvoiceUrl!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripePriceId!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeSubscriptionId!: string
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeInvoiceNumber!: string
-
-  @Column({ type: 'date', nullable: true })
-  @Field(() => String, { nullable: true })
-  stripePeriodStart!: Date
-
-  @Column({ type: 'date', nullable: true })
-  @Field(() => String, { nullable: true })
-  stripePeriodEnd!: Date
-
-  @Column({ nullable: true })
-  @Field(() => String, { nullable: true })
-  stripeStatus!: string
+  @Field(() => StripeInvoiceObject, { nullable: true })
+  @Column({ type: 'json', nullable: true })
+  paymentDetails!: StripeInvoiceObject
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
@@ -120,4 +54,20 @@ export class Payment extends BaseEntity {
 
   @RelationId((payment: Payment) => payment.user)
   userId!: string
+
+  @Field(() => Order, { nullable: true })
+  @OneToOne(() => Order, (order) => order.payment, { nullable: true, lazy: true })
+  @JoinColumn({ name: 'orderId' })
+  order?: Promise<Order>
+
+  @RelationId((payment: Payment) => payment.order)
+  orderId?: string
+
+  @Field(() => Plan, { nullable: true })
+  @ManyToOne(() => Plan, (plan) => plan.payments, { nullable: true, lazy: true })
+  @JoinColumn({ name: 'planId' })
+  plan?: Promise<Plan>
+
+  @RelationId((payment: Payment) => payment.plan)
+  planId?: string
 }

@@ -38,7 +38,7 @@ export class PlanService {
   }
 
   /**
-   * Get free plan
+   * Get plan by plan id
    * @param {number} planId
    * @returns {Promise<Plan>}
    */
@@ -47,6 +47,23 @@ export class PlanService {
 
     if (!plan) {
       throw new ApolloError('plan is not available', ErrorCode.PLAN_COULD_NOT_BE_FOUND)
+    }
+
+    return plan
+  }
+
+  /**
+   * Get free plan
+   * @param {string} stripePriceId
+   * @returns {Promise<Plan>}
+   */
+  async getPlanByStripePriceId(stripePriceId: string): Promise<Plan> {
+    const plan = await this.planRepository.findOne({
+      where: [{ monthlyPriceStripeId: stripePriceId }, { annualPriceStripeId: stripePriceId }],
+    })
+
+    if (!plan) {
+      throw new ApolloError('Plan not found', ErrorCode.PLAN_COULD_NOT_BE_FOUND)
     }
 
     return plan
@@ -94,13 +111,7 @@ export class PlanService {
     expirationDate: Date,
     userId: string
   ): Promise<void> {
-    const plan = await Plan.findOne({
-      where: [{ monthlyPriceStripeId: stripePriceId }, { annualPriceStripeId: stripePriceId }],
-    })
-
-    if (!plan) {
-      throw new ApolloError('Plan not found', ErrorCode.PLAN_COULD_NOT_BE_FOUND)
-    }
+    const plan = await this.getPlanByStripePriceId(stripePriceId)
 
     await this.userService.updateUserById(userId, {
       plan,
