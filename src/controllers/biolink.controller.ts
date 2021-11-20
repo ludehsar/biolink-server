@@ -225,7 +225,7 @@ export class BiolinkController {
 
     biolink = await this.biolinkService.updateBiolinkById(biolink.id, {
       settings: {
-        enableDarkMode: !!darkModeInput.enableDarkMode,
+        enableDarkMode: darkModeInput.enableDarkMode,
       },
     })
 

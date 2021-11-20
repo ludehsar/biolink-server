@@ -6,6 +6,7 @@ import { PaymentService } from '../services/payment.service'
 import { stripe } from '../utilities'
 import { appConfig } from '../config'
 import { PaymentMethod } from '../enums'
+import Stripe from 'stripe'
 
 @Service()
 export class PaymentController {
@@ -65,7 +66,7 @@ export class PaymentController {
   }
 
   async getStripeWebhookResponse(req: Request, res: Response): Promise<Response | void> {
-    let data
+    let data: Stripe.Event.Data
     let eventType
 
     // Check if webhook signing is configured.
@@ -96,38 +97,51 @@ export class PaymentController {
     }
 
     switch (eventType) {
-      case 'invoice.paid':
+      case 'invoice.paid': {
+        // First, list all the subscriptions
+        const subscriptions = await stripe.subscriptions.list({
+          customer: (data.object as Stripe.Invoice).customer as string | undefined,
+          limit: 100,
+          status: 'active',
+        })
+        subscriptions.data.forEach(async (subscription) => {
+          if (subscription.id !== (data.object as Stripe.Invoice).subscription) {
+            await stripe.subscriptions.del(subscription.id)
+          }
+        })
         // Continue to provision the subscription as payments continue to be made.
         // Store the status in your database and check when a user accesses your service.
         // This approach helps you avoid hitting rate limits.
         await this.paymentService.saveStripePayment(
           {
-            stripeAmountDue: data.object.amount_due,
-            stripeAmountPaid: data.object.amount_paid,
-            stripeAmountRemaining: data.object.amount_remaining,
-            stripeChargeId: data.object.charge,
-            stripeCustomerAddress: data.object.customer_address,
-            stripeCustomerEmail: data.object.customer_email,
-            stripeCustomerId: data.object.customer,
-            stripeCustomerName: data.object.customer_name,
-            stripeCustomerPhone: data.object.customer_phone,
-            stripeCustomerShipping: data.object.customer_shipping,
-            stripeDiscount: data.object.discount,
-            stripeInvoiceCreated: data.object.created,
-            stripeInvoiceNumber: data.object.number,
-            stripeInvoicePdfUrl: data.object.invoice_pdf,
-            stripeInvoiceUrl: data.object.hosted_invoice_url,
-            stripePaymentCurrency: data.object.currency,
-            stripePeriodEnd: data.object.lines.data[0].period.end,
-            stripePeriodStart: data.object.lines.data[0].period.start,
-            stripePriceId: data.object.lines.data[0].price.id,
-            stripeStatus: data.object.status,
-            stripeSubscriptionId: data.object.subscription,
+            stripeAmountDue: (data.object as Stripe.Invoice).amount_due,
+            stripeAmountPaid: (data.object as Stripe.Invoice).amount_paid,
+            stripeAmountRemaining: (data.object as Stripe.Invoice).amount_remaining,
+            stripeChargeId: (data.object as Stripe.Invoice).charge as string,
+            stripeCustomerAddress: (data.object as Stripe.Invoice)
+              .customer_address as unknown as string,
+            stripeCustomerEmail: (data.object as Stripe.Invoice).customer_email as string,
+            stripeCustomerId: (data.object as Stripe.Invoice).customer as string,
+            stripeCustomerName: (data.object as Stripe.Invoice).customer_name as string,
+            stripeCustomerPhone: (data.object as Stripe.Invoice).customer_phone as string,
+            stripeCustomerShipping: (data.object as Stripe.Invoice).customer_shipping as string,
+            stripeDiscount: (data.object as Stripe.Invoice).discount as unknown as string,
+            stripeInvoiceCreated: (data.object as Stripe.Invoice).created.toString(),
+            stripeInvoiceNumber: (data.object as Stripe.Invoice).number as string,
+            stripeInvoicePdfUrl: (data.object as Stripe.Invoice).invoice_pdf as string,
+            stripeInvoiceUrl: (data.object as Stripe.Invoice).hosted_invoice_url as string,
+            stripePaymentCurrency: (data.object as Stripe.Invoice).currency,
+            stripePeriodEnd: (data.object as Stripe.Invoice).lines.data[0].period.end,
+            stripePeriodStart: (data.object as Stripe.Invoice).lines.data[0].period.start,
+            stripePriceId: (data.object as Stripe.Invoice).lines.data[0].price?.id as string,
+            stripeStatus: (data.object as Stripe.Invoice).status as string,
+            stripeSubscriptionId: (data.object as Stripe.Invoice).subscription as string,
             paymentType: PaymentMethod.Stripe,
           },
           { req, res }
         )
         break
+      }
       case 'invoice.payment_failed':
         // The payment failed or the customer does not have a valid payment method.
         // The subscription becomes past_due. Notify your customer and send them to the
