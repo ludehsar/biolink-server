@@ -18,7 +18,7 @@ createConnection().then(() => {
     paymentController.createStripeCheckoutSession
   )
 
-  // stripeRoutes.post('/webhook', paymentController.getStripeWebhookResponse)
+  stripeRoutes.post('/webhook', paymentController.getStripeWebhookResponse)
 
   stripeRoutes.post('/customer-portal', async (req, res): Promise<Response | void> => {
     const user = await getAuthUser(req, res)
