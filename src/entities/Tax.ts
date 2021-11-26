@@ -14,9 +14,9 @@ import { TaxValueType, TaxType, TaxBillingForType } from '../enums'
 @ObjectType()
 @Entity()
 export class Tax extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  @Field(() => Int, { nullable: true })
-  id!: number
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
+  id!: string
 
   @Column({ nullable: true })
   @Field(() => String, { nullable: true })

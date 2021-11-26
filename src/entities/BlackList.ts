@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -16,9 +16,9 @@ import { BlacklistType } from '../enums'
 @Entity()
 @Unique(['blacklistType', 'keyword'])
 export class BlackList extends BaseEntity {
-  @Field(() => Int, { nullable: true })
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: BlacklistType, default: BlacklistType.BadWord })

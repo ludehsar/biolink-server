@@ -25,7 +25,7 @@ import { Username } from './Username'
 @Entity()
 @Unique(['username', 'deletedAt'])
 export class Biolink extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
   id!: string
 

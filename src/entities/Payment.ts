@@ -18,7 +18,7 @@ import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
 @ObjectType()
 @Entity()
 export class Payment extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
   id!: string
 

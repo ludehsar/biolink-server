@@ -1,4 +1,4 @@
-import { Field, Float, Int, ObjectType } from 'type-graphql'
+import { Field, Float, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -18,9 +18,9 @@ import { Payment } from './Payment'
 @ObjectType()
 @Entity()
 export class Plan extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true, nullable: true })

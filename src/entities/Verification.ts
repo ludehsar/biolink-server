@@ -19,8 +19,8 @@ import { VerificationStatus } from '../enums'
 @ObjectType()
 @Entity()
 export class Verification extends BaseEntity {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
-  @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })

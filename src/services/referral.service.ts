@@ -49,7 +49,7 @@ export class ReferralService {
     const paginator = buildPaginator({
       entity: Referral,
       alias: 'referral',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
@@ -88,7 +88,7 @@ export class ReferralService {
     const paginator = buildPaginator({
       entity: User,
       alias: 'user',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

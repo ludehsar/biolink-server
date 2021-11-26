@@ -15,8 +15,8 @@ import { User } from './User'
 @ObjectType()
 @Entity()
 export class Follow extends BaseEntity {
-  @Field(() => String)
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })

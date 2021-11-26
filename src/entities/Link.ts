@@ -20,8 +20,8 @@ import { appConfig } from '../config'
 @ObjectType()
 @Entity()
 export class Link extends BaseEntity {
-  @Field(() => String)
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })

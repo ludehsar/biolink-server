@@ -15,8 +15,8 @@ import { User } from '../entities'
 @ObjectType()
 @Entity()
 export class UserLogs extends BaseEntity {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
-  @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })

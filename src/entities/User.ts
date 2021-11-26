@@ -41,8 +41,8 @@ import { ChatRoomToUser } from './ChatRoomToUser'
 @Entity()
 @Unique(['email', 'deletedAt'])
 export class User extends BaseEntity {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
-  @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })

@@ -211,7 +211,7 @@ export class BiolinkService {
     const paginator = buildPaginator({
       entity: Biolink,
       alias: 'biolink',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
@@ -317,7 +317,7 @@ export class BiolinkService {
     const paginator = buildPaginator({
       entity: Biolink,
       alias: 'biolink',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

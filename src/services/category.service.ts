@@ -45,7 +45,7 @@ export class CategoryService {
     const paginator = buildPaginator({
       entity: Category,
       alias: 'category',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

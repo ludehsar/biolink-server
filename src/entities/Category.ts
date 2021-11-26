@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -15,9 +15,9 @@ import { Biolink, Verification } from '../entities'
 @ObjectType()
 @Entity()
 export class Category extends BaseEntity {
-  @Field(() => Int, { nullable: true })
-  @PrimaryGeneratedColumn()
-  id!: number
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
+  id!: string
 
   @Field(() => String, { nullable: true })
   @Column({ unique: true, nullable: true })

@@ -98,7 +98,7 @@ export class NotificationService {
     const paginator = buildPaginator({
       entity: UserLogs,
       alias: 'activity',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

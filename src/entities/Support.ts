@@ -18,8 +18,8 @@ import { ResolveStatus } from '../enums'
 @ObjectType()
 @Entity()
 export class Support extends BaseEntity {
-  @Field(() => String)
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })

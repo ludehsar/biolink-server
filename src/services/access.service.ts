@@ -96,7 +96,7 @@ export class AccessService {
     const paginator = buildPaginator({
       entity: ServiceEntity,
       alias: 'service',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

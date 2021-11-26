@@ -19,7 +19,7 @@ import { CodeType } from '../enums'
 @ObjectType()
 @Entity()
 export class Code extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
   id!: string
 

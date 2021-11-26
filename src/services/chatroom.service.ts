@@ -84,7 +84,7 @@ export class ChatRoomService {
     const paginator = buildPaginator({
       entity: User,
       alias: 'user',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

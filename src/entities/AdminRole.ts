@@ -1,5 +1,5 @@
 import { RoleSettings } from '../json-types'
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -15,9 +15,9 @@ import { User } from '../entities'
 @ObjectType()
 @Entity()
 export class AdminRole extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  @Field(() => Int, { nullable: true })
-  id!: number
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
+  id!: string
 
   @Column({ unique: true, nullable: true })
   @Field(() => String, { nullable: true })

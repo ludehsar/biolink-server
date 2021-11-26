@@ -15,8 +15,8 @@ import { TokenType } from '../enums'
 @ObjectType()
 @Entity()
 export class Token extends BaseEntity {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
-  @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Column({ nullable: true })

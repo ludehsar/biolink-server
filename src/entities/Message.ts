@@ -18,8 +18,8 @@ import { ChatRoom } from './ChatRoom'
 @ObjectType()
 @Entity()
 export class Message extends BaseEntity {
-  @Field(() => String)
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })

@@ -91,7 +91,7 @@ export class OrderService {
     const paginator = buildPaginator({
       entity: Order,
       alias: 'order',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
@@ -129,7 +129,7 @@ export class OrderService {
     const paginator = buildPaginator({
       entity: Order,
       alias: 'order',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

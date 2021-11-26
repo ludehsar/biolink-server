@@ -31,7 +31,7 @@ export class MessageService {
     const paginator = buildPaginator({
       entity: Message,
       alias: 'message',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,

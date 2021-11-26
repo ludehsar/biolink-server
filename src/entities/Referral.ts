@@ -15,8 +15,8 @@ import { User } from '../entities'
 @ObjectType()
 @Entity()
 export class Referral extends BaseEntity {
-  @Field(() => String)
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
+  @Field(() => String, { nullable: true })
   id!: string
 
   @Field(() => String, { nullable: true })

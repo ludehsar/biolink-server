@@ -15,8 +15,8 @@ import { Link, Biolink } from '../entities'
 @ObjectType()
 @Entity()
 export class TrackLink extends BaseEntity {
+  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
   @Field(() => String, { nullable: true })
-  @PrimaryGeneratedColumn('uuid')
   id!: string
 
   @Field(() => String, { nullable: true })

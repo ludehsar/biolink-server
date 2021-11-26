@@ -149,7 +149,7 @@ export class TrackingService {
     const paginator = buildPaginator({
       entity: Link,
       alias: 'link',
-      paginationKeys: ['createdAt'],
+      paginationKeys: ['id'],
       query: {
         afterCursor: options.afterCursor,
         beforeCursor: options.beforeCursor,
