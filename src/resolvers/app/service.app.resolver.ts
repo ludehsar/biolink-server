@@ -61,14 +61,24 @@ export class ServiceResolver {
     return await this.serviceController.getAllUserServices(options, context)
   }
 
+  @Mutation(() => String, { nullable: true })
+  @UseMiddleware(authUser, emailVerified)
+  async createPaypalOrder(
+    @Arg('serviceId') serviceId: string,
+    @Ctx() context: MyContext
+  ): Promise<string> {
+    return await this.orderController.createPaypalOrder(serviceId, context)
+  }
+
   @Mutation(() => Order, { nullable: true })
   @UseMiddleware(authUser, emailVerified)
-  async createOrder(
+  async capturePaypalOrder(
+    @Arg('orderId') orderId: string,
     @Arg('serviceId') serviceId: string,
     @Arg('options') options: NewOrderInput,
     @Ctx() context: MyContext
   ): Promise<Order> {
-    return await this.orderController.createOrder(serviceId, options, context)
+    return await this.orderController.capturePaypalOrder(orderId, serviceId, options, context)
   }
 
   @Mutation(() => Order, { nullable: true })

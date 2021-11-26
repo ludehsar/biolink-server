@@ -22,6 +22,10 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || ''
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || ''
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || ''
 const POSITIONTRACK_API_KEY = process.env.POSITIONTRACK_API_KEY || ''
+const PAYPAL_SANDBOX_CLIENT_ID = process.env.PAYPAL_SANDBOX_CLIENT_ID || ''
+const PAYPAL_SANDBOX_CLIENT_SECRET = process.env.PAYPAL_SANDBOX_CLIENT_SECRET || ''
+const PAYPAL_LIVE_CLIENT_ID = process.env.PAYPAL_LIVE_CLIENT_ID || ''
+const PAYPAL_LIVE_CLIENT_SECRET = process.env.PAYPAL_LIVE_CLIENT_SECRET || ''
 const FROM_EMAIL = 'info@stash.ee'
 const FROM_EMAIL_NAME = 'Stashee Support'
 
@@ -51,4 +55,8 @@ export default {
   forgotPasswordTokenExpirationMinutes,
   FROM_EMAIL,
   FROM_EMAIL_NAME,
+  PAYPAL_LIVE_CLIENT_ID,
+  PAYPAL_LIVE_CLIENT_SECRET,
+  PAYPAL_SANDBOX_CLIENT_ID,
+  PAYPAL_SANDBOX_CLIENT_SECRET,
 }

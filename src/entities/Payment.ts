@@ -11,7 +11,7 @@ import {
   RelationId,
 } from 'typeorm'
 
-import { StripeInvoiceObject } from '../json-types'
+import { PaymentRecordUnion, PaypalPaymentRecord, StripeInvoiceObject } from '../json-types'
 import { Order, Plan, User } from '../entities'
 import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
 
@@ -21,6 +21,9 @@ export class Payment extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String, { nullable: true })
   id!: string
+
+  @Column({ unique: true })
+  representedId!: string
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'enum', enum: PaymentType, default: PaymentType.Checkout })
@@ -38,9 +41,9 @@ export class Payment extends BaseEntity {
   @Column({ type: 'enum', enum: PaymentCurrency, default: PaymentCurrency.USD })
   paymentCurrency!: PaymentCurrency
 
-  @Field(() => StripeInvoiceObject, { nullable: true })
+  @Field(() => PaymentRecordUnion, { nullable: true })
   @Column({ type: 'json', nullable: true })
-  paymentDetails!: StripeInvoiceObject
+  paymentDetails!: StripeInvoiceObject | PaypalPaymentRecord
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()

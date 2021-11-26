@@ -130,7 +130,8 @@ export class PaymentController {
           (data.object as Stripe.Invoice).lines.data[0].price?.id || ''
         )
 
-        const payment = await this.paymentService.saveStripeSubscriptionPayment({
+        const payment = await this.paymentService.savePayment({
+          representedId: (data.object as Stripe.Invoice).id,
           amountPaid: (data.object as Stripe.Invoice).amount_paid,
           paymentCurrency: (data.object as Stripe.Invoice).currency as PaymentCurrency,
           paymentDetails: Object.assign({} as StripeInvoiceObject, data.object),
@@ -138,6 +139,10 @@ export class PaymentController {
           paymentType: PaymentType.Subscription,
           plan,
           user,
+        })
+
+        await this.userService.updateUserById(user.id, {
+          usedReferralsToPurchasePlan: true,
         })
 
         await this.planService.subscribePlanByUserId(

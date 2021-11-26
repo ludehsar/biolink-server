@@ -13,6 +13,8 @@ import { PlanSettings } from './PlanSettings'
 import { RoleSettings } from './RoleSettings'
 import { SocialSystemSettings } from './SocialSystemSettings'
 import { StripeInvoiceObject } from './StripePaymentRecord'
+import { PaypalPaymentRecord } from './PaypalPaymentRecord'
+import { PaymentRecordUnion } from './PaymentRecordUnion'
 
 export {
   AdsSystemSettings,
@@ -30,4 +32,6 @@ export {
   RoleSettings,
   SocialSystemSettings,
   StripeInvoiceObject,
+  PaypalPaymentRecord,
+  PaymentRecordUnion,
 }

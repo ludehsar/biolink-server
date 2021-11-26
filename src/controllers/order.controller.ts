@@ -7,12 +7,15 @@ import { ConnectionArgs, NewOrderInput } from '../input-types'
 import { OrderService } from '../services/order.service'
 import { PaginatedOrderResponse } from '../object-types/common/PaginatedOrderResponse'
 import { AccessService } from '../services/access.service'
+import { PaymentService } from '../services/payment.service'
+import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
 
 @Service()
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,
-    private readonly accessService: AccessService
+    private readonly accessService: AccessService,
+    private readonly paymentService: PaymentService
   ) {}
 
   async getOrder(orderId: string, context: MyContext): Promise<Order> {
@@ -28,20 +31,62 @@ export class OrderController {
     return order
   }
 
-  async createOrder(serviceId: string, input: NewOrderInput, context: MyContext): Promise<Order> {
+  async createPaypalOrder(serviceId: string, context: MyContext): Promise<string> {
     const service = await this.accessService.getServiceById(serviceId)
 
     if (service.sellerId === (context.user as User).id) {
       throw new ForbiddenError('Cannot buy your own service')
     }
 
-    return await this.orderService.createOrder({
+    return await this.paymentService.paypalCheckoutCreateOrder(service)
+  }
+
+  async capturePaypalOrder(
+    orderId: string,
+    serviceId: string,
+    input: NewOrderInput,
+    context: MyContext
+  ): Promise<Order> {
+    const paypalPaymentInfo = await this.paymentService.paypalCheckoutCaptureOrder(orderId)
+
+    const service = await this.accessService.getServiceById(serviceId)
+
+    if (service.sellerId === (context.user as User).id) {
+      throw new ForbiddenError('Cannot buy your own service')
+    }
+
+    const order = await this.orderService.createOrder({
       buyer: context.user,
       description: input.description,
       orderCompleted: false,
       price: input.price,
       service: service,
     })
+
+    const amountPaid = paypalPaymentInfo.purchase_units.reduce(
+      (sum, purchase_unit) =>
+        sum +
+        purchase_unit.payments.captures.reduce(
+          (sum2, capture) => sum2 + parseFloat(capture.amount.value),
+          0
+        ),
+      0
+    )
+
+    await this.paymentService.savePayment({
+      amountPaid,
+      order,
+      paymentCurrency: PaymentCurrency.USD,
+      paymentDetails: paypalPaymentInfo,
+      paymentProvider: PaymentProvider.PayPal,
+      paymentType: PaymentType.Checkout,
+      representedId: paypalPaymentInfo.id,
+      user: context.user,
+    })
+
+    // TODO: Add money to service provider's account
+
+    return order
   }
 
   async markCompleted(orderId: string, context: MyContext): Promise<Order> {
