@@ -225,8 +225,7 @@ export class LinkService {
     const link = await this.getLinkById(linkId)
 
     if (updateBody.biolink) link.biolink = Promise.resolve(updateBody.biolink)
-    if (updateBody.enablePasswordProtection)
-      link.enablePasswordProtection = updateBody.enablePasswordProtection
+    link.enablePasswordProtection = updateBody.enablePasswordProtection || false
     if (updateBody.endDate) link.endDate = updateBody.endDate
     if (updateBody.featured) link.featured = updateBody.featured
     if (updateBody.iconColorful) link.iconColorful = updateBody.iconColorful

@@ -527,11 +527,8 @@ export class LinkController {
       linkColor: newLinkInput.linkColor,
       linkImage: newLinkInput.linkImage,
       linkTitle: newLinkInput.linkTitle,
-      linkType: LinkType.Link,
       note: newLinkInput.note,
-      order: 0,
       password: newLinkInput.password,
-      shortenedUrl: await this.linkService.generateNewShortUrl(),
       startDate: newLinkInput.startDate,
       url: newLinkInput.url,
       user,
@@ -617,11 +614,8 @@ export class LinkController {
       linkColor: newLinkInput.linkColor,
       linkImage: newLinkInput.linkImage,
       linkTitle: newLinkInput.linkTitle,
-      linkType: LinkType.Embed,
       note: newLinkInput.note,
-      order: 0,
       password: newLinkInput.password,
-      shortenedUrl: await this.linkService.generateNewShortUrl(),
       startDate: newLinkInput.startDate,
       url: newLinkInput.url,
       user,
@@ -668,8 +662,6 @@ export class LinkController {
     link = await this.linkService.updateLinkById(link.id, {
       biolink,
       linkColor: newLinkInput.linkColor,
-      linkType: LinkType.Line,
-      order: 0,
       user: context.user,
     })
 
