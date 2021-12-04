@@ -5,7 +5,7 @@ const accessTokenSecret: string = process.env.ACCESS_TOKEN_SECRET as string
 const refreshTokenSecret: string = process.env.REFRESH_TOKEN_SECRET as string
 const emailVerificationTokenSecret: string = process.env.EMAIL_VERIFICATION_TOKEN_SECRET as string
 const forgotPasswordTokenSecret: string = process.env.FORGOT_PASSWORD_TOKEN_SECRET as string
-const accessTokenExpirationMinutes = 5
+const accessTokenExpirationDays = 120
 const refreshTokenExpirationDays = 7
 const emailVerificationTokenExpirationDays = 2
 const forgotPasswordTokenExpirationMinutes = 45
@@ -49,7 +49,7 @@ export default {
   appKey,
   port,
   refreshTokenSecret,
-  accessTokenExpirationMinutes,
+  accessTokenExpirationDays,
   refreshTokenExpirationDays,
   emailVerificationTokenExpirationDays,
   forgotPasswordTokenExpirationMinutes,

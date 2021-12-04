@@ -121,7 +121,7 @@ export class TokenService {
    * @returns {Promise<AccessAndRefreshToken>}
    */
   async generateAuthTokens(user: User, res: Response): Promise<AccessAndRefreshToken> {
-    const accessTokenExpires = moment().add(appConfig.accessTokenExpirationMinutes, 'minutes')
+    const accessTokenExpires = moment().add(appConfig.accessTokenExpirationDays, 'days')
     const accessToken = this.generateToken(
       user.id,
       accessTokenExpires,
