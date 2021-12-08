@@ -44,16 +44,16 @@ export class ChatRoom extends BaseEntity {
 
   // Relationships
   @OneToMany(() => Message, (message) => message.chatRoom, { lazy: true })
-  messages!: Promise<Message[]>
+  messages!: Promise<Message[]> | Message[]
 
   @Field(() => Message, { nullable: true })
   @OneToOne(() => Message, (message) => message.chatRoom, { lazy: true, nullable: true })
   @JoinColumn({ name: 'lastMessageSentId' })
-  lastMessageSent!: Promise<Message>
+  lastMessageSent!: Promise<Message> | Message
 
   @RelationId((chatRoom: ChatRoom) => chatRoom.lastMessageSent)
   lastMessageSentId!: string
 
   @OneToMany(() => ChatRoomToUser, (relation) => relation.chatRoom, { lazy: true })
-  chatRoomToUserRelations!: Promise<ChatRoomToUser[]>
+  chatRoomToUserRelations!: Promise<ChatRoomToUser[]> | ChatRoomToUser[]
 }

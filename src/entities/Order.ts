@@ -56,7 +56,7 @@ export class Order extends BaseEntity {
     cascade: true,
   })
   @JoinColumn({ name: 'serviceId' })
-  service!: Promise<Service>
+  service!: Promise<Service> | Service
 
   @RelationId((support: Order) => support.service)
   serviceId!: string
@@ -64,7 +64,7 @@ export class Order extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (buyer) => buyer.services, { nullable: true, lazy: true, cascade: true })
   @JoinColumn({ name: 'buyerId' })
-  buyer!: Promise<User>
+  buyer!: Promise<User> | User
 
   @RelationId((support: Order) => support.buyer)
   buyerId!: string
@@ -72,7 +72,7 @@ export class Order extends BaseEntity {
   @Field(() => Payment, { nullable: true })
   @OneToOne(() => Payment, (payment) => payment.order, { lazy: true })
   @JoinColumn({ name: 'paymentId' })
-  payment!: Promise<Payment>
+  payment!: Promise<Payment> | Payment
 
   @RelationId((support: Order) => support.payment)
   paymentId!: string

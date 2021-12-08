@@ -11,6 +11,8 @@ import { graphqlUploadExpress } from 'graphql-upload'
 import passport from 'passport'
 import { createServer } from 'http'
 import * as jwt from 'jsonwebtoken'
+import AdminBro from 'admin-bro'
+import { Database, Resource } from '@admin-bro/typeorm'
 
 import { corsConfig, appConfig, jwtStrategy } from './config'
 import { stripeRoutes } from './routers'
@@ -53,6 +55,8 @@ import {
 } from './resolvers/admin'
 import { planDismissScheduler } from './schedulers'
 import { TokenType } from './enums'
+import adminBroOptions from './adminbro/admin.options'
+import buildAdminRouter from './adminbro/admin.route'
 
 const main = async (): Promise<void> => {
   // Configuring typeorm
@@ -198,6 +202,11 @@ const main = async (): Promise<void> => {
   })
 
   planDismissScheduler()
+
+  // Admin bro
+  AdminBro.registerAdapter({ Database, Resource })
+  const adminBro = new AdminBro(adminBroOptions)
+  app.use(adminBro.options.rootPath, buildAdminRouter(adminBro))
 
   // Listen to the port
   httpServer.listen(appConfig.port, async () => {

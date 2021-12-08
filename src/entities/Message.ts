@@ -50,7 +50,7 @@ export class Message extends BaseEntity {
     cascade: true,
   })
   @JoinColumn({ name: 'senderId' })
-  sender!: Promise<User>
+  sender!: Promise<User> | User
 
   @RelationId((message: Message) => message.sender)
   senderId!: string
@@ -62,7 +62,7 @@ export class Message extends BaseEntity {
     cascade: true,
   })
   @JoinColumn({ name: 'chatRoomId' })
-  chatRoom!: Promise<ChatRoom>
+  chatRoom!: Promise<ChatRoom> | ChatRoom
 
   @RelationId((message: Message) => message.chatRoom)
   chatRoomId!: string

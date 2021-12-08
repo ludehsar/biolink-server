@@ -53,7 +53,7 @@ export class Payment extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.payments, { lazy: true })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((payment: Payment) => payment.user)
   userId!: string
@@ -61,7 +61,7 @@ export class Payment extends BaseEntity {
   @Field(() => Order, { nullable: true })
   @OneToOne(() => Order, (order) => order.payment, { nullable: true, lazy: true })
   @JoinColumn({ name: 'orderId' })
-  order?: Promise<Order>
+  order?: Promise<Order> | Order
 
   @RelationId((payment: Payment) => payment.order)
   orderId?: string
@@ -69,7 +69,7 @@ export class Payment extends BaseEntity {
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.payments, { nullable: true, lazy: true })
   @JoinColumn({ name: 'planId' })
-  plan?: Promise<Plan>
+  plan?: Promise<Plan> | Plan
 
   @RelationId((payment: Payment) => payment.plan)
   planId?: string

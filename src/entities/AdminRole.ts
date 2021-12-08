@@ -45,5 +45,5 @@ export class AdminRole extends BaseEntity {
 
   // Relationships
   @OneToMany(() => User, (users) => users.adminRole, { lazy: true })
-  users!: Promise<User[]>
+  users!: Promise<User[]> | User[]
 }

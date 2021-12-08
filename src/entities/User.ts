@@ -136,18 +136,18 @@ export class User extends BaseEntity {
 
   // Relationships
   @OneToMany(() => Biolink, (biolink) => biolink.user, { lazy: true })
-  biolinks!: Promise<Biolink[]>
+  biolinks!: Promise<Biolink[]> | Biolink[]
 
   @OneToMany(() => Domain, (domain) => domain.user, {
     lazy: true,
   })
-  domains!: Promise<Domain[]>
+  domains!: Promise<Domain[]> | Domain[]
 
   @OneToMany(() => UserLogs, (activity) => activity.user, { lazy: true })
-  activities!: Promise<UserLogs[]>
+  activities!: Promise<UserLogs[]> | UserLogs[]
 
   @OneToMany(() => Link, (link) => link.user, { lazy: true })
-  links!: Promise<Link[]>
+  links!: Promise<Link[]> | Link[]
 
   @Field(() => Plan, { nullable: true })
   @ManyToOne(() => Plan, (plan) => plan.users, { lazy: true })
@@ -158,30 +158,30 @@ export class User extends BaseEntity {
   planId!: number
 
   @OneToMany(() => Username, (username) => username.owner, { lazy: true })
-  usernames!: Promise<Username[]>
+  usernames!: Promise<Username[]> | Username[]
 
   @OneToMany(() => Payment, (payment) => payment.user, { lazy: true })
-  payments!: Promise<Payment[]>
+  payments!: Promise<Payment[]> | Payment[]
 
   @OneToMany(() => Code, (code) => code.referrer, { lazy: true })
-  codes!: Promise<Code[]>
+  codes!: Promise<Code[]> | Code[]
 
   @OneToMany(() => Referral, (referral) => referral.referredBy, { lazy: true })
-  referrals!: Promise<Referral[]>
+  referrals!: Promise<Referral[]> | Referral[]
 
   @OneToMany(() => Report, (report) => report.reporter, { lazy: true })
-  reports!: Promise<Report[]>
+  reports!: Promise<Report[]> | Report[]
 
   @OneToMany(() => Support, (support) => support.user, { lazy: true })
-  supports!: Promise<Support[]>
+  supports!: Promise<Support[]> | Support[]
 
   @OneToMany(() => Verification, (verification) => verification.user, { lazy: true })
-  verifications!: Promise<Verification[]>
+  verifications!: Promise<Verification[]> | Verification[]
 
   @Field(() => AdminRole, { nullable: true })
   @ManyToOne(() => AdminRole, (role) => role.users, { nullable: true, lazy: true })
   @JoinColumn({ name: 'adminRoleId' })
-  adminRole!: Promise<AdminRole> | null
+  adminRole!: Promise<AdminRole> | AdminRole | null
 
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: number
@@ -191,23 +191,23 @@ export class User extends BaseEntity {
     lazy: true,
   })
   @JoinColumn({ name: 'registeredByCodeId' })
-  registeredByCode!: Promise<Code> | null
+  registeredByCode!: Promise<Code> | Code | null
 
   @RelationId((user: User) => user.registeredByCode)
   registeredByCodeId!: string
 
   @OneToMany(() => Follow, (follow) => follow.follower, { lazy: true })
-  followers!: Promise<Follow[]>
+  followers!: Promise<Follow[]> | Follow[]
 
   @OneToMany(() => Message, (message) => message.sender, { lazy: true })
-  sentMessages!: Promise<Message[]>
+  sentMessages!: Promise<Message[]> | Message[]
 
   @OneToMany(() => ChatRoomToUser, (room) => room.user, { lazy: true })
-  chatRoomToUserRelations!: Promise<ChatRoomToUser[]>
+  chatRoomToUserRelations!: Promise<ChatRoomToUser[]> | ChatRoomToUser[]
 
   @OneToMany(() => Service, (service) => service.seller, { lazy: true })
-  services!: Promise<Service[]>
+  services!: Promise<Service[]> | Service[]
 
   @OneToMany(() => Order, (order) => order.buyer, { lazy: true })
-  orders!: Promise<Order[]>
+  orders!: Promise<Order[]> | Order[]
 }

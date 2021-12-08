@@ -54,11 +54,11 @@ export class Service extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (seller) => seller.services, { nullable: true, lazy: true, cascade: true })
   @JoinColumn({ name: 'sellerId' })
-  seller!: Promise<User>
+  seller!: Promise<User> | User
 
   @RelationId((support: Service) => support.seller)
   sellerId!: string
 
   @OneToMany(() => Order, (order) => order.service, { lazy: true })
-  orders!: Promise<Order[]>
+  orders!: Promise<Order[]> | Order[]
 }

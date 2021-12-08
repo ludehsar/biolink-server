@@ -63,7 +63,7 @@ export class UserLogs extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.activities, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((userLogs: UserLogs) => userLogs.user)
   userId!: string

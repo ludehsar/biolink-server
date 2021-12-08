@@ -111,7 +111,7 @@ export class Verification extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.verifications, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((verification: Verification) => verification.user)
   userId!: string
@@ -119,7 +119,7 @@ export class Verification extends BaseEntity {
   @Field(() => Biolink, { nullable: true })
   @OneToOne(() => Biolink, (biolink) => biolink.verification, { lazy: true, cascade: true })
   @JoinColumn({ name: 'biolinkId' })
-  biolink!: Promise<Biolink>
+  biolink!: Promise<Biolink> | Biolink
 
   @RelationId((verification: Verification) => verification.biolink)
   biolinkId!: string
@@ -127,7 +127,7 @@ export class Verification extends BaseEntity {
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.verifications, { lazy: true })
   @JoinColumn({ name: 'categoryId' })
-  category!: Promise<Category>
+  category!: Promise<Category> | Category
 
   @RelationId((verification: Verification) => verification.category)
   categoryId!: string

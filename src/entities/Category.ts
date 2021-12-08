@@ -41,8 +41,8 @@ export class Category extends BaseEntity {
 
   // Relationships
   @OneToMany(() => Biolink, (biolink) => biolink.category, { lazy: true })
-  biolinks!: Promise<Biolink[]>
+  biolinks!: Promise<Biolink[]> | Biolink[]
 
   @OneToMany(() => Verification, (verification) => verification.category, { lazy: true })
-  verifications!: Promise<Verification[]>
+  verifications!: Promise<Verification[]> | Verification[]
 }

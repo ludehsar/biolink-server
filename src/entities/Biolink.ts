@@ -135,16 +135,16 @@ export class Biolink extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.biolinks, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((biolink: Biolink) => biolink.user)
   userId!: string
 
   @OneToMany(() => Link, (link) => link.biolink, { lazy: true })
-  links!: Promise<Link[]>
+  links!: Promise<Link[]> | Link[]
 
   @OneToMany(() => TrackLink, (trackLink) => trackLink.biolink, { lazy: true })
-  trackLinks!: Promise<TrackLink[]>
+  trackLinks!: Promise<TrackLink[]> | TrackLink[]
 
   @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.biolinks, {
@@ -152,7 +152,7 @@ export class Biolink extends BaseEntity {
     lazy: true,
   })
   @JoinColumn({ name: 'categoryId' })
-  category?: Promise<Category>
+  category?: Promise<Category> | Category
 
   @RelationId((biolink: Biolink) => biolink.category)
   categoryId!: number
@@ -162,11 +162,11 @@ export class Biolink extends BaseEntity {
     lazy: true,
   })
   @JoinColumn({ name: 'verificationId' })
-  verification!: Promise<Verification>
+  verification!: Promise<Verification> | Verification
 
   @RelationId((biolink: Biolink) => biolink.verification)
   verificationId!: string
 
   @OneToMany(() => Follow, (follow) => follow.followee, { lazy: true })
-  followees!: Promise<Follow[]>
+  followees!: Promise<Follow[]> | Follow[]
 }

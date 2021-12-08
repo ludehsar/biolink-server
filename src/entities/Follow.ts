@@ -27,7 +27,7 @@ export class Follow extends BaseEntity {
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.followers, { nullable: true, lazy: true, cascade: true })
   @JoinColumn({ name: 'followerId' })
-  follower!: Promise<User>
+  follower!: Promise<User> | User
 
   @RelationId((follow: Follow) => follow.follower)
   followerId!: string
@@ -35,7 +35,7 @@ export class Follow extends BaseEntity {
   @Field(() => Biolink, { nullable: true })
   @ManyToOne(() => Biolink, (user) => user.followees, { nullable: true, lazy: true, cascade: true })
   @JoinColumn({ name: 'followeeId' })
-  followee!: Promise<Biolink>
+  followee!: Promise<Biolink> | Biolink
 
   @RelationId((follow: Follow) => follow.followee)
   followeeId!: string

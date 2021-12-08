@@ -31,7 +31,7 @@ export class ChatRoomToUser extends BaseEntity {
     cascade: true,
   })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((roomToUser: ChatRoomToUser) => roomToUser.user)
   userId!: string
@@ -43,7 +43,7 @@ export class ChatRoomToUser extends BaseEntity {
     cascade: true,
   })
   @JoinColumn({ name: 'chatRoomId' })
-  chatRoom!: Promise<ChatRoom>
+  chatRoom!: Promise<ChatRoom> | ChatRoom
 
   @RelationId((relation: ChatRoomToUser) => relation.chatRoom)
   chatRoomId!: string

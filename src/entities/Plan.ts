@@ -68,8 +68,8 @@ export class Plan extends BaseEntity {
 
   // Relationships
   @OneToMany(() => User, (user) => user.plan, { lazy: true })
-  users!: Promise<User[]>
+  users!: Promise<User[]> | User[]
 
   @OneToMany(() => Payment, (payment) => payment.plan, { nullable: true, lazy: true })
-  payments!: Promise<Payment[]>
+  payments!: Promise<Payment[]> | Payment[]
 }

@@ -53,7 +53,7 @@ export class Domain extends BaseEntity {
   // Relationships
   @ManyToOne(() => User, (user) => user.domains, { lazy: true, cascade: true })
   @JoinColumn({ name: 'userId' })
-  user!: Promise<User>
+  user!: Promise<User> | User
 
   @RelationId((domain: Domain) => domain.user)
   userId!: string
