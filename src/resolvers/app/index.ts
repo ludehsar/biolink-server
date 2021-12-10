@@ -13,6 +13,7 @@ import { SettingsResolver } from './settings.app.resolver'
 import { SupportResolver } from './support.app.resolver'
 import { UserResolver } from './user.app.resolver'
 import { VerificationResolver } from './verification.app.resolver'
+import { ServiceResolver } from './service.app.resolver'
 
 export {
   AnalyticsResolver,
@@ -30,4 +31,5 @@ export {
   SupportResolver,
   UserResolver,
   VerificationResolver,
+  ServiceResolver,
 }

@@ -307,6 +307,45 @@ domains:
       - name: Get web app settings
         description: Gets the configuration settings of the website.
         query: query.getSettings
+  - name: Services & Order Section
+    description: User service offerings and service ordering section.
+    usecases:
+      - name: Create Service
+        description: Creates a new service.
+        query: mutation.createService
+      - name: Edit Service
+        description: Edits service.
+        query: mutation.editService
+      - name: Delete Service
+        description: Deletes service.
+        query: mutation.deleteService
+      - name: Get Service
+        description: Gets service details by service ID.
+        query: query.getService
+      - name: Get All Services of Current User
+        description: Gets all services of the current user.
+        query: query.getAllUserServices
+      - name: Get All Services by User ID
+        description: Gets all services by user ID.
+        query: query.getAllServicesByUserId
+      - name: Create PayPal Order
+        description: Creates a paypal order for purchasing an order. For more details, visit the PayPal documentation. For more convenience, please check the following YouTube tutorial. [![YouTube Tutorial](https://img.youtube.com/vi/DNM9FdFrI1k/0.jpg)](https://www.youtube.com/watch?v=DNM9FdFrI1k)
+        query: mutation.createPaypalOrder
+      - name: Capture PayPal Order
+        description: Captures the payment information and request the order. Please check the PayPal documentation for more details. For more convenience, please check the following YouTube tutorial. [![YouTube Tutorial](https://img.youtube.com/vi/DNM9FdFrI1k/0.jpg)](https://www.youtube.com/watch?v=DNM9FdFrI1k)
+        query: mutation.capturePaypalOrder
+      - name: Mark Completed Order
+        description: Marks the order as completed. The request is done by the service seller only.
+        query: mutation.orderCompleted
+      - name: Get All Orders by Service ID
+        description: Gets all orders by service ID.
+        query: query.getAllServiceOrders
+      - name: Get All Sent / Purchased Orders
+        description: Gets all purchased orders by the current user.
+        query: query.getAllSentOrders
+      - name: Get Order Details
+        description: Gets order details.
+        query: query.getServiceOrder
 securityDefinitions:
   Bearer Authentication:
     type: apiKey

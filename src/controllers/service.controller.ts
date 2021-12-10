@@ -11,12 +11,8 @@ import { PaginatedServiceResponse } from '../object-types/common/PaginatedServic
 export class ServiceController {
   constructor(private readonly accessService: AccessService) {}
 
-  async getService(serviceId: string, context: MyContext): Promise<ServiceEntity> {
+  async getService(serviceId: string): Promise<ServiceEntity> {
     const service = await this.accessService.getServiceById(serviceId)
-
-    if (service.sellerId !== (context.user as User).id) {
-      throw new ForbiddenError('Forbidden')
-    }
 
     return service
   }
@@ -63,5 +59,12 @@ export class ServiceController {
     context: MyContext
   ): Promise<PaginatedServiceResponse> {
     return await this.accessService.getAllServicesByUserId((context.user as User).id, options)
+  }
+
+  async getAllServicesByUserId(
+    userId: string,
+    options: ConnectionArgs
+  ): Promise<PaginatedServiceResponse> {
+    return await this.accessService.getAllServicesByUserId(userId, options)
   }
 }

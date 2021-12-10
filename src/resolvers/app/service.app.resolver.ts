@@ -5,8 +5,8 @@ import { ConnectionArgs, NewOrderInput, NewServiceInput } from '../../input-type
 import { Order, Service } from '../../entities'
 import { authUser, emailVerified } from '../../middlewares'
 import { OrderController, ServiceController } from '../../controllers'
-import { PaginatedServiceResponse } from 'object-types/common/PaginatedServiceResponse'
-import { PaginatedOrderResponse } from 'object-types/common/PaginatedOrderResponse'
+import { PaginatedServiceResponse } from '../../object-types/common/PaginatedServiceResponse'
+import { PaginatedOrderResponse } from '../../object-types/common/PaginatedOrderResponse'
 
 @Resolver()
 export class ServiceResolver {
@@ -43,13 +43,10 @@ export class ServiceResolver {
     return await this.serviceController.deleteService(serviceId, context)
   }
 
-  @Mutation(() => Service, { nullable: true })
+  @Query(() => Service, { nullable: true })
   @UseMiddleware(authUser, emailVerified)
-  async getService(
-    @Arg('serviceId') serviceId: string,
-    @Ctx() context: MyContext
-  ): Promise<Service> {
-    return await this.serviceController.getService(serviceId, context)
+  async getService(@Arg('serviceId') serviceId: string): Promise<Service> {
+    return await this.serviceController.getService(serviceId)
   }
 
   @Query(() => PaginatedServiceResponse, { nullable: true })
@@ -59,6 +56,15 @@ export class ServiceResolver {
     @Ctx() context: MyContext
   ): Promise<PaginatedServiceResponse> {
     return await this.serviceController.getAllUserServices(options, context)
+  }
+
+  @Query(() => PaginatedServiceResponse, { nullable: true })
+  @UseMiddleware(authUser, emailVerified)
+  async getAllServicesByUserId(
+    @Arg('userId') userId: string,
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedServiceResponse> {
+    return await this.serviceController.getAllServicesByUserId(userId, options)
   }
 
   @Mutation(() => String, { nullable: true })

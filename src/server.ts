@@ -33,6 +33,7 @@ import {
   MessageResolver,
   PaymentResolver,
   AuthResolver,
+  ServiceResolver,
 } from './resolvers/app'
 import {
   AdminRoleAdminResolver,
@@ -136,6 +137,7 @@ const main = async (): Promise<void> => {
         ReportResolver,
         SupportResolver,
         VerificationResolver,
+        ServiceResolver,
       ],
       container: Container,
     }),
