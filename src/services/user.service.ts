@@ -22,8 +22,6 @@ export class UserService {
 
     user = await this.updateUserById(user.id, updateBody)
 
-    await user.save()
-
     return user
   }
 

@@ -88,7 +88,7 @@ export class AuthController {
 
     context.user = user
 
-    await this.sendVerificationEmail(context)
+    // await this.sendVerificationEmail(context)
 
     await this.notificationService.createUserLogs(user, context, 'Created new account', true)
 
