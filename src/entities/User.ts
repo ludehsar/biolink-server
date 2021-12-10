@@ -155,7 +155,7 @@ export class User extends BaseEntity {
   plan!: Plan | Promise<Plan>
 
   @RelationId((user: User) => user.plan)
-  planId!: number
+  planId!: string
 
   @OneToMany(() => Username, (username) => username.owner, { lazy: true })
   usernames!: Promise<Username[]> | Username[]
@@ -184,7 +184,7 @@ export class User extends BaseEntity {
   adminRole!: Promise<AdminRole> | AdminRole | null
 
   @RelationId((user: User) => user.adminRole)
-  adminRoleId!: number
+  adminRoleId!: string
 
   @ManyToOne(() => Code, (code) => code.referredByUsers, {
     nullable: true,

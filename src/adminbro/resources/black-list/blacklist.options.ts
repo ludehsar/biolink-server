@@ -19,6 +19,7 @@ export const blacklistOptions: ResourceOptions = {
 
     edit: {
       showInDrawer: true,
+      isVisible: false,
     },
   },
   navigation: {

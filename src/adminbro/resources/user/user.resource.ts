@@ -135,6 +135,9 @@ export const userOptions: ResourceOptions = {
       component: AdminBro.bundle('./pages/user.show.tsx'),
       after: fetchWithUserLogs,
     },
+    edit: {
+      isVisible: false,
+    },
   },
 }
 

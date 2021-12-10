@@ -6,8 +6,6 @@ import { before } from './actions/settings.hook'
 export const adminRoleOptions: ResourceOptions = {
   listProperties: ['id', 'roleName', 'roleDescription', 'createdAt', 'updatedAt'],
   editProperties: ['roleName', 'roleDescription', 'roleSettings'],
-  showProperties: ['id', 'roleName', 'roleDescription', 'createdAt', 'updatedAt', 'roleSettings'],
-  filterProperties: ['roleName', 'roleDescription', 'createdAt', 'updatedAt'],
   properties: {
     roleName: {
       isTitle: true,
@@ -25,10 +23,11 @@ export const adminRoleOptions: ResourceOptions = {
     },
     edit: {
       before,
+      isVisible: false,
     },
   },
   navigation: {
-    icon: 'IbmSecurity',
+    name: 'User Management',
   },
 }
 

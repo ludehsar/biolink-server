@@ -155,7 +155,7 @@ export class Biolink extends BaseEntity {
   category?: Promise<Category> | Category
 
   @RelationId((biolink: Biolink) => biolink.category)
-  categoryId!: number
+  categoryId!: string
 
   @OneToOne(() => Verification, (verification) => verification.biolink, {
     nullable: true,

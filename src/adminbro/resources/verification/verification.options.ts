@@ -61,6 +61,7 @@ export const verificationOptions: ResourceOptions = {
   actions: {
     edit: {
       showInDrawer: true,
+      isVisible: false,
     },
   },
   navigation: {

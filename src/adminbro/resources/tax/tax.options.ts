@@ -52,6 +52,11 @@ export const taxOptions: ResourceOptions = {
   navigation: {
     icon: 'Document',
   },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
+  },
 }
 
 export const taxResource = Tax

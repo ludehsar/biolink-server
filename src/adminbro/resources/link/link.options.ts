@@ -8,6 +8,11 @@ export const linkOptions: ResourceOptions = {
   navigation: {
     icon: 'Link',
   },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
+  },
 }
 
 export const linkResource = Link

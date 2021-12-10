@@ -23,6 +23,11 @@ export const codeOptions: ResourceOptions = {
   navigation: {
     icon: 'QrCode',
   },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
+  },
 }
 
 export const codeResource = Code

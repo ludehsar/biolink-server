@@ -14,6 +14,7 @@ import { RoleSettings as Settings } from '../../../../json-types'
 
 const RoleSettings: React.FC<BasePropertyProps> = (props) => {
   const { property, record, onChange } = props
+  console.log(record?.id, record?.params.id)
   const [settings, setSettings] = useState<Settings[]>([
     {
       resource: record?.params['roleSettings.0.resource'] || 'Biolink',

@@ -2,10 +2,15 @@ import { ResourceOptions } from 'admin-bro'
 import { Biolink } from '../../../entities'
 
 export const biolinkOptions: ResourceOptions = {
-  listProperties: ['userId', 'categoryId', 'createdAt', 'updatedAt'],
-  filterProperties: ['userId', 'categoryId', 'createdAt', 'updatedAt'],
+  listProperties: ['userId', 'categoryId', 'usernameId', 'createdAt', 'updatedAt'],
   navigation: {
     icon: 'Roadmap',
+    name: 'Profile Management',
+  },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
   },
 }
 

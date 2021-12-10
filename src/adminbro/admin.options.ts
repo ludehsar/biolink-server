@@ -12,6 +12,7 @@ import { linkResource, linkOptions } from './resources/link/link.options'
 import { planResource, planOptions } from './resources/plan/plan.options'
 import { taxResource, taxOptions } from './resources/tax/tax.options'
 import { userResource, userOptions } from './resources/user/user.resource'
+import { usernameOptions, usernameResource } from './resources/username/username.options'
 import {
   verificationResource,
   verificationOptions,
@@ -34,6 +35,10 @@ const options: AdminBroOptions = {
     {
       resource: biolinkResource,
       options: biolinkOptions,
+    },
+    {
+      resource: usernameResource,
+      options: usernameOptions,
     },
     {
       resource: planResource,
@@ -87,6 +92,10 @@ const options: AdminBroOptions = {
   },
   dashboard: {
     component: AdminBro.bundle('./dashboard/components/dashboard.tsx'),
+  },
+  version: {
+    admin: true,
+    app: '2.0.0',
   },
 }
 

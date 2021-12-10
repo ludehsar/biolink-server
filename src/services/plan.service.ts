@@ -39,10 +39,10 @@ export class PlanService {
 
   /**
    * Get plan by plan id
-   * @param {number} planId
+   * @param {string} planId
    * @returns {Promise<Plan>}
    */
-  async getPlanByPlanId(planId: number): Promise<Plan> {
+  async getPlanByPlanId(planId: string): Promise<Plan> {
     const plan = await this.planRepository.findOne(planId)
 
     if (!plan) {
@@ -71,12 +71,12 @@ export class PlanService {
 
   /**
    * Get values from plan settings
-   * @param {number} planId
+   * @param {string} planId
    * @param {keyof PlanSettings} keyword
    * @returns {Promise<boolean | number | undefined>}
    */
   async getValuesFromPlanSettingsByPlanId(
-    planId: number,
+    planId: string,
     keyword: keyof PlanSettings
   ): Promise<boolean | number | undefined> {
     const plan = await this.getPlanByPlanId(planId)

@@ -24,6 +24,11 @@ export const domainOptions: ResourceOptions = {
   navigation: {
     icon: 'Wikis',
   },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
+  },
 }
 
 export const domainResource = Domain

@@ -36,6 +36,11 @@ export const planOptions: ResourceOptions = {
   navigation: {
     icon: 'Event',
   },
+  actions: {
+    edit: {
+      isVisible: false,
+    },
+  },
 }
 
 export const planResource = Plan

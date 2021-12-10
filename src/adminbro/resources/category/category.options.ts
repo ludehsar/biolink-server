@@ -14,6 +14,7 @@ export const categoryOptions: ResourceOptions = {
 
     edit: {
       showInDrawer: true,
+      isVisible: false,
     },
   },
   properties: {
