@@ -147,6 +147,7 @@ export class UserService {
     if (updateBody.totalLogin) user.totalLogin = updateBody.totalLogin
     if (updateBody.usedReferralsToPurchasePlan)
       user.usedReferralsToPurchasePlan = updateBody.usedReferralsToPurchasePlan
+    if (updateBody.availableBalance) user.availableBalance = updateBody.availableBalance
 
     await user.save()
     return user

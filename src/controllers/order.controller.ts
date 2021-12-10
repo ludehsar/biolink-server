@@ -9,13 +9,15 @@ import { PaginatedOrderResponse } from '../object-types/common/PaginatedOrderRes
 import { AccessService } from '../services/access.service'
 import { PaymentService } from '../services/payment.service'
 import { PaymentCurrency, PaymentProvider, PaymentType } from '../enums'
+import { UserService } from '../services/user.service'
 
 @Service()
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,
     private readonly accessService: AccessService,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly userService: UserService
   ) {}
 
   async getOrder(orderId: string, context: MyContext): Promise<Order> {
@@ -95,6 +97,10 @@ export class OrderController {
     if ((await order.service).sellerId !== (context.user as User).id) {
       throw new ForbiddenError('Forbidden')
     }
+
+    await this.userService.updateUserById((context.user as User).id, {
+      availableBalance: (context.user as User).availableBalance + order.price,
+    })
 
     return await this.orderService.updateOrderById(orderId, {
       orderCompleted: true,

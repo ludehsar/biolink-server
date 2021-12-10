@@ -25,4 +25,5 @@ export interface UserUpdateBody {
   timezone?: string
   totalLogin?: number
   usedReferralsToPurchasePlan?: boolean
+  availableBalance?: number
 }

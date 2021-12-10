@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from 'type-graphql'
+import { Field, Float, Int, ObjectType } from 'type-graphql'
 import {
   BaseEntity,
   Column,
@@ -121,6 +121,10 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   currentBiolinkId!: string
+
+  @Field(() => Float, { nullable: true })
+  @Column({ type: 'float', default: 0.0 })
+  availableBalance!: number
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
