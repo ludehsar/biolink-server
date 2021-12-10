@@ -109,6 +109,11 @@ const main = async (): Promise<void> => {
   // Stripe router
   app.use('/api/stripe', stripeRoutes)
 
+  // Admin bro
+  AdminBro.registerAdapter({ Database, Resource })
+  const adminBro = new AdminBro(adminBroOptions)
+  app.use(adminBro.options.rootPath, buildAdminRouter(adminBro))
+
   // Configure graphql upload express middleware
   app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 
@@ -202,11 +207,6 @@ const main = async (): Promise<void> => {
   })
 
   planDismissScheduler()
-
-  // Admin bro
-  AdminBro.registerAdapter({ Database, Resource })
-  const adminBro = new AdminBro(adminBroOptions)
-  app.use(adminBro.options.rootPath, buildAdminRouter(adminBro))
 
   // Listen to the port
   httpServer.listen(appConfig.port, async () => {

@@ -78,7 +78,7 @@ const options: AdminBroOptions = {
   },
   rootPath: '/admin',
   branding: {
-    companyName: '',
+    companyName: 'Stash.ee',
     logo: '/static/logo2.png',
     softwareBrothers: false,
   },
