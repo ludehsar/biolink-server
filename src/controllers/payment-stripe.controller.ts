@@ -39,7 +39,6 @@ const createStripeCheckoutSession = async (
         {
           price: priceId,
           quantity: 1,
-          currency: 'usd',
         },
       ],
       discounts: [
