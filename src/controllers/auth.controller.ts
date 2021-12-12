@@ -10,7 +10,7 @@ import { UsernameService } from '../services/username.service'
 import { TokenService } from '../services/token.service'
 import { NotificationService } from '../services/notification.service'
 import { BlackListService } from '../services/blacklist.service'
-import { BlacklistType } from '../enums'
+import { BlacklistType, SocialAccountStyleType } from '../enums'
 import { AuthService } from '../services/auth.service'
 import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToken'
 import { EmailService } from '../services/email.service'
@@ -82,6 +82,41 @@ export class AuthController {
     await this.biolinkService.createBiolink({
       user,
       username,
+      settings: {
+        addedToDirectory: false,
+        blockSearchEngineIndexing: false,
+        customBrandingName: '',
+        customBrandingUrl: '',
+        directoryBio: '',
+        email: '',
+        emailCaptureId: '',
+        enableColoredContactButtons: false,
+        enableColoredSocialMediaIcons: false,
+        enableCustomBranding: false,
+        enableDarkMode: false,
+        enableEmailCapture: false,
+        enableFacebookPixel: false,
+        enableGoogleAnalytics: false,
+        enablePasswordProtection: false,
+        enableSensitiveContentWarning: false,
+        enableUtmParameters: false,
+        facebookPixelId: '',
+        googleAnalyticsCode: '',
+        metaDescription: '',
+        opengraphImageUrl: '',
+        pageTitle: '',
+        password: '',
+        payoneerLink: '',
+        paypalLink: '',
+        phone: '',
+        removeDefaultBranding: false,
+        showEmail: false,
+        showPhone: false,
+        socialAccountStyleType: SocialAccountStyleType.Round,
+        utmCampaign: '',
+        utmMedium: '',
+        utmSource: '',
+      },
     })
 
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
