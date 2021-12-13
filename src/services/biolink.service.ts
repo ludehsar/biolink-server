@@ -12,6 +12,7 @@ import { BiolinkUpdateBody } from '../interfaces/BiolinkUpdateBody'
 import { ConnectionArgs } from '../input-types'
 import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolinkResponse'
 import { DirectorySearchResponse } from '../object-types'
+import { BiolinkSettings } from '../json-types'
 
 @Service()
 export class BiolinkService {
@@ -153,7 +154,73 @@ export class BiolinkService {
     if (updateBody.profilePhoto) {
       // TODO: Upload photo in aws s3
     }
-    if (updateBody.settings) biolink.settings = updateBody.settings
+    if (updateBody.settings) {
+      const biolinkSettings: BiolinkSettings = {}
+      if (updateBody.settings.addedToDirectory)
+        biolinkSettings.addedToDirectory = updateBody.settings.addedToDirectory
+      if (updateBody.settings.blockSearchEngineIndexing)
+        biolinkSettings.blockSearchEngineIndexing = updateBody.settings.blockSearchEngineIndexing
+      if (updateBody.settings.customBrandingName)
+        biolinkSettings.customBrandingName = updateBody.settings.customBrandingName
+      if (updateBody.settings.customBrandingUrl)
+        biolinkSettings.customBrandingUrl = updateBody.settings.customBrandingUrl
+      if (updateBody.settings.directoryBio)
+        biolinkSettings.directoryBio = updateBody.settings.directoryBio
+      if (updateBody.settings.email) biolinkSettings.email = updateBody.settings.email
+      if (updateBody.settings.emailCaptureId)
+        biolinkSettings.emailCaptureId = updateBody.settings.emailCaptureId
+      if (updateBody.settings.enableColoredContactButtons)
+        biolinkSettings.enableColoredContactButtons =
+          updateBody.settings.enableColoredContactButtons
+      if (updateBody.settings.enableColoredSocialMediaIcons)
+        biolinkSettings.enableColoredSocialMediaIcons =
+          updateBody.settings.enableColoredSocialMediaIcons
+      if (updateBody.settings.enableCustomBranding)
+        biolinkSettings.enableCustomBranding = updateBody.settings.enableCustomBranding
+      if (updateBody.settings.enableDarkMode)
+        biolinkSettings.enableDarkMode = updateBody.settings.enableDarkMode
+      if (updateBody.settings.enableEmailCapture)
+        biolinkSettings.enableEmailCapture = updateBody.settings.enableEmailCapture
+      if (updateBody.settings.enableFacebookPixel)
+        biolinkSettings.enableFacebookPixel = updateBody.settings.enableFacebookPixel
+      if (updateBody.settings.enableGoogleAnalytics)
+        biolinkSettings.enableGoogleAnalytics = updateBody.settings.enableGoogleAnalytics
+      if (updateBody.settings.enablePasswordProtection)
+        biolinkSettings.enablePasswordProtection = updateBody.settings.enablePasswordProtection
+      if (updateBody.settings.enableSensitiveContentWarning)
+        biolinkSettings.enableSensitiveContentWarning =
+          updateBody.settings.enableSensitiveContentWarning
+      if (updateBody.settings.enableUtmParameters)
+        biolinkSettings.enableUtmParameters = updateBody.settings.enableUtmParameters
+      if (updateBody.settings.facebookPixelId)
+        biolinkSettings.facebookPixelId = updateBody.settings.facebookPixelId
+      if (updateBody.settings.googleAnalyticsCode)
+        biolinkSettings.googleAnalyticsCode = updateBody.settings.googleAnalyticsCode
+      if (updateBody.settings.metaDescription)
+        biolinkSettings.metaDescription = updateBody.settings.metaDescription
+      if (updateBody.settings.opengraphImageUrl)
+        biolinkSettings.opengraphImageUrl = updateBody.settings.opengraphImageUrl
+      if (updateBody.settings.pageTitle) biolinkSettings.pageTitle = updateBody.settings.pageTitle
+      if (updateBody.settings.password)
+        biolinkSettings.password = await argon2.hash(updateBody.settings.password)
+      if (updateBody.settings.payoneerLink)
+        biolinkSettings.payoneerLink = updateBody.settings.payoneerLink
+      if (updateBody.settings.paypalLink)
+        biolinkSettings.paypalLink = updateBody.settings.paypalLink
+      if (updateBody.settings.phone) biolinkSettings.phone = updateBody.settings.phone
+      if (updateBody.settings.removeDefaultBranding)
+        biolinkSettings.removeDefaultBranding = updateBody.settings.removeDefaultBranding
+      if (updateBody.settings.showEmail) biolinkSettings.showEmail = updateBody.settings.showEmail
+      if (updateBody.settings.showPhone) biolinkSettings.showPhone = updateBody.settings.showPhone
+      if (updateBody.settings.socialAccountStyleType)
+        biolinkSettings.socialAccountStyleType = updateBody.settings.socialAccountStyleType
+      if (updateBody.settings.utmCampaign)
+        biolinkSettings.utmCampaign = updateBody.settings.utmCampaign
+      if (updateBody.settings.utmMedium) biolinkSettings.utmMedium = updateBody.settings.utmMedium
+      if (updateBody.settings.utmSource) biolinkSettings.utmMedium = updateBody.settings.utmSource
+      if (updateBody.settings.venmoLink) biolinkSettings.venmoLink = updateBody.settings.venmoLink
+      biolink.settings = biolinkSettings
+    }
     if (updateBody.state) biolink.state = updateBody.state
     if (updateBody.user) biolink.user = Promise.resolve(updateBody.user)
     if (updateBody.username) {

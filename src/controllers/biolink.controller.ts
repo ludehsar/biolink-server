@@ -2,7 +2,6 @@ import { FileUpload } from 'graphql-upload'
 import { ApolloError, ForbiddenError } from 'apollo-server-errors'
 import { Service } from 'typedi'
 import axios from 'axios'
-import * as argon2 from 'argon2'
 
 import {
   BrandingInput,
@@ -531,7 +530,7 @@ export class BiolinkController {
       settings: {
         enablePasswordProtection: privacyInput.enablePasswordProtection,
         enableSensitiveContentWarning: privacyInput.enableSensitiveContentWarning,
-        password: privacyInput.password && (await argon2.hash(privacyInput.password)),
+        password: privacyInput.password,
       },
     })
 
