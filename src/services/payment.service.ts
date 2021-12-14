@@ -72,9 +72,9 @@ export class PaymentService {
         representedId: updateBody.representedId,
       })
 
-      if (updateBody.user) payment.user = Promise.resolve(updateBody.user)
-      if (updateBody.order) payment.order = Promise.resolve(updateBody.order)
-      if (updateBody.plan) payment.plan = Promise.resolve(updateBody.plan)
+      if (updateBody.user !== undefined) payment.user = Promise.resolve(updateBody.user)
+      if (updateBody.order !== undefined) payment.order = Promise.resolve(updateBody.order)
+      if (updateBody.plan !== undefined) payment.plan = Promise.resolve(updateBody.plan)
 
       await payment.save()
 

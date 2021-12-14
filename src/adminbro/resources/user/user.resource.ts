@@ -135,9 +135,14 @@ export const userOptions: ResourceOptions = {
       component: AdminBro.bundle('./pages/user.show.tsx'),
       after: fetchWithUserLogs,
     },
-    edit: {
-      isVisible: false,
-    },
+    // delete: {
+    //   handler: async (req, res) => {
+    //     // const user = await User.findOne(req.params.recordId)
+    //     // await user?.softRemove()
+    //     console.log(res)
+    //     return res
+    //   },
+    // },
   },
 }
 

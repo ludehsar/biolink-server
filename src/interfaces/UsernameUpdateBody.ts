@@ -4,6 +4,6 @@ import { Biolink, User } from '../entities'
 export interface UsernameUpdateBody {
   biolink?: Biolink | null
   expireDate?: Date | null
-  owner?: User
+  owner?: User | null
   premiumType?: PremiumUsernameType
 }

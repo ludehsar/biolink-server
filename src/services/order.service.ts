@@ -55,11 +55,11 @@ export class OrderService {
       throw new ApolloError('User not found', ErrorCode.USER_NOT_FOUND)
     }
 
-    if (updateBody.buyer) order.buyer = Promise.resolve(updateBody.buyer)
-    if (updateBody.description) order.description = updateBody.description
-    if (updateBody.orderCompleted) order.orderCompleted = updateBody.orderCompleted
-    if (updateBody.price) order.price = updateBody.price
-    if (updateBody.service) order.service = Promise.resolve(updateBody.service)
+    if (updateBody.buyer !== undefined) order.buyer = Promise.resolve(updateBody.buyer)
+    if (updateBody.description !== undefined) order.description = updateBody.description
+    if (updateBody.orderCompleted !== undefined) order.orderCompleted = updateBody.orderCompleted
+    if (updateBody.price !== undefined) order.price = updateBody.price
+    if (updateBody.service !== undefined) order.service = Promise.resolve(updateBody.service)
 
     await order.save()
     return order

@@ -25,7 +25,7 @@ export class ReportService {
       status: ResolveStatus.Pending,
     })
 
-    if (updateBody.user) report.reporter = Promise.resolve(updateBody.user)
+    if (updateBody.user !== undefined) report.reporter = Promise.resolve(updateBody.user)
 
     await report.save()
 

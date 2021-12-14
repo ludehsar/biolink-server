@@ -12,7 +12,6 @@ import { BiolinkUpdateBody } from '../interfaces/BiolinkUpdateBody'
 import { ConnectionArgs } from '../input-types'
 import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolinkResponse'
 import { DirectorySearchResponse } from '../object-types'
-import { BiolinkSettings } from '../json-types'
 
 @Service()
 export class BiolinkService {
@@ -137,93 +136,100 @@ export class BiolinkService {
       throw new ApolloError('Biolink not found', ErrorCode.BIOLINK_COULD_NOT_BE_FOUND)
     }
 
-    if (updateBody.bio) biolink.bio = updateBody.bio
-    if (updateBody.category) {
+    if (updateBody.bio !== undefined) biolink.bio = updateBody.bio
+    if (updateBody.category !== undefined) {
       biolink.category = Promise.resolve(updateBody.category)
     }
-    if (updateBody.changedUsername) biolink.changedUsername = updateBody.changedUsername
-    if (updateBody.city) biolink.city = updateBody.city
-    if (updateBody.country) biolink.country = updateBody.country
-    if (updateBody.coverPhoto) {
+    if (updateBody.changedUsername !== undefined)
+      biolink.changedUsername = updateBody.changedUsername
+    if (updateBody.city !== undefined) biolink.city = updateBody.city
+    if (updateBody.country !== undefined) biolink.country = updateBody.country
+    if (updateBody.coverPhoto !== undefined) {
       // TODO: Upload photo in aws s3
     }
-    if (updateBody.displayName) biolink.displayName = updateBody.displayName
-    if (updateBody.featured) biolink.featured = updateBody.featured
-    if (updateBody.latitude) biolink.latitude = updateBody.latitude
-    if (updateBody.longitude) biolink.longitude = updateBody.longitude
-    if (updateBody.profilePhoto) {
+    if (updateBody.displayName !== undefined) biolink.displayName = updateBody.displayName
+    if (updateBody.featured !== undefined) biolink.featured = updateBody.featured
+    if (updateBody.latitude !== undefined) biolink.latitude = updateBody.latitude
+    if (updateBody.longitude !== undefined) biolink.longitude = updateBody.longitude
+    if (updateBody.profilePhoto !== undefined) {
       // TODO: Upload photo in aws s3
     }
-    if (updateBody.settings) {
-      const biolinkSettings: BiolinkSettings = {}
-      if (updateBody.settings.addedToDirectory)
+    if (updateBody.settings !== undefined) {
+      const biolinkSettings = biolink.settings || {}
+      if (updateBody.settings.addedToDirectory !== undefined)
         biolinkSettings.addedToDirectory = updateBody.settings.addedToDirectory
-      if (updateBody.settings.blockSearchEngineIndexing)
+      if (updateBody.settings.blockSearchEngineIndexing !== undefined)
         biolinkSettings.blockSearchEngineIndexing = updateBody.settings.blockSearchEngineIndexing
-      if (updateBody.settings.customBrandingName)
+      if (updateBody.settings.customBrandingName !== undefined)
         biolinkSettings.customBrandingName = updateBody.settings.customBrandingName
-      if (updateBody.settings.customBrandingUrl)
+      if (updateBody.settings.customBrandingUrl !== undefined)
         biolinkSettings.customBrandingUrl = updateBody.settings.customBrandingUrl
-      if (updateBody.settings.directoryBio)
+      if (updateBody.settings.directoryBio !== undefined)
         biolinkSettings.directoryBio = updateBody.settings.directoryBio
-      if (updateBody.settings.email) biolinkSettings.email = updateBody.settings.email
-      if (updateBody.settings.emailCaptureId)
+      if (updateBody.settings.email !== undefined) biolinkSettings.email = updateBody.settings.email
+      if (updateBody.settings.emailCaptureId !== undefined)
         biolinkSettings.emailCaptureId = updateBody.settings.emailCaptureId
-      if (updateBody.settings.enableColoredContactButtons)
+      if (updateBody.settings.enableColoredContactButtons !== undefined)
         biolinkSettings.enableColoredContactButtons =
           updateBody.settings.enableColoredContactButtons
-      if (updateBody.settings.enableColoredSocialMediaIcons)
+      if (updateBody.settings.enableColoredSocialMediaIcons !== undefined)
         biolinkSettings.enableColoredSocialMediaIcons =
           updateBody.settings.enableColoredSocialMediaIcons
-      if (updateBody.settings.enableCustomBranding)
+      if (updateBody.settings.enableCustomBranding !== undefined)
         biolinkSettings.enableCustomBranding = updateBody.settings.enableCustomBranding
-      if (updateBody.settings.enableDarkMode)
+      if (updateBody.settings.enableDarkMode !== undefined)
         biolinkSettings.enableDarkMode = updateBody.settings.enableDarkMode
-      if (updateBody.settings.enableEmailCapture)
+      if (updateBody.settings.enableEmailCapture !== undefined)
         biolinkSettings.enableEmailCapture = updateBody.settings.enableEmailCapture
-      if (updateBody.settings.enableFacebookPixel)
+      if (updateBody.settings.enableFacebookPixel !== undefined)
         biolinkSettings.enableFacebookPixel = updateBody.settings.enableFacebookPixel
-      if (updateBody.settings.enableGoogleAnalytics)
+      if (updateBody.settings.enableGoogleAnalytics !== undefined)
         biolinkSettings.enableGoogleAnalytics = updateBody.settings.enableGoogleAnalytics
-      if (updateBody.settings.enablePasswordProtection)
+      if (updateBody.settings.enablePasswordProtection !== undefined)
         biolinkSettings.enablePasswordProtection = updateBody.settings.enablePasswordProtection
-      if (updateBody.settings.enableSensitiveContentWarning)
+      if (updateBody.settings.enableSensitiveContentWarning !== undefined)
         biolinkSettings.enableSensitiveContentWarning =
           updateBody.settings.enableSensitiveContentWarning
-      if (updateBody.settings.enableUtmParameters)
+      if (updateBody.settings.enableUtmParameters !== undefined)
         biolinkSettings.enableUtmParameters = updateBody.settings.enableUtmParameters
-      if (updateBody.settings.facebookPixelId)
+      if (updateBody.settings.facebookPixelId !== undefined)
         biolinkSettings.facebookPixelId = updateBody.settings.facebookPixelId
-      if (updateBody.settings.googleAnalyticsCode)
+      if (updateBody.settings.googleAnalyticsCode !== undefined)
         biolinkSettings.googleAnalyticsCode = updateBody.settings.googleAnalyticsCode
-      if (updateBody.settings.metaDescription)
+      if (updateBody.settings.metaDescription !== undefined)
         biolinkSettings.metaDescription = updateBody.settings.metaDescription
-      if (updateBody.settings.opengraphImageUrl)
+      if (updateBody.settings.opengraphImageUrl !== undefined)
         biolinkSettings.opengraphImageUrl = updateBody.settings.opengraphImageUrl
-      if (updateBody.settings.pageTitle) biolinkSettings.pageTitle = updateBody.settings.pageTitle
-      if (updateBody.settings.password)
+      if (updateBody.settings.pageTitle !== undefined)
+        biolinkSettings.pageTitle = updateBody.settings.pageTitle
+      if (updateBody.settings.password !== undefined)
         biolinkSettings.password = await argon2.hash(updateBody.settings.password)
-      if (updateBody.settings.payoneerLink)
+      if (updateBody.settings.payoneerLink !== undefined)
         biolinkSettings.payoneerLink = updateBody.settings.payoneerLink
-      if (updateBody.settings.paypalLink)
+      if (updateBody.settings.paypalLink !== undefined)
         biolinkSettings.paypalLink = updateBody.settings.paypalLink
-      if (updateBody.settings.phone) biolinkSettings.phone = updateBody.settings.phone
-      if (updateBody.settings.removeDefaultBranding)
+      if (updateBody.settings.phone !== undefined) biolinkSettings.phone = updateBody.settings.phone
+      if (updateBody.settings.removeDefaultBranding !== undefined)
         biolinkSettings.removeDefaultBranding = updateBody.settings.removeDefaultBranding
-      if (updateBody.settings.showEmail) biolinkSettings.showEmail = updateBody.settings.showEmail
-      if (updateBody.settings.showPhone) biolinkSettings.showPhone = updateBody.settings.showPhone
-      if (updateBody.settings.socialAccountStyleType)
+      if (updateBody.settings.showEmail !== undefined)
+        biolinkSettings.showEmail = updateBody.settings.showEmail
+      if (updateBody.settings.showPhone !== undefined)
+        biolinkSettings.showPhone = updateBody.settings.showPhone
+      if (updateBody.settings.socialAccountStyleType !== undefined)
         biolinkSettings.socialAccountStyleType = updateBody.settings.socialAccountStyleType
-      if (updateBody.settings.utmCampaign)
+      if (updateBody.settings.utmCampaign !== undefined)
         biolinkSettings.utmCampaign = updateBody.settings.utmCampaign
-      if (updateBody.settings.utmMedium) biolinkSettings.utmMedium = updateBody.settings.utmMedium
-      if (updateBody.settings.utmSource) biolinkSettings.utmMedium = updateBody.settings.utmSource
-      if (updateBody.settings.venmoLink) biolinkSettings.venmoLink = updateBody.settings.venmoLink
+      if (updateBody.settings.utmMedium !== undefined)
+        biolinkSettings.utmMedium = updateBody.settings.utmMedium
+      if (updateBody.settings.utmSource !== undefined)
+        biolinkSettings.utmMedium = updateBody.settings.utmSource
+      if (updateBody.settings.venmoLink !== undefined)
+        biolinkSettings.venmoLink = updateBody.settings.venmoLink
       biolink.settings = biolinkSettings
     }
-    if (updateBody.state) biolink.state = updateBody.state
-    if (updateBody.user) biolink.user = Promise.resolve(updateBody.user)
-    if (updateBody.username) {
+    if (updateBody.state !== undefined) biolink.state = updateBody.state
+    if (updateBody.user !== undefined) biolink.user = Promise.resolve(updateBody.user)
+    if (updateBody.username !== undefined) {
       const oldUsername = await biolink.username
 
       if (oldUsername && oldUsername.id !== updateBody.username.id) {
@@ -242,15 +248,18 @@ export class BiolinkService {
         expireDate: null,
       })
     }
-    if (updateBody.verification) {
+    if (updateBody.verification !== undefined) {
       biolink.verification = Promise.resolve(updateBody.verification)
     }
-    if (updateBody.verificationStatus) biolink.verificationStatus = updateBody.verificationStatus
-    if (updateBody.verifiedEmail) biolink.verifiedEmail = updateBody.verifiedEmail
-    if (updateBody.verifiedGovernmentId)
+    if (updateBody.verificationStatus !== undefined)
+      biolink.verificationStatus = updateBody.verificationStatus
+    if (updateBody.verifiedEmail !== undefined) biolink.verifiedEmail = updateBody.verifiedEmail
+    if (updateBody.verifiedGovernmentId !== undefined)
       biolink.verifiedGovernmentId = updateBody.verifiedGovernmentId
-    if (updateBody.verifiedPhoneNumber) biolink.verifiedPhoneNumber = updateBody.verifiedPhoneNumber
-    if (updateBody.verifiedWorkEmail) biolink.verifiedWorkEmail = updateBody.verifiedWorkEmail
+    if (updateBody.verifiedPhoneNumber !== undefined)
+      biolink.verifiedPhoneNumber = updateBody.verifiedPhoneNumber
+    if (updateBody.verifiedWorkEmail !== undefined)
+      biolink.verifiedWorkEmail = updateBody.verifiedWorkEmail
 
     await biolink.save()
     return biolink

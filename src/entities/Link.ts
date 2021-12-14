@@ -73,11 +73,11 @@ export class Link extends BaseEntity {
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  startDate?: Date
+  startDate?: Date | null
 
   @Field(() => String, { nullable: true })
   @Column({ type: 'date', nullable: true })
-  endDate?: Date
+  endDate?: Date | null
 
   @Field(() => Boolean, { nullable: true })
   @Column({ type: 'boolean', default: false })

@@ -23,7 +23,7 @@ import { ErrorCode, MyContext } from '../types'
 import { Biolink, User } from '../entities'
 import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
-import { BlacklistType } from '../enums'
+import { BlacklistType, SocialAccountStyleType } from '../enums'
 import { BlackListService } from '../services/blacklist.service'
 import { PaginatedBiolinkResponse } from '../object-types/common/PaginatedBiolinkResponse'
 import { CategoryService } from '../services/category.service'
@@ -85,6 +85,41 @@ export class BiolinkController {
     const biolink = await this.biolinkService.createBiolink({
       user,
       username: usernameDoc,
+      settings: {
+        addedToDirectory: false,
+        blockSearchEngineIndexing: false,
+        customBrandingName: '',
+        customBrandingUrl: '',
+        directoryBio: '',
+        email: '',
+        emailCaptureId: '',
+        enableColoredContactButtons: false,
+        enableColoredSocialMediaIcons: false,
+        enableCustomBranding: false,
+        enableDarkMode: false,
+        enableEmailCapture: false,
+        enableFacebookPixel: false,
+        enableGoogleAnalytics: false,
+        enablePasswordProtection: false,
+        enableSensitiveContentWarning: false,
+        enableUtmParameters: false,
+        facebookPixelId: '',
+        googleAnalyticsCode: '',
+        metaDescription: '',
+        opengraphImageUrl: '',
+        pageTitle: '',
+        password: '',
+        payoneerLink: '',
+        paypalLink: '',
+        phone: '',
+        removeDefaultBranding: false,
+        showEmail: false,
+        showPhone: false,
+        socialAccountStyleType: SocialAccountStyleType.Round,
+        utmCampaign: '',
+        utmMedium: '',
+        utmSource: '',
+      },
     })
 
     return biolink

@@ -89,10 +89,10 @@ export class MessageService {
   async updateMessageById(messageId: string, updateBody: MessageUpdateBody): Promise<Message> {
     const message = await this.getMessageById(messageId)
 
-    if (updateBody.attachment) {
+    if (updateBody.attachment !== undefined) {
       // TODO: Upload file to aws s3
     }
-    if (updateBody.message) message.message = updateBody.message
+    if (updateBody.message !== undefined) message.message = updateBody.message
 
     await message.save()
 

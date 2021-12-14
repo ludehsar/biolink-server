@@ -60,11 +60,11 @@ export class AccessService {
       throw new ApolloError('User not found', ErrorCode.USER_NOT_FOUND)
     }
 
-    if (updateBody.blacklisted) service.blacklisted = updateBody.blacklisted
-    if (updateBody.description) service.description = updateBody.description
-    if (updateBody.price) service.price = updateBody.price
-    if (updateBody.seller) service.seller = Promise.resolve(updateBody.seller)
-    if (updateBody.title) service.title = updateBody.title
+    if (updateBody.blacklisted !== undefined) service.blacklisted = updateBody.blacklisted
+    if (updateBody.description !== undefined) service.description = updateBody.description
+    if (updateBody.price !== undefined) service.price = updateBody.price
+    if (updateBody.seller !== undefined) service.seller = Promise.resolve(updateBody.seller)
+    if (updateBody.title !== undefined) service.title = updateBody.title
 
     await service.save()
     return service

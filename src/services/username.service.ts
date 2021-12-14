@@ -146,10 +146,10 @@ export class UsernameService {
 
     if (updateBody.biolink) username.biolink = Promise.resolve(updateBody.biolink)
     else if (updateBody.biolink === null) username.biolink = null
-    if (updateBody.expireDate) username.expireDate = updateBody.expireDate
+    if (updateBody.expireDate !== undefined) username.expireDate = updateBody.expireDate
     if (updateBody.owner) username.owner = Promise.resolve(updateBody.owner)
-    else if (updateBody.owner === null) username.owner = null
-    if (updateBody.premiumType) username.premiumType = updateBody.premiumType
+    else updateBody.owner = null
+    if (updateBody.premiumType !== undefined) username.premiumType = updateBody.premiumType
 
     await username.save()
 

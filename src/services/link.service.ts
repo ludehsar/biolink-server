@@ -224,28 +224,28 @@ export class LinkService {
   async updateLinkById(linkId: string, updateBody: LinkUpdateBody): Promise<Link> {
     const link = await this.getLinkById(linkId)
 
-    if (updateBody.biolink) link.biolink = Promise.resolve(updateBody.biolink)
+    if (updateBody.biolink !== undefined) link.biolink = Promise.resolve(updateBody.biolink)
     link.enablePasswordProtection = updateBody.enablePasswordProtection || false
-    if (updateBody.endDate) link.endDate = updateBody.endDate
-    if (updateBody.featured) link.featured = updateBody.featured
-    if (updateBody.iconColorful) link.iconColorful = updateBody.iconColorful
-    if (updateBody.iconMinimal) link.iconMinimal = updateBody.iconMinimal
-    if (updateBody.linkColor) link.linkColor = updateBody.linkColor
-    if (updateBody.linkImage) {
+    if (updateBody.endDate !== undefined) link.endDate = updateBody.endDate
+    if (updateBody.featured !== undefined) link.featured = updateBody.featured
+    if (updateBody.iconColorful !== undefined) link.iconColorful = updateBody.iconColorful
+    if (updateBody.iconMinimal !== undefined) link.iconMinimal = updateBody.iconMinimal
+    if (updateBody.linkColor !== undefined) link.linkColor = updateBody.linkColor
+    if (updateBody.linkImage !== undefined) {
       // TODO: Upload photo to aws s3
     }
-    if (updateBody.linkTitle) link.linkTitle = updateBody.linkTitle
-    if (updateBody.linkType) link.linkType = updateBody.linkType
-    if (updateBody.note) link.note = updateBody.note
-    if (updateBody.order) link.order = updateBody.order
-    if (updateBody.password) {
+    if (updateBody.linkTitle !== undefined) link.linkTitle = updateBody.linkTitle
+    if (updateBody.linkType !== undefined) link.linkType = updateBody.linkType
+    if (updateBody.note !== undefined) link.note = updateBody.note
+    if (updateBody.order !== undefined) link.order = updateBody.order
+    if (updateBody.password !== undefined) {
       link.password = await argon2.hash(updateBody.password)
     }
-    if (updateBody.platform) link.platform = updateBody.platform
-    if (updateBody.shortenedUrl) link.shortenedUrl = updateBody.shortenedUrl
-    if (updateBody.startDate) link.startDate = updateBody.startDate
-    if (updateBody.url) link.url = updateBody.url
-    if (updateBody.user) link.user = Promise.resolve(updateBody.user)
+    if (updateBody.platform !== undefined) link.platform = updateBody.platform
+    if (updateBody.shortenedUrl !== undefined) link.shortenedUrl = updateBody.shortenedUrl
+    if (updateBody.startDate !== undefined) link.startDate = updateBody.startDate
+    if (updateBody.url !== undefined) link.url = updateBody.url
+    if (updateBody.user !== undefined) link.user = Promise.resolve(updateBody.user)
 
     await link.save()
     return link

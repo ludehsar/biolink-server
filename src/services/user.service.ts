@@ -111,13 +111,14 @@ export class UserService {
       throw new ApolloError('User not found', ErrorCode.USER_NOT_FOUND)
     }
 
-    if (updateBody.adminRole) user.adminRole = Promise.resolve(updateBody.adminRole)
-    else if (updateBody.adminRole === null) user.adminRole = null
-    if (updateBody.authenticatorSecret) user.authenticatorSecret = updateBody.authenticatorSecret
-    if (updateBody.billing) user.billing = updateBody.billing
-    if (updateBody.country) user.country = updateBody.country
-    if (updateBody.currentBiolinkId) user.currentBiolinkId = updateBody.currentBiolinkId
-    if (updateBody.email) {
+    if (updateBody.adminRole !== undefined) user.adminRole = Promise.resolve(updateBody.adminRole)
+    if (updateBody.authenticatorSecret !== undefined)
+      user.authenticatorSecret = updateBody.authenticatorSecret
+    if (updateBody.billing !== undefined) user.billing = updateBody.billing
+    if (updateBody.country !== undefined) user.country = updateBody.country
+    if (updateBody.currentBiolinkId !== undefined)
+      user.currentBiolinkId = updateBody.currentBiolinkId
+    if (updateBody.email !== undefined) {
       if (await this.isEmailTaken(updateBody.email, userId)) {
         throw new ApolloError('Email is already taken', ErrorCode.EMAIL_ALREADY_EXISTS)
       }
@@ -126,28 +127,31 @@ export class UserService {
       }
       user.email = updateBody.email
     }
-    if (updateBody.emailVerifiedAt) user.emailVerifiedAt = updateBody.emailVerifiedAt
-    if (updateBody.password) {
+    if (updateBody.emailVerifiedAt !== undefined) user.emailVerifiedAt = updateBody.emailVerifiedAt
+    if (updateBody.password !== undefined) {
       user.encryptedPassword = await argon2.hash(updateBody.password)
     }
-    if (updateBody.facebookId) user.facebookId = updateBody.facebookId
-    if (updateBody.language) user.language = updateBody.language
-    if (updateBody.lastActiveTill) user.lastActiveTill = updateBody.lastActiveTill
-    if (updateBody.lastIPAddress) user.lastIPAddress = updateBody.lastIPAddress
-    if (updateBody.lastUserAgent) user.lastUserAgent = updateBody.lastUserAgent
-    if (updateBody.plan) user.plan = Promise.resolve(updateBody.plan)
-    if (updateBody.planExpirationDate) user.planExpirationDate = updateBody.planExpirationDate
-    if (updateBody.planTrialDone) user.planTrialDone = updateBody.planTrialDone
-    if (updateBody.planType) user.planType = updateBody.planType
-    if (updateBody.registeredByCode)
+    if (updateBody.facebookId !== undefined) user.facebookId = updateBody.facebookId
+    if (updateBody.language !== undefined) user.language = updateBody.language
+    if (updateBody.lastActiveTill !== undefined) user.lastActiveTill = updateBody.lastActiveTill
+    if (updateBody.lastIPAddress !== undefined) user.lastIPAddress = updateBody.lastIPAddress
+    if (updateBody.lastUserAgent !== undefined) user.lastUserAgent = updateBody.lastUserAgent
+    if (updateBody.plan !== undefined) user.plan = Promise.resolve(updateBody.plan)
+    if (updateBody.planExpirationDate !== undefined)
+      user.planExpirationDate = updateBody.planExpirationDate
+    if (updateBody.planTrialDone !== undefined) user.planTrialDone = updateBody.planTrialDone
+    if (updateBody.planType !== undefined) user.planType = updateBody.planType
+    if (updateBody.registeredByCode !== undefined)
       user.registeredByCode = Promise.resolve(updateBody.registeredByCode)
-    else if (updateBody.registeredByCode === null) user.registeredByCode = null
-    if (updateBody.stripeCustomerId) user.stripeCustomerId = updateBody.stripeCustomerId
-    if (updateBody.timezone) user.timezone = updateBody.timezone
-    if (updateBody.totalLogin) user.totalLogin = updateBody.totalLogin
-    if (updateBody.usedReferralsToPurchasePlan)
+    else if ((updateBody.registeredByCode === null) !== undefined) user.registeredByCode = null
+    if (updateBody.stripeCustomerId !== undefined)
+      user.stripeCustomerId = updateBody.stripeCustomerId
+    if (updateBody.timezone !== undefined) user.timezone = updateBody.timezone
+    if (updateBody.totalLogin !== undefined) user.totalLogin = updateBody.totalLogin
+    if (updateBody.usedReferralsToPurchasePlan !== undefined)
       user.usedReferralsToPurchasePlan = updateBody.usedReferralsToPurchasePlan
-    if (updateBody.availableBalance) user.availableBalance = updateBody.availableBalance
+    if (updateBody.availableBalance !== undefined)
+      user.availableBalance = updateBody.availableBalance
 
     await user.save()
     return user

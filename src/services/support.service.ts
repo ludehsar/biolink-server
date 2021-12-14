@@ -26,7 +26,7 @@ export class SupportService {
       subject: updateBody.subject,
     })
 
-    if (updateBody.user) support.user = Promise.resolve(updateBody.user)
+    if (updateBody.user !== undefined) support.user = Promise.resolve(updateBody.user)
 
     await support.save()
 

@@ -180,10 +180,11 @@ export class ChatRoomService {
   async updateChatRoomById(roomId: string, updateBody: ChatRoomUpdateBody): Promise<ChatRoom> {
     const chatRoom = await this.getChatRoomById(roomId)
 
-    if (updateBody.lastMessageSentDate)
+    if (updateBody.lastMessageSentDate !== undefined)
       chatRoom.lastMessageSentDate = updateBody.lastMessageSentDate
-    if (updateBody.lastMessageSentId) chatRoom.lastMessageSentId = updateBody.lastMessageSentId
-    if (updateBody.roomName) chatRoom.roomName = updateBody.roomName
+    if (updateBody.lastMessageSentId !== undefined)
+      chatRoom.lastMessageSentId = updateBody.lastMessageSentId
+    if (updateBody.roomName !== undefined) chatRoom.roomName = updateBody.roomName
 
     return chatRoom
   }
