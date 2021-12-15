@@ -1,28 +1,31 @@
-import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
-import { ConnectionArgsOld } from '../../input-types'
-import { PaymentConnection, PaymentResponse } from '../../object-types'
-import { getPayment, getUserPaymentsPaginated } from '../../services'
+import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
+
+import { Payment } from '../../entities'
+import { ConnectionArgs } from '../../input-types'
+import { authUser } from '../../middlewares'
 import { MyContext } from '../../types'
+import { PaymentController } from '../../controllers'
+import { PaginatedPaymentResponse } from '../../object-types/common/PaginatedPaymentResponse'
 
 @Resolver()
 export class PaymentResolver {
-  @Query(() => PaymentConnection, { nullable: true })
+  constructor(private readonly paymentController: PaymentController) {}
+
+  @Query(() => PaginatedPaymentResponse, { nullable: true })
+  @UseMiddleware(authUser)
   async getAllUserPayments(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentUser() user: User,
+    @Arg('options') options: ConnectionArgs,
     @Ctx() context: MyContext
-  ): Promise<PaymentConnection> {
-    return await getUserPaymentsPaginated(options, user, context)
+  ): Promise<PaginatedPaymentResponse> {
+    return await this.paymentController.getAllUserPayments(options, context)
   }
 
-  @Query(() => PaymentResponse, { nullable: true })
+  @Query(() => Payment, { nullable: true })
+  @UseMiddleware(authUser)
   async getPayment(
-    @Arg('paymentId', () => String) paymentId: number,
-    @CurrentUser() user: User,
+    @Arg('paymentId', () => String) paymentId: string,
     @Ctx() context: MyContext
-  ): Promise<PaymentResponse> {
-    return await getPayment(paymentId, user, context)
+  ): Promise<Payment> {
+    return await this.paymentController.getPaymentDetails(paymentId, context)
   }
 }

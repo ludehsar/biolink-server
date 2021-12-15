@@ -222,7 +222,7 @@ export class BiolinkService {
       if (updateBody.settings.utmMedium !== undefined)
         biolinkSettings.utmMedium = updateBody.settings.utmMedium
       if (updateBody.settings.utmSource !== undefined)
-        biolinkSettings.utmMedium = updateBody.settings.utmSource
+        biolinkSettings.utmSource = updateBody.settings.utmSource
       if (updateBody.settings.venmoLink !== undefined)
         biolinkSettings.venmoLink = updateBody.settings.venmoLink
       biolink.settings = biolinkSettings

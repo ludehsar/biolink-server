@@ -11,6 +11,9 @@ import { PaymentUpdateBody } from '../interfaces/PaymentUpdateBody'
 import { PaypalPaymentRecord } from '../json-types'
 import { appConfig } from '../config'
 import { ErrorCode } from '../types'
+import { PaginatedPaymentResponse } from '../object-types/common/PaginatedPaymentResponse'
+import { ConnectionArgs } from '../input-types'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 
 @Service()
 export class PaymentService {
@@ -171,5 +174,51 @@ export class PaymentService {
     } catch (e) {
       throw new ApolloError('Something went wrong', ErrorCode.DATABASE_ERROR)
     }
+  }
+
+  /**
+   * Get all user payments
+   * @param {string} userId
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedPaymentResponse>}
+   */
+  async getAllUserPayments(
+    userId: string,
+    options: ConnectionArgs
+  ): Promise<PaginatedPaymentResponse> {
+    const queryBuilder = this.paymentRepository
+      .createQueryBuilder('payment')
+      .where(`payment.userId = :userId`, {
+        userId: userId,
+      })
+
+    const paginator = buildPaginator({
+      entity: Payment,
+      alias: 'payment',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
+   * Get payment details by payment id
+   * @param {string} paymentId
+   * @returns {Promise<Payment>}
+   */
+  async getPaymentByPaymentId(paymentId: string): Promise<Payment> {
+    const payment = await this.paymentRepository.findOne(paymentId)
+
+    if (!payment) {
+      throw new ApolloError('Invalid payment id', ErrorCode.PAYMENT_NOT_FOUND)
+    }
+
+    return payment
   }
 }

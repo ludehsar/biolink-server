@@ -391,7 +391,6 @@
           <a href="#definition-ChangePasswordInput"> ChangePasswordInput </a>
           <a href="#definition-ChatRoom"> ChatRoom </a>
           <a href="#definition-ConnectionArgs"> ConnectionArgs </a>
-          <a href="#definition-ConnectionArgsOld"> ConnectionArgsOld </a>
           <a href="#definition-ContactButtonInput"> ContactButtonInput </a>
           <a href="#definition-Cursor"> Cursor </a>
           <a href="#definition-DarkModeInput"> DarkModeInput </a>
@@ -427,13 +426,13 @@
           <a href="#definition-NewSocialLinkInput"> NewSocialLinkInput </a>
           <a href="#definition-NewSupportInput"> NewSupportInput </a>
           <a href="#definition-Order"> Order </a>
-          <a href="#definition-PageInfo"> PageInfo </a>
           <a href="#definition-PaginatedBiolinkResponse"> PaginatedBiolinkResponse </a>
           <a href="#definition-PaginatedCategoryResponse"> PaginatedCategoryResponse </a>
           <a href="#definition-PaginatedChatRoomResponse"> PaginatedChatRoomResponse </a>
           <a href="#definition-PaginatedLinkResponse"> PaginatedLinkResponse </a>
           <a href="#definition-PaginatedMessageResponse"> PaginatedMessageResponse </a>
           <a href="#definition-PaginatedOrderResponse"> PaginatedOrderResponse </a>
+          <a href="#definition-PaginatedPaymentResponse"> PaginatedPaymentResponse </a>
           <a href="#definition-PaginatedReferralResponse"> PaginatedReferralResponse </a>
           <a href="#definition-PaginatedServiceResponse"> PaginatedServiceResponse </a>
           <a href="#definition-PaginatedUserLogResponse"> PaginatedUserLogResponse </a>
@@ -441,9 +440,6 @@
           <a href="#definition-PasswordInput"> PasswordInput </a>
           <a href="#definition-Payer"> Payer </a>
           <a href="#definition-Payment"> Payment </a>
-          <a href="#definition-PaymentConnection"> PaymentConnection </a>
-          <a href="#definition-PaymentEdge"> PaymentEdge </a>
-          <a href="#definition-PaymentResponse"> PaymentResponse </a>
           <a href="#definition-PaymentSettings"> PaymentSettings </a>
           <a href="#definition-Payments"> Payments </a>
           <a href="#definition-PaypalFee"> PaypalFee </a>
@@ -11268,7 +11264,7 @@ https://stashee-v2.herokuapp.com/graphql
                         <span class="prop-type">
                           <div class="json-property-type">
                             <div class="">
-                              <a class="json-schema-ref" href="#/definitions/ConnectionArgsOld">ConnectionArgsOld</a>
+                              <a class="json-schema-ref" href="#/definitions/ConnectionArgs">ConnectionArgs</a>
                             </div>
                           </div>
                           <span class="json-property-range" title="Value limits"></span>
@@ -11291,7 +11287,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getAllUserPayments<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> ConnectionArgsOld!</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getAllUserPayments<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> ConnectionArgs!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">getAllUserPayments<span class="hljs-tag">(options: <span class="hljs-code">$options</span>)</span><span class="hljs-tag">{
   }</span></span>
 }</span></span>
@@ -11304,17 +11300,17 @@ https://stashee-v2.herokuapp.com/graphql
                     <head></head>
                     <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;options&quot;</span>: {
-    <span class="hljs-attr">&quot;before&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;after&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;beforeCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;afterCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;query&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;first&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-    <span class="hljs-attr">&quot;last&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+    <span class="hljs-attr">&quot;limit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;order&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
   }
 }
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=query%20getAllUserPayments(%24options%3A%20ConnectionArgsOld!)%7B%0A%20%20getAllUserPayments(options%3A%20%24options)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=query%20getAllUserPayments(%24options%3A%20ConnectionArgs!)%7B%0A%20%20getAllUserPayments(options%3A%20%24options)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -11334,7 +11330,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <div class="prop-value">
                       <div class="json-property-type">
                         <div class="">
-                          <a class="json-schema-ref" href="#/definitions/PaymentConnection">PaymentConnection</a>
+                          <a class="json-schema-ref" href="#/definitions/PaginatedPaymentResponse">PaginatedPaymentResponse</a>
                         </div>
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
@@ -11415,6 +11411,13 @@ https://stashee-v2.herokuapp.com/graphql
                     <head></head>
                     <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getPayment<span class="hljs-tag">(<span class="hljs-code">$paymentId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">getPayment<span class="hljs-tag">(paymentId: <span class="hljs-code">$paymentId</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">paymentType</span>
+    <span class="hljs-symbol">paymentProvider</span>
+    <span class="hljs-symbol">amountPaid</span>
+    <span class="hljs-symbol">paymentCurrency</span>
+    <span class="hljs-symbol">paymentDetails</span>
+    <span class="hljs-symbol">createdAt</span>
   }</span></span>
 }</span></span>
 </code></pre> </body>
@@ -11430,7 +11433,7 @@ https://stashee-v2.herokuapp.com/graphql
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=query%20getPayment(%24paymentId%3A%20String!)%7B%0A%20%20getPayment(paymentId%3A%20%24paymentId)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=query%20getPayment(%24paymentId%3A%20String!)%7B%0A%20%20getPayment(paymentId%3A%20%24paymentId)%7B%0A%20%20%20%20id%0A%20%20%20%20paymentType%0A%20%20%20%20paymentProvider%0A%20%20%20%20amountPaid%0A%20%20%20%20paymentCurrency%0A%20%20%20%20paymentDetails%0A%20%20%20%20createdAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -11450,7 +11453,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <div class="prop-value">
                       <div class="json-property-type">
                         <div class="">
-                          <a class="json-schema-ref" href="#/definitions/PaymentResponse">PaymentResponse</a>
+                          <a class="json-schema-ref" href="#/definitions/Payment">Payment</a>
                         </div>
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
@@ -11471,7 +11474,14 @@ https://stashee-v2.herokuapp.com/graphql
                   <head></head>
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;data&quot;</span>: {
-    <span class="hljs-attr">&quot;getPayment&quot;</span>: {}
+    <span class="hljs-attr">&quot;getPayment&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
   }
 }
 </code></pre> </body>
@@ -15672,102 +15682,6 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
-          <div id="definition-ConnectionArgsOld" class="definition panel" data-traverse-target="definition-ConnectionArgsOld">
-            <h2 class="panel-title">
-              <a name="/definitions/ConnectionArgsOld"></a>ConnectionArgsOld: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="before" class="has-description">
-                      <span class="json-property-name">before:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dd>
-                      <p>Paginate before created at timestamp as opaque cursor</p>
-                    </dd>
-                    <dt data-property-name="after" class="has-description">
-                      <span class="json-property-name">after:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dd>
-                      <p>Paginate after created at timestamp as opaque cursor</p>
-                    </dd>
-                    <dt data-property-name="query" class="has-description">
-                      <span class="json-property-name">query:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dd>
-                      <p>Search query</p>
-                    </dd>
-                    <dt data-property-name="first" class="has-description">
-                      <span class="json-property-name">first:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-number">
-                          <a class="json-schema-ref" href="#/definitions/Float">Float</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dd>
-                      <p>Paginate first. Do not work for messages.</p>
-                    </dd>
-                    <dt data-property-name="last" class="has-description">
-                      <span class="json-property-name">last:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-number">
-                          <a class="json-schema-ref" href="#/definitions/Float">Float</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dd>
-                      <p>Paginate last. Works only for messages.</p>
-                    </dd>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;before&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;after&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;query&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;first&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-  <span class="hljs-attr">&quot;last&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
           <div id="definition-ContactButtonInput" class="definition panel" data-traverse-target="definition-ContactButtonInput">
             <h2 class="panel-title">
               <a name="/definitions/ContactButtonInput"></a>ContactButtonInput: object
@@ -18735,79 +18649,6 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
-          <div id="definition-PageInfo" class="definition panel" data-traverse-target="definition-PageInfo">
-            <h2 class="panel-title">
-              <a name="/definitions/PageInfo"></a>PageInfo: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="hasNextPage">
-                      <span class="json-property-name">hasNextPage:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-boolean">
-                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                    <dt data-property-name="hasPreviousPage">
-                      <span class="json-property-name">hasPreviousPage:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-boolean">
-                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                    <dt data-property-name="startCursor">
-                      <span class="json-property-name">startCursor:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dt data-property-name="endCursor">
-                      <span class="json-property-name">endCursor:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;hasNextPage&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-  <span class="hljs-attr">&quot;hasPreviousPage&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-  <span class="hljs-attr">&quot;startCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;endCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
           <div id="definition-PaginatedBiolinkResponse" class="definition panel" data-traverse-target="definition-PaginatedBiolinkResponse">
             <h2 class="panel-title">
               <a name="/definitions/PaginatedBiolinkResponse"></a>PaginatedBiolinkResponse: object
@@ -19393,6 +19234,111 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;plan&quot;</span>: {
             <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+          }
+        }
+      }
+    }
+  ]
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-PaginatedPaymentResponse" class="definition panel" data-traverse-target="definition-PaginatedPaymentResponse">
+            <h2 class="panel-title">
+              <a name="/definitions/PaginatedPaymentResponse"></a>PaginatedPaymentResponse: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="data">
+                      <span class="json-property-name">data:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/Payment">Payment</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="cursor">
+                      <span class="json-property-name">cursor:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Cursor">Cursor</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                      <span class="json-property-required"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;user&quot;</span>: {
+        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;billing&quot;</span>: {
+          <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        },
+        <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+        <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+        <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+        <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+        <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;plan&quot;</span>: {
+          <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+          <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+          <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;settings&quot;</span>: {
+            <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+            <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
           }
         }
       }
@@ -20093,335 +20039,6 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;addedToDirectoryEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
-      }
-    }
-  }
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-PaymentConnection" class="definition panel" data-traverse-target="definition-PaymentConnection">
-            <h2 class="panel-title">
-              <a name="/definitions/PaymentConnection"></a>PaymentConnection: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="errors">
-                      <span class="json-property-name">errors:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-array">
-                          <a class="json-schema-ref" href="#/definitions/ErrorResponse">ErrorResponse</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dt data-property-name="pageInfo">
-                      <span class="json-property-name">pageInfo:</span>
-                      <div class="json-property-type">
-                        <div class="">
-                          <a class="json-schema-ref" href="#/definitions/PageInfo">PageInfo</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dt data-property-name="edges">
-                      <span class="json-property-name">edges:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-array">
-                          <a class="json-schema-ref" href="#/definitions/PaymentEdge">PaymentEdge</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;errors&quot;</span>: [
-    {
-      <span class="hljs-attr">&quot;errorCode&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-    }
-  ],
-  <span class="hljs-attr">&quot;pageInfo&quot;</span>: {
-    <span class="hljs-attr">&quot;hasNextPage&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-    <span class="hljs-attr">&quot;hasPreviousPage&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-    <span class="hljs-attr">&quot;startCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;endCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-  },
-  <span class="hljs-attr">&quot;edges&quot;</span>: [
-    {
-      <span class="hljs-attr">&quot;node&quot;</span>: {
-        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;user&quot;</span>: {
-          <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;billing&quot;</span>: {
-            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-          },
-          <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-          <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-          <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;plan&quot;</span>: {
-            <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-          }
-        }
-      }
-    }
-  ]
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-PaymentEdge" class="definition panel" data-traverse-target="definition-PaymentEdge">
-            <h2 class="panel-title">
-              <a name="/definitions/PaymentEdge"></a>PaymentEdge: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="node">
-                      <span class="json-property-name">node:</span>
-                      <div class="json-property-type">
-                        <div class="">
-                          <a class="json-schema-ref" href="#/definitions/Payment">Payment</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                    <dt data-property-name="cursor" class="has-description">
-                      <span class="json-property-name">cursor:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                    <dd>
-                      <p>Used in <code>before</code> and <code>after</code> args</p>
-                    </dd>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;node&quot;</span>: {
-    <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-    <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;user&quot;</span>: {
-      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;billing&quot;</span>: {
-        <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-      },
-      <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;plan&quot;</span>: {
-        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;settings&quot;</span>: {
-          <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
-        }
-      }
-    }
-  }
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-PaymentResponse" class="definition panel" data-traverse-target="definition-PaymentResponse">
-            <h2 class="panel-title">
-              <a name="/definitions/PaymentResponse"></a>PaymentResponse: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="errors">
-                      <span class="json-property-name">errors:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-array">
-                          <a class="json-schema-ref" href="#/definitions/ErrorResponse">ErrorResponse</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dt data-property-name="payment">
-                      <span class="json-property-name">payment:</span>
-                      <div class="json-property-type">
-                        <div class="">
-                          <a class="json-schema-ref" href="#/definitions/Payment">Payment</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;errors&quot;</span>: [
-    {
-      <span class="hljs-attr">&quot;errorCode&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-    }
-  ],
-  <span class="hljs-attr">&quot;payment&quot;</span>: {
-    <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-    <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;user&quot;</span>: {
-      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;billing&quot;</span>: {
-        <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-      },
-      <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;plan&quot;</span>: {
-        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;settings&quot;</span>: {}
       }
     }
   }
