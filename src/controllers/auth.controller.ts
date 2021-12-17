@@ -16,6 +16,7 @@ import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToke
 import { EmailService } from '../services/email.service'
 import { Biolink, BlackList, Code, Plan, User, Username } from '../entities'
 import { stripe } from '../utilities'
+import { NotificationService } from '../services/notification.service'
 
 @Service()
 export class AuthController {
@@ -23,6 +24,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
     private readonly emailService: EmailService,
+    private readonly notificationService: NotificationService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Username) private readonly usernameRepository: Repository<Username>,
     @InjectRepository(BlackList) private readonly blackListRepository: Repository<BlackList>,
@@ -180,7 +182,7 @@ export class AuthController {
 
     // await this.sendVerificationEmail(context)
 
-    // await this.notificationService.createUserLogs(user, context, 'Created new account', true)
+    await this.notificationService.createUserLogs(user, context, 'Created new account', true)
 
     return {
       access,
