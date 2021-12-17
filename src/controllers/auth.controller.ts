@@ -17,7 +17,6 @@ import { User } from '../entities'
 import { CodeService } from '../services/code.service'
 import { PlanService } from '../services/plan.service'
 import { NotificationService } from '../services/notification.service'
-import moment from 'moment'
 
 @Service()
 export class AuthController {
@@ -126,6 +125,8 @@ export class AuthController {
 
     await this.sendVerificationEmail(context)
 
+    await this.notificationService.createUserLogs(user, context, 'Created new user account', true)
+
     return {
       access,
       refresh,
@@ -140,12 +141,7 @@ export class AuthController {
     )
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
 
-    await this.notificationService.createUserLogs(
-      user,
-      context,
-      `User logged in at ${moment.now().toLocaleString()}`,
-      true
-    )
+    await this.notificationService.createUserLogs(user, context, 'User logged in', true)
 
     return {
       access,
