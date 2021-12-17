@@ -16,6 +16,8 @@ import { EmailService } from '../services/email.service'
 import { User } from '../entities'
 import { CodeService } from '../services/code.service'
 import { PlanService } from '../services/plan.service'
+import { NotificationService } from '../services/notification.service'
+import moment from 'moment'
 
 @Service()
 export class AuthController {
@@ -28,7 +30,8 @@ export class AuthController {
     private readonly blackListService: BlackListService,
     private readonly usernameService: UsernameService,
     private readonly tokenService: TokenService,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
+    private readonly notificationService: NotificationService
   ) {}
 
   async register(registerInput: RegisterInput, context: MyContext): Promise<UserWithTokens> {
@@ -136,6 +139,13 @@ export class AuthController {
       loginInput.password
     )
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
+
+    await this.notificationService.createUserLogs(
+      user,
+      context,
+      `User logged in at ${moment.now().toLocaleString()}`,
+      true
+    )
 
     return {
       access,

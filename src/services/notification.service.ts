@@ -4,13 +4,11 @@ import DeviceDetector from 'device-detector-js'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 import * as geoip from 'geoip-lite'
 import moment from 'moment'
-import axios from 'axios'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
 import { User, UserLogs } from '../entities'
 import { MyContext } from '../types'
 import { UserService } from './user.service'
-import { CountryInfo } from '../interfaces'
 import { ConnectionArgs } from '../input-types'
 import { PaginatedUserLogResponse } from '../object-types'
 
@@ -56,11 +54,10 @@ export class NotificationService {
     userLog.user = Promise.resolve(user)
     await userLog.save()
 
-    let country = ''
+    let country = undefined
 
     if (geo) {
-      const countryInfo = await axios.get('https://restcountries.eu/rest/v2/alpha/' + geo.country)
-      country = ((await countryInfo.data) as CountryInfo).name
+      country = geo.country
     }
 
     await this.userService.updateUserById(user.id, {
