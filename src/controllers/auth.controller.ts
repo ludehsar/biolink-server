@@ -10,7 +10,6 @@ import { UserWithTokens } from '../object-types'
 import { LoginInput, RegisterInput } from '../input-types'
 import { ErrorCode, MyContext } from '../types'
 import { TokenService } from '../services/token.service'
-import { NotificationService } from '../services/notification.service'
 import { BlacklistType, CodeType, PremiumUsernameType, SocialAccountStyleType } from '../enums'
 import { AuthService } from '../services/auth.service'
 import { AccessAndRefreshToken } from '../object-types/auth/AccessAndRefreshToken'
@@ -23,7 +22,6 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
-    private readonly notificationService: NotificationService,
     private readonly emailService: EmailService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Username) private readonly usernameRepository: Repository<Username>,
@@ -180,9 +178,9 @@ export class AuthController {
 
     context.user = user
 
-    await this.sendVerificationEmail(context)
+    // await this.sendVerificationEmail(context)
 
-    await this.notificationService.createUserLogs(user, context, 'Created new account', true)
+    // await this.notificationService.createUserLogs(user, context, 'Created new account', true)
 
     return {
       access,
