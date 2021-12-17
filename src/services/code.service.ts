@@ -60,7 +60,6 @@ export class CodeService {
       discount: 20,
       quantity: -1,
       type: CodeType.Referral,
-      referrer: Promise.resolve(user),
     })
     code.referrer = Promise.resolve(user)
 

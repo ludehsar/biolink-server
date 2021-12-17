@@ -1,4 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+
 import { authUser } from '../../middlewares'
 import { User } from '../../entities'
 import { RegisterInput, LoginInput, EmailInput, PasswordInput } from '../../input-types'
