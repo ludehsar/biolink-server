@@ -45,6 +45,10 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   id!: string
 
+  @Field(() => String, { nullable: true, description: 'The name field is only for the admins.' })
+  @Column({ nullable: true })
+  name!: string
+
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   email!: string
