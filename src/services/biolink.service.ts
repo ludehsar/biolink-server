@@ -44,7 +44,7 @@ export class BiolinkService {
         .orWhere(`LOWER(biolink.bio) like :query`, {
           query: `%${query.toLowerCase()}%`,
         })
-        .orWhere(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+        .orWhere(`LOWER("biolink"."settings"->>'directoryBio') like :query`, {
           query: `%${query.toLowerCase()}%`,
         })
         .orWhere(`LOWER(category.categoryName) like :query`, {
@@ -307,7 +307,6 @@ export class BiolinkService {
    */
   async getAllDirectories(
     options: ConnectionArgs,
-    categoryIds: number[],
     searchParameter?:
       | 'username'
       | 'displayName'
@@ -316,14 +315,15 @@ export class BiolinkService {
       | 'country'
       | 'bio'
       | 'directoryBio'
-      | 'categoryName'
+      | 'categoryName',
+    categoryIds?: string[]
   ): Promise<PaginatedBiolinkResponse> {
     const queryBuilder = this.biolinkRepository
       .createQueryBuilder('biolink')
       .leftJoinAndSelect('biolink.category', 'category')
       .leftJoinAndSelect('biolink.user', 'user')
       .leftJoinAndSelect('biolink.username', 'username')
-      .where(`cast (biolink.settings->>'addedToDirectory' as boolean) = true`)
+      .where(`cast ("biolink"."settings"->>'addedToDirectory' as boolean) = true`)
 
     if (searchParameter) {
       queryBuilder.andWhere(
@@ -366,7 +366,7 @@ export class BiolinkService {
               break
             }
             case 'directoryBio': {
-              qb.where(`LOWER(biolink.settings->>'directoryBio') like :query`, {
+              qb.where(`LOWER("biolink"."settings"->>'directoryBio') like :query`, {
                 query: `%${options.query.toLowerCase()}%`,
               })
               break
@@ -421,7 +421,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'categoryName'
         )
       ).data
@@ -437,7 +436,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'username'
         )
       ).data
@@ -455,7 +453,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'displayName'
         )
       ).data
@@ -471,7 +468,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'directoryBio'
         )
       ).data
@@ -487,7 +483,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'bio'
         )
       ).data
@@ -501,7 +496,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'city'
         )
       ).data
@@ -517,7 +511,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'state'
         )
       ).data
@@ -533,7 +526,6 @@ export class BiolinkService {
             order: 'ASC',
             query,
           },
-          [],
           'country'
         )
       ).data
@@ -541,8 +533,8 @@ export class BiolinkService {
       response.results = response.results.concat(
         biolinksForCountry.map((biolink) => biolink.country || '')
       )
-    } catch (err) {
-      throw new ApolloError('Something went wrong', ErrorCode.DATABASE_ERROR)
+    } catch (err: any) {
+      throw new ApolloError(err.message, ErrorCode.DATABASE_ERROR)
     }
 
     return response

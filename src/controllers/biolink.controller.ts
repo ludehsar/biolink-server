@@ -183,9 +183,9 @@ export class BiolinkController {
 
   async getAllDirectories(
     options: ConnectionArgs,
-    categoryIds: number[]
+    categoryIds: string[]
   ): Promise<PaginatedBiolinkResponse> {
-    return await this.biolinkService.getAllDirectories(options, categoryIds)
+    return await this.biolinkService.getAllDirectories(options, undefined, categoryIds)
   }
 
   async updateBiolinkProfile(
