@@ -2,7 +2,7 @@ import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql
 
 import { authUser } from '../../middlewares'
 import { User } from '../../entities'
-import { RegisterInput, LoginInput, EmailInput, PasswordInput } from '../../input-types'
+import { RegisterInput, LoginInput, EmailInput } from '../../input-types'
 import { UserWithTokens } from '../../object-types'
 import { MyContext } from '../../types'
 import { AuthController } from '../../controllers'
@@ -52,10 +52,10 @@ export class AuthResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   async verifyForgotPassword(
-    @Arg('options') options: PasswordInput,
+    @Arg('options') options: LoginInput,
     @Arg('forgotPasswordToken') forgotPasswordToken: string
   ): Promise<void> {
-    return await this.authController.resetPassword(forgotPasswordToken, options.password)
+    return await this.authController.resetPassword(options, forgotPasswordToken)
   }
 
   @Mutation(() => Boolean, { nullable: true })

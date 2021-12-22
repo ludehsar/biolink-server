@@ -98,7 +98,11 @@ export class AuthService {
    * @param {string} newPassword
    * @returns {Promise}
    */
-  async resetPassword(resetPasswordToken: string, newPassword: string): Promise<void> {
+  async resetPassword(
+    resetPasswordToken: string,
+    email: string,
+    newPassword: string
+  ): Promise<void> {
     try {
       const resetPasswordTokenDoc = await this.tokenService.verifyToken(
         resetPasswordToken,
@@ -107,7 +111,7 @@ export class AuthService {
 
       const user = await resetPasswordTokenDoc.user
 
-      if (!user) {
+      if (!user || user.email !== email) {
         throw new ApolloError('Invalid token', ErrorCode.INVALID_TOKEN)
       }
 

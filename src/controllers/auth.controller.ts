@@ -163,8 +163,8 @@ export class AuthController {
     await this.emailService.sendResetPasswordEmail({ email }, resetPasswordToken)
   }
 
-  async resetPassword(token: string, password: string): Promise<void> {
-    await this.authService.resetPassword(token, password)
+  async resetPassword(loginInput: LoginInput, token: string): Promise<void> {
+    await this.authService.resetPassword(token, loginInput.email, loginInput.password)
   }
 
   async sendVerificationEmail(context: MyContext): Promise<void> {
