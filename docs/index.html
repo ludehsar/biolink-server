@@ -76,6 +76,9 @@
               <li>
                 <a href="#operation-get_notification-post"> Get Notification </a>
               </li>
+              <li>
+                <a href="#operation-get_referral_code-post"> Get Referral Code </a>
+              </li>
             </ul>
           </section>
           <section>
@@ -390,6 +393,7 @@
           <a href="#definition-Category"> Category </a>
           <a href="#definition-ChangePasswordInput"> ChangePasswordInput </a>
           <a href="#definition-ChatRoom"> ChatRoom </a>
+          <a href="#definition-Code"> Code </a>
           <a href="#definition-ConnectionArgs"> ConnectionArgs </a>
           <a href="#definition-ContactButtonInput"> ContactButtonInput </a>
           <a href="#definition-Cursor"> Cursor </a>
@@ -599,6 +603,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> me<span class="hljs-tag">{
   <span class="hljs-symbol">me<span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">name</span>
     <span class="hljs-symbol">email</span>
     <span class="hljs-symbol">emailVerifiedAt</span>
     <span class="hljs-symbol">lastActiveTill</span>
@@ -622,7 +627,7 @@ https://stashee-v2.herokuapp.com/graphql
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=query%20me%7B%0A%20%20me%7B%0A%20%20%20%20id%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=query%20me%7B%0A%20%20me%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -665,6 +670,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;data&quot;</span>: {
     <span class="hljs-attr">&quot;me&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
@@ -1277,7 +1283,7 @@ https://stashee-v2.herokuapp.com/graphql
                         <span class="prop-type">
                           <div class="json-property-type">
                             <div class="">
-                              <a class="json-schema-ref" href="#/definitions/PasswordInput">PasswordInput</a>
+                              <a class="json-schema-ref" href="#/definitions/LoginInput">LoginInput</a>
                             </div>
                           </div>
                           <span class="json-property-range" title="Value limits"></span>
@@ -1300,7 +1306,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyForgotPassword<span class="hljs-tag">(<span class="hljs-code">$forgotPasswordToken</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$options</span>:<span class="hljs-type"> PasswordInput!</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyForgotPassword<span class="hljs-tag">(<span class="hljs-code">$forgotPasswordToken</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$options</span>:<span class="hljs-type"> LoginInput!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">verifyForgotPassword<span class="hljs-tag">(forgotPasswordToken: <span class="hljs-code">$forgotPasswordToken</span>, options: <span class="hljs-code">$options</span>)</span></span>
 }</span></span>
 </code></pre> </body>
@@ -1313,13 +1319,14 @@ https://stashee-v2.herokuapp.com/graphql
                     <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;forgotPasswordToken&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;options&quot;</span>: {
+    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;password&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
   }
 }
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20verifyForgotPassword(%24forgotPasswordToken%3A%20String!%2C%20%24options%3A%20PasswordInput!)%7B%0A%20%20verifyForgotPassword(forgotPasswordToken%3A%20%24forgotPasswordToken%2C%20options%3A%20%24options)%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=mutation%20verifyForgotPassword(%24forgotPasswordToken%3A%20String!%2C%20%24options%3A%20LoginInput!)%7B%0A%20%20verifyForgotPassword(forgotPasswordToken%3A%20%24forgotPasswordToken%2C%20options%3A%20%24options)%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -1991,6 +1998,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> updateBilling<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> BillingInput!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">updateBilling<span class="hljs-tag">(options: <span class="hljs-code">$options</span>)</span><span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">name</span>
     <span class="hljs-symbol">email</span>
     <span class="hljs-symbol">emailVerifiedAt</span>
     <span class="hljs-symbol">lastActiveTill</span>
@@ -2034,7 +2042,7 @@ https://stashee-v2.herokuapp.com/graphql
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20updateBilling(%24options%3A%20BillingInput!)%7B%0A%20%20updateBilling(options%3A%20%24options)%7B%0A%20%20%20%20id%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=mutation%20updateBilling(%24options%3A%20BillingInput!)%7B%0A%20%20updateBilling(options%3A%20%24options)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -2077,6 +2085,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;data&quot;</span>: {
     <span class="hljs-attr">&quot;updateBilling&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
@@ -2156,6 +2165,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> changeCurrentBiolinkId<span class="hljs-tag">(<span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">changeCurrentBiolinkId<span class="hljs-tag">(biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
     <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">name</span>
     <span class="hljs-symbol">email</span>
     <span class="hljs-symbol">emailVerifiedAt</span>
     <span class="hljs-symbol">lastActiveTill</span>
@@ -2189,7 +2199,7 @@ https://stashee-v2.herokuapp.com/graphql
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20changeCurrentBiolinkId(%24biolinkId%3A%20String!)%7B%0A%20%20changeCurrentBiolinkId(biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=mutation%20changeCurrentBiolinkId(%24biolinkId%3A%20String!)%7B%0A%20%20changeCurrentBiolinkId(biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20email%0A%20%20%20%20emailVerifiedAt%0A%20%20%20%20lastActiveTill%0A%20%20%20%20planExpirationDate%0A%20%20%20%20planTrialDone%0A%20%20%20%20planType%0A%20%20%20%20usedReferralsToPurchasePlan%0A%20%20%20%20language%0A%20%20%20%20timezone%0A%20%20%20%20lastIPAddress%0A%20%20%20%20lastUserAgent%0A%20%20%20%20country%0A%20%20%20%20totalLogin%0A%20%20%20%20currentBiolinkId%0A%20%20%20%20availableBalance%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -2232,6 +2242,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;data&quot;</span>: {
     <span class="hljs-attr">&quot;changeCurrentBiolinkId&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
@@ -2377,6 +2388,116 @@ https://stashee-v2.herokuapp.com/graphql
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;data&quot;</span>: {
     <span class="hljs-attr">&quot;getUserNotification&quot;</span>: {}
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-get_referral_code-post" class="operation panel" data-traverse-target="operation-get_referral_code-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-User-Section">User Section</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Get Referral Code</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Get the user referral code the user can give to others</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getUserReferralToken<span class="hljs-tag">{
+  <span class="hljs-symbol">getUserReferralToken<span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">type</span>
+    <span class="hljs-symbol">code</span>
+    <span class="hljs-symbol">discount</span>
+    <span class="hljs-symbol">quantity</span>
+    <span class="hljs-symbol">expireDate</span>
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">updatedAt</span>
+    <span class="hljs-symbol">deletedAt</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="http://localhost:4000/graphql?query=query%20getUserReferralToken%7B%0A%20%20getUserReferralToken%7B%0A%20%20%20%20id%0A%20%20%20%20type%0A%20%20%20%20code%0A%20%20%20%20discount%0A%20%20%20%20quantity%0A%20%20%20%20expireDate%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Code">Code</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;getUserReferralToken&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;discount&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;quantity&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;expireDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
   }
 }
 </code></pre> </body>
@@ -5535,7 +5656,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <div class="prop-name">
                       <div class="prop-title">categoryIds:
                         <span class="prop-type">
-                          <div class="json-property-type">integer[]</div>
+                          <div class="json-property-type">string[]</div>
                           <span class="json-property-range" title="Value limits"></span>
                         </span>
                       </div>
@@ -5573,7 +5694,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getAllDirectories<span class="hljs-tag">(<span class="hljs-code">$categoryIds</span>: <span class="hljs-type">[Int!</span>], <span class="hljs-code">$options</span>:<span class="hljs-type"> ConnectionArgs!</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getAllDirectories<span class="hljs-tag">(<span class="hljs-code">$categoryIds</span>: <span class="hljs-type">[String!</span>], <span class="hljs-code">$options</span>:<span class="hljs-type"> ConnectionArgs!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">getAllDirectories<span class="hljs-tag">(categoryIds: <span class="hljs-code">$categoryIds</span>, options: <span class="hljs-code">$options</span>)</span><span class="hljs-tag">{
   }</span></span>
 }</span></span>
@@ -5586,7 +5707,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <head></head>
                     <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;categoryIds&quot;</span>: [
-    <span class="hljs-string">&quot;integer&quot;</span>
+    <span class="hljs-string">&quot;string&quot;</span>
   ],
   <span class="hljs-attr">&quot;options&quot;</span>: {
     <span class="hljs-attr">&quot;beforeCursor&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
@@ -5599,7 +5720,7 @@ https://stashee-v2.herokuapp.com/graphql
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=query%20getAllDirectories(%24categoryIds%3A%20%5BInt!%5D%2C%20%24options%3A%20ConnectionArgs!)%7B%0A%20%20getAllDirectories(categoryIds%3A%20%24categoryIds%2C%20options%3A%20%24options)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=query%20getAllDirectories(%24categoryIds%3A%20%5BString!%5D%2C%20%24options%3A%20ConnectionArgs!)%7B%0A%20%20getAllDirectories(categoryIds%3A%20%24categoryIds%2C%20options%3A%20%24options)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -6121,8 +6242,11 @@ https://stashee-v2.herokuapp.com/graphql
               <div class="doc-copy">
                 <section class="swagger-operation-description">
                   <p>Gets all links by biolink ID.
-                    <strong>Should be executed in the user Dashboard, not in the page.</strong>
+                    <strong>Should be executed in the user Dashboard, not in the page or preview section.</strong>
                   </p>
+                  <p>
+                    <strong>Note:</strong> The term page means which should be rendered when a user views or visits another user&#39;s profile page, or information. For example, the user can visit to the page like:
+                    <a href="https://www.stash.ee/anik">https://www.stash.ee/anik</a>, or any other user&#39;s profile. Then this can be considered a page.</p>
                 </section>
               </div>
             </div>
@@ -6263,8 +6387,11 @@ https://stashee-v2.herokuapp.com/graphql
               <div class="doc-copy">
                 <section class="swagger-operation-description">
                   <p>Gets all social links by biolink ID.
-                    <strong>Should be executed in the user Dashboard, not in the page.</strong>
+                    <strong>Should be executed in the user Dashboard, not in the page or preview section.</strong>
                   </p>
+                  <p>
+                    <strong>Note:</strong> The term page means which should be rendered when a user views or visits another user&#39;s profile page, or information. For example, the user can visit to the page like:
+                    <a href="https://www.stash.ee/anik">https://www.stash.ee/anik</a>, or any other user&#39;s profile. Then this can be considered a page.</p>
                 </section>
               </div>
             </div>
@@ -6405,8 +6532,11 @@ https://stashee-v2.herokuapp.com/graphql
               <div class="doc-copy">
                 <section class="swagger-operation-description">
                   <p>Gets all links by biolink Username.
-                    <strong>Should be executed in the page, not in the user Dashboard.</strong>
+                    <strong>Should be executed in the page or preview section, not in the user Dashboard.</strong>
                   </p>
+                  <p>
+                    <strong>Note:</strong> The term page means which should be rendered when a user views or visits another user&#39;s profile page, or information. For example, the user can visit to the page like:
+                    <a href="https://www.stash.ee/anik">https://www.stash.ee/anik</a>, or any other user&#39;s profile. Then this can be considered a page.</p>
                 </section>
               </div>
             </div>
@@ -6547,8 +6677,11 @@ https://stashee-v2.herokuapp.com/graphql
               <div class="doc-copy">
                 <section class="swagger-operation-description">
                   <p>Gets all social links by biolink Username.
-                    <strong>Should be executed in the page, not in the user Dashboard.</strong>
+                    <strong>Should be executed in the page or preview section, not in the user Dashboard.</strong>
                   </p>
+                  <p>
+                    <strong>Note:</strong> The term page means which should be rendered when a user views or visits another user&#39;s profile page, or information. For example, the user can visit to the page like:
+                    <a href="https://www.stash.ee/anik">https://www.stash.ee/anik</a>, or any other user&#39;s profile. Then this can be considered a page.</p>
                 </section>
               </div>
             </div>
@@ -6688,8 +6821,8 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Gets all links of the authenticated user.
-                    <strong>Should be executed in the user dashboard, or link page only.</strong>
+                  <p>Fetches all authenticated users&#39; links.
+                    <strong>Should be executed in the or &quot;Link Shortner&quot; section in the sidebar.</strong>
                   </p>
                 </section>
               </div>
@@ -6816,7 +6949,8 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Gets link details by short url. Should be called when the user visits to the short links, and it then should redirect the user to the original link.</p>
+                  <p>When a user visits the shortened link (i.e.,
+                    <a href="https://www.stash.ee/78ef29">https://www.stash.ee/78ef29</a>), this query should be called. It should give the link details from the short code, and after getting the link information, you should redirect the user to the original email.</p>
                 </section>
               </div>
             </div>
@@ -6985,7 +7119,9 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Creates new link.</p>
+                  <p>Creates new link.
+                    <strong>Note, it should only be used in creating new links only, in Dashboard and in Link Shortner section only. There are separate APIs for creating embedded links, lines, and social links.</strong>
+                  </p>
                 </section>
               </div>
             </div>
@@ -7327,7 +7463,7 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Creates new line.</p>
+                  <p>Creates new line, or sections, to separate the lists in the page or preview or dashboard.</p>
                 </section>
               </div>
             </div>
@@ -7489,7 +7625,9 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Creates new social link.</p>
+                  <p>Creates new social link.
+                    <strong>Note, this mutation should only be used to create social links.</strong>
+                  </p>
                 </section>
               </div>
             </div>
@@ -7660,7 +7798,9 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Updates link.</p>
+                  <p>Updates link.
+                    <strong>Note, it should only be used in updating links only, in Dashboard and in the Link Shortner section only. There are separate APIs for updating embedded links, lines, and social links.</strong>
+                  </p>
                 </section>
               </div>
             </div>
@@ -8030,7 +8170,7 @@ https://stashee-v2.herokuapp.com/graphql
             <div class="doc-row">
               <div class="doc-copy">
                 <section class="swagger-operation-description">
-                  <p>Updates line.</p>
+                  <p>Updates line, or link separator.</p>
                 </section>
               </div>
             </div>
@@ -15551,6 +15691,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;sender&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -15585,8 +15726,181 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+      }
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-Code" class="definition panel" data-traverse-target="definition-Code">
+            <h2 class="panel-title">
+              <a name="/definitions/Code"></a>Code: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="id">
+                      <span class="json-property-name">id:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="type">
+                      <span class="json-property-name">type:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="code">
+                      <span class="json-property-name">code:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="discount">
+                      <span class="json-property-name">discount:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-number">
+                          <a class="json-schema-ref" href="#/definitions/Float">Float</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="quantity">
+                      <span class="json-property-name">quantity:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-number">
+                          <a class="json-schema-ref" href="#/definitions/Float">Float</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="expireDate">
+                      <span class="json-property-name">expireDate:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="createdAt">
+                      <span class="json-property-name">createdAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="updatedAt">
+                      <span class="json-property-name">updatedAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="deletedAt">
+                      <span class="json-property-name">deletedAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="referrer">
+                      <span class="json-property-name">referrer:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/User">User</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;code&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;discount&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;quantity&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;expireDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;referrer&quot;</span>: {
+    <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;billing&quot;</span>: {
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    },
+    <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+    <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+    <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;plan&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;settings&quot;</span>: {
+        <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
       }
     }
   }
@@ -16582,6 +16896,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;follower&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -16626,8 +16941,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;addedToDirectoryEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;customBackHalfEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;noAdsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;removableBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;customFooterBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;removableBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
       }
     }
   }
@@ -17178,6 +17492,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;user&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -17205,8 +17520,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
     <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
   }
 }
 </code></pre> </body>
@@ -17282,6 +17596,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;user&quot;</span>: {
           <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -17307,8 +17622,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
           <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+          <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
         }
       }
     }
@@ -17479,6 +17793,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;sender&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -17519,8 +17834,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;addedToDirectoryEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
       }
     }
   }
@@ -18606,6 +18920,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;seller&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -18636,8 +18951,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;plan&quot;</span>: {
-        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
       }
     }
   }
@@ -18883,6 +19197,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;sender&quot;</span>: {
           <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -18916,8 +19231,7 @@ https://stashee-v2.herokuapp.com/graphql
             <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
             <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
             <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-            <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+            <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
           }
         }
       }
@@ -18996,6 +19310,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;user&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19022,8 +19337,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-        <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
       }
     }
   ]
@@ -19087,6 +19401,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;sender&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19126,8 +19441,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;settings&quot;</span>: {
             <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
             <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
           }
         }
       }
@@ -19203,6 +19517,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;seller&quot;</span>: {
           <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19232,9 +19547,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;plan&quot;</span>: {
-            <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-          }
+          <span class="hljs-attr">&quot;plan&quot;</span>: {}
         }
       }
     }
@@ -19299,6 +19612,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;user&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19337,8 +19651,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;settings&quot;</span>: {
             <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+            <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
           }
         }
       }
@@ -19404,6 +19717,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;referredBy&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19443,8 +19757,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;settings&quot;</span>: {
             <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
             <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+            <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
           }
         }
       }
@@ -19512,6 +19825,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;seller&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19549,8 +19863,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
           <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;settings&quot;</span>: {
-            <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-            <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+            <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
           }
         }
       }
@@ -19621,6 +19934,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;user&quot;</span>: {
         <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
         <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19655,8 +19969,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
           <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
           <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-          <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+          <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
         }
       }
     }
@@ -19714,6 +20027,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;data&quot;</span>: [
     {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -19760,8 +20074,7 @@ https://stashee-v2.herokuapp.com/graphql
           <span class="hljs-attr">&quot;noAdsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
           <span class="hljs-attr">&quot;removableBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
           <span class="hljs-attr">&quot;customFooterBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-          <span class="hljs-attr">&quot;coloredLinksEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-          <span class="hljs-attr">&quot;googleAnalyticsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+          <span class="hljs-attr">&quot;coloredLinksEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
         }
       }
     }
@@ -19997,6 +20310,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;user&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -20037,8 +20351,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;addedToDirectoryEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
       }
     }
   }
@@ -21472,6 +21785,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;referredBy&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -21512,8 +21826,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;addedToDirectoryEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
       }
     }
   }
@@ -21834,6 +22147,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;reporter&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -21872,8 +22186,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;settings&quot;</span>: {
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+        <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
       }
     }
   }
@@ -22284,6 +22597,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;seller&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -22322,8 +22636,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;settings&quot;</span>: {
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+        <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
       }
     }
   }
@@ -22665,6 +22978,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;user&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -22691,8 +23005,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
       <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;availableBalance&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
 }
@@ -23832,6 +24145,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;sender&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -23871,8 +24185,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;settings&quot;</span>: {
           <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
           <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-          <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+          <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
         }
       }
     }
@@ -24039,6 +24352,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;user&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -24073,8 +24387,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
       <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
     }
   }
 }
@@ -24298,6 +24611,18 @@ https://stashee-v2.herokuapp.com/graphql
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
                     </dt>
+                    <dt data-property-name="name" class="has-description">
+                      <span class="json-property-name">name:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The name field is only for the admins.</p>
+                    </dd>
                     <dt data-property-name="email">
                       <span class="json-property-name">email:</span>
                       <div class="json-property-type">
@@ -24498,6 +24823,7 @@ https://stashee-v2.herokuapp.com/graphql
                   <head></head>
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -24545,8 +24871,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;removableBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;customFooterBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
       <span class="hljs-attr">&quot;coloredLinksEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;googleAnalyticsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;facebookPixelEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+      <span class="hljs-attr">&quot;googleAnalyticsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
     }
   }
 }
@@ -24701,6 +25026,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;user&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -24736,8 +25062,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;monthlyPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
       <span class="hljs-attr">&quot;monthlyPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;annualPrice&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;settings&quot;</span>: {}
+      <span class="hljs-attr">&quot;annualPriceStripeId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
     }
   }
 }
@@ -24800,6 +25125,7 @@ https://stashee-v2.herokuapp.com/graphql
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;user&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -24846,8 +25172,7 @@ https://stashee-v2.herokuapp.com/graphql
         <span class="hljs-attr">&quot;noAdsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;removableBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
         <span class="hljs-attr">&quot;customFooterBrandingEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;coloredLinksEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-        <span class="hljs-attr">&quot;googleAnalyticsEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;coloredLinksEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
       }
     }
   }
@@ -24972,6 +25297,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;owner&quot;</span>: {
     <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;billing&quot;</span>: {
@@ -25011,8 +25337,7 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;settings&quot;</span>: {
         <span class="hljs-attr">&quot;totalBiolinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
         <span class="hljs-attr">&quot;totalLinksLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-        <span class="hljs-attr">&quot;darkModeEnabled&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>
+        <span class="hljs-attr">&quot;totalCustomDomainLimit&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
       }
     }
   }

@@ -67,6 +67,9 @@ domains:
       - name: Get Notification
         description: Get user notification
         query: query.getUserNotification
+      - name: Get Referral Code
+        description: Get the user referral code the user can give to others
+        query: query.getUserReferralToken
   - name: Biolink Section
     description: Most queries are gonna be used in the dashboard section.
     usecases:
@@ -140,43 +143,66 @@ domains:
     description: Queries and Mutations related to the links.
     usecases:
       - name: Get All Links By Biolink ID
-        description: Gets all links by biolink ID. **Should be executed in the user Dashboard, not in the page.**
+        description: |
+          Gets all links by biolink ID. **Should be executed in the user Dashboard, not in the page or preview section.**
+          
+          **Note:** The term page means which should be rendered when a user views or visits another user's profile page, or information.
+          For example, the user can visit to the page like: https://www.stash.ee/anik, or any other user's profile. Then this can be considered a page.
         query: query.getAllLinksByBiolinkId
       - name: Get All Social Links By Biolink ID
-        description: Gets all social links by biolink ID. **Should be executed in the user Dashboard, not in the page.**
+        description: |
+          Gets all social links by biolink ID. **Should be executed in the user Dashboard, not in the page or preview section.**
+
+          **Note:** The term page means which should be rendered when a user views or visits another user's profile page, or information.
+          For example, the user can visit to the page like: https://www.stash.ee/anik, or any other user's profile. Then this can be considered a page.
         query: query.getAllSocialLinksByBiolinkId
       - name: Get All Links By Biolink Username
-        description: Gets all links by biolink Username. **Should be executed in the page, not in the user Dashboard.**
+        description: |
+          Gets all links by biolink Username. **Should be executed in the page or preview section, not in the user Dashboard.**
+
+          **Note:** The term page means which should be rendered when a user views or visits another user's profile page, or information.
+          For example, the user can visit to the page like: https://www.stash.ee/anik, or any other user's profile. Then this can be considered a page.
         query: query.getAllLinksByBiolinkUsername
       - name: Get All Social Links By Biolink Username
-        description: Gets all social links by biolink Username. **Should be executed in the page, not in the user Dashboard.**
+        description: |
+          Gets all social links by biolink Username. **Should be executed in the page or preview section, not in the user Dashboard.**
+
+          **Note:** The term page means which should be rendered when a user views or visits another user's profile page, or information.
+          For example, the user can visit to the page like: https://www.stash.ee/anik, or any other user's profile. Then this can be considered a page.
         query: query.getAllSocialLinksByBiolinkUsername
       - name: Get All User Links
-        description: Gets all links of the authenticated user. **Should be executed in the user dashboard, or link page only.**
+        description: Fetches all authenticated users' links. **Should be executed in the or "Link Shortner" section in the sidebar.**
         query: query.getAllUserLinks
       - name: Get Link Details by Short URL
-        description: Gets link details by short url. Should be called when the user visits to the short links, and it then should redirect the user to the original link.
+        description: |
+          When a user visits the shortened link (i.e., https://www.stash.ee/78ef29), this query should be called.
+          It should give the link details from the short code, and after getting the link information,
+          you should redirect the user to the original email.
         query: query.getLinkByShortUrl
       - name: Create New Link
-        description: Creates new link.
+        description: |
+          Creates new link. **Note, it should only be used in creating new links only, in Dashboard and in Link Shortner section only.
+          There are separate APIs for creating embedded links, lines, and social links.**
         query: mutation.createNewLink
       - name: Create New Embedded Link
         description: Creates new embedded link.
         query: mutation.createNewEmbed
       - name: Create New Line
-        description: Creates new line.
+        description: Creates new line, or sections, to separate the lists in the page or preview or dashboard.
         query: mutation.createNewLine
       - name: Create New Social Link
-        description: Creates new social link.
+        description: Creates new social link. **Note, this mutation should only be used to create social links.**
         query: mutation.createNewSocialLink
       - name: Update Link
-        description: Updates link.
+        description: |
+          Updates link. **Note, it should only be used in updating links only, in Dashboard and in the Link Shortner section only.
+          There are separate APIs for updating embedded links, lines, and social links.**
         query: mutation.updateLink
       - name: Update Embedded Link
         description: Updates embedded link.
         query: mutation.updateEmbed
       - name: Update Line
-        description: Updates line.
+        description: Updates line, or link separator.
         query: mutation.updateLine
       - name: Update Social Link
         description: Updates social link.
