@@ -10,7 +10,7 @@ import {
   PasswordInput,
 } from '../input-types'
 import { ErrorCode, MyContext } from '../types'
-import { User } from '../entities'
+import { Code, User } from '../entities'
 import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
 import { AuthService } from '../services/auth.service'
@@ -145,5 +145,9 @@ export class UserController {
     context: MyContext
   ): Promise<PaginatedUserLogResponse> {
     return await this.notificationService.getNotification((context.user as User).id, connectionArgs)
+  }
+
+  async getUserReferralToken(context: MyContext): Promise<Code> {
+    return await this.userService.getReferralTokenByUserId((context.user as User).id)
   }
 }

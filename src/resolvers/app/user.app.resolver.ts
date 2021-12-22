@@ -1,6 +1,6 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 import { authUser, emailVerified } from '../../middlewares'
-import { User } from '../../entities'
+import { Code, User } from '../../entities'
 import {
   EmailAndUsernameInput,
   ChangePasswordInput,
@@ -69,5 +69,11 @@ export class UserResolver {
     @Ctx() context: MyContext
   ): Promise<PaginatedUserLogResponse> {
     return await this.userController.getNotification(options, context)
+  }
+
+  @Query(() => Code, { nullable: true })
+  @UseMiddleware(authUser)
+  async getUserReferralToken(@Ctx() context: MyContext): Promise<Code> {
+    return await this.userController.getUserReferralToken(context)
   }
 }

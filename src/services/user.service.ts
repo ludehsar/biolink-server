@@ -5,12 +5,16 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
 
 import { ErrorCode } from '../types'
-import { User } from '../entities'
+import { Code, User } from '../entities'
 import { UserUpdateBody } from '../interfaces/UserUpdateBody'
+import { CodeType } from '../enums'
 
 @Service()
 export class UserService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Code) private readonly codeRepository: Repository<Code>
+  ) {}
 
   /**
    * Create a user
@@ -18,7 +22,7 @@ export class UserService {
    * @returns {Promise<User>}
    */
   async createUser(updateBody: UserUpdateBody): Promise<User> {
-    let user = await User.create().save()
+    let user = await this.userRepository.create().save()
 
     user = await this.updateUserById(user.id, updateBody)
 
@@ -172,5 +176,27 @@ export class UserService {
     await user.softRemove()
 
     return user
+  }
+
+  /**
+   * Gets referral token by user id
+   * @param {string} userId
+   * @returns {Promise<Code>}
+   */
+  async getReferralTokenByUserId(userId: string): Promise<Code> {
+    const user = await this.getUserById(userId)
+
+    const referralToken = await this.codeRepository.findOne({
+      where: {
+        referrer: user,
+        type: CodeType.Referral,
+      },
+    })
+
+    if (!referralToken) {
+      throw new ApolloError('No referral token found.', ErrorCode.CODE_NOT_FOUND)
+    }
+
+    return referralToken
   }
 }
