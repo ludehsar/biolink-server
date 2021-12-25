@@ -51,7 +51,7 @@ export class LinkService {
   ): Promise<PaginatedLinkResponse> {
     const queryBuilder = this.linkRepository
       .createQueryBuilder('link')
-      .where(`link.linkType != '${LinkType.Line}'`)
+      .where(`link.linkType == '${LinkType.Link}'`)
       .andWhere('link.userId = :userId', { userId })
       .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
 
