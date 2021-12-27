@@ -3,7 +3,7 @@ import { Service } from 'typedi'
 
 import { UserWithTokens } from '../object-types'
 import { UserService } from '../services/user.service'
-import { LoginInput, RegisterInput } from '../input-types'
+import { LoginInput, PasswordInput, RegisterInput } from '../input-types'
 import { ErrorCode, MyContext } from '../types'
 import { BiolinkService } from '../services/biolink.service'
 import { UsernameService } from '../services/username.service'
@@ -163,8 +163,8 @@ export class AuthController {
     await this.emailService.sendResetPasswordEmail({ email }, resetPasswordToken)
   }
 
-  async resetPassword(loginInput: LoginInput, token: string): Promise<void> {
-    await this.authService.resetPassword(token, loginInput.email, loginInput.password)
+  async resetPassword(loginInput: PasswordInput, token: string): Promise<void> {
+    await this.authService.resetPassword(token, loginInput.password)
   }
 
   async sendVerificationEmail(context: MyContext): Promise<void> {
