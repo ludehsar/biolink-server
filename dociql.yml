@@ -315,6 +315,9 @@ domains:
       - name: Get Payment Details
         description: Gets payment details by payment ID.
         query: query.getPayment
+      - name: Get Last Payment
+        description: Gets the latest payment details for the currently logged in user. *Experimental. Useful for getting the results after payment success*.
+        query: query.getLastUserPayment
   - name: Report Section
     description: Report section.
     usecases:

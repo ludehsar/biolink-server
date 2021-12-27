@@ -306,6 +306,9 @@
               <li>
                 <a href="#operation-get_payment_details-post"> Get Payment Details </a>
               </li>
+              <li>
+                <a href="#operation-get_last_payment-post"> Get Last Payment </a>
+              </li>
             </ul>
           </section>
           <section>
@@ -1283,7 +1286,7 @@ https://stashee-v2.herokuapp.com/graphql
                         <span class="prop-type">
                           <div class="json-property-type">
                             <div class="">
-                              <a class="json-schema-ref" href="#/definitions/LoginInput">LoginInput</a>
+                              <a class="json-schema-ref" href="#/definitions/PasswordInput">PasswordInput</a>
                             </div>
                           </div>
                           <span class="json-property-range" title="Value limits"></span>
@@ -1306,7 +1309,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyForgotPassword<span class="hljs-tag">(<span class="hljs-code">$forgotPasswordToken</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$options</span>:<span class="hljs-type"> LoginInput!</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyForgotPassword<span class="hljs-tag">(<span class="hljs-code">$forgotPasswordToken</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$options</span>:<span class="hljs-type"> PasswordInput!</span>)</span><span class="hljs-tag">{
   <span class="hljs-symbol">verifyForgotPassword<span class="hljs-tag">(forgotPasswordToken: <span class="hljs-code">$forgotPasswordToken</span>, options: <span class="hljs-code">$options</span>)</span></span>
 }</span></span>
 </code></pre> </body>
@@ -1319,14 +1322,13 @@ https://stashee-v2.herokuapp.com/graphql
                     <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;forgotPasswordToken&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;options&quot;</span>: {
-    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;password&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
   }
 }
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20verifyForgotPassword(%24forgotPasswordToken%3A%20String!%2C%20%24options%3A%20LoginInput!)%7B%0A%20%20verifyForgotPassword(forgotPasswordToken%3A%20%24forgotPasswordToken%2C%20options%3A%20%24options)%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=mutation%20verifyForgotPassword(%24forgotPasswordToken%3A%20String!%2C%20%24options%3A%20PasswordInput!)%7B%0A%20%20verifyForgotPassword(forgotPasswordToken%3A%20%24forgotPasswordToken%2C%20options%3A%20%24options)%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -11615,6 +11617,112 @@ https://stashee-v2.herokuapp.com/graphql
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;data&quot;</span>: {
     <span class="hljs-attr">&quot;getPayment&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;amountPaid&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;paymentCurrency&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-get_last_payment-post" class="operation panel" data-traverse-target="operation-get_last_payment-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Payment-Section">Payment Section</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Get Last Payment</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Gets the latest payment details for the currently logged in user.
+                    <em>Experimental. Useful for getting the results after payment success</em>.</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getLastUserPayment<span class="hljs-tag">{
+  <span class="hljs-symbol">getLastUserPayment<span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">paymentType</span>
+    <span class="hljs-symbol">paymentProvider</span>
+    <span class="hljs-symbol">amountPaid</span>
+    <span class="hljs-symbol">paymentCurrency</span>
+    <span class="hljs-symbol">paymentDetails</span>
+    <span class="hljs-symbol">createdAt</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="http://localhost:4000/graphql?query=query%20getLastUserPayment%7B%0A%20%20getLastUserPayment%7B%0A%20%20%20%20id%0A%20%20%20%20paymentType%0A%20%20%20%20paymentProvider%0A%20%20%20%20amountPaid%0A%20%20%20%20paymentCurrency%0A%20%20%20%20paymentDetails%0A%20%20%20%20createdAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Payment">Payment</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;getLastUserPayment&quot;</span>: {
       <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;paymentType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;paymentProvider&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
