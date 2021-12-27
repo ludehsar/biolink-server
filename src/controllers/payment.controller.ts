@@ -27,4 +27,14 @@ export class PaymentController {
 
     return payment
   }
+
+  async getLastUserPayment(context: MyContext): Promise<Payment> {
+    const payment = await this.paymentService.getLastPaymentByUser(context.user as User)
+
+    if (payment.userId !== (context.user as User).id) {
+      throw new ForbiddenError('Forbidden')
+    }
+
+    return payment
+  }
 }

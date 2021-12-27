@@ -28,4 +28,10 @@ export class PaymentResolver {
   ): Promise<Payment> {
     return await this.paymentController.getPaymentDetails(paymentId, context)
   }
+
+  @Query(() => Payment, { nullable: true })
+  @UseMiddleware(authUser)
+  async getLastUserPayment(@Ctx() context: MyContext): Promise<Payment> {
+    return await this.paymentController.getLastUserPayment(context)
+  }
 }

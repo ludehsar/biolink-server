@@ -221,4 +221,22 @@ export class PaymentService {
 
     return payment
   }
+
+  /**
+   * Get last payment by user id
+   * @param {User} user
+   * @returns {Promise<Payment>}
+   */
+  async getLastPaymentByUser(user: User): Promise<Payment> {
+    const payment = await this.paymentRepository.findOne({
+      where: { user },
+      order: { id: 'DESC' },
+    })
+
+    if (!payment) {
+      throw new ApolloError('Invalid payment id or no payment done', ErrorCode.PAYMENT_NOT_FOUND)
+    }
+
+    return payment
+  }
 }
