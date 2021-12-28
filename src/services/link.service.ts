@@ -22,22 +22,22 @@ export class LinkService {
    * Links paginated results search criteria
    * @returns {Promise<Brackets>}
    */
-  private linksPaginatedResultsSearchBracket(query: string): Brackets {
-    return new Brackets((qb) => {
-      qb.where(`LOWER(link.linkTitle) like :query`, {
-        query: `%${query.toLowerCase()}%`,
-      })
-        .orWhere(`LOWER(link.url) like :query`, {
-          query: `%${query.toLowerCase()}%`,
-        })
-        .orWhere(`LOWER(link.shortenedUrl) like :query`, {
-          query: `%${query.toLowerCase()}%`,
-        })
-        .orWhere(`LOWER(link.note) like :query`, {
-          query: `%${query.toLowerCase()}%`,
-        })
-    })
-  }
+  // private linksPaginatedResultsSearchBracket(query: string): Brackets {
+  //   return new Brackets((qb) => {
+  //     qb.where(`LOWER(link.linkTitle) like :query`, {
+  //       query: `%${query.toLowerCase()}%`,
+  //     })
+  //       .orWhere(`LOWER(link.url) like :query`, {
+  //         query: `%${query.toLowerCase()}%`,
+  //       })
+  //       .orWhere(`LOWER(link.shortenedUrl) like :query`, {
+  //         query: `%${query.toLowerCase()}%`,
+  //       })
+  //       .orWhere(`LOWER(link.note) like :query`, {
+  //         query: `%${query.toLowerCase()}%`,
+  //       })
+  //   })
+  // }
 
   /**
    * Get all user links
@@ -53,7 +53,7 @@ export class LinkService {
       .createQueryBuilder('link')
       .where(`link.linkType = '${LinkType.Link}'`)
       .andWhere('link.userId = :userId', { userId })
-      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+    // .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
 
     const paginator = buildPaginator({
       entity: Link,
@@ -80,13 +80,13 @@ export class LinkService {
   async getAllLinksByBiolinkId(
     biolinkId: string,
     options: ConnectionArgs,
-    returnForPage = true
+    returnForPage = false
   ): Promise<PaginatedLinkResponse> {
     const queryBuilder = this.linkRepository
       .createQueryBuilder('link')
       .where(`link.linkType != '${LinkType.Social}'`)
       .andWhere('link.biolinkId = :biolinkId', { biolinkId })
-      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+    // .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
 
     if (returnForPage) {
       queryBuilder.andWhere(
@@ -128,7 +128,7 @@ export class LinkService {
       .createQueryBuilder('link')
       .where(`link.linkType = '${LinkType.Social}'`)
       .andWhere('link.biolinkId = :biolinkId', { biolinkId })
-      .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+    // .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
 
     if (returnForPage) {
       queryBuilder.andWhere(
