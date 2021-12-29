@@ -180,6 +180,7 @@ const main = async (): Promise<void> => {
       resolvers: [
         AdminRoleAdminResolver,
         AuthAdminResolver,
+        AuthResolver,
         BiolinkAdminResolver,
         BlackListAdminResolver,
         CategoryAdminResolver,
@@ -196,17 +197,37 @@ const main = async (): Promise<void> => {
         UsernameAdminResolver,
         VerificationAdminResolver,
       ],
-      validate: false,
+      container: Container,
     }),
     uploads: false,
-    context: ({ req, res }): MyContext => ({ req, res }),
+    context: ({ req, res, connection }): MyContext => ({ req, res, connection }),
+    subscriptions: {
+      path: '/subscriptions',
+      onConnect: (connectionParams: any) =>
+        new Promise((resolve, reject) => {
+          const authHeader = connectionParams.Authorization
+
+          if (authHeader && authHeader.startsWith('Bearer ')) {
+            const token = authHeader.substring(7, authHeader.length)
+
+            const decoded: any = jwt.verify(token, appConfig.accessTokenSecret)
+            if (decoded.type === TokenType.Access) {
+              resolve({ userId: decoded.sub })
+            }
+          }
+
+          reject(new Error('Unauthenticated'))
+        }),
+    },
   })
 
   adminServer.applyMiddleware({
     app,
-    path: '/admin/graphql',
+    path: '/adminn/graphql',
     cors: false,
   })
+
+  appServer.installSubscriptionHandlers(httpServer)
 
   planDismissScheduler()
 

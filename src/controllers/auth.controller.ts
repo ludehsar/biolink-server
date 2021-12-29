@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-errors'
+import { ApolloError, ForbiddenError } from 'apollo-server-errors'
 import { Service } from 'typedi'
 
 import { UserWithTokens } from '../object-types'
@@ -139,6 +139,27 @@ export class AuthController {
       loginInput.email,
       loginInput.password
     )
+    const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
+
+    await this.notificationService.createUserLogs(user, context, 'User logged in', true)
+
+    return {
+      access,
+      refresh,
+      user,
+    }
+  }
+
+  async loginAdmin(loginInput: LoginInput, context: MyContext): Promise<UserWithTokens> {
+    const user = await this.authService.loginWithEmailAndPassword(
+      loginInput.email,
+      loginInput.password
+    )
+
+    const role = await user.adminRole
+
+    if (!role) throw new ForbiddenError('Forbidden')
+
     const { access, refresh } = await this.tokenService.generateAuthTokens(user, context.res)
 
     await this.notificationService.createUserLogs(user, context, 'User logged in', true)

@@ -1,61 +1,49 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import {
-  createAdminRole,
-  deleteAdminRole,
-  editAdminRole,
-  getAdminRole,
-  getAdminRoles,
-} from '../../services'
-import { AdminRoleListResponse, AdminRoleResponse, DefaultResponse } from '../../object-types'
-import { CurrentAdmin } from '../../decorators'
-import { User } from '../../entities'
-import { NewAdminRoleInput } from '../../input-types'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+
+import { AdminRole } from '../../entities'
+import { ConnectionArgs, NewAdminRoleInput } from '../../input-types'
+import { AdminRoleController } from '../../controllers'
+import { PaginatedAdminRoleResponse } from '../../object-types/common/PaginatedAdminRoleResponse'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class AdminRoleAdminResolver {
-  @Query(() => AdminRoleListResponse)
+  constructor(private readonly roleController: AdminRoleController) {}
+
+  @Query(() => PaginatedAdminRoleResponse)
+  @UseMiddleware(authAdmin('admin_role.canShowList'))
   async getAllAdminRoles(
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<AdminRoleListResponse> {
-    return await getAdminRoles(adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedAdminRoleResponse> {
+    return await this.roleController.getAllRoles(options)
   }
 
-  @Query(() => AdminRoleResponse)
-  async getAdminRole(
-    @Arg('id', () => Int) id: number,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<AdminRoleResponse> {
-    return await getAdminRole(id, adminUser, context)
+  @Query(() => AdminRole)
+  @UseMiddleware(authAdmin('admin_role.canShow'))
+  async getAdminRole(@Arg('id', () => String) id: string): Promise<AdminRole> {
+    return await this.roleController.getAdminRole(id)
   }
 
-  @Mutation(() => AdminRoleResponse)
+  @Mutation(() => AdminRole)
+  @UseMiddleware(authAdmin('admin_role.canCreate'))
   async createAdminRole(
-    @Arg('options', () => NewAdminRoleInput) options: NewAdminRoleInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<AdminRoleResponse> {
-    return await createAdminRole(options, adminUser, context)
+    @Arg('options', () => NewAdminRoleInput) options: NewAdminRoleInput
+  ): Promise<AdminRole> {
+    return await this.roleController.createAdminRole(options)
   }
 
-  @Mutation(() => AdminRoleResponse)
+  @Mutation(() => AdminRole)
+  @UseMiddleware(authAdmin('admin_role.canEdit'))
   async editAdminRole(
-    @Arg('id', () => Int) id: number,
-    @Arg('options', () => NewAdminRoleInput) options: NewAdminRoleInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<AdminRoleResponse> {
-    return await editAdminRole(id, options, adminUser, context)
+    @Arg('id', () => String) id: string,
+    @Arg('options', () => NewAdminRoleInput) options: NewAdminRoleInput
+  ): Promise<AdminRole> {
+    return await this.roleController.updateAdminRole(id, options)
   }
 
-  @Mutation(() => DefaultResponse)
-  async deleteAdminRole(
-    @Arg('id', () => Int) id: number,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await deleteAdminRole(id, adminUser, context)
+  @Mutation(() => AdminRole)
+  @UseMiddleware(authAdmin('admin_role.canDelete'))
+  async deleteAdminRole(@Arg('id', () => String) id: string): Promise<AdminRole> {
+    return await this.roleController.deleteAdminRole(id)
   }
 }

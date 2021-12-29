@@ -3,7 +3,6 @@ import { AdminRoleListResponse } from './adminRole/AdminRoleListResponse'
 import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { BiolinkClicksResponse } from './common/BiolinkClicksResponse'
-import { BiolinkChartResponse } from './common/BiolinkChartResponse'
 import { BiolinkChartValue } from './analytics/BiolinkChartValue'
 import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
 import { EarningChartResponse } from './analytics/EarningChartResponse'
@@ -120,7 +119,6 @@ export {
   CategoryEdge,
   Cursor,
   CategoryResponse,
-  BiolinkChartResponse,
   BiolinkChartValue,
   CodeConnection,
   CodeEdge,

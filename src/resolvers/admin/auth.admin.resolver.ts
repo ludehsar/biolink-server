@@ -1,37 +1,18 @@
-import { LoginInput, EmailInput } from '../../input-types'
-import { Query, Mutation, Arg, Ctx, Resolver } from 'type-graphql'
+import { Mutation, Arg, Ctx, Resolver } from 'type-graphql'
 
-import { CurrentAdmin } from '../../decorators'
-import { User } from '../../entities'
-import { UserResponse, DefaultResponse } from '../../object-types'
-import { loginAdmin, sendForgotPasswordEmail, logoutUser } from '../../services'
+import { UserWithTokens } from '../../object-types'
 import { MyContext } from '../../types'
+import { AuthController } from '../../controllers'
+import { LoginInput } from '../../input-types'
 
 @Resolver()
 export class AuthAdminResolver {
-  @Query(() => User, { nullable: true })
-  me(@CurrentAdmin() user: User): User | null {
-    return user
-  }
-
-  @Mutation(() => UserResponse)
-  async login(
+  constructor(private readonly authController: AuthController) {}
+  @Mutation(() => UserWithTokens)
+  async loginAdmin(
     @Arg('options') options: LoginInput,
     @Ctx() context: MyContext
-  ): Promise<UserResponse> {
-    return await loginAdmin(options, context)
-  }
-
-  @Mutation(() => DefaultResponse)
-  async sendForgotPasswordEmail(
-    @Arg('options') options: EmailInput,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await sendForgotPasswordEmail(options, context)
-  }
-
-  @Mutation(() => DefaultResponse)
-  async logout(@Ctx() context: MyContext, @CurrentAdmin() user: User): Promise<DefaultResponse> {
-    return await logoutUser(context, user)
+  ): Promise<UserWithTokens> {
+    return await this.authController.loginAdmin(options, context)
   }
 }

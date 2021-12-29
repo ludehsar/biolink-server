@@ -1,21 +1,22 @@
 import { Arg, Ctx, Query, Resolver, UseMiddleware } from 'type-graphql'
 
-import { BiolinkClicksResponse, BiolinkChartResponse, LinkClicksResponse } from '../../object-types'
+import { BiolinkClicksResponse, LinkClicksResponse } from '../../object-types'
 import { MyContext } from '../../types'
 import { authUser } from '../../middlewares'
 import { TrackingController } from '../../controllers'
 import { ConnectionArgs } from '../../input-types'
+import { DailyClickChartResponse } from '../../object-types/common/DailyClickChartResponse'
 
 @Resolver()
 export class AnalyticsResolver {
   constructor(private readonly trackingController: TrackingController) {}
 
-  @Query(() => BiolinkChartResponse)
+  @Query(() => DailyClickChartResponse)
   @UseMiddleware(authUser)
   async getBiolinkChartData(
     @Arg('id', { defaultValue: 'Biolink ID' }) id: string,
     @Ctx() context: MyContext
-  ): Promise<BiolinkChartResponse> {
+  ): Promise<DailyClickChartResponse> {
     return await this.trackingController.getBiolinkChartData(id, context)
   }
 
