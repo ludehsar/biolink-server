@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express'
 import { Service } from 'typedi'
 import { Brackets, Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
@@ -7,6 +8,8 @@ import { BlacklistType } from '../enums'
 import { BlackList } from '../entities'
 import { ConnectionArgs } from '../input-types'
 import { PaginatedBlackListResponse } from '../object-types/common/PaginatedBlackListResponse'
+import { ErrorCode } from '../types'
+import { BlackListUpdateBody } from '../interfaces/BlackListUpdateBody'
 
 @Service()
 export class BlackListService {
@@ -32,7 +35,73 @@ export class BlackListService {
   }
 
   /**
-   * Get all categoris
+   * Create black list
+   * @param {string} updateBody
+   * @returns {Promise<BlackList>}
+   */
+  async createBlackList(updateBody: BlackListUpdateBody): Promise<BlackList> {
+    let blacklist = await this.blackListRepository.create().save()
+
+    blacklist = await this.updateBlacklistById(blacklist.id, updateBody)
+
+    return blacklist
+  }
+
+  /**
+   * Update black list by id
+   * @param {string} blackListId
+   * @param {string} updateBody
+   * @returns {Promise<BlackList>}
+   */
+  async updateBlacklistById(
+    blackListId: string,
+    updateBody: BlackListUpdateBody
+  ): Promise<BlackList> {
+    const blacklist = await this.getBlackListById(blackListId)
+
+    if (updateBody.blacklistType !== undefined) blacklist.blacklistType = updateBody.blacklistType
+    if (updateBody.keyword !== undefined) blacklist.keyword = updateBody.keyword
+    if (updateBody.reason !== undefined) blacklist.reason = updateBody.reason
+
+    try {
+      await blacklist.save()
+    } catch (err: any) {
+      throw new ApolloError(err.message, ErrorCode.DATABASE_ERROR)
+    }
+
+    return blacklist
+  }
+
+  /**
+   * Soft remove black list by id
+   * @param {string} blackListId
+   * @returns {Promise<BlackList>}
+   */
+  async softRemoveBlackListById(blackListId: string): Promise<BlackList> {
+    const blacklist = await this.getBlackListById(blackListId)
+
+    await blacklist.softRemove()
+
+    return blacklist
+  }
+
+  /**
+   * Get black list
+   * @param {string} blackListId
+   * @returns {Promise<BlackList>}
+   */
+  async getBlackListById(blackListId: string): Promise<BlackList> {
+    const blacklist = await this.blackListRepository.findOne(blackListId)
+
+    if (!blacklist) {
+      throw new ApolloError('Black list not found', ErrorCode.BLACKLIST_NOT_FOUND)
+    }
+
+    return blacklist
+  }
+
+  /**
+   * Get all black lists
    * @param {BlacklistType} blacklistType
    * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedUserLogResponse>}
