@@ -122,7 +122,7 @@ export class LinkService {
   async getAllSocialLinksByBiolinkId(
     biolinkId: string,
     options: ConnectionArgs,
-    returnForPage = true
+    returnForPage = false
   ): Promise<PaginatedLinkResponse> {
     const queryBuilder = this.linkRepository
       .createQueryBuilder('link')

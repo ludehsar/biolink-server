@@ -2,7 +2,7 @@ export default [
   'amazon_prime',
   'amazon',
   'blogger',
-  'comments',
+  // 'comments',
   'delicious',
   'deviantart',
   'email',
