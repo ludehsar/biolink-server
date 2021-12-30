@@ -36,7 +36,7 @@ export class BlackListService {
 
   /**
    * Create black list
-   * @param {string} updateBody
+   * @param {BlackListUpdateBody} updateBody
    * @returns {Promise<BlackList>}
    */
   async createBlackList(updateBody: BlackListUpdateBody): Promise<BlackList> {
@@ -50,7 +50,7 @@ export class BlackListService {
   /**
    * Update black list by id
    * @param {string} blackListId
-   * @param {string} updateBody
+   * @param {BlackListUpdateBody} updateBody
    * @returns {Promise<BlackList>}
    */
   async updateBlacklistById(
