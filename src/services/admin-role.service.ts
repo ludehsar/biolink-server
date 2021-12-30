@@ -42,6 +42,8 @@ export class AdminRoleService {
     if (updateBody.roleName !== undefined) role.roleName = updateBody.roleName
     if (updateBody.roleSettings !== undefined) role.roleSettings = updateBody.roleSettings
 
+    await role.save()
+
     return role
   }
 
