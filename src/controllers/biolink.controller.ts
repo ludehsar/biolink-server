@@ -4,6 +4,7 @@ import { Service } from 'typedi'
 import axios from 'axios'
 
 import {
+  BiolinkAdminInput,
   BrandingInput,
   ConnectionArgs,
   ContactButtonInput,
@@ -34,11 +35,13 @@ import { TrackingService } from '../services/tracking.service'
 import { linktreeImportHandler } from '../utilities'
 import { LinkController } from '../controllers'
 import { LinkService } from '../services/link.service'
+import { UserService } from '../services/user.service'
 
 @Service()
 export class BiolinkController {
   constructor(
     private readonly biolinkService: BiolinkService,
+    private readonly userService: UserService,
     private readonly blacklistService: BlackListService,
     private readonly categoryService: CategoryService,
     private readonly planService: PlanService,
@@ -47,6 +50,176 @@ export class BiolinkController {
     private readonly linkController: LinkController,
     private readonly linkService: LinkService
   ) {}
+
+  async getAllBiolinks(options: ConnectionArgs): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkService.getAllBiolinks(options)
+  }
+
+  async getBiolinkByAdmins(biolinkId: string): Promise<Biolink> {
+    const biolink = await this.biolinkService.getBiolinkById(biolinkId)
+
+    return biolink
+  }
+
+  async deleteBiolinkByAdmins(biolinkId: string): Promise<Biolink> {
+    const biolink = await this.biolinkService.softDeleteBiolinkById(biolinkId)
+
+    return biolink
+  }
+
+  async createBiolinkByAdmins(input: BiolinkAdminInput): Promise<Biolink> {
+    let category = undefined
+    if (input.categoryId) {
+      category = await this.categoryService.getCategoryByCategoryId(input.categoryId)
+    }
+
+    let user = undefined
+    if (input.userId) {
+      user = await this.userService.getUserById(input.userId)
+    }
+
+    let usernameDoc = undefined
+    if (input.username) {
+      usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username)
+    }
+
+    const biolink = await this.biolinkService.createBiolink({
+      bio: input.bio,
+      category,
+      changedUsername: input.changedUsername,
+      city: input.city,
+      country: input.country,
+      coverPhoto: input.coverPhoto,
+      displayName: input.displayName,
+      featured: input.featured,
+      latitude: input.latitude,
+      longitude: input.longitude,
+      profilePhoto: input.profilePhoto,
+      settings: {
+        addedToDirectory: input.addedToDirectory,
+        blockSearchEngineIndexing: input.blockSearchEngineIndexing,
+        customBrandingName: input.customBrandingName,
+        customBrandingUrl: input.customBrandingUrl,
+        directoryBio: input.directoryBio,
+        email: input.email,
+        emailCaptureId: input.emailCaptureId,
+        enableColoredContactButtons: input.enableColoredContactButtons,
+        enableColoredSocialMediaIcons: input.enableColoredSocialMediaIcons,
+        enableCustomBranding: input.enableCustomBranding,
+        enableDarkMode: input.enableDarkMode,
+        enableEmailCapture: input.enableEmailCapture,
+        enableFacebookPixel: input.enableFacebookPixel,
+        enableGoogleAnalytics: input.enableGoogleAnalytics,
+        enablePasswordProtection: input.enablePasswordProtection,
+        enableSensitiveContentWarning: input.enableSensitiveContentWarning,
+        enableUtmParameters: input.enableUtmParameters,
+        facebookPixelId: input.facebookPixelId,
+        googleAnalyticsCode: input.googleAnalyticsCode,
+        metaDescription: input.metaDescription,
+        opengraphImageUrl: input.opengraphImageUrl,
+        pageTitle: input.pageTitle,
+        password: input.password,
+        payoneerLink: input.payoneerLink,
+        paypalLink: input.paypalLink,
+        phone: input.phone,
+        removeDefaultBranding: input.removeDefaultBranding,
+        showEmail: input.showEmail,
+        showPhone: input.showPhone,
+        socialAccountStyleType: input.socialAccountStyleType,
+        utmCampaign: input.utmCampaign,
+        utmMedium: input.utmMedium,
+        utmSource: input.utmSource,
+        venmoLink: input.venmoLink,
+      },
+      state: input.state,
+      user,
+      username: usernameDoc,
+      verificationStatus: input.verificationStatus,
+      verifiedEmail: input.verifiedEmail,
+      verifiedGovernmentId: input.verifiedGovernmentId,
+      verifiedPhoneNumber: input.verifiedPhoneNumber,
+      verifiedWorkEmail: input.verifiedWorkEmail,
+    })
+
+    return biolink
+  }
+
+  async updateBiolinkByAdmins(biolinkId: string, input: BiolinkAdminInput): Promise<Biolink> {
+    let category = undefined
+    if (input.categoryId) {
+      category = await this.categoryService.getCategoryByCategoryId(input.categoryId)
+    }
+
+    let user = undefined
+    if (input.userId) {
+      user = await this.userService.getUserById(input.userId)
+    }
+
+    let usernameDoc = undefined
+    if (input.username) {
+      usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username)
+    }
+
+    const biolink = await this.biolinkService.updateBiolinkById(biolinkId, {
+      bio: input.bio,
+      category,
+      changedUsername: input.changedUsername,
+      city: input.city,
+      country: input.country,
+      coverPhoto: input.coverPhoto,
+      displayName: input.displayName,
+      featured: input.featured,
+      latitude: input.latitude,
+      longitude: input.longitude,
+      profilePhoto: input.profilePhoto,
+      settings: {
+        addedToDirectory: input.addedToDirectory,
+        blockSearchEngineIndexing: input.blockSearchEngineIndexing,
+        customBrandingName: input.customBrandingName,
+        customBrandingUrl: input.customBrandingUrl,
+        directoryBio: input.directoryBio,
+        email: input.email,
+        emailCaptureId: input.emailCaptureId,
+        enableColoredContactButtons: input.enableColoredContactButtons,
+        enableColoredSocialMediaIcons: input.enableColoredSocialMediaIcons,
+        enableCustomBranding: input.enableCustomBranding,
+        enableDarkMode: input.enableDarkMode,
+        enableEmailCapture: input.enableEmailCapture,
+        enableFacebookPixel: input.enableFacebookPixel,
+        enableGoogleAnalytics: input.enableGoogleAnalytics,
+        enablePasswordProtection: input.enablePasswordProtection,
+        enableSensitiveContentWarning: input.enableSensitiveContentWarning,
+        enableUtmParameters: input.enableUtmParameters,
+        facebookPixelId: input.facebookPixelId,
+        googleAnalyticsCode: input.googleAnalyticsCode,
+        metaDescription: input.metaDescription,
+        opengraphImageUrl: input.opengraphImageUrl,
+        pageTitle: input.pageTitle,
+        password: input.password,
+        payoneerLink: input.payoneerLink,
+        paypalLink: input.paypalLink,
+        phone: input.phone,
+        removeDefaultBranding: input.removeDefaultBranding,
+        showEmail: input.showEmail,
+        showPhone: input.showPhone,
+        socialAccountStyleType: input.socialAccountStyleType,
+        utmCampaign: input.utmCampaign,
+        utmMedium: input.utmMedium,
+        utmSource: input.utmSource,
+        venmoLink: input.venmoLink,
+      },
+      state: input.state,
+      user,
+      username: usernameDoc,
+      verificationStatus: input.verificationStatus,
+      verifiedEmail: input.verifiedEmail,
+      verifiedGovernmentId: input.verifiedGovernmentId,
+      verifiedPhoneNumber: input.verifiedPhoneNumber,
+      verifiedWorkEmail: input.verifiedWorkEmail,
+    })
+
+    return biolink
+  }
 
   async createBiolink(biolinkInput: NewBiolinkInput, context: MyContext): Promise<Biolink> {
     if (await this.usernameService.isUsernameTaken(biolinkInput.username)) {

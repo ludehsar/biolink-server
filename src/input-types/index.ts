@@ -4,6 +4,7 @@ import { RoleSettingsInput } from './adminRole/RoleSettingsInput'
 // Analytics
 import { AnalyticsInput } from './analytics/AnalyticsInput'
 // Biolink
+import { BiolinkAdminInput } from './biolink/BiolinkAdminInput'
 import { BrandingInput } from './biolink/BrandingInput'
 import { ContactButtonInput } from './biolink/ContactButtonInput'
 import { DarkModeInput } from './biolink/DarkModeInput'
@@ -81,6 +82,7 @@ export {
   // Analytics
   AnalyticsInput,
   // Biolink
+  BiolinkAdminInput,
   BrandingInput,
   ContactButtonInput,
   DarkModeInput,

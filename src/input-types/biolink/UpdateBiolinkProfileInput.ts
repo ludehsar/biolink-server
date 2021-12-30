@@ -1,5 +1,5 @@
 import { InputType, Field } from 'type-graphql'
-import { IsInt, IsOptional } from 'class-validator'
+import { IsOptional } from 'class-validator'
 
 @InputType()
 export class UpdateBiolinkProfileInput {
@@ -24,7 +24,6 @@ export class UpdateBiolinkProfileInput {
   bio?: string
 
   @Field({ nullable: true })
-  @IsInt()
   @IsOptional()
-  categoryId?: number
+  categoryId?: string
 }

@@ -1,62 +1,54 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 
-import { MyContext } from '../../types'
-import { CurrentAdmin } from '../../decorators'
-import { User } from '../../entities'
-import { ConnectionArgsOld, UpdateBiolinkProfileInput } from '../../input-types'
-import { BiolinkConnection, BiolinkResponse, DefaultResponse } from '../../object-types'
-import {
-  getBiolink,
-  getBiolinksPaginated,
-  getDirectoriesPaginated,
-  removeBiolink,
-  updateBiolink,
-} from '../../services'
+import { Biolink } from '../../entities'
+import { BiolinkAdminInput, ConnectionArgs } from '../../input-types'
+import { BiolinkController } from '../../controllers'
+import { PaginatedBiolinkResponse } from '../../object-types/common/PaginatedBiolinkResponse'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class BiolinkAdminResolver {
-  @Query(() => BiolinkConnection, { nullable: true })
-  async getAllBiolinks(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<BiolinkConnection> {
-    return await getBiolinksPaginated(options, adminUser, context)
+  constructor(private readonly biolinkController: BiolinkController) {}
+
+  @Query(() => PaginatedBiolinkResponse, { nullable: true })
+  @UseMiddleware(authAdmin('biolink.canShowList'))
+  async getAllBiolinks(@Arg('options') options: ConnectionArgs): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkController.getAllBiolinks(options)
   }
 
-  @Query(() => BiolinkConnection, { nullable: true })
+  @Query(() => PaginatedBiolinkResponse, { nullable: true })
+  @UseMiddleware(authAdmin('biolink.canShowList'))
   async getAllDirectories(
-    @Arg('options') options: ConnectionArgsOld,
-    @Arg('categoryIds', () => [Int], { nullable: true }) categoryIds: number[]
-  ): Promise<BiolinkConnection> {
-    return await getDirectoriesPaginated(categoryIds, options)
+    @Arg('options') options: ConnectionArgs,
+    @Arg('categoryIds', () => [String], { nullable: true }) categoryIds: string[]
+  ): Promise<PaginatedBiolinkResponse> {
+    return await this.biolinkController.getAllDirectories(options, categoryIds)
   }
 
-  @Query(() => BiolinkResponse, { nullable: true })
-  async getBiolink(
-    @Arg('id') id: string,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<BiolinkResponse> {
-    return await getBiolink(id, adminUser, context)
+  @Query(() => Biolink, { nullable: true })
+  @UseMiddleware(authAdmin('biolink.canShow'))
+  async getBiolink(@Arg('id') id: string): Promise<Biolink> {
+    return await this.biolinkController.getBiolinkByAdmins(id)
   }
 
-  @Mutation(() => BiolinkResponse)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authAdmin('biolink.canCreate'))
+  async createBiolink(@Arg('options') options: BiolinkAdminInput): Promise<Biolink> {
+    return await this.biolinkController.createBiolinkByAdmins(options)
+  }
+
+  @Mutation(() => Biolink)
+  @UseMiddleware(authAdmin('biolink.canEdit'))
   async editBiolink(
     @Arg('id', { description: 'Biolink ID' }) id: string,
-    @Arg('options') options: UpdateBiolinkProfileInput,
-    @Ctx() context: MyContext,
-    @CurrentAdmin() adminUser: User
-  ): Promise<BiolinkResponse> {
-    return await updateBiolink(adminUser, id, options, context)
+    @Arg('options') options: BiolinkAdminInput
+  ): Promise<Biolink> {
+    return await this.biolinkController.updateBiolinkByAdmins(id, options)
   }
 
-  @Mutation(() => DefaultResponse)
-  async removeBiolink(
-    @Arg('id', { description: 'Biolink ID' }) id: string,
-    @Ctx() context: MyContext,
-    @CurrentAdmin() adminUser: User
-  ): Promise<DefaultResponse> {
-    return await removeBiolink(id, context, adminUser)
+  @Mutation(() => Biolink)
+  @UseMiddleware(authAdmin('biolink.canDelete'))
+  async removeBiolink(@Arg('id', { description: 'Biolink ID' }) id: string): Promise<Biolink> {
+    return await this.biolinkController.deleteBiolinkByAdmins(id)
   }
 }

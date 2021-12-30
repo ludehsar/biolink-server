@@ -21,6 +21,33 @@ export class BiolinkService {
   ) {}
 
   /**
+   * Get all biolinks
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedBiolinkResponse>}
+   */
+  async getAllBiolinks(options: ConnectionArgs): Promise<PaginatedBiolinkResponse> {
+    const queryBuilder = this.biolinkRepository
+      .createQueryBuilder('biolink')
+      .leftJoinAndSelect('biolink.category', 'category')
+      .leftJoinAndSelect('biolink.username', 'username')
+      .andWhere(this.biolinksPaginatedResultsSearchBracket(options.query))
+
+    const paginator = buildPaginator({
+      entity: Biolink,
+      alias: 'biolink',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
    * Biolinks paginated results search criteria
    * @returns {Promise<Brackets>}
    */

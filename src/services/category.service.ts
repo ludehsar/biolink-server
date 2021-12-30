@@ -17,10 +17,10 @@ export class CategoryService {
 
   /**
    * Gets category by categoryId
-   * @param {number} categoryId
+   * @param {string} categoryId
    * @returns {Promise<Category>}
    */
-  async getCategoryByCategoryId(categoryId: number): Promise<Category> {
+  async getCategoryByCategoryId(categoryId: string): Promise<Category> {
     const category = await this.categoryRepository.findOne(categoryId)
 
     if (!category) {
