@@ -17,21 +17,11 @@ export class FollowController {
 
   async followBiolink(biolinkId: string, context: MyContext): Promise<Follow> {
     const biolink = await this.biolinkService.getBiolinkById(biolinkId)
-
-    if (biolink.userId !== (context.user as User).id) {
-      throw new ForbiddenError('Forbidden')
-    }
-
     return await this.followService.findOneOrFollow(context.user as User, biolink)
   }
 
   async unfollowBiolink(biolinkId: string, context: MyContext): Promise<Follow> {
     const biolink = await this.biolinkService.getBiolinkById(biolinkId)
-
-    if (biolink.userId !== (context.user as User).id) {
-      throw new ForbiddenError('Forbidden')
-    }
-
     return await this.followService.unfollow(context.user as User, biolink)
   }
 

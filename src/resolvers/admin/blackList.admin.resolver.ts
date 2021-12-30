@@ -1,50 +1,45 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, NewBlackListInput } from '../../input-types'
-import { BlackListConnection, BlackListResponse } from '../../object-types'
-import {
-  addBlackList,
-  editBlackList,
-  getBlackList,
-  getBlackListedBadWordsPaginated,
-  getBlackListedEmailsPaginated,
-  getBlackListedUsernamesPaginated,
-} from '../../services'
+import { Arg, Ctx, Int, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, NewBlackListInput } from '../../input-types'
+import { BlackListResponse } from '../../object-types'
+import { addBlackList, editBlackList, getBlackList } from '../../services'
 import { User } from '../../entities'
 import { CurrentAdmin } from '../../decorators'
 import { MyContext } from '../../types'
+import { BlackListController } from '../../controllers'
+import { PaginatedBlackListResponse } from '../../object-types/common/PaginatedBlackListResponse'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class BlackListAdminResolver {
-  @Query(() => BlackListConnection, { nullable: true })
+  constructor(private readonly blacklistController: BlackListController) {}
+
+  @Query(() => PaginatedBlackListResponse, { nullable: true })
+  @UseMiddleware(authAdmin('blacklist.canShowList'))
   async getAllBlackListedBadWords(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<BlackListConnection> {
-    return await getBlackListedBadWordsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedBlackListResponse> {
+    return await this.blacklistController.getAllBadWords(options)
   }
 
-  @Query(() => BlackListConnection, { nullable: true })
+  @Query(() => PaginatedBlackListResponse, { nullable: true })
+  @UseMiddleware(authAdmin('blacklist.canShowList'))
   async getAllBlackListedEmails(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<BlackListConnection> {
-    return await getBlackListedEmailsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedBlackListResponse> {
+    return await this.blacklistController.getAllBlacklistedEmails(options)
   }
 
-  @Query(() => BlackListConnection, { nullable: true })
+  @Query(() => PaginatedBlackListResponse, { nullable: true })
+  @UseMiddleware(authAdmin('blacklist.canShowList'))
   async getAllBlackListedUsernames(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<BlackListConnection> {
-    return await getBlackListedUsernamesPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedBlackListResponse> {
+    return await this.blacklistController.getAllBlacklistedUsernames(options)
   }
 
   @Query(() => BlackListResponse, { nullable: true })
   async getBlackList(
-    @Arg('blackListId', () => Int) blackListId: number,
+    @Arg('blackListId') blackListId: number,
     @CurrentAdmin() adminUser: User,
     @Ctx() context: MyContext
   ): Promise<BlackListResponse> {

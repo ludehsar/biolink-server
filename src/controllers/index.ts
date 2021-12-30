@@ -1,6 +1,7 @@
 import { AdminRoleController } from './admin-role.controller'
 import { AuthController } from './auth.controller'
 import { BiolinkController } from './biolink.controller'
+import { BlackListController } from './black-list.controller'
 import { CategoryController } from './category.controller'
 import { ChatRoomController } from './chatRoom.controller'
 import { FollowController } from './follow.controller'
@@ -20,6 +21,7 @@ export {
   AdminRoleController,
   AuthController,
   BiolinkController,
+  BlackListController,
   CategoryController,
   ChatRoomController,
   FollowController,
