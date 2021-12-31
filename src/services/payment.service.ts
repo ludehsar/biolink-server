@@ -23,6 +23,29 @@ export class PaymentService {
   ) {}
 
   /**
+   * Get all payments
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedPaymentResponse>}
+   */
+  async getAllPayments(options: ConnectionArgs): Promise<PaginatedPaymentResponse> {
+    const queryBuilder = this.paymentRepository.createQueryBuilder('payment')
+
+    const paginator = buildPaginator({
+      entity: Payment,
+      alias: 'payment',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
    * Get paypal client
    * @returns {any}
    */

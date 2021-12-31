@@ -11,6 +11,14 @@ import { ConnectionArgs } from '../input-types'
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
+  async getAllPayments(options: ConnectionArgs): Promise<PaginatedPaymentResponse> {
+    return await this.paymentService.getAllPayments(options)
+  }
+
+  async getPaymentDetailsByAdmins(paymentId: string): Promise<Payment> {
+    return await this.paymentService.getPaymentByPaymentId(paymentId)
+  }
+
   async getAllUserPayments(
     options: ConnectionArgs,
     context: MyContext

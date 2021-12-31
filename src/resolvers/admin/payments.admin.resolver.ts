@@ -1,28 +1,23 @@
-import { Arg, Ctx, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld } from '../../input-types'
-import { PaymentConnection, PaymentResponse } from '../../object-types'
-import { getPayment, getStripePaymentsPaginated } from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs } from '../../input-types'
+import { Payment } from '../../entities'
+import { PaginatedPaymentResponse } from '../../object-types/common/PaginatedPaymentResponse'
+import { PaymentController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class PaymentsAdminResolver {
-  @Query(() => PaymentConnection, { nullable: true })
-  async getAllStripePayments(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<PaymentConnection> {
-    return await getStripePaymentsPaginated(options, adminUser, context)
+  constructor(private readonly paymentController: PaymentController) {}
+
+  @Query(() => PaginatedPaymentResponse, { nullable: true })
+  @UseMiddleware(authAdmin('payment.canShowList'))
+  async getAllPayments(@Arg('options') options: ConnectionArgs): Promise<PaginatedPaymentResponse> {
+    return await this.paymentController.getAllPayments(options)
   }
 
-  @Query(() => PaymentResponse, { nullable: true })
-  async getPayment(
-    @Arg('paymentId', () => String) paymentId: number,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<PaymentResponse> {
-    return await getPayment(paymentId, adminUser, context)
+  @Query(() => Payment, { nullable: true })
+  @UseMiddleware(authAdmin('payment.canShow'))
+  async getPayment(@Arg('paymentId', () => String) paymentId: string): Promise<Payment> {
+    return await this.paymentController.getPaymentDetailsByAdmins(paymentId)
   }
 }
