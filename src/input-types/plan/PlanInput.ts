@@ -1,4 +1,6 @@
+import { IsEnum } from 'class-validator'
 import { InputType, Field, Float, Int } from 'type-graphql'
+import { EnabledStatus } from '../../enums'
 
 @InputType()
 export class PlanInput {
@@ -19,6 +21,10 @@ export class PlanInput {
 
   @Field(() => Boolean, { defaultValue: false, nullable: true })
   visibilityStatus?: boolean
+
+  @Field(() => String, { nullable: true })
+  @IsEnum(EnabledStatus)
+  enabledStatus?: EnabledStatus
 
   // Settings
   @Field(() => Int, { nullable: true })
