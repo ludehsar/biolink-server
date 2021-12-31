@@ -1,0 +1,52 @@
+import { AcceptingPaymentType, CaptchaType } from '../enums'
+
+export interface SettingsUpdateBody {
+  header?: string
+  footer?: string
+  biolinkPageHeader?: string
+  biolinkPageFooter?: string
+  enableInvoice?: boolean
+  name?: string
+  address?: string
+  city?: string
+  country?: string
+  zipCode?: string
+  email?: string
+  phone?: string
+  taxType?: string
+  taxId?: string
+  captchaType?: CaptchaType
+  enableCaptchaOnLoginPage?: boolean
+  enableCaptchaOnRegisterPage?: boolean
+  enableCaptchaOnLostPasswordPage?: boolean
+  enableCaptchaOnResendActivationPage?: boolean
+  fromName?: string
+  fromEmail?: string
+  enableFacebookLogin?: boolean
+  branding?: string
+  enableLinkShortenerSystem?: boolean
+  enablePhishtank?: boolean
+  enableGoogleSafeBrowsing?: boolean
+  title?: string
+  defaultLanguage?: string
+  defaultTimezone?: string
+  enableEmailConfirmation?: boolean
+  enableNewUserRegistration?: boolean
+  termsAndConditionsUrl?: string
+  privacyPolicyUrl?: string
+  emailsToBeNotified?: string[]
+  emailOnNewUser?: boolean
+  emailOnNewPayment?: boolean
+  enablePaymentSystem?: boolean
+  enabledAcceptingPaymentType?: AcceptingPaymentType
+  brandName?: string
+  currency?: string
+  enableDiscountOrRedeemableCode?: boolean
+  enableTaxesAndBilling?: boolean
+  enablePaypal?: boolean
+  enableStripe?: boolean
+  youtube?: string
+  facebook?: string
+  twitter?: string
+  instagram?: string
+}

@@ -15,6 +15,7 @@ import { PlanController } from './plan.controller'
 import { ReferralController } from './referral.controller'
 import { ReportController } from './report.controller'
 import { ServiceController } from './service.controller'
+import { SettingsController } from './settings.controller'
 import { SupportController } from './support.controller'
 import { TrackingController } from './tracking.controller'
 import { UserController } from './user.controller'
@@ -37,6 +38,7 @@ export {
   ReferralController,
   ReportController,
   ServiceController,
+  SettingsController,
   SupportController,
   TrackingController,
   UserController,
