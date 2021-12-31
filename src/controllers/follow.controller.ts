@@ -1,4 +1,3 @@
-import { ForbiddenError } from 'apollo-server-errors'
 import { Service } from 'typedi'
 
 import { MyContext } from '../types'
@@ -27,11 +26,6 @@ export class FollowController {
 
   async getFollowingStatus(biolinkId: string, context: MyContext): Promise<boolean> {
     const biolink = await this.biolinkService.getBiolinkById(biolinkId)
-
-    if (biolink.userId !== (context.user as User).id) {
-      throw new ForbiddenError('Forbidden')
-    }
-
     return await this.followService.isUserFollowingBiolink(context.user as User, biolink)
   }
 
