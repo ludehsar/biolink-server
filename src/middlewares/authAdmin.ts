@@ -5,13 +5,13 @@ import { MiddlewareFn } from 'type-graphql'
 
 import { MyContext } from '../types'
 
-export function authAdmin(role: string): MiddlewareFn {
+export function authAdmin(role?: string): MiddlewareFn {
   return async ({ context }, next) => {
     return new Promise((resolve, reject) => {
       passport.authenticate(
         'jwt',
         { session: false },
-        verifyCallback(context as MyContext, role, resolve, reject)
+        verifyCallback(context as MyContext, resolve, reject, role)
       )((context as MyContext).req, (context as MyContext).res, next)
     }).then(() => next())
   }
@@ -20,35 +20,39 @@ export function authAdmin(role: string): MiddlewareFn {
 const verifyCallback =
   (
     context: MyContext,
-    requiredRole: string,
     resolve: (value?: unknown) => void,
-    reject: (reason?: ApolloError) => void
+    reject: (reason?: ApolloError) => void,
+    requiredRole?: string
   ): ((...args: any[]) => any) | undefined =>
   async (err, user: User, info) => {
     if (err || info || !user) {
       return reject(new AuthenticationError('User not authenticated'))
     }
 
-    const [resource, permission] = requiredRole.split('.')
-
     const role = await user.adminRole
 
-    if (role) {
-      const hasPermission =
-        role.roleSettings &&
-        role.roleSettings.find(
-          (parameter) =>
-            parameter.resource === resource &&
-            parameter[
-              permission as 'canShow' | 'canShowList' | 'canCreate' | 'canEdit' | 'canDelete'
-            ] === true
-        )
+    if (requiredRole) {
+      const [resource, permission] = requiredRole.split('.')
 
-      if (hasPermission || role.roleName === 'Administrator') {
-        context.user = user
+      if (role) {
+        const hasPermission =
+          role.roleSettings &&
+          role.roleSettings.find(
+            (parameter) =>
+              parameter.resource === resource &&
+              parameter[
+                permission as 'canShow' | 'canShowList' | 'canCreate' | 'canEdit' | 'canDelete'
+              ] === true
+          )
 
-        return resolve()
+        if (hasPermission || role.roleName === 'Administrator') {
+          context.user = user
+          return resolve()
+        }
       }
+    } else if (role) {
+      context.user = user
+      return resolve()
     }
 
     reject(new ForbiddenError('Forbidden'))

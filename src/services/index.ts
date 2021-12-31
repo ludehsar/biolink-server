@@ -5,9 +5,6 @@ import { editAdminRole } from './adminRole/editAdminRole'
 import { getAdminRole } from './adminRole/getAdminRole'
 import { getAdminRoles } from './adminRole/getAdminRoles'
 // Analytics
-import { getDashboardTotalCounts } from './analytics/getDashboardTotalCounts'
-import { getLast30DaysEarnings } from './analytics/getLast30DaysEarnings'
-import { getUsersAndAdminsCountData } from './analytics/getUsersAndAdminsCountData'
 import { trackBiolinkClicks } from './analytics/trackBiolinkClicks'
 import { trackLinkClicks } from './analytics/trackLinkClicks'
 // Auth
@@ -174,9 +171,6 @@ export {
   getAdminRole,
   getAdminRoles,
   // Analytics
-  getDashboardTotalCounts,
-  getLast30DaysEarnings,
-  getUsersAndAdminsCountData,
   trackBiolinkClicks,
   trackLinkClicks,
   // Auth

@@ -5,6 +5,7 @@ import { BlackListController } from './black-list.controller'
 import { CategoryController } from './category.controller'
 import { CodeController } from './code.controller'
 import { ChatRoomController } from './chatRoom.controller'
+import { DashboardController } from './dashboard.controller'
 import { FollowController } from './follow.controller'
 import { LinkController } from './link.controller'
 import { OrderController } from './order.controller'
@@ -26,6 +27,7 @@ export {
   CategoryController,
   CodeController,
   ChatRoomController,
+  DashboardController,
   FollowController,
   LinkController,
   OrderController,

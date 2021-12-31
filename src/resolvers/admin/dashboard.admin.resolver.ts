@@ -1,37 +1,32 @@
-import { Query, Resolver } from 'type-graphql'
-import { CurrentAdmin } from '../../decorators'
-import { User } from '../../entities'
+import { Query, Resolver, UseMiddleware } from 'type-graphql'
+
 import {
-  DashboardTotalCountsResponse,
+  DashboardTotalCounts,
   EarningChartResponse,
   UsersAdminsCountResponse,
 } from '../../object-types'
-import {
-  getDashboardTotalCounts,
-  getLast30DaysEarnings,
-  getUsersAndAdminsCountData,
-} from '../../services'
+import { DashboardController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class DashboardAdminResolver {
-  @Query(() => DashboardTotalCountsResponse)
-  async getDashboardTotalCounts(
-    @CurrentAdmin() adminUser: User
-  ): Promise<DashboardTotalCountsResponse> {
-    return await getDashboardTotalCounts(adminUser)
+  constructor(private readonly dashboardController: DashboardController) {}
+
+  @Query(() => DashboardTotalCounts)
+  @UseMiddleware(authAdmin())
+  async getDashboardTotalCounts(): Promise<DashboardTotalCounts> {
+    return await this.dashboardController.getDashboardTotalCounts()
   }
 
   @Query(() => EarningChartResponse)
-  async getLast30DaysEarningChartData(
-    @CurrentAdmin() adminUser: User
-  ): Promise<EarningChartResponse> {
-    return await getLast30DaysEarnings(adminUser)
+  @UseMiddleware(authAdmin())
+  async getLast30DaysEarningChartData(): Promise<EarningChartResponse> {
+    return await this.dashboardController.getLast30DaysEarnings()
   }
 
   @Query(() => UsersAdminsCountResponse)
-  async getUsersAndAdminsCountData(
-    @CurrentAdmin() adminUser: User
-  ): Promise<UsersAdminsCountResponse> {
-    return await getUsersAndAdminsCountData(adminUser)
+  @UseMiddleware(authAdmin())
+  async getUsersAndAdminsCountData(): Promise<UsersAdminsCountResponse> {
+    return await this.dashboardController.getUsersAndAdminsCountData()
   }
 }

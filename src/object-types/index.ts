@@ -4,7 +4,7 @@ import { AdminRoleResponse } from './adminRole/AdminRoleResponse'
 // Analytics
 import { BiolinkClicksResponse } from './common/BiolinkClicksResponse'
 import { BiolinkChartValue } from './analytics/BiolinkChartValue'
-import { DashboardTotalCountsResponse } from './analytics/DashboardTotalCountsResponse'
+import { DashboardTotalCounts } from './analytics/DashboardTotalCountsResponse'
 import { EarningChartResponse } from './analytics/EarningChartResponse'
 import { EarningChartValue } from './analytics/EarningChartValue'
 import { SingleBiolinkClickCount } from './common/SingleBiolinkClickCount'
@@ -123,7 +123,7 @@ export {
   CodeConnection,
   CodeEdge,
   CodeResponse,
-  DashboardTotalCountsResponse,
+  DashboardTotalCounts,
   DefaultResponse,
   DirectorySearchResponse,
   EarningChartResponse,
