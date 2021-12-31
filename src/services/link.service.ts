@@ -40,6 +40,34 @@ export class LinkService {
   // }
 
   /**
+   * Get All links by biolink id
+   * @param {string} biolinkId
+   * @param {ConnectionArgs} options
+   * @param {[boolean]} returnForPage
+   * @returns {Promise<PaginatedLinkResponse>}
+   */
+  async getAllLinks(linkType: LinkType, options: ConnectionArgs): Promise<PaginatedLinkResponse> {
+    const queryBuilder = this.linkRepository
+      .createQueryBuilder('link')
+      .where(`link.linkType = :linkType`, { linkType })
+    // .andWhere(this.linksPaginatedResultsSearchBracket(options.query))
+
+    const paginator = buildPaginator({
+      entity: Link,
+      alias: 'link',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
+
+  /**
    * Get all user links
    * @param {string} userId
    * @param {ConnectionArgs} options

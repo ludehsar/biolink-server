@@ -30,6 +30,7 @@ import { ConnectionArgs } from './common/ConnectionArgs'
 import { FileType } from './common/FileType'
 // Links
 import { NewLinkInput } from './links/NewLinkInput'
+import { LinkAdminInput } from './links/LinkAdminInput'
 // Message
 import { NewMessageInput } from './messages/NewMessageInput'
 // Plans
@@ -107,6 +108,7 @@ export {
   FileType,
   ConnectionArgs,
   // Links
+  LinkAdminInput,
   NewLinkInput,
   // Message
   NewMessageInput,

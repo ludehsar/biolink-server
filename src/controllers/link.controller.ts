@@ -5,7 +5,7 @@ import { ErrorCode, MyContext } from '../types'
 import { Link, User } from '../entities'
 import { LinkService } from '../services/link.service'
 import { BiolinkService } from '../services/biolink.service'
-import { ConnectionArgs, NewLinkInput } from '../input-types'
+import { ConnectionArgs, LinkAdminInput, NewLinkInput } from '../input-types'
 import { PaginatedLinkResponse } from '../object-types/common/PaginatedLinkResponse'
 import { UsernameService } from '../services/username.service'
 import { appConfig } from '../config'
@@ -16,6 +16,7 @@ import { NewSocialLinkInput } from '../input-types/links/NewSocialLinkInput'
 import { PlanService } from '../services/plan.service'
 import { isMalicious } from '../utilities'
 import { TrackingService } from '../services/tracking.service'
+import { UserService } from '../services/user.service'
 
 @Service()
 export class LinkController {
@@ -24,8 +25,95 @@ export class LinkController {
     private readonly biolinkService: BiolinkService,
     private readonly planService: PlanService,
     private readonly trackingService: TrackingService,
-    private readonly usernameService: UsernameService
+    private readonly usernameService: UsernameService,
+    private readonly userService: UserService
   ) {}
+
+  async getAllLinks(options: ConnectionArgs): Promise<PaginatedLinkResponse> {
+    return await this.linkService.getAllLinks(LinkType.Link, options)
+  }
+
+  async getAllEmbeds(options: ConnectionArgs): Promise<PaginatedLinkResponse> {
+    return await this.linkService.getAllLinks(LinkType.Embed, options)
+  }
+
+  async getAllSocialLinks(options: ConnectionArgs): Promise<PaginatedLinkResponse> {
+    return await this.linkService.getAllLinks(LinkType.Social, options)
+  }
+
+  async getLinkByAdmins(linkId: string): Promise<Link> {
+    return await this.linkService.getLinkById(linkId)
+  }
+
+  async createLinkByAdmins(input: LinkAdminInput): Promise<Link> {
+    let biolink = undefined
+    if (input.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(input.biolinkId)
+    }
+
+    let user = undefined
+    if (input.userId) {
+      user = await this.userService.getUserById(input.userId)
+    }
+
+    return await this.linkService.createLink({
+      biolink,
+      enablePasswordProtection: input.enablePasswordProtection,
+      endDate: input.endDate,
+      featured: input.featured,
+      iconColorful: appConfig.BACKEND_URL + `/static/socialIcons/${input.platform}.png`,
+      iconMinimal: appConfig.BACKEND_URL + `/static/socialIcons/minimals/${input.platform}.png`,
+      linkColor: input.linkColor,
+      linkImage: input.linkImage,
+      linkTitle: input.linkTitle,
+      linkType: input.linkType,
+      note: input.note,
+      order: 0,
+      password: input.password,
+      platform: input.platform,
+      shortenedUrl: await this.linkService.generateNewShortUrl(),
+      startDate: input.startDate,
+      url: input.url,
+      user,
+    })
+  }
+
+  async updateLinksByAdmins(linkId: string, input: LinkAdminInput): Promise<Link> {
+    let biolink = undefined
+    if (input.biolinkId) {
+      biolink = await this.biolinkService.getBiolinkById(input.biolinkId)
+    }
+
+    let user = undefined
+    if (input.userId) {
+      user = await this.userService.getUserById(input.userId)
+    }
+
+    return await this.linkService.updateLinkById(linkId, {
+      biolink,
+      enablePasswordProtection: input.enablePasswordProtection,
+      endDate: input.endDate,
+      featured: input.featured,
+      iconColorful: appConfig.BACKEND_URL + `/static/socialIcons/${input.platform}.png`,
+      iconMinimal: appConfig.BACKEND_URL + `/static/socialIcons/minimals/${input.platform}.png`,
+      linkColor: input.linkColor,
+      linkImage: input.linkImage,
+      linkTitle: input.linkTitle,
+      linkType: input.linkType,
+      note: input.note,
+      order: 0,
+      password: input.password,
+      platform: input.platform,
+      shortenedUrl: await this.linkService.generateNewShortUrl(),
+      startDate: input.startDate,
+      url: input.url,
+      user,
+    })
+  }
+
+  async deleteLinksByAdmins(linkId: string): Promise<Link> {
+    return await this.linkService.softDeleteLinkById(linkId)
+  }
 
   async getAllUserLinks(
     options: ConnectionArgs,
