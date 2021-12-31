@@ -6,5 +6,5 @@ import { InputType, Field } from 'type-graphql'
 export class ReportStatusInput {
   @Field(() => String, { nullable: true })
   @IsNotEmpty()
-  status?: ResolveStatus
+  status!: ResolveStatus
 }

@@ -110,7 +110,11 @@ export class PlanService {
    * @returns {Promise<PaginatedPlanResponse>}
    */
   async getAllPlans(options: ConnectionArgs): Promise<PaginatedPlanResponse> {
-    const queryBuilder = this.planRepository.createQueryBuilder('plan')
+    const queryBuilder = this.planRepository
+      .createQueryBuilder('plan')
+      .where(`LOWER(plan.name) like :query`, {
+        query: `%${options.query.toLowerCase()}%`,
+      })
 
     const paginator = buildPaginator({
       entity: Plan,

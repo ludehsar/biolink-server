@@ -1,62 +1,50 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, ReportStatusInput } from '../../input-types'
-import { ReportConnection, ReportResponse } from '../../object-types'
-import {
-  changeReportStatus,
-  getDismissedReportsPaginated,
-  getPendingReportsPaginated,
-  getReport,
-  getResolvedReportsPaginated,
-} from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, ReportStatusInput } from '../../input-types'
+import { Report } from '../../entities'
+import { ReportController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
+import { PaginatedReportResponse } from '../../object-types/common/PaginatedReportResponse'
 
 @Resolver()
 export class ReportAdminResolver {
-  @Query(() => ReportConnection, { nullable: true })
+  constructor(private readonly reportController: ReportController) {}
+
+  @Query(() => PaginatedReportResponse, { nullable: true })
+  @UseMiddleware(authAdmin('report.canShowList'))
   async getAllPendingReports(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<ReportConnection> {
-    return await getPendingReportsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedReportResponse> {
+    return await this.reportController.getAllPendingReports(options)
   }
 
-  @Query(() => ReportConnection, { nullable: true })
+  @Query(() => PaginatedReportResponse, { nullable: true })
+  @UseMiddleware(authAdmin('report.canShowList'))
   async getAllResolvedReports(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<ReportConnection> {
-    return await getResolvedReportsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedReportResponse> {
+    return await this.reportController.getAllResolvedReports(options)
   }
 
-  @Query(() => ReportConnection, { nullable: true })
+  @Query(() => PaginatedReportResponse, { nullable: true })
+  @UseMiddleware(authAdmin('report.canShowList'))
   async getAllDismissedReports(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<ReportConnection> {
-    return await getDismissedReportsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedReportResponse> {
+    return await this.reportController.getAllDismissedReports(options)
   }
 
-  @Query(() => ReportResponse, { nullable: true })
-  async getReport(
-    @Arg('reportId', () => String) reportId: string,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<ReportResponse> {
-    return await getReport(reportId, adminUser, context)
+  @Query(() => Report, { nullable: true })
+  @UseMiddleware(authAdmin('report.canShow'))
+  async getReport(@Arg('reportId', () => String) reportId: string): Promise<Report> {
+    return await this.reportController.getReport(reportId)
   }
 
-  @Mutation(() => ReportResponse, { nullable: true })
+  @Mutation(() => Report, { nullable: true })
+  @UseMiddleware(authAdmin('report.canEdit'))
   async changeReportStatus(
     @Arg('reportId', () => String) reportId: string,
-    @Arg('options', () => ReportStatusInput) options: ReportStatusInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<ReportResponse> {
-    return await changeReportStatus(reportId, options, adminUser, context)
+    @Arg('options', () => ReportStatusInput) options: ReportStatusInput
+  ): Promise<Report> {
+    return await this.reportController.changeReportStatus(reportId, options)
   }
 }
