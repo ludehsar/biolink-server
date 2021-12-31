@@ -1,62 +1,50 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, NewCodeInput } from '../../input-types'
-import { CodeConnection, CodeResponse } from '../../object-types'
-import {
-  addCode,
-  editCode,
-  getCode,
-  getDiscountCodesPaginated,
-  getReferralCodesPaginated,
-} from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, NewCodeInput } from '../../input-types'
+import { Code } from '../../entities'
+import { CodeController } from '../../controllers'
+import { PaginatedCodeResponse } from '../../object-types/common/PaginatedCodeResponse'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class CodeAdminResolver {
-  @Query(() => CodeConnection, { nullable: true })
-  async getAllDiscounts(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<CodeConnection> {
-    return await getDiscountCodesPaginated(options, adminUser, context)
+  constructor(private readonly codeController: CodeController) {}
+
+  @Query(() => PaginatedCodeResponse, { nullable: true })
+  @UseMiddleware(authAdmin('code.canShowList'))
+  async getAllDiscounts(@Arg('options') options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+    return await this.codeController.getAllDiscountCodes(options)
   }
 
-  @Query(() => CodeConnection, { nullable: true })
-  async getAllReferrals(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<CodeConnection> {
-    return await getReferralCodesPaginated(options, adminUser, context)
+  @Query(() => PaginatedCodeResponse, { nullable: true })
+  @UseMiddleware(authAdmin('code.canShowList'))
+  async getAllReferrals(@Arg('options') options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+    return await this.codeController.getAllReferralCodes(options)
   }
 
-  @Query(() => CodeResponse, { nullable: true })
-  async getCode(
-    @Arg('codeId', () => String) codeId: string,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<CodeResponse> {
-    return await getCode(codeId, adminUser, context)
+  @Query(() => Code, { nullable: true })
+  @UseMiddleware(authAdmin('code.canShow'))
+  async getCode(@Arg('codeId', () => String) codeId: string): Promise<Code> {
+    return await this.codeController.getCode(codeId)
   }
 
-  @Mutation(() => CodeResponse, { nullable: true })
-  async addCode(
-    @Arg('options') options: NewCodeInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<CodeResponse> {
-    return await addCode(options, adminUser, context)
+  @Mutation(() => Code, { nullable: true })
+  @UseMiddleware(authAdmin('code.canCreate'))
+  async addCode(@Arg('options') options: NewCodeInput): Promise<Code> {
+    return await this.codeController.createCode(options)
   }
 
-  @Mutation(() => CodeResponse, { nullable: true })
+  @Mutation(() => Code, { nullable: true })
+  @UseMiddleware(authAdmin('code.canEdit'))
   async editCode(
     @Arg('codeId', () => String) codeId: string,
-    @Arg('options') options: NewCodeInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<CodeResponse> {
-    return await editCode(codeId, options, adminUser, context)
+    @Arg('options') options: NewCodeInput
+  ): Promise<Code> {
+    return await this.codeController.updateCode(codeId, options)
+  }
+
+  @Mutation(() => Code, { nullable: true })
+  @UseMiddleware(authAdmin('code.canDelete'))
+  async deleteCode(@Arg('codeId', () => String) codeId: string): Promise<Code> {
+    return await this.codeController.deleteCode(codeId)
   }
 }

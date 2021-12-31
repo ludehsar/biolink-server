@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller'
 import { BiolinkController } from './biolink.controller'
 import { BlackListController } from './black-list.controller'
 import { CategoryController } from './category.controller'
+import { CodeController } from './code.controller'
 import { ChatRoomController } from './chatRoom.controller'
 import { FollowController } from './follow.controller'
 import { LinkController } from './link.controller'
@@ -23,6 +24,7 @@ export {
   BiolinkController,
   BlackListController,
   CategoryController,
+  CodeController,
   ChatRoomController,
   FollowController,
   LinkController,

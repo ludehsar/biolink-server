@@ -8,6 +8,11 @@ import { Code, User } from '../entities'
 import { ErrorCode } from '../types'
 import { CodeType } from '../enums'
 import { stripe } from '../utilities'
+import { ConnectionArgs } from 'input-types'
+import { PaginatedCodeResponse } from 'object-types/common/PaginatedCodeResponse'
+import { buildPaginator } from 'typeorm-cursor-pagination'
+import moment from 'moment'
+import { CodeUpdateBody } from 'interfaces/CodeUpdateBody'
 
 @Service()
 export class CodeService {
@@ -27,6 +32,21 @@ export class CodeService {
 
     if (!codeDoc) {
       throw new ApolloError('Invalid referral token', ErrorCode.CODE_NOT_FOUND)
+    }
+
+    return codeDoc
+  }
+
+  /**
+   * Gets code object by code id
+   * @param {string} codeId
+   * @returns {Promise<Code>}
+   */
+  async getCodeByCodeId(codeId: string): Promise<Code> {
+    const codeDoc = await this.codeRepository.findOne(codeId)
+
+    if (!codeDoc) {
+      throw new ApolloError('Invalid code id', ErrorCode.CODE_NOT_FOUND)
     }
 
     return codeDoc
@@ -72,5 +92,105 @@ export class CodeService {
     })
 
     return code
+  }
+
+  /**
+   * Create code
+   * @param {CodeUpdateBody} updateBody
+   * @returns {Promise<Code>}
+   */
+  async createCode(updateBody: CodeUpdateBody): Promise<Code> {
+    let code = await this.codeRepository.create().save()
+
+    await stripe.coupons.create({
+      id: code.code,
+      max_redemptions: code.quantity > 0 ? code.quantity : undefined,
+      percent_off: code.discount,
+      duration: 'once',
+      redeem_by: moment(code.expireDate).unix() || undefined,
+    })
+
+    code = await this.updateCodeById(code.id, updateBody)
+
+    return code
+  }
+
+  /**
+   * Update code by code id
+   * @param {string} codeId
+   * @param {CodeUpdateBody} updateBody
+   * @returns {Promise<Code>}
+   */
+  async updateCodeById(codeId: string, updateBody: CodeUpdateBody): Promise<Code> {
+    const code = await this.getCodeByCodeId(codeId)
+    const prevCode = code.code
+
+    if (updateBody.code !== undefined) code.code = updateBody.code
+    if (updateBody.discount !== undefined) code.discount = updateBody.discount
+    if (updateBody.expireDate !== undefined) code.expireDate = updateBody.expireDate
+    if (updateBody.quantity !== undefined) code.quantity = updateBody.quantity
+    if (updateBody.referrer !== undefined) code.referrer = Promise.resolve(updateBody.referrer)
+    if (updateBody.type !== undefined) code.type = updateBody.type
+
+    try {
+      await code.save()
+
+      await stripe.coupons.del(prevCode)
+
+      await stripe.coupons.create({
+        id: code.code,
+        max_redemptions: code.quantity > 0 ? code.quantity : undefined,
+        percent_off: code.discount,
+        duration: 'once',
+        redeem_by: moment(code.expireDate).unix() || undefined,
+      })
+    } catch (err: any) {
+      throw new ApolloError(err.message, ErrorCode.DATABASE_ERROR)
+    }
+
+    return code
+  }
+
+  /**
+   * Delete code by code id
+   * @param {Code} codeId
+   * @returns {Promise<Code>}
+   */
+  async softRemoveCodeByCodeId(codeId: string): Promise<Code> {
+    const code = await this.getCodeByCodeId(codeId)
+
+    await code.softRemove()
+
+    await stripe.coupons.del(code.code)
+
+    return code
+  }
+
+  /**
+   * Get all codes
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedCodeResponse>}
+   */
+  async getAllCodes(codeType: CodeType, options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+    const queryBuilder = this.codeRepository
+      .createQueryBuilder('code')
+      .where('code.codeType = :codeType', { codeType })
+      .andWhere(`LOWER(code.code) like :query`, {
+        query: `%${options.query.toLowerCase()}%`,
+      })
+
+    const paginator = buildPaginator({
+      entity: Code,
+      alias: 'code',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
   }
 }

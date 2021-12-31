@@ -8,6 +8,7 @@ import { ErrorCode } from '../types'
 import { Code, User } from '../entities'
 import { UserUpdateBody } from '../interfaces/UserUpdateBody'
 import { CodeType } from '../enums'
+import { stripe } from '../utilities'
 
 @Service()
 export class UserService {
@@ -174,6 +175,18 @@ export class UserService {
     }
 
     await user.softRemove()
+
+    // When removing user account, also delete all the subscriptions
+    if (user.stripeCustomerId) {
+      const subscriptions = await stripe.subscriptions.list({
+        customer: user.stripeCustomerId,
+        limit: 100,
+        status: 'active',
+      })
+      subscriptions.data.forEach(async (subscription) => {
+        await stripe.subscriptions.del(subscription.id)
+      })
+    }
 
     return user
   }
