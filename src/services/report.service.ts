@@ -55,6 +55,7 @@ export class ReportService {
   /**
    * Get report by report id
    * @param {string} reportId
+   * @param {ResolveStatus} status
    * @returns {Promise<Report>}
    */
   async changeReportStatusByReportId(reportId: string, status: ResolveStatus): Promise<Report> {

@@ -1,3 +1,4 @@
+import { ResolveStatus } from '../enums'
 import { User } from '../entities'
 
 export interface SupportUpdateBody {
@@ -8,4 +9,6 @@ export interface SupportUpdateBody {
   phoneNumber?: string
   subject?: string
   user?: User
+  status?: ResolveStatus
+  supportReply?: string
 }
