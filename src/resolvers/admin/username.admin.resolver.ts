@@ -1,72 +1,62 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, NewUsernameInput } from '../../input-types'
-import { UsernameConnection, UsernameResponse } from '../../object-types'
-import {
-  addUsername,
-  editUsername,
-  getPremiumUsernamesPaginated,
-  getTrademarkUsernamesPaginated,
-  getUsername,
-  getUsernamesPaginated,
-} from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, NewUsernameInput } from '../../input-types'
+import { Username } from '../../entities'
+import { UsernameController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
+import { PaginatedUsernameResponse } from '../../object-types/common/PaginatedUsernameResponse'
 
 @Resolver()
 export class UsernameAdminResolver {
-  @Query(() => UsernameConnection, { nullable: true })
+  constructor(private readonly usernameController: UsernameController) {}
+
+  @Query(() => PaginatedUsernameResponse, { nullable: true })
+  @UseMiddleware(authAdmin('username.canShowList'))
   async getAllUsernames(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameConnection> {
-    return await getUsernamesPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedUsernameResponse> {
+    return await this.usernameController.getAllUsernames(options)
   }
 
-  @Query(() => UsernameConnection, { nullable: true })
+  @Query(() => PaginatedUsernameResponse, { nullable: true })
+  @UseMiddleware(authAdmin('username.canShowList'))
   async getAllPremiumUsernames(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameConnection> {
-    return await getPremiumUsernamesPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedUsernameResponse> {
+    return await this.usernameController.getAllPremiumUsernames(options)
   }
 
-  @Query(() => UsernameConnection, { nullable: true })
+  @Query(() => PaginatedUsernameResponse, { nullable: true })
+  @UseMiddleware(authAdmin('username.canShowList'))
   async getAllTrademarkUsernames(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameConnection> {
-    return await getTrademarkUsernamesPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedUsernameResponse> {
+    return await this.usernameController.getAllTrademarkUsernames(options)
   }
 
-  @Query(() => UsernameResponse, { nullable: true })
-  async getUsername(
-    @Arg('usernameId', () => String) usernameId: string,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameResponse> {
-    return await getUsername(usernameId, adminUser, context)
+  @Query(() => Username, { nullable: true })
+  @UseMiddleware(authAdmin('username.canShow'))
+  async getUsername(@Arg('usernameId', () => String) usernameId: string): Promise<Username> {
+    return await this.usernameController.getUsername(usernameId)
   }
 
-  @Mutation(() => UsernameResponse, { nullable: true })
-  async addUsername(
-    @Arg('options') options: NewUsernameInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameResponse> {
-    return await addUsername(options, adminUser, context)
+  @Mutation(() => Username, { nullable: true })
+  @UseMiddleware(authAdmin('username.canCreate'))
+  async addUsername(@Arg('options') options: NewUsernameInput): Promise<Username> {
+    return await this.usernameController.addUsername(options)
   }
 
-  @Mutation(() => UsernameResponse, { nullable: true })
+  @Mutation(() => Username, { nullable: true })
+  @UseMiddleware(authAdmin('username.canEdit'))
   async editUsername(
     @Arg('usernameId', () => String) usernameId: string,
-    @Arg('options') options: NewUsernameInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<UsernameResponse> {
-    return await editUsername(usernameId, options, adminUser, context)
+    @Arg('options') options: NewUsernameInput
+  ): Promise<Username> {
+    return await this.usernameController.editUsername(usernameId, options)
+  }
+
+  @Mutation(() => Username, { nullable: true })
+  @UseMiddleware(authAdmin('username.canDelete'))
+  async deleteUsername(@Arg('usernameId', () => String) usernameId: string): Promise<Username> {
+    return await this.usernameController.deleteUsername(usernameId)
   }
 }

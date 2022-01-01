@@ -3,11 +3,14 @@ import moment from 'moment'
 import { Service } from 'typedi'
 import { Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 
 import { ErrorCode } from '../types'
 import { Username } from '../entities'
 import { PremiumUsernameType } from '../enums'
 import { UsernameUpdateBody } from '../interfaces/UsernameUpdateBody'
+import { ConnectionArgs } from '../input-types'
+import { PaginatedUsernameResponse } from '../object-types/common/PaginatedUsernameResponse'
 
 @Service()
 export class UsernameService {
@@ -74,10 +77,7 @@ export class UsernameService {
    * @param {UsernameUpdateBody} updateBody
    * @returns {Promise<Username>}
    */
-  private async createUsername(
-    username: string,
-    updateBody?: UsernameUpdateBody
-  ): Promise<Username> {
+  async createUsername(username: string, updateBody?: UsernameUpdateBody): Promise<Username> {
     if (await this.isUsernameTaken(username)) {
       throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
@@ -154,5 +154,65 @@ export class UsernameService {
     await username.save()
 
     return username
+  }
+
+  /**
+   * Delete username by id
+   * @param {string} usernameId
+   * @returns {Promise<Username>}
+   */
+  async softDeleteUsernameById(usernameId: string): Promise<Username> {
+    const username = await this.getUsernameById(usernameId)
+
+    await username.softRemove()
+
+    return username
+  }
+
+  /**
+   * Get username by id
+   * @param {string} usernameId
+   * @returns {Promise<Username>}
+   */
+  async getUsernameById(usernameId: string): Promise<Username> {
+    const username = await this.usernameRepository.findOne(usernameId)
+
+    if (!username) {
+      throw new ApolloError('No username found', ErrorCode.USERNAME_NOT_FOUND)
+    }
+
+    return username
+  }
+
+  /**
+   * Get all usernames
+   * @param {PremiumUsernameType} usernameType
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedUsernameResponse>}
+   */
+  async getAllUsernames(
+    usernameType: PremiumUsernameType,
+    options: ConnectionArgs
+  ): Promise<PaginatedUsernameResponse> {
+    const queryBuilder = this.usernameRepository
+      .createQueryBuilder('username')
+      .where('username.usernameType = :usernameType', { usernameType })
+      .andWhere(`LOWER(username.username) like :query`, {
+        query: `%${options.query.toLowerCase()}%`,
+      })
+
+    const paginator = buildPaginator({
+      entity: Username,
+      alias: 'username',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
   }
 }
