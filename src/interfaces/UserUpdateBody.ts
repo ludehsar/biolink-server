@@ -16,6 +16,7 @@ export interface UserUpdateBody {
   lastActiveTill?: Date
   lastIPAddress?: string
   lastUserAgent?: string
+  name?: string
   plan?: Plan
   planExpirationDate?: Date | null
   planTrialDone?: boolean

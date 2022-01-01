@@ -1,8 +1,7 @@
-import { ErrorResponse } from '../../object-types'
 import { ObjectType, Field, Int } from 'type-graphql'
 
 @ObjectType()
-class UserTotalCounts {
+export class UserTotalCountsResponse {
   @Field(() => Int, { nullable: true, defaultValue: 0 })
   totalBiolinks?: number
 
@@ -14,13 +13,4 @@ class UserTotalCounts {
 
   @Field(() => Int, { nullable: true, defaultValue: 0 })
   totalPayed?: number
-}
-
-@ObjectType()
-export class UserTotalCountsResponse {
-  @Field(() => [ErrorResponse], { nullable: true })
-  errors?: ErrorResponse[]
-
-  @Field(() => UserTotalCounts, { nullable: true })
-  result?: UserTotalCounts
 }

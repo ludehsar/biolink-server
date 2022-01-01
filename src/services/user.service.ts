@@ -1,14 +1,17 @@
 import { ApolloError } from 'apollo-server-errors'
 import * as argon2 from 'argon2'
 import { Service } from 'typedi'
-import { Repository } from 'typeorm'
+import { Brackets, Repository } from 'typeorm'
 import { InjectRepository } from 'typeorm-typedi-extensions'
+import { buildPaginator } from 'typeorm-cursor-pagination'
 
 import { ErrorCode } from '../types'
 import { Code, User } from '../entities'
 import { UserUpdateBody } from '../interfaces/UserUpdateBody'
 import { CodeType } from '../enums'
 import { stripe } from '../utilities'
+import { ConnectionArgs } from '../input-types'
+import { PaginatedUserResponse } from '../object-types/common/PaginatedUserResponse'
 
 @Service()
 export class UserService {
@@ -16,6 +19,53 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Code) private readonly codeRepository: Repository<Code>
   ) {}
+
+  /**
+   * Get all users
+   * @param {ConnectionArgs} options
+   * @returns {Promise<PaginatedUserResponse>}
+   */
+  async getAllUsers(
+    options: ConnectionArgs,
+    showAdminsOnly = false
+  ): Promise<PaginatedUserResponse> {
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.adminRole', 'adminRole')
+      .leftJoinAndSelect('user.plan', 'plan')
+
+    if (showAdminsOnly) {
+      queryBuilder.where('user.adminRoleId is not null')
+    }
+
+    queryBuilder.andWhere(
+      new Brackets((qb) => {
+        qb.where(`LOWER(adminRole.roleName) like :query`, {
+          query: `%${options.query.toLowerCase()}%`,
+        })
+          .orWhere(`LOWER(user.email) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+          .orWhere(`LOWER(user.name) like :query`, {
+            query: `%${options.query.toLowerCase()}%`,
+          })
+      })
+    )
+
+    const paginator = buildPaginator({
+      entity: User,
+      alias: 'user',
+      paginationKeys: ['id'],
+      query: {
+        afterCursor: options.afterCursor,
+        beforeCursor: options.beforeCursor,
+        limit: options.limit,
+        order: options.order,
+      },
+    })
+
+    return await paginator.paginate(queryBuilder)
+  }
 
   /**
    * Create a user
@@ -141,6 +191,7 @@ export class UserService {
     if (updateBody.lastActiveTill !== undefined) user.lastActiveTill = updateBody.lastActiveTill
     if (updateBody.lastIPAddress !== undefined) user.lastIPAddress = updateBody.lastIPAddress
     if (updateBody.lastUserAgent !== undefined) user.lastUserAgent = updateBody.lastUserAgent
+    if (updateBody.name !== undefined) user.name = updateBody.name
     if (updateBody.plan !== undefined) user.plan = Promise.resolve(updateBody.plan)
     if (updateBody.planExpirationDate !== undefined)
       user.planExpirationDate = updateBody.planExpirationDate

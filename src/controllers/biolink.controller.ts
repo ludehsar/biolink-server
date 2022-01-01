@@ -68,6 +68,20 @@ export class BiolinkController {
   }
 
   async createBiolinkByAdmins(input: BiolinkAdminInput): Promise<Biolink> {
+    if (input.username) {
+      if (await this.usernameService.isUsernameTaken(input.username)) {
+        throw new ApolloError('Username is already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
+      }
+      if (
+        await this.blacklistService.isKeywordBlacklisted(input.username, BlacklistType.Username)
+      ) {
+        throw new ApolloError('Username cannot be used', ErrorCode.USERNAME_BLACKLISTED)
+      }
+      if (await this.usernameService.isPremiumUsername(input.username)) {
+        throw new ApolloError('Premium username cannot be used', ErrorCode.USERNAME_ALREADY_EXISTS)
+      }
+    }
+
     let category = undefined
     if (input.categoryId) {
       category = await this.categoryService.getCategoryByCategoryId(input.categoryId)

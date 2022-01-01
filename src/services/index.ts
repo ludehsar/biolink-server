@@ -131,20 +131,6 @@ import { addTax } from './tax/addTax'
 import { editTax } from './tax/editTax'
 import { getTax } from './tax/getTax'
 import { getTaxesPaginated } from './tax/getTaxesPaginated'
-// User
-import { addNewUser } from './user/addNewUser'
-import { changeCurrentBiolinkId } from './user/changeCurrentBiolinkId'
-import { changeEmailAndUsername } from './user/changeEmailAndUsername'
-import { changePassword } from './user/changePassword'
-import { deleteAccount } from './user/deleteAccount'
-import { deleteUser } from './user/deleteUser'
-import { editUser } from './user/editUser'
-import { updateBilling } from './user/updateBilling'
-import { getAdminsPaginated } from './user/getAdminsPaginated'
-import { getDeletedUsersPaginated } from './user/getDeletedUsersPaginated'
-import { getUsersPaginated } from './user/getUsersPaginated'
-import { getUserSummaryCounts } from './user/getUserSummaryCount'
-import { getUser } from './user/getUser'
 // User Log
 import { captureUserActivity } from './userLog/captureUserActivity'
 import { getUserActivityPaginated } from './userLog/getUserActivityPaginated'
@@ -297,20 +283,6 @@ export {
   editTax,
   getTax,
   getTaxesPaginated,
-  // User
-  addNewUser,
-  changeCurrentBiolinkId,
-  changeEmailAndUsername,
-  changePassword,
-  deleteAccount,
-  deleteUser,
-  editUser,
-  getAdminsPaginated,
-  getDeletedUsersPaginated,
-  getUsersPaginated,
-  updateBilling,
-  getUser,
-  getUserSummaryCounts,
   // User Log
   captureUserActivity,
   getUserActivityPaginated,

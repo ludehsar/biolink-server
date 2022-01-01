@@ -1,96 +1,55 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 
-import {
-  DefaultResponse,
-  UserConnection,
-  UserResponse,
-  UserTotalCountsResponse,
-} from '../../object-types'
-import { ConnectionArgsOld, EditUserInput, NewUserInput } from '../../input-types'
-import { CurrentAdmin } from '../../decorators'
+import { UserTotalCountsResponse } from '../../object-types'
+import { ConnectionArgs, NewUserInput } from '../../input-types'
 import { User } from '../../entities'
-import {
-  addNewUser,
-  deleteUser,
-  editUser,
-  getAdminsPaginated,
-  getDeletedUsersPaginated,
-  getUser,
-  getUsersPaginated,
-  getUserSummaryCounts,
-} from '../../services'
-import { MyContext } from '../../types'
+import { UserController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
+import { PaginatedUserResponse } from '../../object-types/common/PaginatedUserResponse'
 
 @Resolver()
 export class UserAdminResolver {
-  @Query(() => UserConnection, { nullable: true })
-  async getAllUsers(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<UserConnection> {
-    return await getUsersPaginated(options, admin, context)
+  constructor(private readonly userController: UserController) {}
+
+  @Query(() => PaginatedUserResponse, { nullable: true })
+  @UseMiddleware(authAdmin('user.canShowList'))
+  async getAllUsers(@Arg('options') options: ConnectionArgs): Promise<PaginatedUserResponse> {
+    return await this.userController.getAllUsers(options)
   }
 
-  @Query(() => UserConnection, { nullable: true })
-  async getAllAdmins(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<UserConnection> {
-    return await getAdminsPaginated(options, admin, context)
+  @Query(() => PaginatedUserResponse, { nullable: true })
+  @UseMiddleware(authAdmin('user.canShowList'))
+  async getAllAdmins(@Arg('options') options: ConnectionArgs): Promise<PaginatedUserResponse> {
+    return await this.userController.getAllAdmins(options)
   }
 
-  @Query(() => UserConnection, { nullable: true })
-  async getAllDeletedUsers(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() admin: User
-  ): Promise<UserConnection> {
-    return await getDeletedUsersPaginated(options, admin)
-  }
-
-  @Query(() => UserResponse, { nullable: true })
-  async getUser(
-    @Arg('id') id: string,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<UserConnection> {
-    return await getUser(id, admin, context)
+  @Query(() => User, { nullable: true })
+  @UseMiddleware(authAdmin('user.canShow'))
+  async getUser(@Arg('id') id: string): Promise<User> {
+    return await this.userController.getUserByAdmins(id)
   }
 
   @Query(() => UserTotalCountsResponse, { nullable: true })
-  async getUserSummaryCounts(
-    @Arg('userId') userId: string,
-    @CurrentAdmin() admin: User
-  ): Promise<UserTotalCountsResponse> {
-    return await getUserSummaryCounts(userId, admin)
+  @UseMiddleware(authAdmin('user.canShow'))
+  async getUserSummaryCounts(@Arg('userId') userId: string): Promise<UserTotalCountsResponse> {
+    return await this.userController.getUserSummaryCounts(userId)
   }
 
-  @Mutation(() => DefaultResponse, { nullable: true })
-  async addNewUser(
-    @Arg('options') options: NewUserInput,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await addNewUser(options, admin, context)
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(authAdmin('user.canCreate'))
+  async addNewUser(@Arg('options') options: NewUserInput): Promise<User> {
+    return await this.userController.createUserByAdmins(options)
   }
 
-  @Mutation(() => DefaultResponse, { nullable: true })
-  async editUser(
-    @Arg('id') id: string,
-    @Arg('options') options: EditUserInput,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await editUser(id, options, admin, context)
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(authAdmin('user.canEdit'))
+  async editUser(@Arg('id') id: string, @Arg('options') options: NewUserInput): Promise<User> {
+    return await this.userController.updateUserByAdmins(id, options)
   }
 
-  @Mutation(() => DefaultResponse, { nullable: true })
-  async deleteUser(
-    @Arg('id') id: string,
-    @CurrentAdmin() admin: User,
-    @Ctx() context: MyContext
-  ): Promise<DefaultResponse> {
-    return await deleteUser(id, admin, context)
+  @Mutation(() => User, { nullable: true })
+  @UseMiddleware(authAdmin('user.canDelete'))
+  async deleteUser(@Arg('id') id: string): Promise<User> {
+    return await this.userController.deleteUserByAdmins(id)
   }
 }
