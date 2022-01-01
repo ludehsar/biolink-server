@@ -17,6 +17,7 @@ import { ReportController } from './report.controller'
 import { ServiceController } from './service.controller'
 import { SettingsController } from './settings.controller'
 import { SupportController } from './support.controller'
+import { TaxController } from './tax.controller'
 import { TrackingController } from './tracking.controller'
 import { UserController } from './user.controller'
 
@@ -40,6 +41,7 @@ export {
   ServiceController,
   SettingsController,
   SupportController,
+  TaxController,
   TrackingController,
   UserController,
 }

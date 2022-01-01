@@ -1,47 +1,44 @@
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, NewTaxInput } from '../../input-types'
-import { TaxConnection, TaxResponse } from '../../object-types'
-import { addTax, editTax, getTax, getTaxesPaginated } from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, NewTaxInput } from '../../input-types'
+import { Tax } from '../../entities'
+import { TaxController } from '../../controllers'
+import { authAdmin } from '../../middlewares/authAdmin'
+import { PaginatedTaxResponse } from '../../object-types/common/PaginatedTaxResponse'
 
 @Resolver()
 export class TaxAdminResolver {
-  @Query(() => TaxConnection, { nullable: true })
-  async getAllTaxes(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<TaxConnection> {
-    return await getTaxesPaginated(options, adminUser, context)
+  constructor(private readonly taxController: TaxController) {}
+
+  @Query(() => PaginatedTaxResponse, { nullable: true })
+  @UseMiddleware(authAdmin('tax.canShowList'))
+  async getAllTaxes(@Arg('options') options: ConnectionArgs): Promise<PaginatedTaxResponse> {
+    return await this.taxController.getAllTaxes(options)
   }
 
-  @Query(() => TaxResponse, { nullable: true })
-  async getTax(
-    @Arg('taxId', () => Int) taxId: number,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<TaxResponse> {
-    return await getTax(taxId, adminUser, context)
+  @Query(() => Tax, { nullable: true })
+  @UseMiddleware(authAdmin('tax.canShow'))
+  async getTax(@Arg('taxId', () => String) taxId: string): Promise<Tax> {
+    return await this.taxController.getTax(taxId)
   }
 
-  @Mutation(() => TaxResponse, { nullable: true })
-  async addTax(
-    @Arg('options') options: NewTaxInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<TaxResponse> {
-    return await addTax(options, adminUser, context)
+  @Mutation(() => Tax, { nullable: true })
+  @UseMiddleware(authAdmin('tax.canCreate'))
+  async addTax(@Arg('options') options: NewTaxInput): Promise<Tax> {
+    return await this.taxController.addTax(options)
   }
 
-  @Mutation(() => TaxResponse, { nullable: true })
+  @Mutation(() => Tax, { nullable: true })
+  @UseMiddleware(authAdmin('tax.canEdit'))
   async editTax(
-    @Arg('taxId', () => Int) taxId: number,
-    @Arg('options') options: NewTaxInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<TaxResponse> {
-    return await editTax(taxId, options, adminUser, context)
+    @Arg('taxId', () => String) taxId: string,
+    @Arg('options') options: NewTaxInput
+  ): Promise<Tax> {
+    return await this.taxController.editTax(taxId, options)
+  }
+
+  @Mutation(() => Tax, { nullable: true })
+  @UseMiddleware(authAdmin('tax.canDelete'))
+  async deleteTax(@Arg('taxId', () => String) taxId: string): Promise<Tax> {
+    return await this.taxController.deleteTax(taxId)
   }
 }
