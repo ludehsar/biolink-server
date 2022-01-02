@@ -1,34 +1,21 @@
-import { FileUpload, GraphQLUpload } from 'graphql-upload'
-import { emailVerified } from '../../middlewares'
+import { authUser, emailVerified } from '../../middlewares'
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from 'type-graphql'
-import { CurrentUser } from '../../decorators'
-import { User } from '../../entities'
+import { Verification } from '../../entities'
 import { VerificationInput } from '../../input-types'
-import { DefaultResponse } from '../../object-types'
-import { createVerification } from '../../services'
 import { MyContext } from '../../types'
+import { VerificationController } from '../../controllers'
 
 @Resolver()
 export class VerificationResolver {
-  @Mutation(() => DefaultResponse)
-  @UseMiddleware(emailVerified)
+  constructor(private readonly verificationController: VerificationController) {}
+
+  @Mutation(() => Verification)
+  @UseMiddleware(authUser, emailVerified)
   async verifyBiolink(
     @Arg('biolinkId', { description: 'Biolink ID' }) biolinkId: string,
     @Arg('options') options: VerificationInput,
-    @Arg('photoId', () => GraphQLUpload) photoId: FileUpload,
-    @Arg('businessDocument', () => GraphQLUpload) businessDocument: FileUpload,
-    @Arg('otherDocuments', () => GraphQLUpload) otherDocuments: FileUpload,
-    @Ctx() context: MyContext,
-    @CurrentUser() user: User
-  ): Promise<DefaultResponse> {
-    return await createVerification(
-      options,
-      photoId,
-      businessDocument,
-      otherDocuments,
-      biolinkId,
-      user,
-      context
-    )
+    @Ctx() context: MyContext
+  ): Promise<Verification> {
+    return await this.verificationController.addVerification(biolinkId, options, context)
   }
 }

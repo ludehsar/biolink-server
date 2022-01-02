@@ -21,6 +21,7 @@ import { TaxController } from './tax.controller'
 import { TrackingController } from './tracking.controller'
 import { UserController } from './user.controller'
 import { UsernameController } from './username.controller'
+import { VerificationController } from './verification.controller'
 
 export {
   AdminRoleController,
@@ -46,4 +47,5 @@ export {
   TrackingController,
   UserController,
   UsernameController,
+  VerificationController,
 }

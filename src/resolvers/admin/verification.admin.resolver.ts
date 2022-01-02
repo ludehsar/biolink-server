@@ -1,62 +1,60 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { ConnectionArgsOld, VerificationStatusInput } from '../../input-types'
-import { VerificationConnection, VerificationResponse } from '../../object-types'
-import {
-  changeVerificationStatus,
-  getPendingVerificationsPaginated,
-  getRejectedVerificationsPaginated,
-  getVerification,
-  getVerifiedVerificationsPaginated,
-} from '../../services'
-import { User } from '../../entities'
-import { CurrentAdmin } from '../../decorators'
-import { MyContext } from '../../types'
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
+import { ConnectionArgs, VerificationStatusInput } from '../../input-types'
+import { Verification } from '../../entities'
+import { VerificationController } from '../../controllers'
+import { PaginatedVerificationResponse } from '../../object-types/common/PaginatedVerificationResponse'
+import { authAdmin } from '../../middlewares/authAdmin'
 
 @Resolver()
 export class VerificationAdminResolver {
-  @Query(() => VerificationConnection, { nullable: true })
+  constructor(private readonly verificationController: VerificationController) {}
+
+  @Query(() => PaginatedVerificationResponse, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canShowList'))
   async getAllPendingVerifications(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<VerificationConnection> {
-    return await getPendingVerificationsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedVerificationResponse> {
+    return await this.verificationController.getAllPendingVerifications(options)
   }
 
-  @Query(() => VerificationConnection, { nullable: true })
+  @Query(() => PaginatedVerificationResponse, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canShowList'))
   async getAllVerifiedVerifications(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<VerificationConnection> {
-    return await getVerifiedVerificationsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedVerificationResponse> {
+    return await this.verificationController.getAllVerifiedVerifications(options)
   }
 
-  @Query(() => VerificationConnection, { nullable: true })
+  @Query(() => PaginatedVerificationResponse, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canShowList'))
   async getAllRejectedVerifications(
-    @Arg('options') options: ConnectionArgsOld,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<VerificationConnection> {
-    return await getRejectedVerificationsPaginated(options, adminUser, context)
+    @Arg('options') options: ConnectionArgs
+  ): Promise<PaginatedVerificationResponse> {
+    return await this.verificationController.getAllRejectedVerifications(options)
   }
 
-  @Query(() => VerificationResponse, { nullable: true })
+  @Query(() => Verification, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canShow'))
   async getVerification(
-    @Arg('verificationId', () => String) verificationId: string,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<VerificationConnection> {
-    return await getVerification(verificationId, adminUser, context)
+    @Arg('verificationId', () => String) verificationId: string
+  ): Promise<Verification> {
+    return await this.verificationController.getVerification(verificationId)
   }
 
-  @Mutation(() => VerificationResponse, { nullable: true })
+  @Mutation(() => Verification, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canEdit'))
   async changeVerificationStatus(
     @Arg('verificationId', () => String) verificationId: string,
-    @Arg('options', () => VerificationStatusInput) options: VerificationStatusInput,
-    @CurrentAdmin() adminUser: User,
-    @Ctx() context: MyContext
-  ): Promise<VerificationResponse> {
-    return await changeVerificationStatus(verificationId, options, adminUser, context)
+    @Arg('options', () => VerificationStatusInput) options: VerificationStatusInput
+  ): Promise<Verification> {
+    return await this.verificationController.editVerificationStatus(verificationId, options)
+  }
+
+  @Query(() => Verification, { nullable: true })
+  @UseMiddleware(authAdmin('verification.canDelete'))
+  async deleteVerification(
+    @Arg('verificationId', () => String) verificationId: string
+  ): Promise<Verification> {
+    return await this.verificationController.deleteVerification(verificationId)
   }
 }
