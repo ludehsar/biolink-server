@@ -100,19 +100,31 @@ export class CodeService {
    * @returns {Promise<Code>}
    */
   async createCode(updateBody: CodeUpdateBody): Promise<Code> {
-    let code = await this.codeRepository.create().save()
+    try {
+      const code = this.codeRepository.create({
+        code: updateBody.code,
+        discount: updateBody.discount,
+        expireDate: updateBody.expireDate,
+        quantity: updateBody.quantity,
+        type: updateBody.type,
+      })
 
-    await stripe.coupons.create({
-      id: code.code,
-      max_redemptions: code.quantity > 0 ? code.quantity : undefined,
-      percent_off: code.discount,
-      duration: 'once',
-      redeem_by: moment(code.expireDate).unix() || undefined,
-    })
+      if (updateBody.referrer !== undefined) code.referrer = Promise.resolve(updateBody.referrer)
 
-    code = await this.updateCodeById(code.id, updateBody)
+      await stripe.coupons.create({
+        id: code.code,
+        max_redemptions: code.quantity > 0 ? code.quantity : undefined,
+        percent_off: code.discount,
+        duration: 'once',
+        redeem_by: moment(code.expireDate).unix() || undefined,
+      })
 
-    return code
+      await code.save()
+
+      return code
+    } catch (err: any) {
+      throw new ApolloError(err.message, ErrorCode.DATABASE_ERROR)
+    }
   }
 
   /**
@@ -133,8 +145,6 @@ export class CodeService {
     if (updateBody.type !== undefined) code.type = updateBody.type
 
     try {
-      await code.save()
-
       await stripe.coupons.del(prevCode)
 
       await stripe.coupons.create({
@@ -144,6 +154,8 @@ export class CodeService {
         duration: 'once',
         redeem_by: moment(code.expireDate).unix() || undefined,
       })
+
+      await code.save()
     } catch (err: any) {
       throw new ApolloError(err.message, ErrorCode.DATABASE_ERROR)
     }
@@ -171,10 +183,10 @@ export class CodeService {
    * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedCodeResponse>}
    */
-  async getAllCodes(codeType: CodeType, options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+  async getAllCodes(type: CodeType, options: ConnectionArgs): Promise<PaginatedCodeResponse> {
     const queryBuilder = this.codeRepository
       .createQueryBuilder('code')
-      .where('code.codeType = :codeType', { codeType })
+      .where('code.type = :type', { type })
       .andWhere(`LOWER(code.code) like :query`, {
         query: `%${options.query.toLowerCase()}%`,
       })

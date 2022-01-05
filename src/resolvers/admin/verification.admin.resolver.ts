@@ -50,7 +50,7 @@ export class VerificationAdminResolver {
     return await this.verificationController.editVerificationStatus(verificationId, options)
   }
 
-  @Query(() => Verification, { nullable: true })
+  @Mutation(() => Verification, { nullable: true })
   @UseMiddleware(authAdmin('verification.canDelete'))
   async deleteVerification(
     @Arg('verificationId', () => String) verificationId: string

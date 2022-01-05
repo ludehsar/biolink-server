@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsEnum, IsOptional, IsUrl, ValidateIf } from 'class-validator'
+import { IsBoolean, IsDateString, IsEnum, IsOptional, IsUrl, ValidateIf } from 'class-validator'
 import { FileUpload, GraphQLUpload } from 'graphql-upload'
 import { InputType, Field } from 'type-graphql'
 import { LinkType } from '../../enums'
@@ -46,13 +46,13 @@ export class LinkAdminInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   @ValidateIf((e) => e.startDate !== '')
   startDate?: Date
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   @ValidateIf((e) => e.endDate !== '')
   endDate?: Date
 

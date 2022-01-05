@@ -101,7 +101,7 @@ export class SettingsAdminResolver {
 
   @Query(() => Settings)
   @UseMiddleware(authAdmin('settings.canShow'))
-  async getSettingsByKey(@Arg('options', () => String) key: string): Promise<Settings> {
+  async getSettingsByKey(@Arg('key', () => String) key: string): Promise<Settings> {
     return await this.settingsController.getSettingsByKey(key)
   }
 }

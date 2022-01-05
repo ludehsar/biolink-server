@@ -5,7 +5,7 @@ import {
   ValidateIf,
   IsPhoneNumber,
   IsEnum,
-  IsDate,
+  IsDateString,
   IsBoolean,
 } from 'class-validator'
 import { InputType, Field } from 'type-graphql'
@@ -78,7 +78,7 @@ export class NewUserInput {
 
   @Field({ nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   @ValidateIf((e) => e.planExpirationDate !== '')
   planExpirationDate?: Date
 

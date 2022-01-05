@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator'
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator'
 import { InputType, Field, Float } from 'type-graphql'
 import { CodeType } from '../../enums'
 
@@ -25,7 +25,7 @@ export class NewCodeInput {
 
   @Field(() => String, { nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   expireDate?: Date
 
   @Field(() => String, { nullable: true })
