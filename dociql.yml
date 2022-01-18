@@ -375,6 +375,12 @@ domains:
       - name: Get Order Details
         description: Gets order details.
         query: query.getServiceOrder
+  - name: Verification Section
+    description: Verification section.
+    usecases:
+      - name: Verify Biolink
+        description: Sends the verification form for verifying the biolink.
+        query: mutation.verifyBiolink
 securityDefinitions:
   Bearer Authentication:
     type: apiKey

@@ -204,11 +204,7 @@
           </section>
           <section>
             <a href="#tag-Verification-Section">Verification Section</a>
-            <ul>
-              <li>
-                <a href="#operation-call_for_verification-post"> Call for Verification </a>
-              </li>
-            </ul>
+            <ul> </ul>
           </section>
           <section>
             <a href="#tag-Referral-Section">Referral Section</a>
@@ -373,6 +369,17 @@
               </li>
               <li>
                 <a href="#operation-get_order_details-post"> Get Order Details </a>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <a href="#tag-Verification-Section">Verification Section</a>
+            <ul>
+              <li>
+                <a href="#operation-call_for_verification-post"> Call for Verification </a>
+              </li>
+              <li>
+                <a href="#operation-verify_biolink-post"> Verify Biolink </a>
               </li>
             </ul>
           </section>
@@ -8678,200 +8685,6 @@ https://stashee-v2.herokuapp.com/graphql
               <p>Verification section.</p>
             </div>
           </div>
-          <div id="operation-call_for_verification-post" class="operation panel" data-traverse-target="operation-call_for_verification-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Verification-Section">Verification Section</a>
-              <!---->
-            </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-title">
-              <span class="operation-summary">Call for Verification</span>
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="swagger-operation-description">
-                  <p>Fills required user information and sends the form to verify the biolink.</p>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-request-params">
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
-                      <div class="prop-title">options:
-                        <span class="prop-type">
-                          <div class="json-property-type">
-                            <div class="">
-                              <a class="json-schema-ref" href="#/definitions/VerificationInput">VerificationInput</a>
-                            </div>
-                          </div>
-                          <span class="json-property-range" title="Value limits"></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="prop-value">
-                      <p class="no-description">(no description)</p>
-                    </div>
-                  </div>
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
-                      <div class="prop-title">biolinkId:
-                        <span class="prop-type">
-                          <div class="json-property-type">string</div>
-                          <span class="json-property-range" title="Value limits"></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="prop-value">
-                      <p>Biolink ID</p>
-                    </div>
-                  </div>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Request Content-Types:
-                      <span>application/json</span>
-                    </h5>
-                    <h5>Query</h5>
-                    <!-- <div class="hljs"> -->
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyBiolink<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> VerificationInput!</span>, <span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
-  <span class="hljs-symbol">verifyBiolink<span class="hljs-tag">(options: <span class="hljs-code">$options</span>, biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
-    <span class="hljs-symbol">id</span>
-    <span class="hljs-symbol">verificationStatus</span>
-    <span class="hljs-symbol">verifiedGovernmentId</span>
-    <span class="hljs-symbol">verifiedEmail</span>
-    <span class="hljs-symbol">verifiedPhoneNumber</span>
-    <span class="hljs-symbol">verifiedWorkEmail</span>
-    <span class="hljs-symbol">username</span>
-    <span class="hljs-symbol">firstName</span>
-    <span class="hljs-symbol">lastName</span>
-    <span class="hljs-symbol">mobileNumber</span>
-    <span class="hljs-symbol">workNumber</span>
-    <span class="hljs-symbol">email</span>
-    <span class="hljs-symbol">websiteLink</span>
-    <span class="hljs-symbol">instagramUrl</span>
-    <span class="hljs-symbol">twitterUrl</span>
-    <span class="hljs-symbol">linkedinUrl</span>
-    <span class="hljs-symbol">photoIdUrl</span>
-    <span class="hljs-symbol">businessDocumentUrl</span>
-    <span class="hljs-symbol">otherDocumentsUrl</span>
-    <span class="hljs-symbol">createdAt</span>
-    <span class="hljs-symbol">updatedAt</span>
-    <span class="hljs-symbol">deletedAt</span>
-  }</span></span>
-}</span></span>
-</code></pre> </body>
-                    </html>
-                    <!-- </div> -->
-                    <h5>Variables</h5>
-                    <!-- <div class="hljs"> -->
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;options&quot;</span>: {
-    <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;instagramAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;twitterAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;linkedinAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;photoId&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
-    <span class="hljs-attr">&quot;businessDocument&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
-    <span class="hljs-attr">&quot;otherDocuments&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>
-  },
-  <span class="hljs-attr">&quot;biolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-}
-</code></pre> </body>
-                    </html>
-                    <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20verifyBiolink(%24options%3A%20VerificationInput!%2C%20%24biolinkId%3A%20String!)%7B%0A%20%20verifyBiolink(options%3A%20%24options%2C%20biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20verificationStatus%0A%20%20%20%20verifiedGovernmentId%0A%20%20%20%20verifiedEmail%0A%20%20%20%20verifiedPhoneNumber%0A%20%20%20%20verifiedWorkEmail%0A%20%20%20%20username%0A%20%20%20%20firstName%0A%20%20%20%20lastName%0A%20%20%20%20mobileNumber%0A%20%20%20%20workNumber%0A%20%20%20%20email%0A%20%20%20%20websiteLink%0A%20%20%20%20instagramUrl%0A%20%20%20%20twitterUrl%0A%20%20%20%20linkedinUrl%0A%20%20%20%20photoIdUrl%0A%20%20%20%20businessDocumentUrl%0A%20%20%20%20otherDocumentsUrl%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
-                      <a/> </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="swagger-responses">
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
-                      <div class="prop-title">200 OK</div>
-                    </div>
-                    <div class="prop-value">
-                      <p>Successful operation</p>
-                    </div>
-                  </div>
-                  <div class="prop-row prop-inner">
-                    <div class="prop-name">type</div>
-                    <div class="prop-value">
-                      <div class="json-property-type">
-                        <div class="">
-                          <a class="json-schema-ref" href="#/definitions/Verification">Verification</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </div>
-                  </div>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <h5>Response Content-Types:
-                  <span>application/json</span>
-                </h5>
-                <section>
-                  <h5>Response Example
-                    <span>(200 OK)</span>
-                  </h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;data&quot;</span>: {
-    <span class="hljs-attr">&quot;verifyBiolink&quot;</span>: {
-      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;verificationStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;verifiedGovernmentId&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;verifiedEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;verifiedPhoneNumber&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;verifiedWorkEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
-      <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;instagramUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;twitterUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;linkedinUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;photoIdUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;businessDocumentUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;otherDocumentsUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-    }
-  }
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
           <h1 id="tag-Referral-Section" class="swagger-summary-tag" data-traverse-target="tag-Referral-Section">Referral Section</h1>
           <div class="tag-description doc-row">
             <div class="doc-copy">
@@ -13800,6 +13613,400 @@ https://stashee-v2.herokuapp.com/graphql
       <span class="hljs-attr">&quot;description&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;price&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
       <span class="hljs-attr">&quot;orderCompleted&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1 id="tag-Verification-Section" class="swagger-summary-tag" data-traverse-target="tag-Verification-Section">Verification Section</h1>
+          <div class="tag-description doc-row">
+            <div class="doc-copy">
+              <p>Verification section.</p>
+            </div>
+          </div>
+          <div id="operation-call_for_verification-post" class="operation panel" data-traverse-target="operation-call_for_verification-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Verification-Section">Verification Section</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Call for Verification</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Fills required user information and sends the form to verify the biolink.</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">options:
+                        <span class="prop-type">
+                          <div class="json-property-type">
+                            <div class="">
+                              <a class="json-schema-ref" href="#/definitions/VerificationInput">VerificationInput</a>
+                            </div>
+                          </div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">biolinkId:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Biolink ID</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyBiolink<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> VerificationInput!</span>, <span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
+  <span class="hljs-symbol">verifyBiolink<span class="hljs-tag">(options: <span class="hljs-code">$options</span>, biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">verificationStatus</span>
+    <span class="hljs-symbol">verifiedGovernmentId</span>
+    <span class="hljs-symbol">verifiedEmail</span>
+    <span class="hljs-symbol">verifiedPhoneNumber</span>
+    <span class="hljs-symbol">verifiedWorkEmail</span>
+    <span class="hljs-symbol">username</span>
+    <span class="hljs-symbol">firstName</span>
+    <span class="hljs-symbol">lastName</span>
+    <span class="hljs-symbol">mobileNumber</span>
+    <span class="hljs-symbol">workNumber</span>
+    <span class="hljs-symbol">email</span>
+    <span class="hljs-symbol">websiteLink</span>
+    <span class="hljs-symbol">instagramUrl</span>
+    <span class="hljs-symbol">twitterUrl</span>
+    <span class="hljs-symbol">linkedinUrl</span>
+    <span class="hljs-symbol">photoIdUrl</span>
+    <span class="hljs-symbol">businessDocumentUrl</span>
+    <span class="hljs-symbol">otherDocumentsUrl</span>
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">updatedAt</span>
+    <span class="hljs-symbol">deletedAt</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;options&quot;</span>: {
+    <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;instagramAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;twitterAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;linkedinAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;photoId&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;businessDocument&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;otherDocuments&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>
+  },
+  <span class="hljs-attr">&quot;biolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="http://localhost:4000/graphql?query=mutation%20verifyBiolink(%24options%3A%20VerificationInput!%2C%20%24biolinkId%3A%20String!)%7B%0A%20%20verifyBiolink(options%3A%20%24options%2C%20biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20verificationStatus%0A%20%20%20%20verifiedGovernmentId%0A%20%20%20%20verifiedEmail%0A%20%20%20%20verifiedPhoneNumber%0A%20%20%20%20verifiedWorkEmail%0A%20%20%20%20username%0A%20%20%20%20firstName%0A%20%20%20%20lastName%0A%20%20%20%20mobileNumber%0A%20%20%20%20workNumber%0A%20%20%20%20email%0A%20%20%20%20websiteLink%0A%20%20%20%20instagramUrl%0A%20%20%20%20twitterUrl%0A%20%20%20%20linkedinUrl%0A%20%20%20%20photoIdUrl%0A%20%20%20%20businessDocumentUrl%0A%20%20%20%20otherDocumentsUrl%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Verification">Verification</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;verifyBiolink&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verificationStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedGovernmentId&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedPhoneNumber&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedWorkEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;instagramUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;twitterUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;linkedinUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;photoIdUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;businessDocumentUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;otherDocumentsUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-verify_biolink-post" class="operation panel" data-traverse-target="operation-verify_biolink-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Verification-Section">Verification Section</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Verify Biolink</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Sends the verification form for verifying the biolink.</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">options:
+                        <span class="prop-type">
+                          <div class="json-property-type">
+                            <div class="">
+                              <a class="json-schema-ref" href="#/definitions/VerificationInput">VerificationInput</a>
+                            </div>
+                          </div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">biolinkId:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Biolink ID</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyBiolink<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> VerificationInput!</span>, <span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
+  <span class="hljs-symbol">verifyBiolink<span class="hljs-tag">(options: <span class="hljs-code">$options</span>, biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">verificationStatus</span>
+    <span class="hljs-symbol">verifiedGovernmentId</span>
+    <span class="hljs-symbol">verifiedEmail</span>
+    <span class="hljs-symbol">verifiedPhoneNumber</span>
+    <span class="hljs-symbol">verifiedWorkEmail</span>
+    <span class="hljs-symbol">username</span>
+    <span class="hljs-symbol">firstName</span>
+    <span class="hljs-symbol">lastName</span>
+    <span class="hljs-symbol">mobileNumber</span>
+    <span class="hljs-symbol">workNumber</span>
+    <span class="hljs-symbol">email</span>
+    <span class="hljs-symbol">websiteLink</span>
+    <span class="hljs-symbol">instagramUrl</span>
+    <span class="hljs-symbol">twitterUrl</span>
+    <span class="hljs-symbol">linkedinUrl</span>
+    <span class="hljs-symbol">photoIdUrl</span>
+    <span class="hljs-symbol">businessDocumentUrl</span>
+    <span class="hljs-symbol">otherDocumentsUrl</span>
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">updatedAt</span>
+    <span class="hljs-symbol">deletedAt</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;options&quot;</span>: {
+    <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;instagramAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;twitterAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;linkedinAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;photoId&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;businessDocument&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;otherDocuments&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>
+  },
+  <span class="hljs-attr">&quot;biolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="http://localhost:4000/graphql?query=mutation%20verifyBiolink(%24options%3A%20VerificationInput!%2C%20%24biolinkId%3A%20String!)%7B%0A%20%20verifyBiolink(options%3A%20%24options%2C%20biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20verificationStatus%0A%20%20%20%20verifiedGovernmentId%0A%20%20%20%20verifiedEmail%0A%20%20%20%20verifiedPhoneNumber%0A%20%20%20%20verifiedWorkEmail%0A%20%20%20%20username%0A%20%20%20%20firstName%0A%20%20%20%20lastName%0A%20%20%20%20mobileNumber%0A%20%20%20%20workNumber%0A%20%20%20%20email%0A%20%20%20%20websiteLink%0A%20%20%20%20instagramUrl%0A%20%20%20%20twitterUrl%0A%20%20%20%20linkedinUrl%0A%20%20%20%20photoIdUrl%0A%20%20%20%20businessDocumentUrl%0A%20%20%20%20otherDocumentsUrl%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Verification">Verification</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;verifyBiolink&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verificationStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedGovernmentId&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedPhoneNumber&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedWorkEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;instagramUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;twitterUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;linkedinUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;photoIdUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;businessDocumentUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;otherDocumentsUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
       <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
