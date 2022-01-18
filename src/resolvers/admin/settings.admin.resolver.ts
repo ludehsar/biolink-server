@@ -14,6 +14,7 @@ import {
 import { Settings } from '../../entities'
 import { SettingsController } from '../../controllers'
 import { authAdmin } from '../../middlewares/authAdmin'
+import { SettingsRecordUnion } from '../../json-types'
 
 @Resolver()
 export class SettingsAdminResolver {
@@ -56,7 +57,7 @@ export class SettingsAdminResolver {
   async editFacebookSettings(
     @Arg('options', () => FacebookSettingsInput) options: FacebookSettingsInput
   ): Promise<Settings> {
-    return await this.settingsController.updateSettingsByKey('facebook', options)
+    return await this.settingsController.updateSettingsByKey('facebook_login', options)
   }
 
   @Mutation(() => Settings)
@@ -64,7 +65,7 @@ export class SettingsAdminResolver {
   async editLinkSettings(
     @Arg('options', () => LinkSettingsInput) options: LinkSettingsInput
   ): Promise<Settings> {
-    return await this.settingsController.updateSettingsByKey('link', options)
+    return await this.settingsController.updateSettingsByKey('links', options)
   }
 
   @Mutation(() => Settings)
@@ -80,7 +81,7 @@ export class SettingsAdminResolver {
   async editNotificationSettings(
     @Arg('options', () => NotificationSettingsInput) options: NotificationSettingsInput
   ): Promise<Settings> {
-    return await this.settingsController.updateSettingsByKey('notification', options)
+    return await this.settingsController.updateSettingsByKey('email_notification', options)
   }
 
   @Mutation(() => Settings)
@@ -88,7 +89,7 @@ export class SettingsAdminResolver {
   async editPaymentSettings(
     @Arg('options', () => PaymentSettingsInput) options: PaymentSettingsInput
   ): Promise<Settings> {
-    return await this.settingsController.updateSettingsByKey('payment', options)
+    return await this.settingsController.updateSettingsByKey('payments', options)
   }
 
   @Mutation(() => Settings)
@@ -96,12 +97,14 @@ export class SettingsAdminResolver {
   async editSocialSettings(
     @Arg('options', () => SocialSettingsInput) options: SocialSettingsInput
   ): Promise<Settings> {
-    return await this.settingsController.updateSettingsByKey('social', options)
+    return await this.settingsController.updateSettingsByKey('socials', options)
   }
 
-  @Query(() => Settings)
+  @Query(() => SettingsRecordUnion)
   @UseMiddleware(authAdmin('settings.canShow'))
-  async getSettingsByKey(@Arg('key', () => String) key: string): Promise<Settings> {
-    return await this.settingsController.getSettingsByKey(key)
+  async getSettingsByKey(@Arg('key', () => String) key: string): Promise<any> {
+    return await (
+      await this.settingsController.getSettingsByKey(key)
+    ).value
   }
 }

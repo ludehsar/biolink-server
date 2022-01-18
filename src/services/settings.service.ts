@@ -118,7 +118,7 @@ export class SettingsService {
         break
       }
 
-      case 'facebook': {
+      case 'facebook_login': {
         const settingsValue = (settings.value || {}) as FacebookSystemSettings
 
         if (updateBody.enableFacebookLogin !== undefined)
@@ -129,7 +129,7 @@ export class SettingsService {
         break
       }
 
-      case 'link': {
+      case 'links': {
         const settingsValue = (settings.value || {}) as LinkSystemSettings
 
         if (updateBody.branding !== undefined) settingsValue.branding = updateBody.branding
@@ -167,7 +167,7 @@ export class SettingsService {
         break
       }
 
-      case 'notification': {
+      case 'email_notification': {
         const settingsValue = (settings.value || {}) as NotificationSystemSettings
 
         if (updateBody.emailOnNewPayment !== undefined)
@@ -182,7 +182,7 @@ export class SettingsService {
         break
       }
 
-      case 'payment': {
+      case 'payments': {
         const settingsValue = (settings.value || {}) as PaymentSystemSettings
 
         if (updateBody.brandName !== undefined) settingsValue.brandName = updateBody.brandName
@@ -205,7 +205,7 @@ export class SettingsService {
         break
       }
 
-      case 'social': {
+      case 'socials': {
         const settingsValue = (settings.value || {}) as SocialSystemSettings
 
         if (updateBody.facebook !== undefined) settingsValue.facebook = updateBody.facebook

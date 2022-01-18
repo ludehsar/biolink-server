@@ -15,6 +15,7 @@ import { SocialSystemSettings } from './SocialSystemSettings'
 import { StripeInvoiceObject } from './StripePaymentRecord'
 import { PaypalPaymentRecord } from './PaypalPaymentRecord'
 import { PaymentRecordUnion } from './PaymentRecordUnion'
+import { SettingsRecordUnion } from './SettingsRecordUnion'
 
 export {
   AdsSystemSettings,
@@ -34,4 +35,5 @@ export {
   StripeInvoiceObject,
   PaypalPaymentRecord,
   PaymentRecordUnion,
+  SettingsRecordUnion,
 }
