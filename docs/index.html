@@ -386,8 +386,6 @@
           <a href="#definition-Billing"> Billing </a>
           <a href="#definition-BillingInput"> BillingInput </a>
           <a href="#definition-Biolink"> Biolink </a>
-          <a href="#definition-BiolinkChartResponse"> BiolinkChartResponse </a>
-          <a href="#definition-BiolinkChartValue"> BiolinkChartValue </a>
           <a href="#definition-BiolinkClicksResponse"> BiolinkClicksResponse </a>
           <a href="#definition-BiolinkSettings"> BiolinkSettings </a>
           <a href="#definition-Boolean"> Boolean </a>
@@ -400,16 +398,16 @@
           <a href="#definition-ConnectionArgs"> ConnectionArgs </a>
           <a href="#definition-ContactButtonInput"> ContactButtonInput </a>
           <a href="#definition-Cursor"> Cursor </a>
+          <a href="#definition-DailyClickChartResponse"> DailyClickChartResponse </a>
+          <a href="#definition-DailyClickChartValue"> DailyClickChartValue </a>
           <a href="#definition-DarkModeInput"> DarkModeInput </a>
           <a href="#definition-Data"> Data </a>
           <a href="#definition-DateTime"> DateTime </a>
-          <a href="#definition-DefaultResponse"> DefaultResponse </a>
           <a href="#definition-DirectoryInput"> DirectoryInput </a>
           <a href="#definition-DirectorySearchResponse"> DirectorySearchResponse </a>
           <a href="#definition-DonationInput"> DonationInput </a>
           <a href="#definition-EmailAndUsernameInput"> EmailAndUsernameInput </a>
           <a href="#definition-EmailInput"> EmailInput </a>
-          <a href="#definition-ErrorResponse"> ErrorResponse </a>
           <a href="#definition-Float"> Float </a>
           <a href="#definition-Follow"> Follow </a>
           <a href="#definition-GrossAmount"> GrossAmount </a>
@@ -488,6 +486,7 @@
           <a href="#definition-UserLogs"> UserLogs </a>
           <a href="#definition-UserWithTokens"> UserWithTokens </a>
           <a href="#definition-Username"> Username </a>
+          <a href="#definition-Verification"> Verification </a>
           <a href="#definition-VerificationInput"> VerificationInput </a>
         </nav>
       </div>
@@ -3239,7 +3238,7 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;bio&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
   },
   <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
 }
@@ -8704,45 +8703,6 @@ https://stashee-v2.herokuapp.com/graphql
                 <section class="swagger-request-params">
                   <div class="prop-row prop-group">
                     <div class="prop-name">
-                      <div class="prop-title">otherDocuments:
-                        <span class="prop-type">
-                          <div class="json-property-type">object</div>
-                          <span class="json-property-range" title="Value limits"></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="prop-value">
-                      <p class="no-description">(no description)</p>
-                    </div>
-                  </div>
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
-                      <div class="prop-title">businessDocument:
-                        <span class="prop-type">
-                          <div class="json-property-type">object</div>
-                          <span class="json-property-range" title="Value limits"></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="prop-value">
-                      <p class="no-description">(no description)</p>
-                    </div>
-                  </div>
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
-                      <div class="prop-title">photoId:
-                        <span class="prop-type">
-                          <div class="json-property-type">object</div>
-                          <span class="json-property-range" title="Value limits"></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="prop-value">
-                      <p class="no-description">(no description)</p>
-                    </div>
-                  </div>
-                  <div class="prop-row prop-group">
-                    <div class="prop-name">
                       <div class="prop-title">options:
                         <span class="prop-type">
                           <div class="json-property-type">
@@ -8783,8 +8743,30 @@ https://stashee-v2.herokuapp.com/graphql
                     <!-- <div class="hljs"> -->
                     <html>
                     <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyBiolink<span class="hljs-tag">(<span class="hljs-code">$otherDocuments</span>:<span class="hljs-type"> Upload!</span>, <span class="hljs-code">$businessDocument</span>:<span class="hljs-type"> Upload!</span>, <span class="hljs-code">$photoId</span>:<span class="hljs-type"> Upload!</span>, <span class="hljs-code">$options</span>:<span class="hljs-type"> VerificationInput!</span>, <span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
-  <span class="hljs-symbol">verifyBiolink<span class="hljs-tag">(otherDocuments: <span class="hljs-code">$otherDocuments</span>, businessDocument: <span class="hljs-code">$businessDocument</span>, photoId: <span class="hljs-code">$photoId</span>, options: <span class="hljs-code">$options</span>, biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> verifyBiolink<span class="hljs-tag">(<span class="hljs-code">$options</span>:<span class="hljs-type"> VerificationInput!</span>, <span class="hljs-code">$biolinkId</span>:<span class="hljs-type"> String!</span>)</span><span class="hljs-tag">{
+  <span class="hljs-symbol">verifyBiolink<span class="hljs-tag">(options: <span class="hljs-code">$options</span>, biolinkId: <span class="hljs-code">$biolinkId</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">verificationStatus</span>
+    <span class="hljs-symbol">verifiedGovernmentId</span>
+    <span class="hljs-symbol">verifiedEmail</span>
+    <span class="hljs-symbol">verifiedPhoneNumber</span>
+    <span class="hljs-symbol">verifiedWorkEmail</span>
+    <span class="hljs-symbol">username</span>
+    <span class="hljs-symbol">firstName</span>
+    <span class="hljs-symbol">lastName</span>
+    <span class="hljs-symbol">mobileNumber</span>
+    <span class="hljs-symbol">workNumber</span>
+    <span class="hljs-symbol">email</span>
+    <span class="hljs-symbol">websiteLink</span>
+    <span class="hljs-symbol">instagramUrl</span>
+    <span class="hljs-symbol">twitterUrl</span>
+    <span class="hljs-symbol">linkedinUrl</span>
+    <span class="hljs-symbol">photoIdUrl</span>
+    <span class="hljs-symbol">businessDocumentUrl</span>
+    <span class="hljs-symbol">otherDocumentsUrl</span>
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">updatedAt</span>
+    <span class="hljs-symbol">deletedAt</span>
   }</span></span>
 }</span></span>
 </code></pre> </body>
@@ -8806,14 +8788,17 @@ https://stashee-v2.herokuapp.com/graphql
     <span class="hljs-attr">&quot;instagramAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;twitterAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
     <span class="hljs-attr">&quot;linkedinAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;photoId&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;businessDocument&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+    <span class="hljs-attr">&quot;otherDocuments&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>
   },
   <span class="hljs-attr">&quot;biolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
 }
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="http://localhost:4000/graphql?query=mutation%20verifyBiolink(%24otherDocuments%3A%20Upload!%2C%20%24businessDocument%3A%20Upload!%2C%20%24photoId%3A%20Upload!%2C%20%24options%3A%20VerificationInput!%2C%20%24biolinkId%3A%20String!)%7B%0A%20%20verifyBiolink(otherDocuments%3A%20%24otherDocuments%2C%20businessDocument%3A%20%24businessDocument%2C%20photoId%3A%20%24photoId%2C%20options%3A%20%24options%2C%20biolinkId%3A%20%24biolinkId)%7B%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                    <a href="http://localhost:4000/graphql?query=mutation%20verifyBiolink(%24options%3A%20VerificationInput!%2C%20%24biolinkId%3A%20String!)%7B%0A%20%20verifyBiolink(options%3A%20%24options%2C%20biolinkId%3A%20%24biolinkId)%7B%0A%20%20%20%20id%0A%20%20%20%20verificationStatus%0A%20%20%20%20verifiedGovernmentId%0A%20%20%20%20verifiedEmail%0A%20%20%20%20verifiedPhoneNumber%0A%20%20%20%20verifiedWorkEmail%0A%20%20%20%20username%0A%20%20%20%20firstName%0A%20%20%20%20lastName%0A%20%20%20%20mobileNumber%0A%20%20%20%20workNumber%0A%20%20%20%20email%0A%20%20%20%20websiteLink%0A%20%20%20%20instagramUrl%0A%20%20%20%20twitterUrl%0A%20%20%20%20linkedinUrl%0A%20%20%20%20photoIdUrl%0A%20%20%20%20businessDocumentUrl%0A%20%20%20%20otherDocumentsUrl%0A%20%20%20%20createdAt%0A%20%20%20%20updatedAt%0A%20%20%20%20deletedAt%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -8833,7 +8818,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <div class="prop-value">
                       <div class="json-property-type">
                         <div class="">
-                          <a class="json-schema-ref" href="#/definitions/DefaultResponse">DefaultResponse</a>
+                          <a class="json-schema-ref" href="#/definitions/Verification">Verification</a>
                         </div>
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
@@ -8854,7 +8839,30 @@ https://stashee-v2.herokuapp.com/graphql
                   <head></head>
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;data&quot;</span>: {
-    <span class="hljs-attr">&quot;verifyBiolink&quot;</span>: {}
+    <span class="hljs-attr">&quot;verifyBiolink&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verificationStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedGovernmentId&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedPhoneNumber&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;verifiedWorkEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+      <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;instagramUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;twitterUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;linkedinUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;photoIdUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;businessDocumentUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;otherDocumentsUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
   }
 }
 </code></pre> </body>
@@ -9974,7 +9982,7 @@ https://stashee-v2.herokuapp.com/graphql
                     <div class="prop-value">
                       <div class="json-property-type">
                         <div class="">
-                          <a class="json-schema-ref" href="#/definitions/BiolinkChartResponse">BiolinkChartResponse</a>
+                          <a class="json-schema-ref" href="#/definitions/DailyClickChartResponse">DailyClickChartResponse</a>
                         </div>
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
@@ -14756,103 +14764,6 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
-          <div id="definition-BiolinkChartResponse" class="definition panel" data-traverse-target="definition-BiolinkChartResponse">
-            <h2 class="panel-title">
-              <a name="/definitions/BiolinkChartResponse"></a>BiolinkChartResponse: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="result">
-                      <span class="json-property-name">result:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-array">
-                          <a class="json-schema-ref" href="#/definitions/BiolinkChartValue">BiolinkChartValue</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;result&quot;</span>: [
-    {
-      <span class="hljs-attr">&quot;views&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-      <span class="hljs-attr">&quot;date&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-    }
-  ]
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-BiolinkChartValue" class="definition panel" data-traverse-target="definition-BiolinkChartValue">
-            <h2 class="panel-title">
-              <a name="/definitions/BiolinkChartValue"></a>BiolinkChartValue: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="views">
-                      <span class="json-property-name">views:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-number">
-                          <a class="json-schema-ref" href="#/definitions/Int">Int</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                    <dt data-property-name="date">
-                      <span class="json-property-name">date:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;views&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
-  <span class="hljs-attr">&quot;date&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
           <div id="definition-BiolinkClicksResponse" class="definition panel" data-traverse-target="definition-BiolinkClicksResponse">
             <h2 class="panel-title">
               <a name="/definitions/BiolinkClicksResponse"></a>BiolinkClicksResponse: object
@@ -16236,6 +16147,103 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
+          <div id="definition-DailyClickChartResponse" class="definition panel" data-traverse-target="definition-DailyClickChartResponse">
+            <h2 class="panel-title">
+              <a name="/definitions/DailyClickChartResponse"></a>DailyClickChartResponse: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="result">
+                      <span class="json-property-name">result:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/DailyClickChartValue">DailyClickChartValue</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;result&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;views&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;date&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  ]
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-DailyClickChartValue" class="definition panel" data-traverse-target="definition-DailyClickChartValue">
+            <h2 class="panel-title">
+              <a name="/definitions/DailyClickChartValue"></a>DailyClickChartValue: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="views">
+                      <span class="json-property-name">views:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-number">
+                          <a class="json-schema-ref" href="#/definitions/Int">Int</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="date">
+                      <span class="json-property-name">date:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;views&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;date&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
           <div id="definition-DarkModeInput" class="definition panel" data-traverse-target="definition-DarkModeInput">
             <h2 class="panel-title">
               <a name="/definitions/DarkModeInput"></a>DarkModeInput: object
@@ -16564,52 +16572,6 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
-          <div id="definition-DefaultResponse" class="definition panel" data-traverse-target="definition-DefaultResponse">
-            <h2 class="panel-title">
-              <a name="/definitions/DefaultResponse"></a>DefaultResponse: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="errors">
-                      <span class="json-property-name">errors:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-array">
-                          <a class="json-schema-ref" href="#/definitions/ErrorResponse">ErrorResponse</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;errors&quot;</span>: [
-    {
-      <span class="hljs-attr">&quot;errorCode&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-      <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-    }
-  ]
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
           <div id="definition-DirectoryInput" class="definition panel" data-traverse-target="definition-DirectoryInput">
             <h2 class="panel-title">
               <a name="/definitions/DirectoryInput"></a>DirectoryInput: object
@@ -16850,59 +16812,6 @@ https://stashee-v2.herokuapp.com/graphql
                   <head></head>
                   <body><pre><code class="hljs language-json">{
   <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
-}
-</code></pre> </body>
-                  </html>
-                  <!-- </div> -->
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-ErrorResponse" class="definition panel" data-traverse-target="definition-ErrorResponse">
-            <h2 class="panel-title">
-              <a name="/definitions/ErrorResponse"></a>ErrorResponse: object
-              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
-              <span class="json-property-range" title="Value limits"></span>
-              
-              
-              </span> -->
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-properties">
-                  <dl>
-                    <dt data-property-name="errorCode">
-                      <span class="json-property-name">errorCode:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                    <dt data-property-name="message">
-                      <span class="json-property-name">message:</span>
-                      <div class="json-property-type">
-                        <div class="json-schema-ref-string">
-                          <a class="json-schema-ref" href="#/definitions/String">String</a>
-                        </div>
-                      </div>
-                      <span class="json-property-range" title="Value limits"></span>
-                      <span class="json-property-required"></span>
-                    </dt>
-                  </dl>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <!-- <div class="hljs"> -->
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;errorCode&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;message&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
 }
 </code></pre> </body>
                   </html>
@@ -24638,8 +24547,8 @@ https://stashee-v2.herokuapp.com/graphql
                     <dt data-property-name="categoryId">
                       <span class="json-property-name">categoryId:</span>
                       <div class="json-property-type">
-                        <div class="json-schema-ref-number">
-                          <a class="json-schema-ref" href="#/definitions/Float">Float</a>
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
                         </div>
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
@@ -24659,7 +24568,7 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;bio&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+  <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
 }
 </code></pre> </body>
                   </html>
@@ -25457,6 +25366,313 @@ https://stashee-v2.herokuapp.com/graphql
               </div>
             </div>
           </div>
+          <div id="definition-Verification" class="definition panel" data-traverse-target="definition-Verification">
+            <h2 class="panel-title">
+              <a name="/definitions/Verification"></a>Verification: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="id">
+                      <span class="json-property-name">id:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="verificationStatus">
+                      <span class="json-property-name">verificationStatus:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="verifiedGovernmentId">
+                      <span class="json-property-name">verifiedGovernmentId:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-boolean">
+                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="verifiedEmail">
+                      <span class="json-property-name">verifiedEmail:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-boolean">
+                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="verifiedPhoneNumber">
+                      <span class="json-property-name">verifiedPhoneNumber:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-boolean">
+                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="verifiedWorkEmail">
+                      <span class="json-property-name">verifiedWorkEmail:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-boolean">
+                          <a class="json-schema-ref" href="#/definitions/Boolean">Boolean</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="username">
+                      <span class="json-property-name">username:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="firstName">
+                      <span class="json-property-name">firstName:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="lastName">
+                      <span class="json-property-name">lastName:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="mobileNumber">
+                      <span class="json-property-name">mobileNumber:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="workNumber">
+                      <span class="json-property-name">workNumber:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="email">
+                      <span class="json-property-name">email:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="websiteLink">
+                      <span class="json-property-name">websiteLink:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="instagramUrl">
+                      <span class="json-property-name">instagramUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="twitterUrl">
+                      <span class="json-property-name">twitterUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="linkedinUrl">
+                      <span class="json-property-name">linkedinUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="photoIdUrl">
+                      <span class="json-property-name">photoIdUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="businessDocumentUrl">
+                      <span class="json-property-name">businessDocumentUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="otherDocumentsUrl">
+                      <span class="json-property-name">otherDocumentsUrl:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="createdAt">
+                      <span class="json-property-name">createdAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="updatedAt">
+                      <span class="json-property-name">updatedAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="deletedAt">
+                      <span class="json-property-name">deletedAt:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-string">
+                          <a class="json-schema-ref" href="#/definitions/String">String</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="user">
+                      <span class="json-property-name">user:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/User">User</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="biolink">
+                      <span class="json-property-name">biolink:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Biolink">Biolink</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="category">
+                      <span class="json-property-name">category:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Category">Category</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;verificationStatus&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;verifiedGovernmentId&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+  <span class="hljs-attr">&quot;verifiedEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+  <span class="hljs-attr">&quot;verifiedPhoneNumber&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+  <span class="hljs-attr">&quot;verifiedWorkEmail&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+  <span class="hljs-attr">&quot;username&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;firstName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;lastName&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;mobileNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;workNumber&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;websiteLink&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;instagramUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;twitterUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;linkedinUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;photoIdUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;businessDocumentUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;otherDocumentsUrl&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;createdAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;updatedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;deletedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;user&quot;</span>: {
+    <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;email&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;emailVerifiedAt&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;billing&quot;</span>: {
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;address1&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;address2&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;city&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;state&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;zip&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;phone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    },
+    <span class="hljs-attr">&quot;lastActiveTill&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;planExpirationDate&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;planTrialDone&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+    <span class="hljs-attr">&quot;planType&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;usedReferralsToPurchasePlan&quot;</span>: <span class="hljs-string">&quot;boolean&quot;</span>,
+    <span class="hljs-attr">&quot;language&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;timezone&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastIPAddress&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;lastUserAgent&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;country&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;totalLogin&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+    <span class="hljs-attr">&quot;currentBiolinkId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
           <div id="definition-VerificationInput" class="definition panel" data-traverse-target="definition-VerificationInput">
             <h2 class="panel-title">
               <a name="/definitions/VerificationInput"></a>VerificationInput: object
@@ -25569,6 +25785,33 @@ https://stashee-v2.herokuapp.com/graphql
                       </div>
                       <span class="json-property-range" title="Value limits"></span>
                     </dt>
+                    <dt data-property-name="photoId">
+                      <span class="json-property-name">photoId:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Upload">Upload</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="businessDocument">
+                      <span class="json-property-name">businessDocument:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Upload">Upload</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="otherDocuments">
+                      <span class="json-property-name">otherDocuments:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Upload">Upload</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
                   </dl>
                 </section>
               </div>
@@ -25589,7 +25832,10 @@ https://stashee-v2.herokuapp.com/graphql
   <span class="hljs-attr">&quot;instagramAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;twitterAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
   <span class="hljs-attr">&quot;linkedinAccount&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
-  <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+  <span class="hljs-attr">&quot;categoryId&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;photoId&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+  <span class="hljs-attr">&quot;businessDocument&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,
+  <span class="hljs-attr">&quot;otherDocuments&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>
 }
 </code></pre> </body>
                   </html>
