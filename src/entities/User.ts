@@ -194,6 +194,7 @@ export class User extends BaseEntity {
   @RelationId((user: User) => user.adminRole)
   adminRoleId!: string
 
+  @Field(() => Code, { nullable: true })
   @ManyToOne(() => Code, (code) => code.referredByUsers, {
     nullable: true,
     lazy: true,

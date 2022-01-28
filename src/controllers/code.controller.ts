@@ -15,11 +15,15 @@ export class CodeController {
   ) {}
 
   async getAllReferralCodes(options: ConnectionArgs): Promise<PaginatedCodeResponse> {
-    return await this.codeService.getAllCodes(CodeType.Referral, options)
+    return await this.codeService.getAllCodes(options, CodeType.Referral)
   }
 
   async getAllDiscountCodes(options: ConnectionArgs): Promise<PaginatedCodeResponse> {
-    return await this.codeService.getAllCodes(CodeType.Discount, options)
+    return await this.codeService.getAllCodes(options, CodeType.Discount)
+  }
+
+  async getAllCodes(options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+    return await this.codeService.getAllCodes(options)
   }
 
   async getCode(codeId: string): Promise<Code> {

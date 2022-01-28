@@ -21,6 +21,12 @@ export class CodeAdminResolver {
     return await this.codeController.getAllReferralCodes(options)
   }
 
+  @Query(() => PaginatedCodeResponse, { nullable: true })
+  @UseMiddleware(authAdmin('code.canShowList'))
+  async getAllCodes(@Arg('options') options: ConnectionArgs): Promise<PaginatedCodeResponse> {
+    return await this.codeController.getAllCodes(options)
+  }
+
   @Query(() => Code, { nullable: true })
   @UseMiddleware(authAdmin('code.canShow'))
   async getCode(@Arg('codeId', () => String) codeId: string): Promise<Code> {

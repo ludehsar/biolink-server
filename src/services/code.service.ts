@@ -183,13 +183,16 @@ export class CodeService {
    * @param {ConnectionArgs} options
    * @returns {Promise<PaginatedCodeResponse>}
    */
-  async getAllCodes(type: CodeType, options: ConnectionArgs): Promise<PaginatedCodeResponse> {
-    const queryBuilder = this.codeRepository
-      .createQueryBuilder('code')
-      .where('code.type = :type', { type })
-      .andWhere(`LOWER(code.code) like :query`, {
-        query: `%${options.query.toLowerCase()}%`,
-      })
+  async getAllCodes(options: ConnectionArgs, type?: CodeType): Promise<PaginatedCodeResponse> {
+    const queryBuilder = this.codeRepository.createQueryBuilder('code')
+
+    queryBuilder.where(`LOWER(code.code) like :query`, {
+      query: `%${options.query.toLowerCase()}%`,
+    })
+
+    if (type) {
+      queryBuilder.andWhere('code.type = :type', { type })
+    }
 
     const paginator = buildPaginator({
       entity: Code,
