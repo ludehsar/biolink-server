@@ -97,6 +97,23 @@ export class BiolinkController {
       usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username)
     }
 
+    let latitude: number | undefined = undefined,
+      longitude: number | undefined = undefined
+    try {
+      const geoResponse = await axios.get(
+        `http://api.positionstack.com/v1/forward?&access_key=${
+          appConfig.POSITIONTRACK_API_KEY
+        }&query=${input.city + ', ' + input.state + ', ' + input.country}&limit=1&output=json`
+      )
+
+      const geoData = await geoResponse.data
+
+      latitude = geoData.data[0].latitude || 0
+      longitude = geoData.data[0].longitude || 0
+    } catch (err) {
+      console.log("API Error, couldn't get latitudes and longitudes")
+    }
+
     const biolink = await this.biolinkService.createBiolink({
       bio: input.bio,
       category,
@@ -106,8 +123,8 @@ export class BiolinkController {
       coverPhoto: input.coverPhoto,
       displayName: input.displayName,
       featured: input.featured,
-      latitude: input.latitude,
-      longitude: input.longitude,
+      latitude,
+      longitude,
       profilePhoto: input.profilePhoto,
       settings: {
         addedToDirectory: input.addedToDirectory,
@@ -174,6 +191,23 @@ export class BiolinkController {
       usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username)
     }
 
+    let latitude: number | undefined = undefined,
+      longitude: number | undefined = undefined
+    try {
+      const geoResponse = await axios.get(
+        `http://api.positionstack.com/v1/forward?&access_key=${
+          appConfig.POSITIONTRACK_API_KEY
+        }&query=${input.city + ', ' + input.state + ', ' + input.country}&limit=1&output=json`
+      )
+
+      const geoData = await geoResponse.data
+
+      latitude = geoData.data[0].latitude || 0
+      longitude = geoData.data[0].longitude || 0
+    } catch (err) {
+      console.log("API Error, couldn't get latitudes and longitudes")
+    }
+
     const biolink = await this.biolinkService.updateBiolinkById(biolinkId, {
       bio: input.bio,
       category,
@@ -183,8 +217,8 @@ export class BiolinkController {
       coverPhoto: input.coverPhoto,
       displayName: input.displayName,
       featured: input.featured,
-      latitude: input.latitude,
-      longitude: input.longitude,
+      latitude,
+      longitude,
       profilePhoto: input.profilePhoto,
       settings: {
         addedToDirectory: input.addedToDirectory,

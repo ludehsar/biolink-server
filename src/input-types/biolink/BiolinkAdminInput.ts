@@ -1,15 +1,7 @@
 import { GraphQLUpload } from 'graphql-upload'
-import {
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsUrl,
-  ValidateIf,
-} from 'class-validator'
+import { IsBoolean, IsEmail, IsEnum, IsOptional, IsUrl, ValidateIf } from 'class-validator'
 import { FileUpload } from 'graphql-upload'
-import { Field, Float, InputType } from 'type-graphql'
+import { Field, InputType } from 'type-graphql'
 
 import { SocialAccountStyleType, VerificationStatus } from '../../enums'
 
@@ -53,16 +45,6 @@ export class BiolinkAdminInput {
   @IsBoolean()
   @IsOptional()
   featured?: boolean
-
-  @Field(() => Float, { nullable: true })
-  @IsNumber()
-  @IsOptional()
-  latitude?: number
-
-  @Field(() => Float, { nullable: true })
-  @IsNumber()
-  @IsOptional()
-  longitude?: number
 
   @Field(() => GraphQLUpload, { nullable: true })
   @IsOptional()
