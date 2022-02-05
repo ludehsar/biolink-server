@@ -98,12 +98,12 @@ export class UsernameService {
    * @param {string} username
    * @returns {Promise<Username>}
    */
-  async findAvailableOneOrCreate(username: string): Promise<Username> {
+  async findAvailableOneOrCreate(username: string, excludedUserId?: string): Promise<Username> {
     let usernameDoc = await this.usernameRepository.findOne({
       username,
     })
 
-    if (await this.isUsernameTaken(username)) {
+    if (await this.isUsernameTaken(username, excludedUserId)) {
       throw new ApolloError('Username already taken', ErrorCode.USERNAME_ALREADY_EXISTS)
     }
 

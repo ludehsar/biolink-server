@@ -188,7 +188,7 @@ export class BiolinkController {
 
     let usernameDoc = undefined
     if (input.username) {
-      usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username)
+      usernameDoc = await this.usernameService.findAvailableOneOrCreate(input.username, user?.id)
     }
 
     let latitude: number | undefined = undefined,

@@ -1,6 +1,5 @@
-import { GraphQLUpload } from 'graphql-upload'
+import { GraphQLUpload, FileUpload } from 'graphql-upload'
 import { IsBoolean, IsEmail, IsEnum, IsOptional, IsUrl, ValidateIf } from 'class-validator'
-import { FileUpload } from 'graphql-upload'
 import { Field, InputType } from 'type-graphql'
 
 import { SocialAccountStyleType, VerificationStatus } from '../../enums'
