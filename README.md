@@ -52,4 +52,4 @@ If you find any bugs, please feel free to use the issues tab in GitHub to give t
 
 ## Contribute
 
-You are more welcome to contribute in the project if you want. Just write the codes in a new branch and I will merge those changes.
+Currently no contribution in this project is encouraged.
